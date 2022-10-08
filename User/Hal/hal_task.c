@@ -28,3 +28,13 @@ void Hal_Task_Regist_Isr_Callback(hal_isr_callback_t callback )
     hal_systick_isr_callback = callback;
 }
 
+void SysTick_Handler(void )
+{
+    if(hal_systick_isr_callback != NULL)
+    {
+        hal_systick_isr_callback();
+    }
+}
+
+
+
