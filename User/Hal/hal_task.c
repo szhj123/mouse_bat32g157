@@ -1,5 +1,5 @@
 /********************************************************
-* @file       main.c
+* @file       hal_task.c
 * @author     szhj13
 * @version    V1.0
 * @date       2022-05-18
@@ -10,42 +10,21 @@
 **********************************************************/
 
 /* Includes ---------------------------------------------*/
-#include "hal_bat32g157.h"
+#include "hal_task.h"
 /* Private typedef --------------------------------------*/
 /* Private define ---------------------------------------*/
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
-void Clk_Init(void );
 /* Private variables ------------------------------------*/
+hal_isr_callback_t hal_systick_isr_callback = NULL;
 
-int main (void)
+void Hal_Task_Init(void )
 {
-	Clk_Init();
-	
-    Usb_Init(); 
+    SysTick_Config(SystemCoreClock/1000);
+}
 
-    while(1)
-    {
-        
-    }
-} 
-
-void Clk_Init(void )
+void Hal_Task_Regist_Isr_Callback(hal_isr_callback_t callback )
 {
-    uint32_t waitCnt;
-    
-    //HOCO = 32MHz / fIH = 8MHz, UPLL = 48MHz, fclk = 64MHz
-    CLK_Fclk_Select(MAINCLK_FIH);
-    CLK_PLL_Setting(PLL_SR_fIH,PLL_DIV_2,PLL_MUL_16);
-    CLK_UPLL_Setting(PLL_SR_fIH,PLL_DIV_2,PLL_MUL_12);
-    CLK_PLL_Start();
-    waitCnt = 10000;
-    while(waitCnt--);
-    CLK_UPLL_Start();
-    waitCnt = 10000;
-    while(waitCnt--);
-    CLK_Fclk_Select(MAINCLK_FPLL);
-
-    SystemCoreClock = 64000000;
+    hal_systick_isr_callback = callback;
 }
 

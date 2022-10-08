@@ -16,4 +16,6 @@
 
 #include "usb_phid_apl.h"
 
+typedef void (*hal_isr_callback_t)(void );
+
 #endif 
