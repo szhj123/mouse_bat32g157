@@ -15,6 +15,7 @@
 /* Private define ---------------------------------------*/
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
+static void Drv_Task_Isr_Handler(void );
 /* Private variables ------------------------------------*/
 task_ctrl_block_t *taskHead = NULL;
 
@@ -72,12 +73,12 @@ static task_ctrl_block_t * Drv_Task_Regist(uint16_t ticks, uint16_t period, task
 
 task_ctrl_block_t * Drv_Task_Regist_Oneshot(uint16_t ticks, task_callback_t callback, void *arg )
 {
-    Drv_Task_Regist(ticks, 0, callback, arg);
+    return Drv_Task_Regist(ticks, 0, callback, arg);
 }
 
 task_ctrl_block_t * Drv_Task_Regist_Period(uint16_t ticks, uint16_t period, task_callback_t callback, void *arg )
 {
-    Drv_Task_Regist(ticks, period, callback, arg);
+    return Drv_Task_Regist(ticks, period, callback, arg);
 }
 
 uint8_t Drv_Task_Delay(task_ctrl_block_t *task, uint16_t ticks )
@@ -207,6 +208,24 @@ void Drv_Task_Schedule(void )
 
 static void Drv_Task_Isr_Handler(void )
 {
-    
+    task_ctrl_block_t *pTask = taskHead;
+
+    while(pTask != NULL)
+    {
+        if(pTask->state == TASK_SUSPEND)
+        {
+            if(pTask->ticks > 0)
+            {
+                pTask->ticks--;
+            }
+
+            if(pTask->ticks == 0)
+            {
+                pTask->state = TASK_READY;
+            }
+        }
+
+        pTask = pTask->next;
+    }
 }
 

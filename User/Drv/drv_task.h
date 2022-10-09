@@ -29,6 +29,15 @@ typedef struct _task_ctrl_block_t
     struct _task_ctrl_block_t *next;
 }task_ctrl_block_t;
 
+void Drv_Task_Init(void );
+task_ctrl_block_t * Drv_Task_Regist_Oneshot(uint16_t ticks, task_callback_t callback, void *arg );
+task_ctrl_block_t * Drv_Task_Regist_Period(uint16_t ticks, uint16_t period, task_callback_t callback, void *arg );
+uint8_t Drv_Task_Delay(task_ctrl_block_t *task, uint16_t ticks );
+uint8_t Drv_Task_Sleep(task_ctrl_block_t *task );
+uint8_t Drv_Task_Wakeup(task_ctrl_block_t *task );
+uint8_t Drv_Task_Delete(task_ctrl_block_t *task );
+void Drv_Task_Schedule(void );
+
 
 #endif 
 
