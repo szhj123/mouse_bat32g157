@@ -1,5 +1,5 @@
 /********************************************************
-* @file       hal_task.c
+* @file       interrupt.c
 * @author     szhj13
 * @version    V1.0
 * @date       2022-05-18
@@ -11,32 +11,35 @@
 
 /* Includes ---------------------------------------------*/
 #include "hal_task.h"
+#include "hal_timer.h"
+#include "hal_spi_flash.h"
 /* Private typedef --------------------------------------*/
 /* Private define ---------------------------------------*/
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
+void IRQ12_Handler(void) __attribute__((alias("spi1_interrupt")));
+void IRQ18_Handler(void) __attribute__((alias("tm40_channel0_interrupt")));
 /* Private variables ------------------------------------*/
-hal_isr_callback_t hal_systick_isr_callback = NULL;
 
-void Hal_Task_Init(void )
+
+void SysTick_Handler(void )
 {
-    SysTick_Config(SystemCoreClock/1000);
+    Hal_Task_Isr_Handler();
 }
 
-void Hal_Task_Regist_Isr_Callback(hal_isr_callback_t callback )
+void tm40_channel0_interrupt(void )
 {
-    hal_systick_isr_callback = callback;
+    INTC_ClearPendingIRQ(TM00_IRQn);    
+
+    Hal_Timer_Isr_Handler();
 }
 
-void Hal_Task_Isr_Handler(void )
+void spi1_interrupt(void )
 {
-    if(hal_systick_isr_callback != NULL)
-    {
-        hal_systick_isr_callback();
-    }
+    Hal_Spi_Flash_Isr_Handler();
+    
+    INTC_ClearPendingIRQ(SPI1_IRQn);
 }
-
-
 
 
 

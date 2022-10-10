@@ -618,6 +618,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\Drv\drv_event.c</FilePath>
             </File>
+            <File>
+              <FileName>drv_spi_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drv\drv_spi_flash.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -632,6 +637,16 @@
               <FileName>hal_timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Hal\hal_timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_spi_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Hal\hal_spi_flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>interrupt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Hal\interrupt.c</FilePath>
             </File>
           </Files>
         </Group>

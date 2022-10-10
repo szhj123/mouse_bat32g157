@@ -14,6 +14,7 @@
 #include "spi.h"
 #include "tim4.h"
 #include "sci.h"
+#include "flash.h"
 
 #include "usb_phid_apl.h"
 

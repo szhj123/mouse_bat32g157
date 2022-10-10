@@ -1148,7 +1148,7 @@ typedef enum
   */
 
 /* ToDo: Please define one of the following macro and comment out others accroding to your application */
-#define SPIHS0_SLAVE_PORT
+//#define SPIHS0_SLAVE_PORT
 //#define SPIHS0_MASTER_PORT
 //#define SPIHS1_SLAVE_PORT
 #define SPIHS1_MASTER_PORT

@@ -15,8 +15,6 @@
 /* Private define ---------------------------------------*/
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
-void IRQ18_Handler(void) __attribute__((alias("tm40_channel0_interrupt")));
-
 /* Private variables ------------------------------------*/
 hal_isr_callback_t hal_timer_isr_callback = NULL;
 
@@ -50,13 +48,12 @@ void Hal_Timer_Regist_Isr_Callback(hal_isr_callback_t callback )
     hal_timer_isr_callback = callback;       
 }
 
-void tm40_channel0_interrupt(void )
+void Hal_Timer_Isr_Handler(void )
 {
-    INTC_ClearPendingIRQ(TM00_IRQn);    
-
     if(hal_timer_isr_callback != NULL)
     {
         hal_timer_isr_callback();
     }
 }
+
 

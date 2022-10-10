@@ -4,8 +4,8 @@
 #include "hal_bat32g157.h"
 
 void Hal_Timer_Init(void );
-
 void Hal_Timer_Regist_Isr_Callback(hal_isr_callback_t callback );
+void Hal_Timer_Isr_Handler(void );
 
 #endif 
 
