@@ -16,13 +16,15 @@
 /* Private define ---------------------------------------*/
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
+static void Drv_Spi_Flash_Read_End_Callback(void );
 static void Drv_Spi_Flash_Write_End_Callback(void );
 
 /* Private variables ------------------------------------*/
+static uint8_t spi_read_end_flag = 0;
 static uint8_t spi_write_end_flag = 0;
 
-uint8_t txBuf[] = {0, 1, 2, 3, 4, 5};
-uint8_t rxBuf[5] = {0};
+uint8_t txBuf[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+uint8_t rxBuf[10] = {0};
 
 
 void Drv_Spi_Flash_Init(void )
@@ -31,9 +33,13 @@ void Drv_Spi_Flash_Init(void )
 
     Drv_Spi_Read_ID();
 
-    Drv_Spi_Flash_DMA_Write(0, txBuf, sizeof(txBuf));
+    //Drv_Spi_Flash_Erase_64Kb(100);
+    
+    //Drv_Spi_Flash_Loop_Read(100, rxBuf, sizeof(rxBuf));
 
-    Drv_Spi_Flash_Loop_Read(0, rxBuf, sizeof(rxBuf));
+    //Drv_Spi_Flash_Write(100, txBuf, sizeof(txBuf));
+
+    //Drv_Spi_Flash_DMA_Read(100, rxBuf, sizeof(rxBuf));
 }
 
 void Drv_Spi_Read_ID(void )
@@ -49,22 +55,21 @@ void Drv_Spi_Read_ID(void )
     Hal_Spi_Flash_Stop();
 }
 
-void Drv_Spi_Flash_Loop_Read(uint32_t addr, uint8_t *buf, uint32_t length )
+void Drv_Spi_Flash_Erase_64Kb(uint32_t addr )
 {
-    
-}
-
-void Drv_Spi_Flash_Wait_Idle(void )
-{
-    uint8_t status;
+    Drv_Spi_Flash_Write_Enable();
     
     Hal_Spi_Flash_Start();
     
-    Hal_Spi_Flash_Write_Single_Data(READ_STATUS);
+    Hal_Spi_Flash_Write_Single_Data(ERASE_BLOCK_64K);
+    
+    Hal_Spi_Flash_Write_Single_Data((uint8_t )(addr >> 16));
+    Hal_Spi_Flash_Write_Single_Data((uint8_t )(addr >> 8));
+    Hal_Spi_Flash_Write_Single_Data((uint8_t )addr);
+    
+    Hal_Spi_Flash_Stop();
 
-    do{
-        Hal_Spi_Flash_Loop_Read(&status, 1);
-    }while(status & 0x01);
+    Drv_Spi_Flash_Wait_Idle();
 }
 
 void Drv_Spi_Flash_Write_Enable(void )
@@ -88,7 +93,85 @@ void Drv_Spi_Flash_Write_Enable(void )
     Hal_Spi_Flash_Stop();
 }
 
-void Drv_Spi_Write(uint32_t addr, uint8_t *buf, uint32_t length )
+
+void Drv_Spi_Flash_Loop_Read(uint32_t addr, uint8_t *buf, uint32_t length )
+{
+    Hal_Spi_Flash_Start();
+    
+    Hal_Spi_Flash_Write_Single_Data(READ_DATA);
+    
+    Hal_Spi_Flash_Write_Single_Data((uint8_t )(addr >> 16));
+    Hal_Spi_Flash_Write_Single_Data((uint8_t )(addr >> 8));
+    Hal_Spi_Flash_Write_Single_Data((uint8_t )addr);
+
+    Hal_Spi_Flash_Loop_Read(buf, length);
+    
+    Hal_Spi_Flash_Stop();
+}
+
+void Drv_Spi_Flash_DMA_Read(uint32_t addr, uint8_t *buf, uint32_t length )
+{
+    Hal_Spi_Flash_Start();
+
+    Hal_Spi_Flash_Write_Single_Data(READ_DATA);
+    
+    Hal_Spi_Flash_Write_Single_Data((uint8_t )(addr >> 16));
+    Hal_Spi_Flash_Write_Single_Data((uint8_t )(addr >> 8));
+    Hal_Spi_Flash_Write_Single_Data((uint8_t )addr);
+
+    Hal_Spi_Flash_DMA_Read(buf, length, Drv_Spi_Flash_Read_End_Callback);
+
+    while(!spi_read_end_flag);
+    spi_read_end_flag = 0;
+    
+    Hal_Spi_Flash_Stop();
+}
+
+void Drv_Spi_Flash_DMA_Write(uint32_t addr, uint8_t *buf, uint32_t length )
+{
+    Drv_Spi_Flash_Write_Enable();
+
+    Hal_Spi_Flash_Start();
+
+    Hal_Spi_Flash_Write_Single_Data(PAGE_PROGRAM);
+
+    Hal_Spi_Flash_Write_Single_Data((uint8_t )(addr >> 16));
+    Hal_Spi_Flash_Write_Single_Data((uint8_t )(addr >> 8));
+    Hal_Spi_Flash_Write_Single_Data((uint8_t )addr);
+
+    Hal_Spi_Flash_DMA_Write(buf, length, Drv_Spi_Flash_Write_End_Callback);
+
+    while(!spi_write_end_flag);
+
+    spi_write_end_flag = 0;
+    
+    Hal_Spi_Flash_Stop();
+
+    Drv_Spi_Flash_Wait_Idle();
+}
+
+
+void Drv_Spi_Flash_Wait_Idle(void )
+{
+    uint8_t status;
+    
+    Hal_Spi_Flash_Start();
+    
+    Hal_Spi_Flash_Write_Single_Data(READ_STATUS);
+
+    do{
+        Hal_Spi_Flash_Loop_Read(&status, 1);
+    }while(status & 0x01);
+
+    Hal_Spi_Flash_Stop();
+}
+
+void Drv_Spi_Flash_Read(uint32_t addr, uint8_t *buf, uint32_t length )
+{
+    Drv_Spi_Flash_DMA_Read(addr, buf, length );
+}
+
+void Drv_Spi_Flash_Write(uint32_t addr, uint8_t *buf, uint32_t length )
 {
     uint8_t firstPageRemainByte;
     uint8_t lastPageRemainByte;
@@ -115,22 +198,25 @@ void Drv_Spi_Write(uint32_t addr, uint8_t *buf, uint32_t length )
 
     lastPageRemainByte = (length - firstPageRemainByte) % 256;
 
-    if(length > firstPageRemainByte)
+    if(firstPageRemainByte)
     {
-        Drv_Spi_Flash_DMA_Write(addr, buf, firstPageRemainByte);
+        if(length > firstPageRemainByte)
+        {
+            Drv_Spi_Flash_DMA_Write(addr, buf, firstPageRemainByte);
 
-        buf += firstPageRemainByte;
+            buf += firstPageRemainByte;
 
-        addr += firstPageRemainByte;
-        
-    }
-    else
-    {
-        Drv_Spi_Flash_DMA_Write(addr, buf, length);
+            addr += firstPageRemainByte;
+            
+        }
+        else
+        {
+            Drv_Spi_Flash_DMA_Write(addr, buf, length);
 
-        buf += length;
+            buf += length;
 
-        addr += length;
+            addr += length;
+        }
     }
 
     for(i=0;i<pageNum;i++)
@@ -152,29 +238,14 @@ void Drv_Spi_Write(uint32_t addr, uint8_t *buf, uint32_t length )
     }
 }
 
-void Drv_Spi_Flash_DMA_Write(uint32_t addr, uint8_t *buf, uint32_t length )
+static void Drv_Spi_Flash_Read_End_Callback(void )
 {
-    Drv_Spi_Flash_Write_Enable();
-
-    Hal_Spi_Flash_Start();
-
-    Hal_Spi_Flash_Write_Single_Data(PAGE_PROGRAM);
-
-    Hal_Spi_Flash_Write_Single_Data((uint8_t )(addr >> 16));
-    Hal_Spi_Flash_Write_Single_Data((uint8_t )(addr >> 8));
-    Hal_Spi_Flash_Write_Single_Data((uint8_t )addr);
-
-    Hal_Spi_Flash_DMA_Write(buf, length, Drv_Spi_Flash_Write_End_Callback);
-
-    while(!spi_write_end_flag);
-
-    spi_write_end_flag = 0;
-    
-    Hal_Spi_Flash_Stop();
+    spi_read_end_flag = 1;
 }
 
 static void Drv_Spi_Flash_Write_End_Callback(void )
 {
     spi_write_end_flag = 1;
 }
+
 

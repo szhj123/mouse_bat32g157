@@ -16,11 +16,15 @@
 
 void Drv_Spi_Flash_Init(void );
 void Drv_Spi_Read_ID(void );
+void Drv_Spi_Flash_Erase_64Kb(uint32_t addr );
 void Drv_Spi_Flash_Wait_Idle(void );
 void Drv_Spi_Flash_Write_Enable(void );
-void Drv_Spi_Write(uint32_t addr, uint8_t *buf, uint32_t length );
 void Drv_Spi_Flash_DMA_Write(uint32_t addr, uint8_t *buf, uint32_t length );
+void Drv_Spi_Flash_DMA_Read(uint32_t addr, uint8_t *buf, uint32_t length );
 void Drv_Spi_Flash_Loop_Read(uint32_t addr, uint8_t *buf, uint32_t length );
+
+void Drv_Spi_Flash_Read(uint32_t addr, uint8_t *buf, uint32_t length );
+void Drv_Spi_Flash_Write(uint32_t addr, uint8_t *buf, uint32_t length );
 
 #endif 
 

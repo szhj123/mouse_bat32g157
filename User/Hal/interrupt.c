@@ -36,7 +36,9 @@ void tm40_channel0_interrupt(void )
 
 void spi1_interrupt(void )
 {
-    Hal_Spi_Flash_Isr_Handler();
+    Hal_Spi_Flash_Tx_Isr_Handler();
+
+    Hal_Spi_Flash_Rx_Isr_Handler();
     
     INTC_ClearPendingIRQ(SPI1_IRQn);
 }

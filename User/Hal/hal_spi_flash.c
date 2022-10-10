@@ -22,6 +22,12 @@ static uint32_t spi1TxDataLength;
 static uint8_t  spi1TxFlag;
 static hal_isr_callback_t spi1_tx_end_callback = NULL;
 
+static uint8_t *spi1RxDataPtr = NULL;
+static uint32_t spi1RxDataLength;
+static uint8_t  spi1RxFlag;
+static hal_isr_callback_t spi1_Rx_end_callback = NULL;
+
+
 void Hal_Spi_Flash_Init(void )
 {
     spi_mode_t mode = SPI_MODE_0;
@@ -59,6 +65,38 @@ void Hal_Spi_Flash_Loop_Read(uint8_t *buf, uint32_t length )
 
         buf[i] = SPIHS1->SDRI1;
     }
+}
+
+void Hal_Spi_Flash_DMA_Read(uint8_t *buf, uint32_t length, hal_isr_callback_t callback )
+{
+    uint32_t dummy_sdr;
+    
+    SPIHS1->SPIM1 &= ~(_0040_SPI_RECEPTION_TRANSMISSION | _0008_SPI_BUFFER_EMPTY); /* reception mode */
+    /* read receive data with DMA */
+    DMAVEC->VEC[DMA_VECTOR_SPIHS1] = CTRL_DATA_SPIHS1;
+    DMAVEC->CTRL[CTRL_DATA_SPIHS1].DMACR = (0 << CTRL_DMACR_SZ_Pos) | (0 << CTRL_DMACR_CHNE_Pos) |
+                                           (1 << CTRL_DMACR_DAMOD_Pos) | (0 << CTRL_DMACR_SAMOD_Pos) |
+                                           (0 << CTRL_DMACR_MODE_Pos);
+    DMAVEC->CTRL[CTRL_DATA_SPIHS1].DMBLS = 1;
+    DMAVEC->CTRL[CTRL_DATA_SPIHS1].DMACT = length;
+    DMAVEC->CTRL[CTRL_DATA_SPIHS1].DMRLD = length;
+    DMAVEC->CTRL[CTRL_DATA_SPIHS1].DMSAR = (uint32_t)&SPIHS1->SDRI1;
+    DMAVEC->CTRL[CTRL_DATA_SPIHS1].DMDAR = (uint32_t)buf;
+
+    /* init DMA registers */
+    CGC->PER1 |= CGC_PER1_DMAEN_Msk;
+    DMA->DMABAR = DMAVEC_BASE;
+    DMA->DMAEN2 |= (1 << DMA_VECTOR_SPIHS1 % 8);
+
+    spi1RxDataLength = 0;                    
+    spi1RxDataPtr = buf + length ;   
+    spi1RxFlag = 1;
+    
+    spi1_Rx_end_callback = callback;
+    
+    Hal_Spi_Flash_Start();
+    
+    dummy_sdr = SPIHS1->SDRI1;
 }
 
 void Hal_Spi_Flash_DMA_Write(uint8_t *buf, uint32_t length, hal_isr_callback_t callback )
@@ -121,7 +159,7 @@ void Hal_Spi_Flash_Stop(void)
     NVIC_ClearPendingIRQ(SPI1_IRQn);
 }
 
-void Hal_Spi_Flash_Isr_Handler(void )
+void Hal_Spi_Flash_Tx_Isr_Handler(void )
 {
     if(spi1TxFlag)
     {
@@ -143,6 +181,27 @@ void Hal_Spi_Flash_Isr_Handler(void )
         }
     }
 }
+
+void Hal_Spi_Flash_Rx_Isr_Handler(void )
+{
+    if(spi1RxFlag)
+    {
+        if(spi1RxDataPtr != NULL)
+        {
+            if(spi1_Rx_end_callback != NULL)
+            {
+                spi1RxFlag = 0;
+                
+                spi1RxDataPtr = NULL;
+
+                spi1_Rx_end_callback();
+                
+                spi1_Rx_end_callback = NULL;
+            }
+        }
+    }
+}
+
 
 
 
