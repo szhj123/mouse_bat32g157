@@ -13,6 +13,7 @@
 #include "hal_bat32g157.h"
 #include "drv_task.h"
 #include "drv_timer.h"
+#include "drv_lcd.h"
 
 #include "drv_spi_flash.h"
 
@@ -33,6 +34,8 @@ int main (void)
     Drv_Timer_Init();
 
     Drv_Spi_Flash_Init();
+
+    Drv_Lcd_Init();
 
     App_Event_Init();
 	

@@ -1,0 +1,67 @@
+ WriteComm(0x11);//Exit Sleep
+  Delay(80);
+WriteComm(0x36);
+WriteData(0x00);
+WriteComm(0x3a);
+WriteData(0x55);
+//--------------------------------ST7789S Frame rate setting----------------------------------//
+
+WriteComm(0xb2);
+WriteData(0x0c);
+WriteData(0x0c);
+WriteData(0x00);
+WriteData(0x33);
+WriteData(0x33);
+WriteComm(0xb7);
+WriteData(0x74);//0x35
+//---------------------------------ST7789S Power setting--------------------------------------//
+WriteComm(0xbb);
+WriteData(0x28);
+WriteComm(0xc0);
+WriteData(0x2c);
+WriteComm(0xc2);
+WriteData(0x01);
+WriteComm(0xc3);
+WriteData(0x0b);
+WriteComm(0xc4);
+WriteData(0x20);
+WriteComm(0xc6);
+WriteData(0x0f);
+WriteComm(0xd0);
+WriteData(0xa4);
+WriteData(0x00);//0XA1
+
+		WriteComm(0xe0); 
+		WriteData(0xd0); 
+		WriteData(0x00); 
+		WriteData(0x02); 
+		WriteData(0x07); 
+		WriteData(0x0B); 
+		WriteData(0x1A); 
+		WriteData(0x31); 
+		WriteData(0x54); 
+		WriteData(0x40); 
+		WriteData(0x29); 
+		WriteData(0x12); 
+		WriteData(0x12); 
+		WriteData(0x12); 
+		WriteData(0x17); 
+
+		WriteComm(0xe1); 
+		WriteData(0xd0); 
+		WriteData(0x00); 
+		WriteData(0x02); 
+		WriteData(0x07); 
+		WriteData(0x05); 
+		WriteData(0x25); 
+		WriteData(0x2d); 
+		WriteData(0x44); 
+		WriteData(0x45); 
+		WriteData(0x1C); 
+		WriteData(0x18); 
+		WriteData(0x16); 
+		WriteData(0x1C); 
+		WriteData(0x1D);
+WriteComm(0x21);
+
+  WriteComm(0x29);//Display On
