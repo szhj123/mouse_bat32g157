@@ -19,6 +19,7 @@
 /* Private function -------------------------------------*/
 void IRQ12_Handler(void) __attribute__((alias("spi1_interrupt")));
 void IRQ18_Handler(void) __attribute__((alias("tm40_channel0_interrupt")));
+void IRQ15_Handler(void) __attribute__((alias("lcdb_interrupt")));
 /* Private variables ------------------------------------*/
 
 
@@ -43,5 +44,11 @@ void spi1_interrupt(void )
     INTC_ClearPendingIRQ(SPI1_IRQn);
 }
 
+void lcdb_interrupt(void )
+{
+    INTC_ClearPendingIRQ(LCDB_IRQn);     /* clear LCDB interrupt flag */
+
+    Hal_Lcd_Clr_Isr_Handler();
+}
 
 

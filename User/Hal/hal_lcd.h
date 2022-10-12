@@ -3,6 +3,14 @@
 
 #include "hal_bat32g157.h"
 
+#define LCD_W                   240u
+#define LCD_H                   240u
+
+#define PIC_MAX_SIZE            (115200u)
+
+
+typedef void (*lcd_isr_callback_t)(void );
+
 #define LCD_CS_HIGH()           PORT->PSETA = (1<<10)
 #define LCD_CS_LOW()            PORT->PCLRA =  (1<<10)
 #define LCD_RST_HIGH()          PORT->PSETA = (1<<2)
@@ -150,6 +158,9 @@ void Hal_Lcd_Init(void );
 void LCDB_Init(LCDB_Typedef* pLcdb);
 void LCDB_Start(void);
 void LCDB_Stop(void);
+
+void Hal_Lcd_Set_BgColor(uint16_t color, lcd_isr_callback_t callback );
+void Hal_Lcd_Clr_Isr_Handler(void );
 
 #endif 
 

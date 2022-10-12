@@ -29,8 +29,82 @@ void Drv_Lcd_Init(void )
 	LCD_RST_HIGH();
 	Drv_Lcd_Delay_US(120000*35);
 
-    Drv_Lcd_Read_Id();
+    Drv_Lcd_Wr_Cmd(0x36); 
+    Drv_Lcd_Wr_Data(0x00);
 
+    Drv_Lcd_Wr_Cmd(0x3A); 
+    Drv_Lcd_Wr_Data(0x05);
+
+    Drv_Lcd_Wr_Cmd(0xB2);
+    Drv_Lcd_Wr_Data(0x0C);
+    Drv_Lcd_Wr_Data(0x0C);
+    Drv_Lcd_Wr_Data(0x00);
+    Drv_Lcd_Wr_Data(0x33);
+    Drv_Lcd_Wr_Data(0x33);
+
+    Drv_Lcd_Wr_Cmd(0xB7); 
+    Drv_Lcd_Wr_Data(0x35);  
+
+    Drv_Lcd_Wr_Cmd(0xBB);
+    Drv_Lcd_Wr_Data(0x19);
+
+    Drv_Lcd_Wr_Cmd(0xC0);
+    Drv_Lcd_Wr_Data(0x2C);
+
+    Drv_Lcd_Wr_Cmd(0xC2);
+    Drv_Lcd_Wr_Data(0x01);
+
+    Drv_Lcd_Wr_Cmd(0xC3);
+    Drv_Lcd_Wr_Data(0x12);   
+
+    Drv_Lcd_Wr_Cmd(0xC4);
+    Drv_Lcd_Wr_Data(0x20);  
+
+    Drv_Lcd_Wr_Cmd(0xC6); 
+    Drv_Lcd_Wr_Data(0x0F);    
+
+    Drv_Lcd_Wr_Cmd(0xD0); 
+    Drv_Lcd_Wr_Data(0xA4);
+    Drv_Lcd_Wr_Data(0xA1);
+
+    Drv_Lcd_Wr_Cmd(0xE0);
+    Drv_Lcd_Wr_Data(0xD0);
+    Drv_Lcd_Wr_Data(0x04);
+    Drv_Lcd_Wr_Data(0x0D);
+    Drv_Lcd_Wr_Data(0x11);
+    Drv_Lcd_Wr_Data(0x13);
+    Drv_Lcd_Wr_Data(0x2B);
+    Drv_Lcd_Wr_Data(0x3F);
+    Drv_Lcd_Wr_Data(0x54);
+    Drv_Lcd_Wr_Data(0x4C);
+    Drv_Lcd_Wr_Data(0x18);
+    Drv_Lcd_Wr_Data(0x0D);
+    Drv_Lcd_Wr_Data(0x0B);
+    Drv_Lcd_Wr_Data(0x1F);
+    Drv_Lcd_Wr_Data(0x23);
+
+    Drv_Lcd_Wr_Cmd(0xE1);
+    Drv_Lcd_Wr_Data(0xD0);
+    Drv_Lcd_Wr_Data(0x04);
+    Drv_Lcd_Wr_Data(0x0C);
+    Drv_Lcd_Wr_Data(0x11);
+    Drv_Lcd_Wr_Data(0x13);
+    Drv_Lcd_Wr_Data(0x2C);
+    Drv_Lcd_Wr_Data(0x3F);
+    Drv_Lcd_Wr_Data(0x44);
+    Drv_Lcd_Wr_Data(0x51);
+    Drv_Lcd_Wr_Data(0x2F);
+    Drv_Lcd_Wr_Data(0x1F);
+    Drv_Lcd_Wr_Data(0x1F);
+    Drv_Lcd_Wr_Data(0x20);
+    Drv_Lcd_Wr_Data(0x23);
+
+    Drv_Lcd_Wr_Cmd(0x21); 
+
+    Drv_Lcd_Wr_Cmd(0x11); 
+    Drv_Lcd_Delay_US(120000*35);
+
+    Drv_Lcd_Wr_Cmd(0x29);     
 }
 
 void Drv_Lcd_Read_Id(void )
@@ -41,6 +115,30 @@ void Drv_Lcd_Read_Id(void )
 
     Drv_Lcd_Rd_Data(buf, 4);
 }
+
+void Drv_Lcd_Clr(uint16_t color, lcd_isr_callback_t callback )
+{
+    Drv_Lcd_Set_Position(0, 0, LCD_W-1,LCD_H-1);
+
+    Hal_Lcd_Set_BgColor(color, callback);
+}
+
+
+void Drv_Lcd_Set_Position(uint16_t startX, uint16_t startY, uint16_t endX, uint16_t endY )
+{
+	Drv_Lcd_Wr_Cmd(0x2A);
+	Drv_Lcd_Wr_Data(startX>>8);
+	Drv_Lcd_Wr_Data(startX&0xff);
+	Drv_Lcd_Wr_Data(endX>>8);
+	Drv_Lcd_Wr_Data(endX&0xff);
+    
+	Drv_Lcd_Wr_Cmd(0x2B);
+	Drv_Lcd_Wr_Data(startY>>8);
+	Drv_Lcd_Wr_Data(startY&0xff);
+	Drv_Lcd_Wr_Data(endY>>8);
+	Drv_Lcd_Wr_Data(endY&0xff);
+}
+
 
 void Drv_Lcd_Wr_Cmd(uint8_t reg )
 {
