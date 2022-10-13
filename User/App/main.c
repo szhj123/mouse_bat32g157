@@ -16,6 +16,7 @@
 
 #include "drv_spi_flash.h"
 
+#include "app_key.h"
 #include "app_lcd.h"
 #include "app_event.h"
 /* Private typedef --------------------------------------*/
@@ -33,9 +34,11 @@ int main (void)
 
     Drv_Timer_Init();
 
-    Drv_Spi_Flash_Init();
+    //Drv_Spi_Flash_Init();
 
-    App_Lcd_Init();
+    ///App_Lcd_Init();
+
+    App_Key_Init();
 
     App_Event_Init();
 	

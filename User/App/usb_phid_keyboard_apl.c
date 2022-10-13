@@ -12,6 +12,7 @@
 #include "usb_phid_apl.h"
 #include "usb_phid_apl_config.h"
 #include "BAT32G157.h"
+#include "drv_timer.h"
 
 #if OPERATION_MODE == USB_KEYBOARD
 
@@ -72,7 +73,7 @@ void Usb_Init (void)
     cfg.p_usb_reg     = (usb_descriptor_t *)&gs_usb_descriptor;
     USB_Open (&ctrl, &cfg);       /* Initializes the USB module */
 
-    //Drv_Timer_Register_Period(Usb_Event_Handler, 0, 1, NULL);
+    Drv_Timer_Regist_Period(0, 1, Usb_Event_Handler, NULL);
 }
 
 static void Usb_Event_Handler(void *arg )
