@@ -19,6 +19,7 @@
 
 void Hal_Key_Init(void )
 {
+    PORT_Init(PORTC, PIN6, PULLUP_INPUT);
     //pd14, input, key1
     PORT_Init(PORTD, PIN14, INPUT);
     //pd15, input, key2
@@ -39,9 +40,16 @@ void Hal_Key_Init(void )
     PORT_Init(PORTD, PIN8, INPUT);
 }
 
-void Hal_Key_Get_Value(PORT_TypeDef port, PIN_TypeDef pin )
+uint8_t Hal_Key_Get_Value(PORT_TypeDef port, PIN_TypeDef pin )
 {
-    return PORT_GetBit(port, pin);
+    if(PORT_GetBit(port, pin))
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 
