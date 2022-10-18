@@ -13,6 +13,7 @@
 #include "hal_task.h"
 #include "hal_timer.h"
 #include "hal_spi_flash.h"
+#include "hal_lcd.h"
 /* Private typedef --------------------------------------*/
 /* Private define ---------------------------------------*/
 /* Private macro ----------------------------------------*/

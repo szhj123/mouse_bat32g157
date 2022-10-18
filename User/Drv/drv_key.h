@@ -3,10 +3,12 @@
 
 #include "hal_key.h"
 
-#define KEY_DOWN                 0x1000
-#define KEY_LONG                 0x2000
-#define KEY_CONT                 0x4000
-#define KEY_UP                   0x8000
+#define KEY_DOWN                 0x0100
+#define KEY_DOUBLE               0x0200
+#define KEY_LONG                 0x0400
+#define KEY_CONT                 0x0800
+#define KEY_UP                   0x1000
+
 
 #define KEY_MOUSE_LEFT           0x0001
 #define KEY_MOUSE_RIGHT          0x0002
@@ -21,6 +23,12 @@
 #define KEY_NULL                 0x0000
 
 #define KEY_QUEUE_MAX_NUM        16
+
+#define KEY_SHORT_PRESS_TIME     25//ms
+#define KEY_DOUBLE_PRESS_TIME    200//ms
+#define KEY_LONG_PRESS_TIME      2000//ms
+#define KEY_CONT_PRESS_TIME      50//ms
+
 
 typedef enum _key_media_state_t
 {
@@ -39,14 +47,17 @@ typedef struct _key_media_ctrl_block_t
     PIN_TypeDef  pin2;
 
     key_media_state_t state;
-    
-    uint8_t      pressShortNum;
 
-    uint16_t     pressDelayCnt;
-    uint16_t     pressShortTime;
-    uint16_t     pressLongTime;
+    uint8_t      isCompositeKey;
+    uint8_t      isDoubleKey;
+    uint8_t      shortPressNum;
+    uint8_t      shortPressCnt;
+
+    uint16_t     delayCnt;
+    uint16_t     shortPressTime;
+    uint16_t     longPressTime;
     
-    uint16_t      name;
+    uint16_t     name;
     
 }key_media_ctrl_block_t;
 
@@ -66,6 +77,7 @@ typedef struct _key_mouse_ctrl_block_t
 
     uint16_t  name;
     uint16_t  delayCnt;
+    uint16_t  shortPressTime;
     
 }key_mouse_ctrl_block_t;
 
@@ -79,6 +91,7 @@ typedef struct _key_queue_t
 
 void Drv_Key_Init(void );
 void Drv_Key_Mouse_Detect(key_mouse_ctrl_block_t *key );
+void Drv_Key_Media_Detect(key_media_ctrl_block_t *key );
 
 void Drv_Key_Queue_Put(uint16_t keyVal );
 uint16_t Drv_Key_Queue_Get(void );
