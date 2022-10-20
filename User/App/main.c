@@ -15,6 +15,7 @@
 #include "drv_timer.h"
 
 #include "drv_spi_flash.h"
+#include "drv_mouse_sensor.h"
 
 #include "app_key.h"
 #include "app_lcd.h"
@@ -33,6 +34,8 @@ int main (void)
     Drv_Task_Init();
 
     Drv_Timer_Init();
+
+    Drv_Mouse_Sensor_Init();
 
     //Drv_Spi_Flash_Init();
 

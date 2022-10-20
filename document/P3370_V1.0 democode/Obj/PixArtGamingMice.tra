@@ -1,0 +1,38 @@
+*** Creating Trace Output File '.\Obj\PixArtGamingMice.tra' Ok.
+### Preparing for ADS-LD.
+### Creating ADS-LD Command Line
+### List of Objects: adding '".\obj\core_cm0.o"'
+### List of Objects: adding '".\obj\gpio.o"'
+### List of Objects: adding '".\obj\hiduser.o"'
+### List of Objects: adding '".\obj\system_lpc11uxx.o"'
+### List of Objects: adding '".\obj\timer16.o"'
+### List of Objects: adding '".\obj\timer32.o"'
+### List of Objects: adding '".\obj\uart.o"'
+### List of Objects: adding '".\obj\usbcore.o"'
+### List of Objects: adding '".\obj\usbdesc.o"'
+### List of Objects: adding '".\obj\usbhw.o"'
+### List of Objects: adding '".\obj\usbuser.o"'
+### List of Objects: adding '".\obj\startup_lpc11uxx.o"'
+### List of Objects: adding '".\obj\main.o"'
+### List of Objects: adding '".\obj\ssp.o"'
+### List of Objects: adding '".\obj\systick.o"'
+### List of Objects: adding '".\obj\keytbl.o"'
+### List of Objects: adding '".\obj\i2c.o"'
+### List of Objects: adding '".\obj\pixart_sensor.o"'
+### List of Objects: adding '".\obj\srom.o"'
+### List of Objects: adding '".\obj\flash.o"'
+### ADS-LD Command completed:
+--cpu Cortex-M0 ".\obj\core_cm0.o" ".\obj\gpio.o" ".\obj\hiduser.o" ".\obj\system_lpc11uxx.o" ".\obj\timer16.o" ".\obj\timer32.o" ".\obj\uart.o" ".\obj\usbcore.o" ".\obj\usbdesc.o" ".\obj\usbhw.o" ".\obj\usbuser.o" ".\obj\startup_lpc11uxx.o" ".\obj\main.o" ".\obj\ssp.o" ".\obj\systick.o" ".\obj\keytbl.o" ".\obj\i2c.o" ".\obj\pixart_sensor.o" ".\obj\srom.o" ".\obj\flash.o" --library_type=microlib --strict --scatter ".\Obj\PixArtGamingMice.sct" 
+--autoat --summary_stderr --info summarysizes --map --xref --callgraph --symbols 
+--info sizes --info totals --info unused --info veneers 
+ --list ".\Lst\PixArtGamingMice.map" -o ".\Obj\PixArtGamingMice.axf"### Preparing Environment (PrepEnvAds)
+### ADS-LD Output File: '.\Obj\PixArtGamingMice.axf'
+### ADS-LD Command File: '.\Obj\PixArtGamingMice.lnp'
+### Checking for dirty Components...
+### Creating CmdFile '.\Obj\PixArtGamingMice.lnp', Handle=0x00000284
+### Writing '.lnp' file
+### ADS-LD Command file '.\Obj\PixArtGamingMice.lnp' is ready.
+### ADS-LD: About to start ADS-LD Thread.
+### ADS-LD: executed with 0 errors
+### Updating obj list
+### LDADS_file() completed.

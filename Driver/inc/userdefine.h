@@ -905,21 +905,20 @@ typedef enum
   */
 
 /* ToDo: You can allocate the SS11 to any desired pins */
-#define SS11_PORT_SETTING() //do{ \
-        PORT->P62CFG = 0x00;         /* P62 default GPIO function */ \
-        PORT->PSET6 =  (1 << 2);     /* P62 output high level */ \
-        PORT->PM6  &= ~(1 << 2);     /* P62 is used as SS11 output */ \
-        PORT->PMC6 &= ~(1 << 2);     /* P62 digital function */ \
+#define SS11_PORT_SETTING() do{ \
+        PORT->PSETA =  (1 << 11);    /* PA11 output high level */ \
+        PORT->PMA  &= ~(1 << 11);    /* PA11 is used as NSS output */ \
+        PORT->PMCA &= ~(1 << 11);    /* PA11 digital function */ \
 }while(0)
 
 /* ToDo: You can allocate the SS11 to any desired pins */
-#define SS11_PORT_SET() //do{ \
-        PORT->PSET6 =  (1 << 2);     /* P62 output high level */ \
+#define SS11_PORT_SET() do{ \
+        PORT->PSETA =  (1 << 11);     /* PA11 output high level */ \
 }while(0)
 
 /* ToDo: You can allocate the SS11 to any desired pins */
-#define SS11_PORT_CLR() //do{ \
-        PORT->PCLR6 = (1 << 2);      /* P62 output low level */ \
+#define SS11_PORT_CLR() do{ \
+        PORT->PCLRA =  (1 << 11);     /* PA11 output low level */ \
 }while(0)
 
 #define SCLKI11_PORT_SETTING() do{ \

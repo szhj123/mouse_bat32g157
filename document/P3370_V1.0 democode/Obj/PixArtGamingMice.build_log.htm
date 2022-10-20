@@ -1,0 +1,73 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.36.0.0
+Copyright (C) 2021 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: h j, 12313, LIC=EXJT4-FIX3G-ARZXW-QZAUS-XCRLU-LJJ4G
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.36.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 7 (build 960)
+Assembler:       Armasm.exe V5.06 update 7 (build 960)
+Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
+Library Manager: ArmAr.exe V5.06 update 7 (build 960)
+Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
+CPU DLL:         SARMCM3.DLL V5.36.0.0
+Dialog DLL:      DARMCM1.DLL V1.19.4.0
+Target DLL:      UL2CM3.DLL V1.164.0.0
+Dialog DLL:      TARMCM1.DLL V1.14.4.0
+ 
+<h2>Project:</h2>
+F:\project\mouse\usb_mouse_bat32g157\document\P3370_V1.0 democode\LPC11U14GM.uvproj
+Project File Date:  10/19/2022
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'Target '
+compiling core_cm0.c...
+assembling startup_LPC11Uxx.s...
+compiling hiduser.c...
+compiling gpio.c...
+compiling usbuser.c...
+compiling Keytbl.c...
+compiling usbhw.c...
+compiling uart.c...
+compiling Systick.c...
+compiling system_LPC11Uxx.c...
+compiling usbdesc.c...
+compiling timer16.c...
+compiling ssp.c...
+compiling main.c...
+compiling timer32.c...
+compiling srom.c...
+compiling I2c.c...
+compiling usbcore.c...
+compiling Flash.c...
+compiling Pixart_Sensor.c...
+Src\Pixart_Sensor.c(166): warning:  #177-D: variable "Test_A"  was declared but never referenced
+  	U16 Test_A = 0;
+Src\Pixart_Sensor.c(169): warning:  #177-D: variable "clockcounter"  was declared but never referenced
+  	U8 clockcounter = 0;
+Src\Pixart_Sensor.c(509): warning:  #177-D: variable "cpi_hi_data"  was declared but never referenced
+  	U8 cpi_hi_data[8] = {CPI_HI_0, CPI_HI_1, CPI_HI_2, CPI_HI_3,
+Src\Pixart_Sensor.c(647): warning:  #177-D: variable "temp_z_up_trend"  was declared but never referenced
+  	static U8 temp_z_up_trend = 0;
+Src\Pixart_Sensor.c(648): warning:  #177-D: variable "temp_z_down_trend"  was declared but never referenced
+  	static S8 temp_z_down_trend = 0;
+Src\Pixart_Sensor.c: 5 warnings, 0 errors
+linking...
+Program Size: Code=16752 RO-data=1168 RW-data=4188 ZI-data=1348  
+FromELF: creating hex file...
+After Build - User command #1: run.bat
+F:\project\mouse\usb_mouse_bat32g157\document\P3370_V1.0 democode>copy Obj\PixArtGamingMice.axf Hex 
+已复制         1 个文件。
+F:\project\mouse\usb_mouse_bat32g157\document\P3370_V1.0 democode>copy Obj\PixArtGamingMice.hex Hex 
+已复制         1 个文件。
+".\Obj\PixArtGamingMice.axf" - 0 Error(s), 5 Warning(s).
+Build Time Elapsed:  00:00:03
+</pre>
+</body>
+</html>

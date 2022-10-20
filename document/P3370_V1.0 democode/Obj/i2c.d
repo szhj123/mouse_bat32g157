@@ -1,0 +1,14 @@
+.\obj\i2c.o: Src\I2c.c
+.\obj\i2c.o: .\Inc\LPC11Uxx.h
+.\obj\i2c.o: .\Inc\core_cm0.h
+.\obj\i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\obj\i2c.o: .\Inc\core_cmInstr.h
+.\obj\i2c.o: .\Inc\core_cmFunc.h
+.\obj\i2c.o: .\Inc\system_LPC11Uxx.h
+.\obj\i2c.o: .\Inc\Type.h
+.\obj\i2c.o: .\Inc\I2c.h
+.\obj\i2c.o: .\Inc\Main.h
+.\obj\i2c.o: .\Inc\usbcfg.h
+.\obj\i2c.o: .\Inc\Uart.h
+.\obj\i2c.o: .\Inc\SSP.h
+.\obj\i2c.o: .\Inc\Gpio.h

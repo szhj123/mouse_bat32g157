@@ -20,8 +20,8 @@ static void App_Key_Handler(void *arg );
 /* Private variables ------------------------------------*/
 key_mouse_ctrl_block_t keyMouseLeft = 
 {
-    .port = PORTC,//PORTD,
-    .pin  = PIN6,//PIN14,
+    .port = PORTD,
+    .pin  = PIN14,
     .name = KEY_MOUSE_LEFT,
     .state = KEY_MOUSE_INIT,
     .shortPressTime = KEY_SHORT_PRESS_TIME,
@@ -50,8 +50,8 @@ key_mouse_ctrl_block_t keyMouseMiddle =
 
 key_media_ctrl_block_t keyMediaForward = 
 {
-    .port1 = PORTC,//PORTD,
-    .pin1 = PIN6,//PIN3,
+    .port1 = PORTD,
+    .pin1 = PIN3,
     .port2 = (PORT_TypeDef )((uint8_t )PORTH +1),
     .pin2 = (PIN_TypeDef )((uint8_t )PIN15 + 1),
     .name = KEY_MEDIA_FORWARD,
@@ -82,7 +82,7 @@ key_media_ctrl_block_t keyMediaDpiInc =
     .pin1 = PIN5,
     .port2 = (PORT_TypeDef )((uint8_t )PORTH +1),
     .pin2 = (PIN_TypeDef )((uint8_t )PIN15 + 1),
-    .name = KEY_MEDIA_DIP_INC,
+    .name = KEY_MEDIA_DPI_INC,
     .state = KEY_MEDIA_INIT,
     .isDoubleKey = 0,
     .isCompositeKey = 0,
@@ -96,7 +96,7 @@ key_media_ctrl_block_t keyMediaDpiDec =
     .pin1 = PIN6,
     .port2 = (PORT_TypeDef )((uint8_t )PORTH +1),
     .pin2 = (PIN_TypeDef )((uint8_t )PIN15 + 1),
-    .name = KEY_MEDIA_DIP_DEC,
+    .name = KEY_MEDIA_DPI_DEC,
     .state = KEY_MEDIA_INIT,
     .isDoubleKey = 0,
     .isCompositeKey = 0,
@@ -181,6 +181,36 @@ static void App_Key_Handler(void *arg )
         case KEY_MOUSE_MIDDLE | KEY_UP:
         {
             keyEvent = KEY_EVENT_MOUSE_MIDDLW_UP;
+            break;
+        }
+        case KEY_MEDIA_FORWARD | KEY_DOWN | KEY_UP:
+        {
+            keyEvent = KEY_EVENT_MEDIA_FORWARD_DOWN;
+            break;
+        }
+        case KEY_MEDIA_BACKWARD | KEY_DOWN | KEY_UP:
+        {
+            keyEvent = KEY_EVENT_MEDIA_BACKWARD_DOWN;
+            break;
+        }
+        case KEY_MEDIA_DPI_INC | KEY_DOWN | KEY_UP:
+        {
+            keyEvent = KEY_EVENT_MEDIA_DPI_INC_DOWN;
+            break;
+        }
+        case KEY_MEDIA_DPI_DEC | KEY_DOWN | KEY_UP:
+        {
+            keyEvent = KEY_EVENT_MEDIA_DPI_DEC_DOWN;
+            break;
+        }
+        case KEY_MEDIA_FIRE | KEY_DOWN | KEY_UP:
+        {
+            keyEvent = KEY_EVENT_MEDIA_FIRE_DWON;
+            break;
+        }
+        case KEY_MEDIA_REPORT_RATE | KEY_DOWN | KEY_UP:
+        {
+            keyEvent = KEY_EVENT_MEDIA_REPORT_RATE_DOWN;
             break;
         }
         default: break;

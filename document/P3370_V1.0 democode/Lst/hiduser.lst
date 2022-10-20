@@ -1,0 +1,1332 @@
+L 1 "Src\hiduser.c"
+N/*----------------------------------------------------------------------------
+N *      U S B  -  K e r n e l
+N *----------------------------------------------------------------------------
+N *      Name:    HIDUSER.C
+N *      Purpose: HID Custom User Module
+N *      Version: V1.20
+N *----------------------------------------------------------------------------
+N *      This software is supplied "AS IS" without any warranties, express,
+N *      implied or statutory, including but not limited to the implied
+N *      warranties of fitness for purpose, satisfactory quality and
+N *      noninfringement. Keil extends you a royalty-free right to reproduce
+N *      and distribute executable files created using this software for use
+N *      on NXP Semiconductors LPC microcontroller devices only. Nothing else 
+N *      gives you the right to use this software.
+N *
+N * Copyright (c) 2009 Keil - An ARM Company. All rights reserved.
+N *---------------------------------------------------------------------------*/
+N#define __HIDUSER_C__
+N 
+N#include "type.h"
+L 1 ".\Inc\type.h" 1
+N/****************************************************************************
+N *   $Id:: type.h 6172 2011-01-13 18:22:51Z usb00423                        $
+N *   Project: NXP LPC11xx software example
+N *
+N *   Description:
+N *     This file contains different type definition.
+N *
+N ****************************************************************************
+N * Software that is described herein is for illustrative purposes only
+N * which provides customers with programming information regarding the
+N * products. This software is supplied "AS IS" without any warranties.
+N * NXP Semiconductors assumes no responsibility or liability for the
+N * use of the software, conveys no license or title under any patent,
+N * copyright, or mask work right to the product. NXP Semiconductors
+N * reserves the right to make changes in the software without
+N * notification. NXP Semiconductors also make no representation or
+N * warranty that such application will be suitable for the specified
+N * use without further testing or modification.
+N****************************************************************************/
+N#ifndef __TYPE_H__
+N#define __TYPE_H__
+N
+N/* exact-width signed integer types */
+Ntypedef signed char int8_t;
+Ntypedef int8_t S8;
+Ntypedef S8 RetS8;
+Ntypedef signed short int int16_t;
+Ntypedef int16_t S16;
+Ntypedef S16 RetS16;
+Ntypedef signed int int32_t;
+Ntypedef int32_t S32;
+Ntypedef S32 RetS32;
+Ntypedef signed __int64 int64_t;
+Ntypedef int64_t S64;
+Ntypedef S64 RetS64;
+N/*exact-width unsigned integer types */
+Ntypedef unsigned char uint8_t;
+Ntypedef uint8_t U8;
+Ntypedef U8 RetU8;
+Ntypedef unsigned short int uint16_t;
+Ntypedef uint16_t U16;
+Ntypedef U16 RetU16;
+Ntypedef unsigned int uint32_t;
+Ntypedef uint32_t U32;
+Ntypedef U32 RetU32;
+Ntypedef unsigned __int64 uint64_t;
+Ntypedef uint64_t U64;
+Ntypedef U64 RetU64;
+N
+Ntypedef U8 Boolean;
+N
+N// Dennis 16/5/2014
+Ntypedef union
+N{
+N	U16 w;
+N	U8 b[2];
+N}u16;
+N
+Ntypedef union
+N{
+N	S16 w;
+N	S8 b[2];
+N}s16;
+N
+N#define BIT0 (1 << 0)
+N#define BIT1 (1 << 1)
+N#define BIT2 (1 << 2)
+N#define BIT3 (1 << 3)
+N#define BIT4 (1 << 4)
+N#define BIT5 (1 << 5)
+N#define BIT6 (1 << 6)
+N#define BIT7 (1 << 7)
+N#define BIT8 (1 << 8)
+N#define BIT9 (1 << 9)
+N#define BIT10 (1 << 10)
+N#define BIT11 (1 << 11)
+N#define BIT12 (1 << 12)
+N#define BIT13 (1 << 13)
+N#define BIT14 (1 << 14)
+N#define BIT15 (1 << 15)
+N#define BIT16 (1 << 16)
+N#define BIT17 (1 << 17)
+N#define BIT18 (1 << 18)
+N#define BIT19 (1 << 19)
+N#define BIT20 (1 << 20)
+N#define BIT21 (1 << 21)
+N#define BIT22 (1 << 22)
+N#define BIT23 (1 << 23)
+N#define BIT24 (1 << 24)
+N#define BIT25 (1 << 25)
+N#define BIT26 (1 << 26)
+N#define BIT27 (1 << 27)
+N#define BIT28 (1 << 28)
+N#define BIT29 (1 << 29)
+N#define BIT30 (1 << 30)
+N#define BIT31 (1UL << 31)
+N
+N#ifndef NULL
+N#define NULL ((void *)0)
+N#endif
+N
+N#ifndef FALSE
+N#define FALSE (0)
+N#endif
+N
+N#ifndef TRUE
+N#define TRUE (1)
+N#endif
+N
+N#ifndef LOW
+N#define LOW (0)
+N#endif
+N
+N#ifndef HIGH
+N#define HIGH (1)
+N#endif
+N
+N#ifndef EMPTY
+N#define EMPTY (0xFF)
+N#endif
+N
+N#endif  /* __TYPE_H__ */
+L 21 "Src\hiduser.c" 2
+N
+N#include "usb.h"
+L 1 ".\Inc\usb.h" 1
+N/*----------------------------------------------------------------------------
+N *      U S B  -  K e r n e l
+N *----------------------------------------------------------------------------
+N * Name:    usb.h
+N * Purpose: USB Definitions
+N * Version: V1.20
+N *----------------------------------------------------------------------------
+N *      This software is supplied "AS IS" without any warranties, express,
+N *      implied or statutory, including but not limited to the implied
+N *      warranties of fitness for purpose, satisfactory quality and
+N *      noninfringement. Keil extends you a royalty-free right to reproduce
+N *      and distribute executable files created using this software for use
+N *      on NXP Semiconductors LPC family microcontroller devices only. Nothing 
+N *      else gives you the right to use this software.
+N *
+N * Copyright (c) 2009 Keil - An ARM Company. All rights reserved.
+N *---------------------------------------------------------------------------*/
+N
+N#ifndef __USB_H__
+N#define __USB_H__
+N
+N#include "Type.h"
+N
+N#define ALIGNED(n) __align(n)
+N
+Ntypedef __packed union
+N{
+N	U16 W;
+N	__packed struct
+N	{
+N		U8 L;
+N		U8 H;
+N	} WB;
+N} WORD_BYTE;
+N
+N/* bmRequestType.Dir */
+N#define REQUEST_HOST_TO_DEVICE 0
+N#define REQUEST_DEVICE_TO_HOST 1
+N/* bmRequestType.Type */
+N#define REQUEST_STANDARD 0
+N#define REQUEST_CLASS 1
+N#define REQUEST_VENDOR 2
+N#define REQUEST_RESERVED 3
+N/* bmRequestType.Recipient */
+N#define REQUEST_TO_DEVICE 0
+N#define REQUEST_TO_INTERFACE 1
+N#define REQUEST_TO_ENDPOINT 2
+N#define REQUEST_TO_OTHER 3
+N
+N/* bmRequestType Definition */
+Ntypedef __packed union _REQUEST_TYPE_
+N{
+N	__packed struct _BM_
+N	{
+N		uint8_t Recipient : 5;
+N		uint8_t Type : 2;
+N		uint8_t Dir : 1;
+N	} BM;
+N	uint8_t B;
+N} REQUEST_TYPE;
+N
+N/* USB Standard Request Codes */
+N#define USB_REQUEST_GET_STATUS 0
+N#define USB_REQUEST_CLEAR_FEATURE 1
+N#define USB_REQUEST_SET_FEATURE 3
+N#define USB_REQUEST_SET_ADDRESS 5
+N#define USB_REQUEST_GET_DESCRIPTOR 6
+N#define USB_REQUEST_SET_DESCRIPTOR 7
+N#define USB_REQUEST_GET_CONFIGURATION 8
+N#define USB_REQUEST_SET_CONFIGURATION 9
+N#define USB_REQUEST_GET_INTERFACE 10
+N#define USB_REQUEST_SET_INTERFACE 11
+N#define USB_REQUEST_SYNC_FRAME 12
+N/* USB GET_STATUS Bit Values */
+N#define USB_GETSTATUS_SELF_POWERED BIT0
+N#define USB_GETSTATUS_REMOTE_WAKEUP BIT1
+N#define USB_GETSTATUS_ENDPOINT_STALL BIT0
+N/* USB Standard Feature selectors */
+N#define USB_FEATURE_ENDPOINT_STALL 0
+N#define USB_FEATURE_REMOTE_WAKEUP BIT0
+N
+N/* USB Default Control Pipe Setup Packet */
+Ntypedef __packed struct _USB_SETUP_PACKET_ 
+N{
+N	REQUEST_TYPE bmRequestType;
+N	U8 bRequest;
+N	WORD_BYTE wValue;
+N	WORD_BYTE wIndex;
+N	U16 wLength;
+N} USB_SETUP_PACKET;
+N
+N
+N/* USB Descriptor Types */
+N#define USB_DEVICE_DESCRIPTOR_TYPE 1
+N#define USB_CONFIGURATION_DESCRIPTOR_TYPE 2
+N#define USB_STRING_DESCRIPTOR_TYPE 3
+N#define USB_INTERFACE_DESCRIPTOR_TYPE 4
+N#define USB_ENDPOINT_DESCRIPTOR_TYPE 5
+N#define USB_DEVICE_QUALIFIER_DESCRIPTOR_TYPE 6
+N#define USB_OTHER_SPEED_CONFIG_DESCRIPTOR_TYPE 7
+N#define USB_INTERFACE_POWER_DESCRIPTOR_TYPE 8
+N#define USB_OTG_DESCRIPTOR_TYPE 9
+N#define USB_DEBUG_DESCRIPTOR_TYPE 10
+N#define USB_INTERFACE_ASSOCIATION_DESCRIPTOR_TYPE 11 
+N/* Wireless USB extension Descriptor Type. */
+N#define USB_SECURITY_TYPE 12
+N#define USB_KEY_TYPE 13
+N#define USB_ENCRIPTION_TYPE 14
+N#define USB_BOS_TYPE 15
+N#define USB_DEVICE_CAPABILITY_TYPE 16
+N#define USB_WIRELESS_ENDPOINT_COMPANION_TYPE 17
+N
+N/* USB Device Classes */
+N#define USB_DEVICE_CLASS_RESERVED 0x00
+N#define USB_DEVICE_CLASS_AUDIO 0x01
+N#define USB_DEVICE_CLASS_COMMUNICATIONS 0x02
+N#define USB_DEVICE_CLASS_HUMAN_INTERFACE 0x03
+N#define USB_DEVICE_CLASS_MONITOR 0x04
+N#define USB_DEVICE_CLASS_PHYSICAL_INTERFACE 0x05
+N#define USB_DEVICE_CLASS_POWER 0x06
+N#define USB_DEVICE_CLASS_PRINTER 0x07
+N#define USB_DEVICE_CLASS_STORAGE 0x08
+N#define USB_DEVICE_CLASS_HUB 0x09
+N#define USB_DEVICE_CLASS_MISCELLANEOUS 0xEF
+N#define USB_DEVICE_CLASS_VENDOR_SPECIFIC 0xFF
+N/* bmAttributes in Configuration Descriptor */
+N#define USB_CONFIG_POWERED_MASK 0x40
+N#define USB_CONFIG_BUS_POWERED 0x80
+N#define USB_CONFIG_SELF_POWERED 0xC0
+N#define USB_CONFIG_REMOTE_WAKEUP 0x20
+N/* bMaxPower in Configuration Descriptor */
+N#define USB_CONFIG_POWER_MA(mA) ((mA)/2)
+N/* bEndpointAddress in Endpoint Descriptor */
+N#define USB_ENDPOINT_DIRECTION_MASK 0x80
+N#define USB_ENDPOINT_OUT(addr) ((addr)|0x00)
+N#define USB_ENDPOINT_IN(addr) ((addr)|0x80)
+N/* bmAttributes in Endpoint Descriptor */
+N#define USB_ENDPOINT_TYPE_MASK 0x03
+N#define USB_ENDPOINT_TYPE_CONTROL 0x00
+N#define USB_ENDPOINT_TYPE_ISOCHRONOUS 0x01
+N#define USB_ENDPOINT_TYPE_BULK 0x02
+N#define USB_ENDPOINT_TYPE_INTERRUPT 0x03
+N#define USB_ENDPOINT_SYNC_MASK 0x0C
+N#define USB_ENDPOINT_SYNC_NO_SYNCHRONIZATION 0x00
+N#define USB_ENDPOINT_SYNC_ASYNCHRONOUS 0x04
+N#define USB_ENDPOINT_SYNC_ADAPTIVE 0x08
+N#define USB_ENDPOINT_SYNC_SYNCHRONOUS 0x0C
+N#define USB_ENDPOINT_USAGE_MASK 0x30
+N#define USB_ENDPOINT_USAGE_DATA 0x00
+N#define USB_ENDPOINT_USAGE_FEEDBACK 0x10
+N#define USB_ENDPOINT_USAGE_IMPLICIT_FEEDBACK 0x20
+N#define USB_ENDPOINT_USAGE_RESERVED 0x30
+N/* USB Standard Device Descriptor */
+Ntypedef __packed struct _USB_DEVICE_DESCRIPTOR_
+N{
+N	uint8_t  bLength;
+N	uint8_t  bDescriptorType;
+N	uint16_t  bcdUSB;
+N	uint8_t  bDeviceClass;
+N	uint8_t  bDeviceSubClass;
+N	uint8_t  bDeviceProtocol;
+N	uint8_t  bMaxPacketSize0;
+N	uint16_t  idVendor;
+N	uint16_t  idProduct;
+N	uint16_t  bcdDevice;
+N	uint8_t  iManufacturer;
+N	uint8_t  iProduct;
+N	uint8_t  iSerialNumber;
+N	uint8_t  bNumConfigurations;
+N} USB_DEVICE_DESCRIPTOR;
+N
+N/* USB 2.0 Device Qualifier Descriptor */
+Ntypedef __packed struct _USB_DEVICE_QUALIFIER_DESCRIPTOR_
+N{
+N	uint8_t  bLength;
+N	uint8_t  bDescriptorType;
+N	uint16_t  bcdUSB;
+N	uint8_t  bDeviceClass;
+N	uint8_t  bDeviceSubClass;
+N	uint8_t  bDeviceProtocol;
+N	uint8_t  bMaxPacketSize0;
+N	uint8_t  bNumConfigurations;
+N	uint8_t  bReserved;
+N} USB_DEVICE_QUALIFIER_DESCRIPTOR;
+N
+N/* USB Standard Configuration Descriptor */
+Ntypedef __packed struct _USB_CONFIGURATION_DESCRIPTOR_
+N{
+N	uint8_t  bLength;
+N	uint8_t  bDescriptorType;
+N	uint16_t  wTotalLength;
+N	uint8_t  bNumInterfaces;
+N	uint8_t  bConfigurationValue;
+N	uint8_t  iConfiguration;
+N	uint8_t  bmAttributes;
+N	uint8_t  bMaxPower;
+N} USB_CONFIGURATION_DESCRIPTOR;
+N
+N/* USB Standard Interface Descriptor */
+Ntypedef __packed struct _USB_INTERFACE_DESCRIPTOR_
+N{
+N	uint8_t  bLength;
+N	uint8_t  bDescriptorType;
+N	uint8_t  bInterfaceNumber;
+N	uint8_t  bAlternateSetting;
+N	uint8_t  bNumEndpoints;
+N	uint8_t  bInterfaceClass;
+N	uint8_t  bInterfaceSubClass;
+N	uint8_t  bInterfaceProtocol;
+N	uint8_t  iInterface;
+N} USB_INTERFACE_DESCRIPTOR;
+N
+N/* USB Standard Endpoint Descriptor */
+Ntypedef __packed struct _USB_ENDPOINT_DESCRIPTOR_
+N{
+N	uint8_t  bLength;
+N	uint8_t  bDescriptorType;
+N	uint8_t  bEndpointAddress;
+N	uint8_t  bmAttributes;
+N	uint16_t  wMaxPacketSize;
+N	uint8_t  bInterval;
+N} USB_ENDPOINT_DESCRIPTOR;
+N
+N/* USB String Descriptor */
+Ntypedef __packed struct _USB_STRING_DESCRIPTOR_
+N{
+N	uint8_t  bLength;
+N	uint8_t  bDescriptorType;
+N	uint16_t  bString/*[]*/;
+N} USB_STRING_DESCRIPTOR;
+N
+N/* USB Common Descriptor */
+Ntypedef __packed struct _USB_COMMON_DESCRIPTOR_
+N{
+N	uint8_t  bLength;
+N	uint8_t  bDescriptorType;
+N} USB_COMMON_DESCRIPTOR;
+N
+N/* USB BOS Descriptor. */
+Ntypedef __packed struct _USB_BOS_DESCRIPTOR_
+N{
+N	uint8_t  bLength;
+N	uint8_t  bDescriptorType;
+N	uint16_t wTotalLength;
+N	uint8_t  bNumDeviceCaps;
+N} USB_BOS_DESCRIPTOR;
+N
+N/* USB Super Speed Device Capability Descriptor. */
+Ntypedef __packed struct _USB_SS_DEVICE_CAPABLITY_DESCRIPTOR_
+N{
+N	uint8_t  bLength;
+N	uint8_t  bDescriptorType;
+N	uint8_t  bDeviceCapabilityType;
+N	uint8_t  bAttributes;
+N	uint16_t wSpeedsSupported;
+N	uint8_t  bFunctionalitySupport;
+N	uint8_t  bU1DevExitLat;
+N	uint16_t bU2DevExitLat;
+N} USB_SS_DEVICE_CAPABILITY_DESCRIPTOR;
+N
+N/* USB Device Capability Descriptor, USB 2.0 extension for LPM. */
+Ntypedef __packed struct _USB_DEVICE_CAPABLITY_DESCRIPTOR_
+N{
+N	uint8_t  bLength;
+N	uint8_t  bDescriptorType;
+N	uint8_t  bDeviceCapabilityType;
+N	uint32_t bmAttributes;
+N} USB_DEVICE_CAPABILITY_DESCRIPTOR;
+N#endif  /* __USB_H__ */
+N
+L 23 "Src\hiduser.c" 2
+N#include "hid.h"
+L 1 ".\Inc\hid.h" 1
+N/*----------------------------------------------------------------------------
+N *      U S B  -  K e r n e l
+N *----------------------------------------------------------------------------
+N *      Name:    HID.H
+N *      Purpose: USB HID (Human Interface Device) Definitions
+N *      Version: V1.20
+N *----------------------------------------------------------------------------
+N *      This software is supplied "AS IS" without any warranties, express,
+N *      implied or statutory, including but not limited to the implied
+N *      warranties of fitness for purpose, satisfactory quality and
+N *      noninfringement. Keil extends you a royalty-free right to reproduce
+N *      and distribute executable files created using this software for use
+N *      on NXP Semiconductors LPC microcontroller devices only. Nothing else 
+N *      gives you the right to use this software.
+N *
+N * Copyright (c) 2009 Keil - An ARM Company. All rights reserved.
+N *---------------------------------------------------------------------------*/
+N
+N#ifndef __HID_H__
+N#define __HID_H__
+N
+N
+N/* HID Subclass Codes */
+N#define HID_SUBCLASS_NONE 0x00
+N#define HID_SUBCLASS_BOOT 0x01
+N/* HID Protocol Codes */
+N#define HID_PROTOCOL_NONE 0x00
+N#define HID_PROTOCOL_KEYBOARD 0x01
+N#define HID_PROTOCOL_MOUSE 0x02
+N/* HID Descriptor Types */
+N#define HID_HID_DESCRIPTOR_TYPE 0x21
+N#define HID_REPORT_DESCRIPTOR_TYPE 0x22
+N#define HID_PHYSICAL_DESCRIPTOR_TYPE 0x23
+N/* HID Descriptor */
+Ntypedef __packed struct _HID_DESCRIPTOR_
+N{
+N	uint8_t  bLength;
+N	uint8_t  bDescriptorType;
+N	uint16_t bcdHID;
+N	uint8_t  bCountryCode;
+N	uint8_t  bNumDescriptors;
+N	/* Array of one or more descriptors */
+N	__packed struct _HID_DESCRIPTOR_LIST_
+N	{
+N		uint8_t  bDescriptorType;
+N		uint16_t wDescriptorLength;
+N	} DescriptorList[1];
+N} HID_DESCRIPTOR;
+N
+N
+N/* HID Request Codes */
+N#define HID_REQUEST_GET_REPORT          0x01
+N#define HID_REQUEST_GET_IDLE            0x02
+N#define HID_REQUEST_GET_PROTOCOL        0x03
+N#define HID_REQUEST_SET_REPORT          0x09
+N#define HID_REQUEST_SET_IDLE            0x0A
+N#define HID_REQUEST_SET_PROTOCOL        0x0B
+N/* HID Report Types */
+N#define HID_REPORT_INPUT                0x01
+N#define HID_REPORT_OUTPUT               0x02
+N#define HID_REPORT_FEATURE              0x03
+N/* Usage Pages */
+N#define HID_USAGE_PAGE_UNDEFINED        0x00
+N#define HID_USAGE_PAGE_GENERIC          0x01
+N#define HID_USAGE_PAGE_SIMULATION       0x02
+N#define HID_USAGE_PAGE_VR               0x03
+N#define HID_USAGE_PAGE_SPORT            0x04
+N#define HID_USAGE_PAGE_GAME             0x05
+N#define HID_USAGE_PAGE_DEV_CONTROLS     0x06
+N#define HID_USAGE_PAGE_KEYBOARD         0x07
+N#define HID_USAGE_PAGE_LED              0x08
+N#define HID_USAGE_PAGE_BUTTON           0x09
+N#define HID_USAGE_PAGE_ORDINAL          0x0A
+N#define HID_USAGE_PAGE_TELEPHONY        0x0B
+N#define HID_USAGE_PAGE_CONSUMER         0x0C
+N#define HID_USAGE_PAGE_DIGITIZER        0x0D
+N#define HID_USAGE_PAGE_UNICODE          0x10
+N#define HID_USAGE_PAGE_ALPHANUMERIC     0x14
+N/* ... */
+N/* Generic Desktop Page (0x01) */
+N#define HID_USAGE_GENERIC_POINTER               0x01
+N#define HID_USAGE_GENERIC_MOUSE                 0x02
+N#define HID_USAGE_GENERIC_JOYSTICK              0x04
+N#define HID_USAGE_GENERIC_GAMEPAD               0x05
+N#define HID_USAGE_GENERIC_KEYBOARD              0x06
+N#define HID_USAGE_GENERIC_KEYPAD                0x07
+N#define HID_USAGE_GENERIC_X                     0x30
+N#define HID_USAGE_GENERIC_Y                     0x31
+N#define HID_USAGE_GENERIC_Z                     0x32
+N#define HID_USAGE_GENERIC_RX                    0x33
+N#define HID_USAGE_GENERIC_RY                    0x34
+N#define HID_USAGE_GENERIC_RZ                    0x35
+N#define HID_USAGE_GENERIC_SLIDER                0x36
+N#define HID_USAGE_GENERIC_DIAL                  0x37
+N#define HID_USAGE_GENERIC_WHEEL                 0x38
+N#define HID_USAGE_GENERIC_HATSWITCH             0x39
+N#define HID_USAGE_GENERIC_COUNTED_BUFFER        0x3A
+N#define HID_USAGE_GENERIC_BYTE_COUNT            0x3B
+N#define HID_USAGE_GENERIC_MOTION_WAKEUP         0x3C
+N#define HID_USAGE_GENERIC_VX                    0x40
+N#define HID_USAGE_GENERIC_VY                    0x41
+N#define HID_USAGE_GENERIC_VZ                    0x42
+N#define HID_USAGE_GENERIC_VBRX                  0x43
+N#define HID_USAGE_GENERIC_VBRY                  0x44
+N#define HID_USAGE_GENERIC_VBRZ                  0x45
+N#define HID_USAGE_GENERIC_VNO                   0x46
+N#define HID_USAGE_GENERIC_SYSTEM_CTL            0x80
+N#define HID_USAGE_GENERIC_SYSCTL_POWER          0x81
+N#define HID_USAGE_GENERIC_SYSCTL_SLEEP          0x82
+N#define HID_USAGE_GENERIC_SYSCTL_WAKE           0x83
+N#define HID_USAGE_GENERIC_SYSCTL_CONTEXT_MENU   0x84
+N#define HID_USAGE_GENERIC_SYSCTL_MAIN_MENU      0x85
+N#define HID_USAGE_GENERIC_SYSCTL_APP_MENU       0x86
+N#define HID_USAGE_GENERIC_SYSCTL_HELP_MENU      0x87
+N#define HID_USAGE_GENERIC_SYSCTL_MENU_EXIT      0x88
+N#define HID_USAGE_GENERIC_SYSCTL_MENU_SELECT    0x89
+N#define HID_USAGE_GENERIC_SYSCTL_MENU_RIGHT     0x8A
+N#define HID_USAGE_GENERIC_SYSCTL_MENU_LEFT      0x8B
+N#define HID_USAGE_GENERIC_SYSCTL_MENU_UP        0x8C
+N#define HID_USAGE_GENERIC_SYSCTL_MENU_DOWN      0x8D
+N/* ... */
+N/* Simulation Controls Page (0x02) */
+N/* ... */
+N#define HID_USAGE_SIMULATION_RUDDER             0xBA
+N#define HID_USAGE_SIMULATION_THROTTLE           0xBB
+N/* ... */
+N
+N/* Virtual Reality Controls Page (0x03) */
+N/* ... */
+N
+N/* Sport Controls Page (0x04) */
+N/* ... */
+N
+N/* Game Controls Page (0x05) */
+N/* ... */
+N
+N/* Generic Device Controls Page (0x06) */
+N/* ... */
+N
+N/* Keyboard/Keypad Page (0x07) */
+N
+N/* Error "keys" */
+N#define HID_USAGE_KEYBOARD_NOEVENT              0x00
+N#define HID_USAGE_KEYBOARD_ROLLOVER             0x01
+N#define HID_USAGE_KEYBOARD_POSTFAIL             0x02
+N#define HID_USAGE_KEYBOARD_UNDEFINED            0x03
+N
+N/* Letters */
+N#define HID_USAGE_KEYBOARD_aA                   0x04
+N#define HID_USAGE_KEYBOARD_zZ                   0x1D
+N
+N/* Numbers */
+N#define HID_USAGE_KEYBOARD_ONE                  0x1E
+N#define HID_USAGE_KEYBOARD_ZERO                 0x27
+N
+N#define HID_USAGE_KEYBOARD_RETURN               0x28
+N#define HID_USAGE_KEYBOARD_ESCAPE               0x29
+N#define HID_USAGE_KEYBOARD_DELETE               0x2A
+N
+N/* Funtion keys */
+N#define HID_USAGE_KEYBOARD_F1                   0x3A
+N#define HID_USAGE_KEYBOARD_F12                  0x45
+N
+N#define HID_USAGE_KEYBOARD_PRINT_SCREEN         0x46
+N
+N/* Modifier Keys */
+N#define HID_USAGE_KEYBOARD_LCTRL                0xE0
+N#define HID_USAGE_KEYBOARD_LSHFT                0xE1
+N#define HID_USAGE_KEYBOARD_LALT                 0xE2
+N#define HID_USAGE_KEYBOARD_LGUI                 0xE3
+N#define HID_USAGE_KEYBOARD_RCTRL                0xE4
+N#define HID_USAGE_KEYBOARD_RSHFT                0xE5
+N#define HID_USAGE_KEYBOARD_RALT                 0xE6
+N#define HID_USAGE_KEYBOARD_RGUI                 0xE7
+N#define HID_USAGE_KEYBOARD_SCROLL_LOCK          0x47
+N#define HID_USAGE_KEYBOARD_NUM_LOCK             0x53
+N#define HID_USAGE_KEYBOARD_CAPS_LOCK            0x39
+N/* ... */
+N/* LED Page (0x08) */
+N#define HID_USAGE_LED_NUM_LOCK                  0x01
+N#define HID_USAGE_LED_CAPS_LOCK                 0x02
+N#define HID_USAGE_LED_SCROLL_LOCK               0x03
+N#define HID_USAGE_LED_COMPOSE                   0x04
+N#define HID_USAGE_LED_KANA                      0x05
+N#define HID_USAGE_LED_POWER                     0x06
+N#define HID_USAGE_LED_SHIFT                     0x07
+N#define HID_USAGE_LED_DO_NOT_DISTURB            0x08
+N#define HID_USAGE_LED_MUTE                      0x09
+N#define HID_USAGE_LED_TONE_ENABLE               0x0A
+N#define HID_USAGE_LED_HIGH_CUT_FILTER           0x0B
+N#define HID_USAGE_LED_LOW_CUT_FILTER            0x0C
+N#define HID_USAGE_LED_EQUALIZER_ENABLE          0x0D
+N#define HID_USAGE_LED_SOUND_FIELD_ON            0x0E
+N#define HID_USAGE_LED_SURROUND_FIELD_ON         0x0F
+N#define HID_USAGE_LED_REPEAT                    0x10
+N#define HID_USAGE_LED_STEREO                    0x11
+N#define HID_USAGE_LED_SAMPLING_RATE_DETECT      0x12
+N#define HID_USAGE_LED_SPINNING                  0x13
+N#define HID_USAGE_LED_CAV                       0x14
+N#define HID_USAGE_LED_CLV                       0x15
+N#define HID_USAGE_LED_RECORDING_FORMAT_DET      0x16
+N#define HID_USAGE_LED_OFF_HOOK                  0x17
+N#define HID_USAGE_LED_RING                      0x18
+N#define HID_USAGE_LED_MESSAGE_WAITING           0x19
+N#define HID_USAGE_LED_DATA_MODE                 0x1A
+N#define HID_USAGE_LED_BATTERY_OPERATION         0x1B
+N#define HID_USAGE_LED_BATTERY_OK                0x1C
+N#define HID_USAGE_LED_BATTERY_LOW               0x1D
+N#define HID_USAGE_LED_SPEAKER                   0x1E
+N#define HID_USAGE_LED_HEAD_SET                  0x1F
+N#define HID_USAGE_LED_HOLD                      0x20
+N#define HID_USAGE_LED_MICROPHONE                0x21
+N#define HID_USAGE_LED_COVERAGE                  0x22
+N#define HID_USAGE_LED_NIGHT_MODE                0x23
+N#define HID_USAGE_LED_SEND_CALLS                0x24
+N#define HID_USAGE_LED_CALL_PICKUP               0x25
+N#define HID_USAGE_LED_CONFERENCE                0x26
+N#define HID_USAGE_LED_STAND_BY                  0x27
+N#define HID_USAGE_LED_CAMERA_ON                 0x28
+N#define HID_USAGE_LED_CAMERA_OFF                0x29
+N#define HID_USAGE_LED_ON_LINE                   0x2A
+N#define HID_USAGE_LED_OFF_LINE                  0x2B
+N#define HID_USAGE_LED_BUSY                      0x2C
+N#define HID_USAGE_LED_READY                     0x2D
+N#define HID_USAGE_LED_PAPER_OUT                 0x2E
+N#define HID_USAGE_LED_PAPER_JAM                 0x2F
+N#define HID_USAGE_LED_REMOTE                    0x30
+N#define HID_USAGE_LED_FORWARD                   0x31
+N#define HID_USAGE_LED_REVERSE                   0x32
+N#define HID_USAGE_LED_STOP                      0x33
+N#define HID_USAGE_LED_REWIND                    0x34
+N#define HID_USAGE_LED_FAST_FORWARD              0x35
+N#define HID_USAGE_LED_PLAY                      0x36
+N#define HID_USAGE_LED_PAUSE                     0x37
+N#define HID_USAGE_LED_RECORD                    0x38
+N#define HID_USAGE_LED_ERROR                     0x39
+N#define HID_USAGE_LED_SELECTED_INDICATOR 0x3A
+N#define HID_USAGE_LED_IN_USE_INDICATOR 0x3B
+N#define HID_USAGE_LED_MULTI_MODE_INDICATOR 0x3C
+N#define HID_USAGE_LED_INDICATOR_ON 0x3D
+N#define HID_USAGE_LED_INDICATOR_FLASH 0x3E
+N#define HID_USAGE_LED_INDICATOR_SLOW_BLINK 0x3F
+N#define HID_USAGE_LED_INDICATOR_FAST_BLINK 0x40
+N#define HID_USAGE_LED_INDICATOR_OFF 0x41
+N#define HID_USAGE_LED_FLASH_ON_TIME 0x42
+N#define HID_USAGE_LED_SLOW_BLINK_ON_TIME 0x43
+N#define HID_USAGE_LED_SLOW_BLINK_OFF_TIME 0x44
+N#define HID_USAGE_LED_FAST_BLINK_ON_TIME 0x45
+N#define HID_USAGE_LED_FAST_BLINK_OFF_TIME 0x46
+N#define HID_USAGE_LED_INDICATOR_COLOR 0x47
+N#define HID_USAGE_LED_RED 0x48
+N#define HID_USAGE_LED_GREEN 0x49
+N#define HID_USAGE_LED_AMBER 0x4A
+N#define HID_USAGE_LED_GENERIC_INDICATOR 0x4B
+N/* Button Page (0x09) */
+N/* There is no need to label these usages. */
+N/* Ordinal Page (0x0A) */
+N/* There is no need to label these usages. */
+N/* Telephony Device Page (0x0B) */
+N#define HID_USAGE_TELEPHONY_PHONE 0x01
+N#define HID_USAGE_TELEPHONY_ANSWERING_MACHINE 0x02
+N#define HID_USAGE_TELEPHONY_MESSAGE_CONTROLS 0x03
+N#define HID_USAGE_TELEPHONY_HANDSET 0x04
+N#define HID_USAGE_TELEPHONY_HEADSET 0x05
+N#define HID_USAGE_TELEPHONY_KEYPAD 0x06
+N#define HID_USAGE_TELEPHONY_PROGRAMMABLE_BUTTON 0x07
+N/* ... */
+N/* Consumer Page (0x0C) */
+N#define HID_USAGE_CONSUMER_CONTROL 0x01
+N/* ... */
+N/* and others ... */
+N/* HID Report Item Macros */
+N/* Main Items */
+N#define HID_Input(x) 0x81,x
+N#define HID_Output(x) 0x91,x
+N#define HID_Feature(x) 0xB1,x
+N#define HID_Collection(x) 0xA1,x
+N#define HID_EndCollection 0xC0
+N
+N/* Data (Input, Output, Feature) */
+N#define HID_Data               0<<0
+N#define HID_Constant           1<<0
+N#define HID_Array              0<<1
+N#define HID_Variable           1<<1
+N#define HID_Absolute           0<<2
+N#define HID_Relative           1<<2
+N#define HID_NoWrap             0<<3
+N#define HID_Wrap               1<<3
+N#define HID_Linear             0<<4
+N#define HID_NonLinear          1<<4
+N#define HID_PreferredState     0<<5
+N#define HID_NoPreferred        1<<5
+N#define HID_NoNullPosition     0<<6
+N#define HID_NullState          1<<6
+N#define HID_NonVolatile        0<<7
+N#define HID_Volatile           1<<7
+N
+N/* Collection Data */
+N#define HID_Physical           0x00
+N#define HID_Application        0x01
+N#define HID_Logical            0x02
+N#define HID_Report             0x03
+N#define HID_NamedArray         0x04
+N#define HID_UsageSwitch        0x05
+N#define HID_UsageModifier      0x06
+N
+N/* Global Items */
+N#define HID_UsagePage(x)       0x05,x
+N#define HID_UsagePageVendor(x) 0x06,x,0xFF
+N#define HID_LogicalMin(x)      0x15,x
+N#define HID_LogicalMinS(x)     0x16,(x&0xFF),((x>>8)&0xFF)
+N#define HID_LogicalMinL(x)     0x17,(x&0xFF),((x>>8)&0xFF),((x>>16)&0xFF),((x>>24)&0xFF)
+N#define HID_LogicalMax(x)      0x25,x
+N#define HID_LogicalMaxS(x)     0x26,(x&0xFF),((x>>8)&0xFF)
+N#define HID_LogicalMaxL(x)     0x27,(x&0xFF),((x>>8)&0xFF),((x>>16)&0xFF),((x>>24)&0xFF)
+N#define HID_PhysicalMin(x)     0x35,x
+N#define HID_PhysicalMinS(x)    0x36,(x&0xFF),((x>>8)&0xFF)
+N#define HID_PhysicalMinL(x)    0x37,(x&0xFF),((x>>8)&0xFF),((x>>16)&0xFF),((x>>24)&0xFF)
+N#define HID_PhysicalMax(x)     0x45,x
+N#define HID_PhysicalMaxS(x)    0x46,(x&0xFF),((x>>8)&0xFF)
+N#define HID_PhysicalMaxL(x)    0x47,(x&0xFF),((x>>8)&0xFF),((x>>16)&0xFF),((x>>24)&0xFF)
+N#define HID_UnitExponent(x)    0x55,x
+N#define HID_Unit(x)            0x65,x
+N#define HID_UnitS(x)           0x66,(x&0xFF),((x>>8)&0xFF)
+N#define HID_UnitL(x)           0x67,(x&0xFF),((x>>8)&0xFF),((x>>16)&0xFF),((x>>24)&0xFF)
+N#define HID_ReportSize(x)      0x75,x
+N#define HID_ReportID(x)        0x85,x
+N#define HID_ReportCount(x)     0x95,x
+N#define HID_Push               0xA0
+N#define HID_Pop                0xB0
+N
+N/* Local Items */
+N#define HID_Usage(x)           0x09,x
+N#define HID_UsageMin(x)        0x19,x
+N#define HID_UsageMax(x)        0x29,x
+N#endif  /* __HID_H__ */
+N
+L 24 "Src\hiduser.c" 2
+N#include "usbcfg.h"
+L 1 ".\Inc\usbcfg.h" 1
+N/*----------------------------------------------------------------------------
+N *      U S B  -  K e r n e l
+N *----------------------------------------------------------------------------
+N * Name:    usbcfg.h
+N * Purpose: USB Custom Configuration
+N * Version: V1.20
+N *----------------------------------------------------------------------------
+N *      This software is supplied "AS IS" without any warranties, express,
+N *      implied or statutory, including but not limited to the implied
+N *      warranties of fitness for purpose, satisfactory quality and
+N *      noninfringement. Keil extends you a royalty-free right to reproduce
+N *      and distribute executable files created using this software for use
+N *      on NXP Semiconductors LPC family microcontroller devices only. Nothing 
+N *      else gives you the right to use this software.
+N *
+N * Copyright (c) 2009 Keil - An ARM Company. All rights reserved.
+N *----------------------------------------------------------------------------
+N * History:
+N *          V1.20 Added vendor specific support
+N *          V1.00 Initial Version
+N *----------------------------------------------------------------------------*/
+N
+N#ifndef __USBCFG_H__
+N#define __USBCFG_H__
+N
+N
+N//*** <<< Use Configuration Wizard in Context Menu >>> ***
+N
+N
+N/*
+N// <h> USB Configuration
+N//   <o0> USB Power
+N//        <i> Default Power Setting
+N//        <0=> Bus-powered
+N//        <1=> Self-powered
+N//   <o1> Max Number of Interfaces <1-256>
+N//   <o2> Max Number of Endpoints  <1-32>
+N//   <o3> Max Setup Packet Size
+N//        <8=> 8 Bytes <16=> 16 Bytes <32=> 32 Bytes <64=> 64 Bytes
+N//   <o4> Max Endpoint 0 Packet Size
+N//        <8=> 8 Bytes <16=> 16 Bytes <32=> 32 Bytes <64=> 64 Bytes
+N//   <o5> Maximum non-isochronous packet size  <1-64>
+N//   <o6> Maximum isochronous packet size  <1-1023>
+N
+N// </h>
+N*/
+N
+N#define USB_POWER 0
+N#define USB_IF_NUM 1
+N#define USB_EP_NUM 4 // 10 dennis
+N#define USB_SETUP_PACKET_SIZE 8
+N#define USB_MAX_PACKET0 64
+N#define USB_MAX_NON_ISO_SIZE 64
+N#define USB_MAX_ISO_SIZE 1023
+N#define USB_LOGIC_EP_NUM 5
+N
+N
+N#if 1 // dennis 6/5/2014
+N	#define USB_PACKET_SIZE 0x12
+N#else
+S	#define USB_PACKET_SIZE 8
+N#endif	  
+N
+N/*
+N// <h> Miscellaneous USB support
+N//     <o0.0> Power Down USB Wake-up
+N//     <o1.0> Remote Wake-up enable
+N//     <o2.0> Use double-buffered endpoints
+N//     <o3.0> Link Power Management Support
+N//     <o4.0> Isochronous communications
+N//     <o5.0> Use Debug
+N// </h>
+N*/
+N
+N/* If REMOTE_WAKEUP_ENABLE is set to 1, set POWERDOWN_MODE_USB_WAKEUP flag to 0.
+N   Don't turn on both flags at the same time. */
+N#define POWERDOWN_MODE_USB_WAKEUP   0
+N#define REMOTE_WAKEUP_ENABLE        0
+N#define USE_DOUBLE_BUFFER           0
+N#define LPM_SUPPORT                 0	/* Link Power Management */
+N#define USB_ISO_COMMUNICATION       0
+N
+N/*
+N// <h> USB Event Handlers
+N//   <h> Device Events
+N//     <o0.0> Power Event
+N//     <o1.0> Reset Event
+N//     <o2.0> Suspend Event
+N//     <o3.0> Resume Event
+N//     <o4.0> Remote Wakeup Event
+N//     <o5.0> Start of Frame Event
+N//     <o6.0> Error Event
+N//   </h>
+N//   <h> Endpoint Events
+N//     <o7.0>  Endpoint 0 Event
+N//     <o7.1>  Endpoint 1 Event
+N//     <o7.2>  Endpoint 2 Event
+N//     <o7.3>  Endpoint 3 Event
+N//     <o7.4>  Endpoint 4 Event
+N//   </h>
+N//   <h> USB Core Events
+N//     <o8.0>  Set Configuration Event
+N//     <o9.0>  Set Interface Event
+N//     <o10.0> Set/Clear Feature Event
+N//   </h>
+N// </h>
+N*/
+N
+N#define USB_POWER_EVENT     0
+N#define USB_RESET_EVENT     1
+N#define USB_SUSPEND_EVENT   1
+N#define USB_RESUME_EVENT    1
+N#define USB_WAKEUP_EVENT    0
+N#define USB_SOF_EVENT       0
+N#define USB_ERROR_EVENT     0
+N#define USB_EP_EVENT 0x0003
+N#define USB_CONFIGURE_EVENT 1
+N#define USB_INTERFACE_EVENT 0
+N#define USB_FEATURE_EVENT   0
+N#define USB_FIQ_EVENT		0
+N
+N
+N/*
+N// <e0> USB Class Support
+N//   <i> enables USB Class specific Requests
+N//   <e1> Human Interface Device (HID)
+N//     <o2> Interface Number <0-255>
+N//   </e>
+N//   <e3> Mass Storage
+N//     <o4> Interface Number <0-255>
+N//   </e>
+N//   <e5> Audio Device
+N//     <o6> Control Interface Number <0-255>
+N//     <o7> Streaming Interface 1 Number <0-255>
+N//     <o8> Streaming Interface 2 Number <0-255>
+N//   </e>
+N//   <e9> Communication Device
+N//     <o10> Control Interface Number <0-255>
+N//     <o11> Bulk Interface Number <0-255>
+N//     <o12> Max Communication Device Buffer Size
+N//        <8=> 8 Bytes <16=> 16 Bytes <32=> 32 Bytes <64=> 64 Bytes 
+N//   </e>
+N// </e>
+N*/
+N
+N#define USB_CLASS 1
+N#define USB_HID 1
+N#define USB_HID_IF_NUM 0
+N
+N/*
+N// <e0> USB Vendor Support
+N//   <i> enables USB Vendor specific Requests
+N// </e>
+N*/
+N#define USB_VENDOR 0
+N#endif  /* __USBCFG_H__ */
+N
+L 25 "Src\hiduser.c" 2
+N#include "usbcore.h"
+L 1 ".\Inc\usbcore.h" 1
+N/*----------------------------------------------------------------------------
+N *      U S B  -  K e r n e l
+N *----------------------------------------------------------------------------
+N * Name:    usbcore.h
+N * Purpose: USB Core Definitions
+N * Version: V1.20
+N *----------------------------------------------------------------------------
+N *      This software is supplied "AS IS" without any warranties, express,
+N *      implied or statutory, including but not limited to the implied
+N *      warranties of fitness for purpose, satisfactory quality and
+N *      noninfringement. Keil extends you a royalty-free right to reproduce
+N *      and distribute executable files created using this software for use
+N *      on NXP Semiconductors LPC family microcontroller devices only. Nothing 
+N *      else gives you the right to use this software.
+N *
+N * Copyright (c) 2009 Keil - An ARM Company. All rights reserved.
+N *---------------------------------------------------------------------------*/
+N
+N#ifndef __USBCORE_H__
+N#define __USBCORE_H__
+N
+N#ifdef __cplusplus
+Sextern "C" {
+N#endif
+N
+N#include "Type.h"
+N
+N#ifdef  __USBCORE_C__
+S#define INTERFACE
+N#else
+N#define INTERFACE extern
+N#endif
+N
+N/* USB Endpoint Data Structure */
+Ntypedef struct _USB_EP_DATA_
+N{
+N	U8  *pData;
+N	U16 Count;
+N} USB_EP_DATA;
+N
+Ntypedef struct _LPC11Uxx_USBCORE_SETTING_
+N{
+N	U16 USB_DeviceStatus;
+N	U8 USB_NumInterfaces;
+N	U8 USB_DeviceAddress;
+N	U8 USB_Configuration;	
+N	U8 USB_AltSetting[USB_IF_NUM];/* USB Core Global Variables */
+X	U8 USB_AltSetting[1]; 
+N	U8 EP0Buf[USB_MAX_PACKET0];/* USB Endpoint 0 Buffer */
+X	U8 EP0Buf[64]; 
+N	U32 USB_EndPointMask;
+N	U32 USB_EndPointHalt;
+N	U32 USB_EndPointStall;/* EP must stay stalled */
+N	USB_EP_DATA EP0Data;/* USB Endpoint 0 Data Info */
+N	USB_SETUP_PACKET SetupPacket;/* USB Setup Packet */
+N}LPC11Uxx_USBCORE_SETTING;
+N
+N
+NINTERFACE LPC11Uxx_USBCORE_SETTING g_USBCore_Setting; 
+Xextern LPC11Uxx_USBCORE_SETTING g_USBCore_Setting; 
+N
+N/* USB Core Functions */
+NINTERFACE void nsAPI_USB_ResetCore(void);
+Xextern void nsAPI_USB_ResetCore(void);
+NINTERFACE __inline Boolean nsAPI_USB_ReqGetStatus(void);
+Xextern __inline Boolean nsAPI_USB_ReqGetStatus(void);
+NINTERFACE __inline Boolean nsAPI_USB_ReqGetDescriptor(void);
+Xextern __inline Boolean nsAPI_USB_ReqGetDescriptor(void);
+NINTERFACE __inline Boolean nsAPI_USB_ReqSetAddress(void);
+Xextern __inline Boolean nsAPI_USB_ReqSetAddress(void);
+NINTERFACE __inline Boolean nsAPI_USB_ReqGetInterface(void);
+Xextern __inline Boolean nsAPI_USB_ReqGetInterface(void);
+NINTERFACE __inline Boolean nsAPI_USB_ReqSetInterface(void);
+Xextern __inline Boolean nsAPI_USB_ReqSetInterface(void);
+NINTERFACE __inline Boolean nsAPI_USB_ReqSetConfiguration(void);
+Xextern __inline Boolean nsAPI_USB_ReqSetConfiguration(void);
+NINTERFACE __inline Boolean nsAPI_USB_ReqGetConfiguration(void);
+Xextern __inline Boolean nsAPI_USB_ReqGetConfiguration(void);
+NINTERFACE void nsAPI_USB_DataOutStage(void);
+Xextern void nsAPI_USB_DataOutStage(void);
+NINTERFACE void nsAPI_USB_StatusOutStage(void);
+Xextern void nsAPI_USB_StatusOutStage(void);
+NINTERFACE void nsAPI_USB_SetupStage(void);
+Xextern void nsAPI_USB_SetupStage(void);
+NINTERFACE void nsAPI_USBCore_Stall_i(void);
+Xextern void nsAPI_USBCore_Stall_i(void);
+N
+N
+N#undef INTERFACE
+N#ifdef __cplusplus
+S}
+N#endif
+N#endif  /* __USBCORE_H__ */
+L 26 "Src\hiduser.c" 2
+N#include "hiduser.h"
+L 1 ".\Inc\hiduser.h" 1
+N/*----------------------------------------------------------------------------
+N *      U S B  -  K e r n e l
+N *----------------------------------------------------------------------------
+N *      Name:    HIDUSER.H
+N *      Purpose: HID Custom User Definitions
+N *      Version: V1.20
+N *----------------------------------------------------------------------------
+N *      This software is supplied "AS IS" without any warranties, express,
+N *      implied or statutory, including but not limited to the implied
+N *      warranties of fitness for purpose, satisfactory quality and
+N *      noninfringement. Keil extends you a royalty-free right to reproduce
+N *      and distribute executable files created using this software for use
+N *      on NXP Semiconductors LPC microcontroller devices only. Nothing else 
+N *      gives you the right to use this software.
+N *
+N * Copyright (c) 2009 Keil - An ARM Company. All rights reserved.
+N *---------------------------------------------------------------------------*/
+N
+N#ifndef __HIDUSER_H__
+N#define __HIDUSER_H__
+N
+N#ifdef __cplusplus
+Sextern "C" {
+N#endif
+N
+N#include "Type.h"
+N
+N#ifdef  __HIDUSER_C__
+N#define INTERFACE
+N#else
+S#define INTERFACE extern
+N#endif
+N
+N
+N/* HID Number of Reports */
+N#define HID_REPORT_NUM 1
+N
+N/* HID In/Out Endpoint Address */
+N#define HID_EP1_IN 0x81
+N#define HID_EP1_OUT 0x01
+N#define HID_EP2_IN 0x82
+N#define HID_EP2_OUT 0x02
+N#define HID_EP3_IN 0x83
+N#define HID_EP3_OUT 0x03
+N#define HID_EP4_IN 0x84
+N#define HID_EP4_OUT 0x04
+N
+N
+N/* HID Global Variables */
+Nextern uint8_t HID_Protocol;
+Nextern uint8_t HID_IdleTime[HID_REPORT_NUM];
+Xextern uint8_t HID_IdleTime[1];
+N
+N/* HID Requests Callback Functions */
+NINTERFACE uint32_t HID_GetReport   (void);
+X uint32_t HID_GetReport   (void);
+NINTERFACE uint32_t HID_SetReport   (void);
+X uint32_t HID_SetReport   (void);
+NINTERFACE uint32_t HID_GetIdle     (void);
+X uint32_t HID_GetIdle     (void);
+NINTERFACE uint32_t HID_SetIdle     (void);
+X uint32_t HID_SetIdle     (void);
+NINTERFACE uint32_t HID_GetProtocol (void);
+X uint32_t HID_GetProtocol (void);
+NINTERFACE uint32_t HID_SetProtocol (void);
+X uint32_t HID_SetProtocol (void);
+N
+N#undef INTERFACE
+N#ifdef __cplusplus
+S}
+N#endif
+N#endif  /* __HIDUSER_H__ */
+L 27 "Src\hiduser.c" 2
+N#include "main.h"
+L 1 ".\Inc\main.h" 1
+N/*----------------------------------------------------------------------------
+N *      Name:    MAIN.H
+N *      Purpose: USB HID Demo Definitions
+N *      Version: V1.20
+N *----------------------------------------------------------------------------
+N *      This software is supplied "AS IS" without any warranties, express,
+N *      implied or statutory, including but not limited to the implied
+N *      warranties of fitness for purpose, satisfactory quality and
+N *      noninfringement. Keil extends you a royalty-free right to reproduce
+N *      and distribute executable files created using this software for use
+N *      on NXP Semiconductors LPC microcontroller devices only. Nothing else 
+N *      gives you the right to use this software.
+N *
+N * Copyright (c) 2009 Keil - An ARM Company. All rights reserved.
+N *---------------------------------------------------------------------------*/
+N#ifndef __MAIN_H__
+N#define __MAIN_H__
+N
+N#ifdef __cplusplus
+Sextern "C" {
+N#endif
+N
+N#include "Type.h"
+N#include "usbcfg.h"
+N//#include "Pixart_Sensor.h"
+N
+N#ifdef _MAIN_C_
+S#define INTERFACE
+N#else
+N#define INTERFACE extern
+N#endif
+N
+N#define _DEMO_ONLY_ 0
+N
+N#define EP1_IN BIT0
+N#define EP1_OUT BIT1
+N#define EP2_IN BIT2
+N#define EP2_OUT BIT3
+N#define EP3_IN BIT4
+N#define EP3_OUT BIT5
+N#define EP4_IN BIT6
+N#define EP4_OUT BIT7
+N
+N#define MISC_EVENT (BIT3|BIT2)
+N
+N
+Ntypedef enum _GIndex_
+N{
+N    GIdx0 = 0,
+N    GIdx1,
+N    GIdx2,
+N    GIdx3,
+N    GIdx4,
+N    GIdx5,
+N    GIdx6,
+N    GIdx7,
+N    GIdx8,
+N    GIdxLen =  GIdx8,
+N}GIndex;
+N
+N#define MAIN_FLAG_MOUSE_REPORT_READY	BIT0	
+N#define MAIN_FLAG_MOUSE_BUTTON_EVENT	BIT1	
+N#define MAIN_FLAG_MOUSE_QIE_EVENT		BIT2
+N//#define MAIN_FLAG_MOUSE_EVENT	BIT3
+N#define MAIN_FLAG_MOUSE_EVENT			BIT3
+N//#define MAIN_FLAG_MOUSE_FRAME_CAPTURE_EVENT BIT4
+N
+N/* HID Demo Variables */
+Ntypedef struct _LPC11Uxx_MAIN_SETTING_
+N{
+N	U8 InReport[USB_PACKET_SIZE];
+X	U8 InReport[0x12];
+N	U8 OutReport[USB_PACKET_SIZE];
+X	U8 OutReport[0x12];
+N	U8 EPInOutReq;
+N	U8 InReportSize;
+N	U16 MouseEvent;
+N}LPC11Uxx_MAIN_SETTING;
+N
+NINTERFACE LPC11Uxx_MAIN_SETTING g_Main_Setting;
+Xextern LPC11Uxx_MAIN_SETTING g_Main_Setting;
+N
+N
+N/* HID Demo Functions */
+NINTERFACE void nsAPI_Main_GetInReport(void);
+Xextern void nsAPI_Main_GetInReport(void);
+NINTERFACE void SetOutReport(void);
+Xextern void SetOutReport(void);
+NINTERFACE void nsAPI_Main_MouseEventHandle(void);
+Xextern void nsAPI_Main_MouseEventHandle(void);
+NINTERFACE void nsAPI_Main_GetInMouseButtonReport(U16 *PreButtonEvent,U16 *u16ButtonStatus,U16 *KeycodeTblIdx);
+Xextern void nsAPI_Main_GetInMouseButtonReport(U16 *PreButtonEvent,U16 *u16ButtonStatus,U16 *KeycodeTblIdx);
+NINTERFACE void nsAPI_Main_GetInMouseQIEReport(S8 s8Temp);
+Xextern void nsAPI_Main_GetInMouseQIEReport(S8 s8Temp);
+NINTERFACE void nsAPI_Main_Clr_MouseEvent(void);
+Xextern void nsAPI_Main_Clr_MouseEvent(void);
+NINTERFACE void Mapp_Main_Init(void);
+Xextern void Mapp_Main_Init(void);
+N
+N#undef INTERFACE
+N#ifdef __cplusplus
+S}
+N#endif
+N#endif //__MAIN_H__
+L 28 "Src\hiduser.c" 2
+N
+N
+Nuint8_t HID_Protocol;
+Nuint8_t HID_IdleTime[HID_REPORT_NUM];
+Xuint8_t HID_IdleTime[1];
+N
+N
+N/*
+N *  HID Get Report Request Callback
+N *   Called automatically on HID Get Report Request
+N *    Parameters:      None (global SetupPacket and EP0Buf)
+N *    Return Value:    TRUE - Success, FALSE - Error
+N */
+N
+Nuint32_t HID_GetReport(void)
+N{
+N	/* ReportID = SetupPacket.wValue.WB.L; */
+N	switch(g_USBCore_Setting.SetupPacket.wValue.WB.H)
+N	{
+N		case HID_REPORT_INPUT:
+X		case 0x01:
+N		nsAPI_Main_GetInReport();
+N		g_USBCore_Setting.EP0Buf[0] = g_Main_Setting.InReport[0];
+N		break;
+N
+N		case HID_REPORT_OUTPUT:/* Not Supported */           
+X		case 0x02:            
+N		case HID_REPORT_FEATURE:/* Not Supported */
+X		case 0x03: 
+N		/* g_USBCore_Setting.EP0Buf[] = ...; */
+N		/* break; */
+N		return (FALSE);          
+X		return ((0));          
+N	}
+N	return (TRUE);
+X	return ((1));
+N}
+N
+N
+N/*
+N *  HID Set Report Request Callback
+N *   Called automatically on HID Set Report Request
+N *    Parameters:      None (global SetupPacket and EP0Buf)
+N *    Return Value:    TRUE - Success, FALSE - Error
+N */
+N
+Nuint32_t HID_SetReport (void)
+N{
+N	/* ReportID = SetupPacket.wValue.WB.L; */
+N	switch(g_USBCore_Setting.SetupPacket.wValue.WB.H) 
+N	{		
+N		case HID_REPORT_OUTPUT:
+X		case 0x02:
+N		g_Main_Setting.OutReport[0] = g_USBCore_Setting.EP0Buf[0];
+N		SetOutReport();
+N		break;
+N
+N		case HID_REPORT_INPUT:/* Not Supported */
+X		case 0x01: 
+N		case HID_REPORT_FEATURE:/* Not Supported */
+X		case 0x03: 
+N		return (FALSE);
+X		return ((0));
+N	}
+N	return (TRUE);
+X	return ((1));
+N}
+N
+N
+N/*
+N *  HID Get Idle Request Callback
+N *   Called automatically on HID Get Idle Request
+N *    Parameters:      None (global SetupPacket and EP0Buf)
+N *    Return Value:    TRUE - Success, FALSE - Error
+N */
+N
+Nuint32_t HID_GetIdle (void) {
+N
+N  g_USBCore_Setting.EP0Buf[0] = HID_IdleTime[g_USBCore_Setting.SetupPacket.wValue.WB.L];
+N  return (TRUE);
+X  return ((1));
+N}
+N
+N
+N/*
+N *  HID Set Idle Request Callback
+N *   Called automatically on HID Set Idle Request
+N *    Parameters:      None (global SetupPacket)
+N *    Return Value:    TRUE - Success, FALSE - Error
+N */
+N
+Nuint32_t HID_SetIdle (void) {
+N
+N  HID_IdleTime[g_USBCore_Setting.SetupPacket.wValue.WB.L] = g_USBCore_Setting.SetupPacket.wValue.WB.H;
+N
+N  /* Idle Handling if needed */
+N  /* ... */
+N
+N  return (TRUE);
+X  return ((1));
+N}
+N
+N
+N/*
+N *  HID Get Protocol Request Callback
+N *   Called automatically on HID Get Protocol Request
+N *    Parameters:      None (global SetupPacket)
+N *    Return Value:    TRUE - Success, FALSE - Error
+N */
+N
+Nuint32_t HID_GetProtocol (void) {
+N
+N  g_USBCore_Setting.EP0Buf[0] = HID_Protocol;
+N  return (TRUE);
+X  return ((1));
+N}
+N
+N
+N/*
+N *  HID Set Protocol Request Callback
+N *   Called automatically on HID Set Protocol Request
+N *    Parameters:      None (global SetupPacket)
+N *    Return Value:    TRUE - Success, FALSE - Error
+N */
+N
+Nuint32_t HID_SetProtocol (void) {
+N
+N  HID_Protocol = g_USBCore_Setting.SetupPacket.wValue.WB.L;
+N
+N  /* Protocol Handling if needed */
+N  /* ... */
+N
+N  return (TRUE);
+X  return ((1));
+N}

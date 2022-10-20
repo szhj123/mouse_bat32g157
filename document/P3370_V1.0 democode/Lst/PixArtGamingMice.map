@@ -1,0 +1,755 @@
+Component: ARM Compiler 5.06 update 7 (build 960) Tool: armlink [4d3601]
+
+==============================================================================
+
+Section Cross References
+
+    gpio.o(.text) refers to gpio.o(.bss) for g_GpioButtonEvent
+    gpio.o(.text) refers to main.o(.bss) for g_Main_Setting
+    gpio.o(.text) refers to pixart_sensor.o(.text) for nsAPI_MouseScanButton
+    gpio.o(.text) refers to main.o(.text) for nsAPI_Main_GetInMouseButtonReport
+    gpio.o(.text) refers to gpio.o(.data) for temp_prev
+    hiduser.o(.text) refers to main.o(.text) for nsAPI_Main_GetInReport
+    hiduser.o(.text) refers to usbcore.o(.bss) for g_USBCore_Setting
+    hiduser.o(.text) refers to main.o(.bss) for g_Main_Setting
+    hiduser.o(.text) refers to hiduser.o(.data) for HID_IdleTime
+    system_lpc11uxx.o(.text) refers to uidiv.o(.text) for __aeabi_uidivmod
+    system_lpc11uxx.o(.text) refers to uart.o(.text) for nsAPI_UART_Init
+    system_lpc11uxx.o(.text) refers to i2c.o(.text) for nsAPI_I2C_Init
+    system_lpc11uxx.o(.text) refers to gpio.o(.text) for nsAPI_GPIO_Init
+    system_lpc11uxx.o(.text) refers to usbhw.o(.text) for nsAPI_USB_Init
+    system_lpc11uxx.o(.text) refers to timer16.o(.text) for nsAPI_Timer16_Init
+    system_lpc11uxx.o(.text) refers to systick.o(.text) for nsAPI_SysTick_Init
+    system_lpc11uxx.o(.text) refers to ssp.o(.text) for nsAPI_SSP_Init
+    system_lpc11uxx.o(.text) refers to system_lpc11uxx.o(.data) for SystemCoreClock
+    timer16.o(.text) refers to uidiv.o(.text) for __aeabi_uidivmod
+    timer16.o(.text) refers to timer16.o(.bss) for g_Timer16_Setting
+    timer16.o(.text) refers to timer16.o(.data) for poll_tick_btn
+    timer16.o(.text) refers to gpio.o(.bss) for g_GpioButtonEvent
+    timer16.o(.text) refers to pixart_sensor.o(.data) for cpi_p_Cntr
+    timer16.o(.text) refers to system_lpc11uxx.o(.data) for SystemCoreClock
+    timer32.o(.text) refers to uidiv.o(.text) for __aeabi_uidivmod
+    timer32.o(.text) refers to timer32.o(.bss) for g_Timer32_LED_Setting
+    timer32.o(.text) refers to system_lpc11uxx.o(.data) for SystemCoreClock
+    uart.o(.text) refers to uidiv.o(.text) for __aeabi_uidivmod
+    uart.o(.text) refers to uart.o(.bss) for g_Uart_Setting
+    uart.o(.text) refers to system_lpc11uxx.o(.data) for SystemCoreClock
+    usbcore.o(.text) refers to usbhw.o(.text) for nsAPI_USB_ReadSetupEP
+    usbcore.o(.text) refers to usbcore.o(i.__ARM_common_switch8) for __ARM_common_switch8
+    usbcore.o(.text) refers to usbcore.o(i.nsAPI_USB_ReqGetStatus) for nsAPI_USB_ReqGetStatus
+    usbcore.o(.text) refers to usbcore.o(i.nsAPI_USB_ReqSetClrFeature) for nsAPI_USB_ReqSetClrFeature
+    usbcore.o(.text) refers to usbcore.o(i.nsAPI_USB_ReqGetDescriptor) for nsAPI_USB_ReqGetDescriptor
+    usbcore.o(.text) refers to usbcore.o(i.nsAPI_USB_ReqSetConfiguration) for nsAPI_USB_ReqSetConfiguration
+    usbcore.o(.text) refers to usbuser.o(.text) for nsAPI_USB_Configure_Event
+    usbcore.o(.text) refers to usbcore.o(i.nsAPI_USB_ReqSetInterface) for nsAPI_USB_ReqSetInterface
+    usbcore.o(.text) refers to hiduser.o(.text) for HID_GetIdle
+    usbcore.o(.text) refers to pixart_sensor.o(.text) for nsAPI_SSP_Sensor_Read
+    usbcore.o(.text) refers to usbcore.o(.data) for usb_reg_addr
+    usbcore.o(.text) refers to usbcore.o(.bss) for g_USBCore_Setting
+    usbcore.o(.text) refers to main.o(.data) for mouse_event_ctrl
+    usbcore.o(.text) refers to memseta.o(.text) for __aeabi_memclr4
+    usbcore.o(.text) refers to flash.o(.text) for msAPI_Flash_PrepareSec
+    usbcore.o(.text) refers to gpio.o(.text) for NDrv_GPIO_SetBitValue
+    usbhw.o(.text) refers to usbhw.o(.bss) for g_USBHW_Setting
+    usbhw.o(.text) refers to usbcore.o(.bss) for g_USBCore_Setting
+    usbhw.o(.text) refers to uwrite4.o(.text) for __aeabi_uwrite4
+    usbhw.o(.text) refers to uread4.o(.text) for __aeabi_uread4
+    usbhw.o(.text) refers to usbuser.o(.text) for USB_Reset_Event
+    usbhw.o(.text) refers to usbuser.o(.constdata) for USB_P_EP
+    usbuser.o(.text) refers to usbcore.o(.text) for nsAPI_USB_ResetCore
+    usbuser.o(.text) refers to usbhw.o(.text) for nsAPI_USB_WriteEP
+    usbuser.o(.text) refers to usbcore.o(.bss) for g_USBCore_Setting
+    usbuser.o(.text) refers to main.o(.bss) for g_Main_Setting
+    usbuser.o(.constdata) refers to usbcore.o(.text) for nsAPI_USB_EndPoint0
+    usbuser.o(.constdata) refers to usbuser.o(.text) for nsAPI_USB_EndPoint1
+    startup_lpc11uxx.o(RESET) refers to startup_lpc11uxx.o(STACK) for __initial_sp
+    startup_lpc11uxx.o(RESET) refers to startup_lpc11uxx.o(.text) for Reset_Handler
+    startup_lpc11uxx.o(RESET) refers to systick.o(.text) for SysTick_Handler
+    startup_lpc11uxx.o(RESET) refers to gpio.o(.text) for FLEX_INT0_IRQHandler
+    startup_lpc11uxx.o(RESET) refers to ssp.o(.text) for SSP1_IRQHandler
+    startup_lpc11uxx.o(RESET) refers to i2c.o(.text) for I2C_IRQHandler
+    startup_lpc11uxx.o(RESET) refers to timer16.o(.text) for TIMER16_0_IRQHandler
+    startup_lpc11uxx.o(RESET) refers to timer32.o(.text) for TIMER32_0_IRQHandler
+    startup_lpc11uxx.o(RESET) refers to uart.o(.text) for UART_IRQHandler
+    startup_lpc11uxx.o(RESET) refers to usbhw.o(.text) for USB_IRQHandler
+    startup_lpc11uxx.o(.text) refers to entry.o(.ARM.Collect$$$$00000000) for __main
+    main.o(.text) refers to usbuser.o(.text) for nsAPI_USB_EndPointClr
+    main.o(.text) refers to system_lpc11uxx.o(.text) for nsAPI_System_Init
+    main.o(.text) refers to pixart_sensor.o(.text) for nsAPI_SSP_Sensor_Init
+    main.o(.text) refers to gpio.o(.text) for nsAPI_GPIO_MouseButtonMonitor
+    main.o(.text) refers to usbhw.o(.text) for nsAPI_USB_WriteEP
+    main.o(.text) refers to main.o(.bss) for g_Main_Setting
+    main.o(.text) refers to keytbl.o(.constdata) for u8MouseKeyTable
+    main.o(.text) refers to timer16.o(.data) for cpi_clicked_flag
+    main.o(.text) refers to pixart_sensor.o(.data) for cpi_p_Cntr
+    main.o(.text) refers to main.o(.data) for mouse_event_ctrl
+    ssp.o(.text) refers to gpio.o(.text) for NDrv_GPIO_SetBitValue
+    systick.o(.text) refers to uidiv.o(.text) for __aeabi_uidivmod
+    systick.o(.text) refers to system_lpc11uxx.o(.data) for SystemCoreClock
+    i2c.o(.text) refers to usbcore.o(i.__ARM_common_switch8) for __ARM_common_switch8
+    i2c.o(.text) refers to uidiv.o(.text) for __aeabi_uidivmod
+    i2c.o(.text) refers to i2c.o(.bss) for g_I2C_Setting
+    i2c.o(.text) refers to system_lpc11uxx.o(.data) for SystemCoreClock
+    pixart_sensor.o(.text) refers to gpio.o(.text) for NDrv_GPIO_SetBitValue
+    pixart_sensor.o(.text) refers to ssp.o(.text) for nsAPI_SSP_Send
+    pixart_sensor.o(.text) refers to main.o(.data) for mouse_event_ctrl
+    pixart_sensor.o(.text) refers to pixart_sensor.o(.data) for flagOne
+    pixart_sensor.o(.text) refers to srom.o(.ARM.__at_0x00006000) for SROM
+    pixart_sensor.o(.text) refers to srom.o(.constdata) for sromTableSize
+    pixart_sensor.o(.text) refers to usbhw.o(.text) for nsAPI_USB_WriteEP
+    pixart_sensor.o(.text) refers to main.o(.text) for nsAPI_Main_MouseEventHandle
+    pixart_sensor.o(.text) refers to idiv.o(.text) for __aeabi_idivmod
+    pixart_sensor.o(.text) refers to main.o(.bss) for g_Main_Setting
+    pixart_sensor.o(.text) refers to timer16.o(.data) for poll_motion
+    pixart_sensor.o(.text) refers to gpio.o(.bss) for g_GpioButtonEvent
+    flash.o(.text) refers to main.o(.bss) for g_Main_Setting
+    flash.o(.text) refers to flash.o(.bss) for g_BootloaderSetting
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry10a.o(.ARM.Collect$$$$0000000F) for __rt_final_cpp
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry11a.o(.ARM.Collect$$$$00000011) for __rt_final_exit
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry12b.o(.ARM.Collect$$$$0000000E) for __rt_lib_shutdown_fini
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry7b.o(.ARM.Collect$$$$00000008) for _main_clock
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry8b.o(.ARM.Collect$$$$0000000A) for _main_cpp_init
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry9a.o(.ARM.Collect$$$$0000000B) for _main_init
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry5.o(.ARM.Collect$$$$00000004) for _main_scatterload
+    entry.o(.ARM.Collect$$$$00000000) refers (Special) to entry2.o(.ARM.Collect$$$$00000001) for _main_stk
+    idiv.o(.text) refers to uidiv.o(.text) for __aeabi_uidivmod
+    entry2.o(.ARM.Collect$$$$00000001) refers to entry2.o(.ARM.Collect$$$$00002712) for __lit__00000000
+    entry2.o(.ARM.Collect$$$$00002712) refers to startup_lpc11uxx.o(STACK) for __initial_sp
+    entry2.o(__vectab_stack_and_reset_area) refers to startup_lpc11uxx.o(STACK) for __initial_sp
+    entry2.o(__vectab_stack_and_reset_area) refers to entry.o(.ARM.Collect$$$$00000000) for __main
+    entry5.o(.ARM.Collect$$$$00000004) refers to init.o(.text) for __scatterload
+    entry9a.o(.ARM.Collect$$$$0000000B) refers to main.o(.text) for main
+    entry9b.o(.ARM.Collect$$$$0000000C) refers to main.o(.text) for main
+    init.o(.text) refers to entry5.o(.ARM.Collect$$$$00000004) for __main_after_scatterload
+    usbcore.o(i.nsAPI_USB_ReqGetStatus) refers to usbcore.o(.bss) for g_USBCore_Setting
+    usbcore.o(i.nsAPI_USB_ReqSetClrFeature) refers to usbhw.o(.text) for NDrv_USB_WakeUpCfg
+    usbcore.o(i.nsAPI_USB_ReqSetClrFeature) refers to usbcore.o(.bss) for g_USBCore_Setting
+    usbcore.o(i.nsAPI_USB_ReqGetDescriptor) refers to usbcore.o(.bss) for g_USBCore_Setting
+    usbcore.o(i.nsAPI_USB_ReqGetDescriptor) refers to usbdesc.o(.constdata) for USB_DeviceDescriptor
+    usbcore.o(i.nsAPI_USB_ReqSetConfiguration) refers to usbhw.o(.text) for nsAPI_USB_DisableEP
+    usbcore.o(i.nsAPI_USB_ReqSetConfiguration) refers to usbcore.o(.bss) for g_USBCore_Setting
+    usbcore.o(i.nsAPI_USB_ReqSetConfiguration) refers to usbdesc.o(.constdata) for USB_ConfigDescriptor
+    usbcore.o(i.nsAPI_USB_ReqSetInterface) refers to usbhw.o(.text) for nsAPI_USB_EnableEP
+    usbcore.o(i.nsAPI_USB_ReqSetInterface) refers to usbcore.o(.bss) for g_USBCore_Setting
+    usbcore.o(i.nsAPI_USB_ReqSetInterface) refers to usbdesc.o(.constdata) for USB_ConfigDescriptor
+
+
+==============================================================================
+
+Removing Unused input sections from the image.
+
+    Removing gpio.o(.emb_text), (8 bytes).
+    Removing system_lpc11uxx.o(.emb_text), (8 bytes).
+    Removing timer16.o(.emb_text), (8 bytes).
+    Removing timer32.o(.emb_text), (8 bytes).
+    Removing uart.o(.emb_text), (8 bytes).
+    Removing usbcore.o(.emb_text), (8 bytes).
+    Removing usbdesc.o(.emb_text), (8 bytes).
+    Removing usbhw.o(.emb_text), (8 bytes).
+    Removing startup_lpc11uxx.o(HEAP), (0 bytes).
+    Removing main.o(.emb_text), (8 bytes).
+    Removing ssp.o(.emb_text), (8 bytes).
+    Removing systick.o(.emb_text), (8 bytes).
+    Removing i2c.o(.emb_text), (8 bytes).
+    Removing pixart_sensor.o(.emb_text), (8 bytes).
+    Removing flash.o(.emb_text), (8 bytes).
+
+15 unused section(s) (total 112 bytes) removed from the image.
+
+==============================================================================
+
+Image Symbol Table
+
+    Local Symbols
+
+    Symbol Name                              Value     Ov Type        Size  Object(Section)
+
+    RESET                                    0x00000000   Section      192  startup_lpc11uxx.o(RESET)
+    ../clib/microlib/division.c              0x00000000   Number         0  idiv.o ABSOLUTE
+    ../clib/microlib/division.c              0x00000000   Number         0  uidiv.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry2.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry12b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry12a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
+    ../clib/microlib/string/memset.c         0x00000000   Number         0  memseta.o ABSOLUTE
+    ../clib/microlib/unhosted.c              0x00000000   Number         0  uwrite4.o ABSOLUTE
+    ../clib/microlib/unhosted.c              0x00000000   Number         0  uread4.o ABSOLUTE
+    Src\Flash.c                              0x00000000   Number         0  flash.o ABSOLUTE
+    Src\I2c.c                                0x00000000   Number         0  i2c.o ABSOLUTE
+    Src\Keytbl.c                             0x00000000   Number         0  keytbl.o ABSOLUTE
+    Src\Pixart_Sensor.c                      0x00000000   Number         0  pixart_sensor.o ABSOLUTE
+    Src\Systick.c                            0x00000000   Number         0  systick.o ABSOLUTE
+    Src\\Flash.c                             0x00000000   Number         0  flash.o ABSOLUTE
+    Src\\I2c.c                               0x00000000   Number         0  i2c.o ABSOLUTE
+    Src\\Pixart_Sensor.c                     0x00000000   Number         0  pixart_sensor.o ABSOLUTE
+    Src\\Systick.c                           0x00000000   Number         0  systick.o ABSOLUTE
+    Src\\gpio.c                              0x00000000   Number         0  gpio.o ABSOLUTE
+    Src\\main.c                              0x00000000   Number         0  main.o ABSOLUTE
+    Src\\ssp.c                               0x00000000   Number         0  ssp.o ABSOLUTE
+    Src\\system_LPC11Uxx.c                   0x00000000   Number         0  system_lpc11uxx.o ABSOLUTE
+    Src\\timer16.c                           0x00000000   Number         0  timer16.o ABSOLUTE
+    Src\\timer32.c                           0x00000000   Number         0  timer32.o ABSOLUTE
+    Src\\uart.c                              0x00000000   Number         0  uart.o ABSOLUTE
+    Src\\usbcore.c                           0x00000000   Number         0  usbcore.o ABSOLUTE
+    Src\\usbdesc.c                           0x00000000   Number         0  usbdesc.o ABSOLUTE
+    Src\\usbhw.c                             0x00000000   Number         0  usbhw.o ABSOLUTE
+    Src\core_cm0.c                           0x00000000   Number         0  core_cm0.o ABSOLUTE
+    Src\gpio.c                               0x00000000   Number         0  gpio.o ABSOLUTE
+    Src\hiduser.c                            0x00000000   Number         0  hiduser.o ABSOLUTE
+    Src\main.c                               0x00000000   Number         0  main.o ABSOLUTE
+    Src\srom.c                               0x00000000   Number         0  srom.o ABSOLUTE
+    Src\ssp.c                                0x00000000   Number         0  ssp.o ABSOLUTE
+    Src\startup_LPC11Uxx.s                   0x00000000   Number         0  startup_lpc11uxx.o ABSOLUTE
+    Src\system_LPC11Uxx.c                    0x00000000   Number         0  system_lpc11uxx.o ABSOLUTE
+    Src\timer16.c                            0x00000000   Number         0  timer16.o ABSOLUTE
+    Src\timer32.c                            0x00000000   Number         0  timer32.o ABSOLUTE
+    Src\uart.c                               0x00000000   Number         0  uart.o ABSOLUTE
+    Src\usbcore.c                            0x00000000   Number         0  usbcore.o ABSOLUTE
+    Src\usbdesc.c                            0x00000000   Number         0  usbdesc.o ABSOLUTE
+    Src\usbhw.c                              0x00000000   Number         0  usbhw.o ABSOLUTE
+    Src\usbuser.c                            0x00000000   Number         0  usbuser.o ABSOLUTE
+    dc.s                                     0x00000000   Number         0  dc.o ABSOLUTE
+    handlers.s                               0x00000000   Number         0  handlers.o ABSOLUTE
+    init.s                                   0x00000000   Number         0  init.o ABSOLUTE
+    .ARM.Collect$$$$00000000                 0x000000c0   Section        0  entry.o(.ARM.Collect$$$$00000000)
+    .ARM.Collect$$$$00000001                 0x000000c0   Section        4  entry2.o(.ARM.Collect$$$$00000001)
+    .ARM.Collect$$$$00000004                 0x000000c4   Section        4  entry5.o(.ARM.Collect$$$$00000004)
+    .ARM.Collect$$$$00000008                 0x000000c8   Section        0  entry7b.o(.ARM.Collect$$$$00000008)
+    .ARM.Collect$$$$0000000A                 0x000000c8   Section        0  entry8b.o(.ARM.Collect$$$$0000000A)
+    .ARM.Collect$$$$0000000B                 0x000000c8   Section        8  entry9a.o(.ARM.Collect$$$$0000000B)
+    .ARM.Collect$$$$0000000E                 0x000000d0   Section        4  entry12b.o(.ARM.Collect$$$$0000000E)
+    .ARM.Collect$$$$0000000F                 0x000000d4   Section        0  entry10a.o(.ARM.Collect$$$$0000000F)
+    .ARM.Collect$$$$00000011                 0x000000d4   Section        0  entry11a.o(.ARM.Collect$$$$00000011)
+    .ARM.Collect$$$$00002712                 0x000000d4   Section        4  entry2.o(.ARM.Collect$$$$00002712)
+    __lit__00000000                          0x000000d4   Data           4  entry2.o(.ARM.Collect$$$$00002712)
+    .text                                    0x000000d8   Section        0  gpio.o(.text)
+    .text                                    0x00000784   Section        0  hiduser.o(.text)
+    .text                                    0x00000830   Section        0  system_lpc11uxx.o(.text)
+    .text                                    0x00000988   Section        0  timer16.o(.text)
+    NVIC_EnableIRQ                           0x00000b41   Thumb Code    14  timer16.o(.text)
+    NVIC_DisableIRQ                          0x00000b4f   Thumb Code    16  timer16.o(.text)
+    .text                                    0x00000ba8   Section        0  timer32.o(.text)
+    .text                                    0x000010cc   Section        0  uart.o(.text)
+    .text                                    0x000013ac   Section        0  usbcore.o(.text)
+    .text                                    0x00001b08   Section        0  usbhw.o(.text)
+    EPAdr                                    0x00001b09   Thumb Code    18  usbhw.o(.text)
+    .text                                    0x000023a0   Section        0  usbuser.o(.text)
+    .text                                    0x0000249c   Section       20  startup_lpc11uxx.o(.text)
+    .text                                    0x000024b0   Section        0  main.o(.text)
+    .text                                    0x00002678   Section        0  ssp.o(.text)
+    .text                                    0x00002798   Section        0  systick.o(.text)
+    NVIC_SetPriority                         0x00002809   Thumb Code   114  systick.o(.text)
+    .text                                    0x00002890   Section        0  i2c.o(.text)
+    .text                                    0x00002c0c   Section        0  pixart_sensor.o(.text)
+    .text                                    0x000038dc   Section        0  flash.o(.text)
+    .text                                    0x00003b20   Section        0  uidiv.o(.text)
+    .text                                    0x00003b4c   Section        0  idiv.o(.text)
+    .text                                    0x00003b74   Section        0  memseta.o(.text)
+    .text                                    0x00003b98   Section        0  uread4.o(.text)
+    .text                                    0x00003bac   Section        0  uwrite4.o(.text)
+    .text                                    0x00003bc0   Section       36  init.o(.text)
+    i.__ARM_common_switch8                   0x00003be4   Section        0  usbcore.o(i.__ARM_common_switch8)
+    i.__scatterload_copy                     0x00003c00   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x00003c0e   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x00003c10   Section       14  handlers.o(i.__scatterload_zeroinit)
+    i.nsAPI_USB_ReqGetDescriptor             0x00003c20   Section        0  usbcore.o(i.nsAPI_USB_ReqGetDescriptor)
+    i.nsAPI_USB_ReqGetStatus                 0x00003d54   Section        0  usbcore.o(i.nsAPI_USB_ReqGetStatus)
+    i.nsAPI_USB_ReqSetClrFeature             0x00003e18   Section        0  usbcore.o(i.nsAPI_USB_ReqSetClrFeature)
+    i.nsAPI_USB_ReqSetConfiguration          0x00003f20   Section        0  usbcore.o(i.nsAPI_USB_ReqSetConfiguration)
+    i.nsAPI_USB_ReqSetInterface              0x000040e4   Section        0  usbcore.o(i.nsAPI_USB_ReqSetInterface)
+    .constdata                               0x00004230   Section      188  usbdesc.o(.constdata)
+    .constdata                               0x000042ec   Section       20  usbuser.o(.constdata)
+    .constdata                               0x00004300   Section      734  keytbl.o(.constdata)
+    .constdata                               0x000045de   Section        2  srom.o(.constdata)
+    .ARM.__at_0x00006000                     0x00006000   Section     4096  srom.o(.ARM.__at_0x00006000)
+    .data                                    0x10000000   Section        3  gpio.o(.data)
+    temp_prev                                0x10000000   Data           2  gpio.o(.data)
+    same_event_counter                       0x10000002   Data           1  gpio.o(.data)
+    .data                                    0x10000003   Section        2  hiduser.o(.data)
+    .data                                    0x10000008   Section        4  system_lpc11uxx.o(.data)
+    .data                                    0x1000000c   Section       16  timer16.o(.data)
+    .data                                    0x1000001c   Section       16  usbcore.o(.data)
+    ready_flash_flag                         0x1000001e   Data           1  usbcore.o(.data)
+    sromCntr                                 0x10000020   Data           2  usbcore.o(.data)
+    flash_sector_address                     0x10000024   Data           4  usbcore.o(.data)
+    flash_address_offset                     0x10000028   Data           4  usbcore.o(.data)
+    .data                                    0x1000002c   Section        1  main.o(.data)
+    .data                                    0x1000002e   Section       46  pixart_sensor.o(.data)
+    cpiTemp                                  0x10000056   Data           1  pixart_sensor.o(.data)
+    trigger_send_cpi_click                   0x10000057   Data           1  pixart_sensor.o(.data)
+    ZA_PRE                                   0x10000058   Data           1  pixart_sensor.o(.data)
+    ZB_PRE                                   0x10000059   Data           1  pixart_sensor.o(.data)
+    temp_z_up_trend                          0x1000005a   Data           1  pixart_sensor.o(.data)
+    temp_z_down_trend                        0x1000005b   Data           1  pixart_sensor.o(.data)
+    .bss                                     0x1000005c   Section       12  gpio.o(.bss)
+    .bss                                     0x10000068   Section       16  timer16.o(.bss)
+    .bss                                     0x10000078   Section       16  timer32.o(.bss)
+    .bss                                     0x10000088   Section       28  uart.o(.bss)
+    .bss                                     0x100000a4   Section      356  usbcore.o(.bss)
+    .bss                                     0x10000208   Section       72  usbhw.o(.bss)
+    .bss                                     0x10000250   Section       40  main.o(.bss)
+    .bss                                     0x10000278   Section       18  i2c.o(.bss)
+    .bss                                     0x1000028c   Section      276  flash.o(.bss)
+    STACK                                    0x100003a0   Section      512  startup_lpc11uxx.o(STACK)
+
+    Global Symbols
+
+    Symbol Name                              Value     Ov Type        Size  Object(Section)
+
+    BuildAttributes$$THM_ISAv3M$S$PE$A:L22$X:L11$S22$IEEE1$IW$USESV6$~STKCKD$USESV7$~SHL$OSPACE$EBA8$MICROLIB$REQ8$PRES8$EABIv2 0x00000000   Number         0  anon$$obj.o ABSOLUTE
+    __ARM_use_no_argv                        0x00000000   Number         0  main.o ABSOLUTE
+    __Vectors                                0x00000000   Data           4  startup_lpc11uxx.o(RESET)
+    __arm_fini_                               - Undefined Weak Reference
+    __cpp_initialize__aeabi_                  - Undefined Weak Reference
+    __cxa_finalize                            - Undefined Weak Reference
+    __decompress                              - Undefined Weak Reference
+    _clock_init                               - Undefined Weak Reference
+    _microlib_exit                            - Undefined Weak Reference
+    __main                                   0x000000c1   Thumb Code     0  entry.o(.ARM.Collect$$$$00000000)
+    _main_stk                                0x000000c1   Thumb Code     0  entry2.o(.ARM.Collect$$$$00000001)
+    _main_scatterload                        0x000000c5   Thumb Code     0  entry5.o(.ARM.Collect$$$$00000004)
+    __main_after_scatterload                 0x000000c9   Thumb Code     0  entry5.o(.ARM.Collect$$$$00000004)
+    _main_clock                              0x000000c9   Thumb Code     0  entry7b.o(.ARM.Collect$$$$00000008)
+    _main_cpp_init                           0x000000c9   Thumb Code     0  entry8b.o(.ARM.Collect$$$$0000000A)
+    _main_init                               0x000000c9   Thumb Code     0  entry9a.o(.ARM.Collect$$$$0000000B)
+    __rt_lib_shutdown_fini                   0x000000d1   Thumb Code     0  entry12b.o(.ARM.Collect$$$$0000000E)
+    __rt_final_cpp                           0x000000d5   Thumb Code     0  entry10a.o(.ARM.Collect$$$$0000000F)
+    __rt_final_exit                          0x000000d5   Thumb Code     0  entry11a.o(.ARM.Collect$$$$00000011)
+    FLEX_INT0_IRQHandler                     0x000000d9   Thumb Code     4  gpio.o(.text)
+    FLEX_INT1_IRQHandler                     0x000000dd   Thumb Code     4  gpio.o(.text)
+    FLEX_INT2_IRQHandler                     0x000000e1   Thumb Code     4  gpio.o(.text)
+    FLEX_INT3_IRQHandler                     0x000000e5   Thumb Code     4  gpio.o(.text)
+    FLEX_INT4_IRQHandler                     0x000000e9   Thumb Code     4  gpio.o(.text)
+    FLEX_INT5_IRQHandler                     0x000000ed   Thumb Code     4  gpio.o(.text)
+    FLEX_INT6_IRQHandler                     0x000000f1   Thumb Code     4  gpio.o(.text)
+    FLEX_INT7_IRQHandler                     0x000000f5   Thumb Code     4  gpio.o(.text)
+    GINT0_IRQHandler                         0x000000f9   Thumb Code     2  gpio.o(.text)
+    GINT1_IRQHandler                         0x000000fb   Thumb Code     2  gpio.o(.text)
+    NDrv_GPIO_SetDir                         0x000000fd   Thumb Code    78  gpio.o(.text)
+    nsAPI_GPIO_Init                          0x0000014b   Thumb Code   736  gpio.o(.text)
+    NDrv_GPIO_SetBitValue                    0x0000042b   Thumb Code    46  gpio.o(.text)
+    nsAPI_GPIO_GetPinValue                   0x00000459   Thumb Code    50  gpio.o(.text)
+    nsAPI_GPIO_LEDSetting                    0x0000048b   Thumb Code    20  gpio.o(.text)
+    nsAPI_GPIO_ScanButton                    0x0000049f   Thumb Code   188  gpio.o(.text)
+    nsAPI_GPIO_ChangingIndex                 0x0000055b   Thumb Code    56  gpio.o(.text)
+    nsAPI_GPIO_MouseButtonMonitor            0x00000593   Thumb Code   232  gpio.o(.text)
+    nsAPI_GPIO_Get_QIE                       0x0000067b   Thumb Code   226  gpio.o(.text)
+    nsAPI_GPIO_QIE_Monitor                   0x0000075d   Thumb Code    20  gpio.o(.text)
+    nsAPI_GPIO_MacroKey_Monitor              0x00000771   Thumb Code     2  gpio.o(.text)
+    HID_GetReport                            0x00000785   Thumb Code    48  hiduser.o(.text)
+    HID_SetReport                            0x000007b5   Thumb Code    48  hiduser.o(.text)
+    HID_GetIdle                              0x000007e5   Thumb Code    18  hiduser.o(.text)
+    HID_SetIdle                              0x000007f7   Thumb Code    14  hiduser.o(.text)
+    HID_GetProtocol                          0x00000805   Thumb Code    14  hiduser.o(.text)
+    HID_SetProtocol                          0x00000813   Thumb Code    12  hiduser.o(.text)
+    nsAPI_System_Init                        0x00000831   Thumb Code   328  system_lpc11uxx.o(.text)
+    TIMER16_0_IRQHandler                     0x00000989   Thumb Code   180  timer16.o(.text)
+    TIMER16_1_IRQHandler                     0x00000a3d   Thumb Code    38  timer16.o(.text)
+    NDrv_Timer16_Enable                      0x00000a63   Thumb Code    20  timer16.o(.text)
+    NDrv_Timer16_Reset                       0x00000a77   Thumb Code    34  timer16.o(.text)
+    NDrv_Timer16_Disable                     0x00000a99   Thumb Code    20  timer16.o(.text)
+    nsAPI_Timer16_Init                       0x00000aad   Thumb Code   148  timer16.o(.text)
+    TIMER32_0_IRQHandler                     0x00000ba9   Thumb Code   152  timer32.o(.text)
+    TIMER32_1_IRQHandler                     0x00000c41   Thumb Code   146  timer32.o(.text)
+    NDrv_Timer32_Enable                      0x00000cd3   Thumb Code    20  timer32.o(.text)
+    NDrv_Timer32_Disable                     0x00000ce7   Thumb Code    20  timer32.o(.text)
+    NDrv_Timer32_Reset                       0x00000cfb   Thumb Code    34  timer32.o(.text)
+    nsAPI_Timer32_Setting_MatchFunction      0x00000d1d   Thumb Code   338  timer32.o(.text)
+    nsAPI_Timer32PWM_Breathing_ReSetting     0x00000e6f   Thumb Code    30  timer32.o(.text)
+    nsAPI_Timer32PWM_Init                    0x00000e8d   Thumb Code   214  timer32.o(.text)
+    NDrv_Timer32PWM_ReSettingMatch           0x00000f63   Thumb Code    98  timer32.o(.text)
+    NDrv_Timer32PWM_Breathing                0x00000fc5   Thumb Code   144  timer32.o(.text)
+    init_timer32                             0x00001055   Thumb Code    98  timer32.o(.text)
+    UART_IRQHandler                          0x000010cd   Thumb Code   254  uart.o(.text)
+    nsAPI_UART_Init                          0x000011cb   Thumb Code   216  uart.o(.text)
+    nsAPI_UART_Send                          0x000012a3   Thumb Code    32  uart.o(.text)
+    xprintf                                  0x000012c3   Thumb Code   204  uart.o(.text)
+    nsAPI_USB_ResetCore                      0x000013ad   Thumb Code    30  usbcore.o(.text)
+    nsAPI_USB_SetupStage                     0x000013cb   Thumb Code    14  usbcore.o(.text)
+    nsAPI_USB_DataInStage                    0x000013d9   Thumb Code    64  usbcore.o(.text)
+    nsAPI_USB_DataOutStage                   0x00001419   Thumb Code    32  usbcore.o(.text)
+    nsAPI_USB_StatusInStage                  0x00001439   Thumb Code    14  usbcore.o(.text)
+    nsAPI_USB_StatusOutStage                 0x00001447   Thumb Code    14  usbcore.o(.text)
+    nsAPI_USBCore_Stall_i                    0x00001455   Thumb Code    18  usbcore.o(.text)
+    nsAPI_USB_EndPoint0                      0x00001467   Thumb Code  1662  usbcore.o(.text)
+    NDrv_USB_IOClkConfig                     0x00001b1b   Thumb Code    72  usbhw.o(.text)
+    USB_GetEPCmdStatusPtr                    0x00001b63   Thumb Code    20  usbhw.o(.text)
+    NDrv_USB_EPInit                          0x00001b77   Thumb Code   198  usbhw.o(.text)
+    NDrv_USB_Connect                         0x00001c3d   Thumb Code    36  usbhw.o(.text)
+    NDrv_USB_Reset                           0x00001c61   Thumb Code    38  usbhw.o(.text)
+    nsAPI_USB_Init                           0x00001c87   Thumb Code    44  usbhw.o(.text)
+    USB_Suspend                              0x00001cb3   Thumb Code     2  usbhw.o(.text)
+    USB_Resume                               0x00001cb5   Thumb Code     2  usbhw.o(.text)
+    USB_WakeUp                               0x00001cb7   Thumb Code    26  usbhw.o(.text)
+    NDrv_USB_WakeUpCfg                       0x00001cd1   Thumb Code     4  usbhw.o(.text)
+    nsAPI_USB_SetAddress                     0x00001cd5   Thumb Code    28  usbhw.o(.text)
+    NDrv_USB_Configure                       0x00001cf1   Thumb Code    20  usbhw.o(.text)
+    nsAPI_USB_DeactivateEP                   0x00001d05   Thumb Code    44  usbhw.o(.text)
+    nsAPI_USB_EnableEP                       0x00001d31   Thumb Code   128  usbhw.o(.text)
+    nsAPI_USB_DisableEP                      0x00001db1   Thumb Code    66  usbhw.o(.text)
+    nsAPI_USB_ResetEP                        0x00001df3   Thumb Code    64  usbhw.o(.text)
+    nsAPI_USB_SetStallEP                     0x00001e33   Thumb Code   146  usbhw.o(.text)
+    nsAPI_USB_ClrStallEP                     0x00001ec5   Thumb Code   210  usbhw.o(.text)
+    nsAPI_USB_ReadSetupEP                    0x00001f97   Thumb Code   114  usbhw.o(.text)
+    nsAPI_USB_ReadEP                         0x00002009   Thumb Code   330  usbhw.o(.text)
+    nsAPI_USB_WriteEP                        0x00002153   Thumb Code   246  usbhw.o(.text)
+    wnDrv_Usb_ClrGetReqStatus                0x00002249   Thumb Code    22  usbhw.o(.text)
+    USB_IRQHandler                           0x0000225f   Thumb Code   238  usbhw.o(.text)
+    wnDrv_Usb_EP_Status                      0x0000234d   Thumb Code    80  usbhw.o(.text)
+    USB_Reset_Event                          0x000023a1   Thumb Code     8  usbuser.o(.text)
+    USB_Suspend_Event                        0x000023a9   Thumb Code     2  usbuser.o(.text)
+    USB_Resume_Event                         0x000023ab   Thumb Code     2  usbuser.o(.text)
+    nsAPI_USB_Configure_Event                0x000023ad   Thumb Code    22  usbuser.o(.text)
+    nsAPI_USB_EndPoint1                      0x000023c3   Thumb Code    48  usbuser.o(.text)
+    nsAPI_USB_EndPoint2                      0x000023f3   Thumb Code    48  usbuser.o(.text)
+    nsAPI_USB_EndPoint3                      0x00002423   Thumb Code    48  usbuser.o(.text)
+    nsAPI_USB_EndPoint4                      0x00002453   Thumb Code    48  usbuser.o(.text)
+    nsAPI_USB_EndPointClr                    0x00002483   Thumb Code    18  usbuser.o(.text)
+    Reset_Handler                            0x0000249d   Thumb Code     4  startup_lpc11uxx.o(.text)
+    HardFault_Handler                        0x000024a1   Thumb Code     2  startup_lpc11uxx.o(.text)
+    SVC_Handler                              0x000024a3   Thumb Code     2  startup_lpc11uxx.o(.text)
+    PendSV_Handler                           0x000024a5   Thumb Code     2  startup_lpc11uxx.o(.text)
+    Reserved_IRQHandler                      0x000024a7   Thumb Code     2  startup_lpc11uxx.o(.text)
+    ADC_IRQHandler                           0x000024a9   Thumb Code     0  startup_lpc11uxx.o(.text)
+    BOD_IRQHandler                           0x000024a9   Thumb Code     0  startup_lpc11uxx.o(.text)
+    FMC_IRQHandler                           0x000024a9   Thumb Code     0  startup_lpc11uxx.o(.text)
+    NMI_Handler                              0x000024a9   Thumb Code     0  startup_lpc11uxx.o(.text)
+    USBWakeup_IRQHandler                     0x000024a9   Thumb Code     0  startup_lpc11uxx.o(.text)
+    USB_FIQHandler                           0x000024a9   Thumb Code     0  startup_lpc11uxx.o(.text)
+    WDT_IRQHandler                           0x000024a9   Thumb Code     0  startup_lpc11uxx.o(.text)
+    nsAPI_Main_GetInReport                   0x000024b1   Thumb Code     8  main.o(.text)
+    nsAPI_Main_GetInMouseButtonReport        0x000024b9   Thumb Code    72  main.o(.text)
+    nsAPI_Main_GetInMouseQIEReport           0x00002501   Thumb Code    18  main.o(.text)
+    SetOutReport                             0x00002513   Thumb Code     2  main.o(.text)
+    Mapp_Main_Init                           0x00002515   Thumb Code    14  main.o(.text)
+    main                                     0x00002523   Thumb Code    88  main.o(.text)
+    nsAPI_Main_Clr_MouseEvent                0x0000257b   Thumb Code    60  main.o(.text)
+    nsAPI_Main_MouseEventHandle              0x000025b7   Thumb Code   128  main.o(.text)
+    SSP0_IRQHandler                          0x00002679   Thumb Code     2  ssp.o(.text)
+    SSP1_IRQHandler                          0x0000267b   Thumb Code     2  ssp.o(.text)
+    nsAPI_SSP_Init                           0x0000267d   Thumb Code   186  ssp.o(.text)
+    nsAPI_SSP_Send                           0x00002737   Thumb Code    48  ssp.o(.text)
+    nsAPI_SSP_Receive                        0x00002767   Thumb Code    28  ssp.o(.text)
+    SysTick_Handler                          0x00002799   Thumb Code     2  systick.o(.text)
+    nsAPI_SysTick_Init                       0x0000279b   Thumb Code   110  systick.o(.text)
+    I2C_IRQHandler                           0x00002891   Thumb Code   458  i2c.o(.text)
+    NDrv_API_I2C_Start                       0x00002a5b   Thumb Code    48  i2c.o(.text)
+    NDrv_API_I2C_Stop                        0x00002a8b   Thumb Code    28  i2c.o(.text)
+    nsAPI_I2C_Init                           0x00002aa7   Thumb Code   166  i2c.o(.text)
+    nsAPI_I2C_Write                          0x00002b4d   Thumb Code    52  i2c.o(.text)
+    nsAPI_I2C_Read                           0x00002b81   Thumb Code    52  i2c.o(.text)
+    nsAPI_I2C_Write_Database                 0x00002bb5   Thumb Code    30  i2c.o(.text)
+    nsAPI_I2C_Read_Database                  0x00002bd3   Thumb Code    28  i2c.o(.text)
+    nsAPI_SSP_Delay1us                       0x00002c0d   Thumb Code    24  pixart_sensor.o(.text)
+    nsAPI_SSP_Sensor_Read                    0x00002c25   Thumb Code   146  pixart_sensor.o(.text)
+    nsAPI_SSP_Sensor_Write                   0x00002cb7   Thumb Code    90  pixart_sensor.o(.text)
+    nsAPI_SSP_Sensor_LoadSROM                0x00002d11   Thumb Code   134  pixart_sensor.o(.text)
+    nsAPI_Sensor_Hard_Reset                  0x00002d97   Thumb Code    66  pixart_sensor.o(.text)
+    nsAPI_SSP_Sensor_Init                    0x00002dd9   Thumb Code  1370  pixart_sensor.o(.text)
+    esd_Check                                0x00003333   Thumb Code    52  pixart_sensor.o(.text)
+    nsAPI_SSP_Sensor_Monitor                 0x00003367   Thumb Code   576  pixart_sensor.o(.text)
+    nsAPI_MouseScanButton                    0x000035a7   Thumb Code   584  pixart_sensor.o(.text)
+    Z_Wheel                                  0x000037ef   Thumb Code   192  pixart_sensor.o(.text)
+    msAPI_Flash_PrepareSec                   0x000038dd   Thumb Code    40  flash.o(.text)
+    msAPI_Flash_CopyRAM2Flash                0x00003905   Thumb Code    38  flash.o(.text)
+    msAPI_Flash_EraseSec                     0x0000392b   Thumb Code    44  flash.o(.text)
+    nsAPI_Flash_EraseAppSector               0x00003957   Thumb Code    28  flash.o(.text)
+    _XRead                                   0x00003973   Thumb Code     8  flash.o(.text)
+    nsAPI_Flash_IsUpgrade                    0x0000397b   Thumb Code    32  flash.o(.text)
+    nsAPI_Flash_AppPresent                   0x0000399b   Thumb Code    82  flash.o(.text)
+    nsAPI_Flash_Jump2AppSector               0x000039ed   Thumb Code    10  flash.o(.text)
+    nsAPI_Flash_BootBurn2Flash               0x000039f7   Thumb Code   134  flash.o(.text)
+    Write_In_Flash                           0x00003a7d   Thumb Code    82  flash.o(.text)
+    nsAPI_Flash_CopyData2Buf                 0x00003acf   Thumb Code    48  flash.o(.text)
+    __aeabi_uidiv                            0x00003b21   Thumb Code     0  uidiv.o(.text)
+    __aeabi_uidivmod                         0x00003b21   Thumb Code    44  uidiv.o(.text)
+    __aeabi_idiv                             0x00003b4d   Thumb Code     0  idiv.o(.text)
+    __aeabi_idivmod                          0x00003b4d   Thumb Code    40  idiv.o(.text)
+    __aeabi_memset                           0x00003b75   Thumb Code    14  memseta.o(.text)
+    __aeabi_memset4                          0x00003b75   Thumb Code     0  memseta.o(.text)
+    __aeabi_memset8                          0x00003b75   Thumb Code     0  memseta.o(.text)
+    __aeabi_memclr                           0x00003b83   Thumb Code     4  memseta.o(.text)
+    __aeabi_memclr4                          0x00003b83   Thumb Code     0  memseta.o(.text)
+    __aeabi_memclr8                          0x00003b83   Thumb Code     0  memseta.o(.text)
+    _memset$wrapper                          0x00003b87   Thumb Code    18  memseta.o(.text)
+    __aeabi_uread4                           0x00003b99   Thumb Code    20  uread4.o(.text)
+    __rt_uread4                              0x00003b99   Thumb Code     0  uread4.o(.text)
+    _uread4                                  0x00003b99   Thumb Code     0  uread4.o(.text)
+    __aeabi_uwrite4                          0x00003bad   Thumb Code    18  uwrite4.o(.text)
+    __rt_uwrite4                             0x00003bad   Thumb Code     0  uwrite4.o(.text)
+    _uwrite4                                 0x00003bad   Thumb Code     0  uwrite4.o(.text)
+    __scatterload                            0x00003bc1   Thumb Code    28  init.o(.text)
+    __scatterload_rt2                        0x00003bc1   Thumb Code     0  init.o(.text)
+    __ARM_common_switch8                     0x00003be5   Thumb Code    28  usbcore.o(i.__ARM_common_switch8)
+    __scatterload_copy                       0x00003c01   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x00003c0f   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x00003c11   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    nsAPI_USB_ReqGetDescriptor               0x00003c21   Thumb Code   284  usbcore.o(i.nsAPI_USB_ReqGetDescriptor)
+    nsAPI_USB_ReqGetStatus                   0x00003d55   Thumb Code   190  usbcore.o(i.nsAPI_USB_ReqGetStatus)
+    nsAPI_USB_ReqSetClrFeature               0x00003e19   Thumb Code   258  usbcore.o(i.nsAPI_USB_ReqSetClrFeature)
+    nsAPI_USB_ReqSetConfiguration            0x00003f21   Thumb Code   440  usbcore.o(i.nsAPI_USB_ReqSetConfiguration)
+    nsAPI_USB_ReqSetInterface                0x000040e5   Thumb Code   322  usbcore.o(i.nsAPI_USB_ReqSetInterface)
+    HID_ReportDescriptorMouse                0x00004230   Data          64  usbdesc.o(.constdata)
+    HID_ReportDescMouseSize                  0x00004270   Data           2  usbdesc.o(.constdata)
+    USB_DeviceDescriptor                     0x00004272   Data          18  usbdesc.o(.constdata)
+    USB_ConfigDescriptor                     0x00004284   Data          34  usbdesc.o(.constdata)
+    USB_StringDescriptor                     0x000042a6   Data          70  usbdesc.o(.constdata)
+    USB_P_EP                                 0x000042ec   Data          20  usbuser.o(.constdata)
+    u8MouseKeyTable                          0x00004300   Data         254  keytbl.o(.constdata)
+    u8KeyboardKeyTable                       0x000043fe   Data         480  keytbl.o(.constdata)
+    sromTableSize                            0x000045de   Data           2  srom.o(.constdata)
+    Region$$Table$$Base                      0x000045e0   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x00004600   Number         0  anon$$obj.o(Region$$Table)
+    SROM                                     0x00006000   Data        4096  srom.o(.ARM.__at_0x00006000)
+    HID_Protocol                             0x10000003   Data           1  hiduser.o(.data)
+    HID_IdleTime                             0x10000004   Data           1  hiduser.o(.data)
+    SystemCoreClock                          0x10000008   Data           4  system_lpc11uxx.o(.data)
+    poll_tick_btn                            0x1000000c   Data           2  timer16.o(.data)
+    poll_usb                                 0x1000000e   Data           2  timer16.o(.data)
+    poll_id                                  0x10000010   Data           2  timer16.o(.data)
+    poll_z_wheel                             0x10000012   Data           2  timer16.o(.data)
+    glitch_prevention                        0x10000014   Data           2  timer16.o(.data)
+    cpi_clicked_flag                         0x10000016   Data           2  timer16.o(.data)
+    poll_motion                              0x10000018   Data           2  timer16.o(.data)
+    poll_counter                             0x1000001a   Data           2  timer16.o(.data)
+    usb_reg_addr                             0x1000001c   Data           1  usbcore.o(.data)
+    usb_reg_data                             0x1000001d   Data           1  usbcore.o(.data)
+    mouse_event_ctrl                         0x1000002c   Data           1  main.o(.data)
+    flagOne                                  0x1000002e   Data           1  pixart_sensor.o(.data)
+    u8motion                                 0x1000002f   Data           1  pixart_sensor.o(.data)
+    u8Squal                                  0x10000030   Data           1  pixart_sensor.o(.data)
+    u8PixelSum                               0x10000031   Data           1  pixart_sensor.o(.data)
+    s16accuX                                 0x10000032   Data           2  pixart_sensor.o(.data)
+    s16accuY                                 0x10000034   Data           2  pixart_sensor.o(.data)
+    report1ms_data_x                         0x10000036   Data           2  pixart_sensor.o(.data)
+    report1ms_data_y                         0x10000038   Data           2  pixart_sensor.o(.data)
+    stop_motion                              0x1000003a   Data           1  pixart_sensor.o(.data)
+    u16Pixel                                 0x1000003c   Data           2  pixart_sensor.o(.data)
+    u16Shutter                               0x1000003e   Data           2  pixart_sensor.o(.data)
+    count_z                                  0x10000040   Data           1  pixart_sensor.o(.data)
+    cpi_p_Cntr                               0x10000041   Data           1  pixart_sensor.o(.data)
+    cpi_m_Cntr                               0x10000042   Data           1  pixart_sensor.o(.data)
+    VarA                                     0x10000043   Data           1  pixart_sensor.o(.data)
+    VarB                                     0x10000044   Data           1  pixart_sensor.o(.data)
+    not_read                                 0x10000045   Data           1  pixart_sensor.o(.data)
+    motion_sync_counter                      0x10000046   Data           2  pixart_sensor.o(.data)
+    test_A                                   0x10000048   Data           2  pixart_sensor.o(.data)
+    u8temp                                   0x1000004a   Data           6  pixart_sensor.o(.data)
+    tempBurst                                0x10000050   Data           1  pixart_sensor.o(.data)
+    u16temp_x                                0x10000052   Data           2  pixart_sensor.o(.data)
+    u16temp_y                                0x10000054   Data           2  pixart_sensor.o(.data)
+    g_GpioButtonEvent                        0x1000005c   Data          12  gpio.o(.bss)
+    g_Timer16_Setting                        0x10000068   Data          16  timer16.o(.bss)
+    g_Timer32_LED_Setting                    0x10000078   Data          16  timer32.o(.bss)
+    g_Uart_Setting                           0x10000088   Data          28  uart.o(.bss)
+    g_USBCore_Setting                        0x100000a4   Data         100  usbcore.o(.bss)
+    usbSROM                                  0x10000108   Data         256  usbcore.o(.bss)
+    g_USBHW_Setting                          0x10000208   Data          72  usbhw.o(.bss)
+    g_Main_Setting                           0x10000250   Data          40  main.o(.bss)
+    g_I2C_Setting                            0x10000278   Data          18  i2c.o(.bss)
+    g_BootloaderSetting                      0x1000028c   Data         276  flash.o(.bss)
+    __initial_sp                             0x100005a0   Data           0  startup_lpc11uxx.o(STACK)
+
+
+
+==============================================================================
+
+Memory Map of the image
+
+  Image Entry point : 0x000000c1
+
+  Load Region LR_IROM1 (Base: 0x00000000, Size: 0x0000465c, Max: 0x00005000, ABSOLUTE)
+
+    Execution Region ER_IROM1 (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00004600, Max: 0x00005000, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x00000000   0x00000000   0x000000c0   Data   RO          455    RESET               startup_lpc11uxx.o
+    0x000000c0   0x000000c0   0x00000000   Code   RO          643  * .ARM.Collect$$$$00000000  mc_p.l(entry.o)
+    0x000000c0   0x000000c0   0x00000004   Code   RO          656    .ARM.Collect$$$$00000001  mc_p.l(entry2.o)
+    0x000000c4   0x000000c4   0x00000004   Code   RO          659    .ARM.Collect$$$$00000004  mc_p.l(entry5.o)
+    0x000000c8   0x000000c8   0x00000000   Code   RO          661    .ARM.Collect$$$$00000008  mc_p.l(entry7b.o)
+    0x000000c8   0x000000c8   0x00000000   Code   RO          663    .ARM.Collect$$$$0000000A  mc_p.l(entry8b.o)
+    0x000000c8   0x000000c8   0x00000008   Code   RO          664    .ARM.Collect$$$$0000000B  mc_p.l(entry9a.o)
+    0x000000d0   0x000000d0   0x00000004   Code   RO          671    .ARM.Collect$$$$0000000E  mc_p.l(entry12b.o)
+    0x000000d4   0x000000d4   0x00000000   Code   RO          666    .ARM.Collect$$$$0000000F  mc_p.l(entry10a.o)
+    0x000000d4   0x000000d4   0x00000000   Code   RO          668    .ARM.Collect$$$$00000011  mc_p.l(entry11a.o)
+    0x000000d4   0x000000d4   0x00000004   Code   RO          657    .ARM.Collect$$$$00002712  mc_p.l(entry2.o)
+    0x000000d8   0x000000d8   0x000006ac   Code   RO           13    .text               gpio.o
+    0x00000784   0x00000784   0x000000ac   Code   RO          133    .text               hiduser.o
+    0x00000830   0x00000830   0x00000158   Code   RO          169    .text               system_lpc11uxx.o
+    0x00000988   0x00000988   0x00000220   Code   RO          239    .text               timer16.o
+    0x00000ba8   0x00000ba8   0x00000524   Code   RO          273    .text               timer32.o
+    0x000010cc   0x000010cc   0x000002e0   Code   RO          295    .text               uart.o
+    0x000013ac   0x000013ac   0x0000075c   Code   RO          317    .text               usbcore.o
+    0x00001b08   0x00001b08   0x00000898   Code   RO          398    .text               usbhw.o
+    0x000023a0   0x000023a0   0x000000fc   Code   RO          423    .text               usbuser.o
+    0x0000249c   0x0000249c   0x00000014   Code   RO          456    .text               startup_lpc11uxx.o
+    0x000024b0   0x000024b0   0x000001c8   Code   RO          461    .text               main.o
+    0x00002678   0x00002678   0x00000120   Code   RO          489    .text               ssp.o
+    0x00002798   0x00002798   0x000000f8   Code   RO          508    .text               systick.o
+    0x00002890   0x00002890   0x0000037c   Code   RO          554    .text               i2c.o
+    0x00002c0c   0x00002c0c   0x00000cd0   Code   RO          579    .text               pixart_sensor.o
+    0x000038dc   0x000038dc   0x00000244   Code   RO          602    .text               flash.o
+    0x00003b20   0x00003b20   0x0000002c   Code   RO          646    .text               mc_p.l(uidiv.o)
+    0x00003b4c   0x00003b4c   0x00000028   Code   RO          648    .text               mc_p.l(idiv.o)
+    0x00003b74   0x00003b74   0x00000024   Code   RO          650    .text               mc_p.l(memseta.o)
+    0x00003b98   0x00003b98   0x00000014   Code   RO          652    .text               mc_p.l(uread4.o)
+    0x00003bac   0x00003bac   0x00000012   Code   RO          654    .text               mc_p.l(uwrite4.o)
+    0x00003bbe   0x00003bbe   0x00000002   PAD
+    0x00003bc0   0x00003bc0   0x00000024   Code   RO          672    .text               mc_p.l(init.o)
+    0x00003be4   0x00003be4   0x0000001c   Code   RO          363    i.__ARM_common_switch8  usbcore.o
+    0x00003c00   0x00003c00   0x0000000e   Code   RO          676    i.__scatterload_copy  mc_p.l(handlers.o)
+    0x00003c0e   0x00003c0e   0x00000002   Code   RO          677    i.__scatterload_null  mc_p.l(handlers.o)
+    0x00003c10   0x00003c10   0x0000000e   Code   RO          678    i.__scatterload_zeroinit  mc_p.l(handlers.o)
+    0x00003c1e   0x00003c1e   0x00000002   PAD
+    0x00003c20   0x00003c20   0x00000134   Code   RO          345    i.nsAPI_USB_ReqGetDescriptor  usbcore.o
+    0x00003d54   0x00003d54   0x000000c4   Code   RO          333    i.nsAPI_USB_ReqGetStatus  usbcore.o
+    0x00003e18   0x00003e18   0x00000108   Code   RO          339    i.nsAPI_USB_ReqSetClrFeature  usbcore.o
+    0x00003f20   0x00003f20   0x000001c4   Code   RO          351    i.nsAPI_USB_ReqSetConfiguration  usbcore.o
+    0x000040e4   0x000040e4   0x0000014c   Code   RO          357    i.nsAPI_USB_ReqSetInterface  usbcore.o
+    0x00004230   0x00004230   0x000000bc   Data   RO          381    .constdata          usbdesc.o
+    0x000042ec   0x000042ec   0x00000014   Data   RO          424    .constdata          usbuser.o
+    0x00004300   0x00004300   0x000002de   Data   RO          537    .constdata          keytbl.o
+    0x000045de   0x000045de   0x00000002   Data   RO          631    .constdata          srom.o
+    0x000045e0   0x000045e0   0x00000020   Data   RO          674    Region$$Table       anon$$obj.o
+
+
+    Execution Region RW_IRAM2 (Exec base: 0x00005000, Load base: 0x0000465c, Size: 0x00000000, Max: 0x00000100, ABSOLUTE)
+
+    **** No section assigned to this execution region ****
+
+
+    Execution Region RW_IRAM1 (Exec base: 0x10000000, Load base: 0x00004600, Size: 0x000005a0, Max: 0x00002000, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x10000000   0x00004600   0x00000003   Data   RW           15    .data               gpio.o
+    0x10000003   0x00004603   0x00000002   Data   RW          134    .data               hiduser.o
+    0x10000005   0x00004605   0x00000003   PAD
+    0x10000008   0x00004608   0x00000004   Data   RW          170    .data               system_lpc11uxx.o
+    0x1000000c   0x0000460c   0x00000010   Data   RW          241    .data               timer16.o
+    0x1000001c   0x0000461c   0x00000010   Data   RW          319    .data               usbcore.o
+    0x1000002c   0x0000462c   0x00000001   Data   RW          463    .data               main.o
+    0x1000002d   0x0000462d   0x00000001   PAD
+    0x1000002e   0x0000462e   0x0000002e   Data   RW          580    .data               pixart_sensor.o
+    0x1000005c        -       0x0000000c   Zero   RW           14    .bss                gpio.o
+    0x10000068        -       0x00000010   Zero   RW          240    .bss                timer16.o
+    0x10000078        -       0x00000010   Zero   RW          274    .bss                timer32.o
+    0x10000088        -       0x0000001c   Zero   RW          296    .bss                uart.o
+    0x100000a4        -       0x00000164   Zero   RW          318    .bss                usbcore.o
+    0x10000208        -       0x00000048   Zero   RW          399    .bss                usbhw.o
+    0x10000250        -       0x00000028   Zero   RW          462    .bss                main.o
+    0x10000278        -       0x00000012   Zero   RW          555    .bss                i2c.o
+    0x1000028a   0x0000465c   0x00000002   PAD
+    0x1000028c        -       0x00000114   Zero   RW          603    .bss                flash.o
+    0x100003a0        -       0x00000200   Zero   RW          453    STACK               startup_lpc11uxx.o
+
+
+
+  Load Region LR$$.ARM.__at_0x00006000 (Base: 0x00006000, Size: 0x00001000, Max: 0x00001000, ABSOLUTE)
+
+    Execution Region ER$$.ARM.__at_0x00006000 (Exec base: 0x00006000, Load base: 0x00006000, Size: 0x00001000, Max: 0x00001000, ABSOLUTE, UNINIT)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x00006000   0x00006000   0x00001000   Data   RW          630    .ARM.__at_0x00006000  srom.o
+
+
+==============================================================================
+
+Image component sizes
+
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
+
+         0          0          0          0          0       4508   core_cm0.o
+       580         34          0          0        276       6703   flash.o
+      1708         34          0          3         12      20147   gpio.o
+       172         18          0          2          0       3326   hiduser.o
+       892         44          0          0         18       3937   i2c.o
+         0          0        734          0          0        613   keytbl.o
+       456         66          0          1         40       3317   main.o
+      3280        172          0         46          0       5610   pixart_sensor.o
+         0          0          2       4096          0        573   srom.o
+       288         22          0          0          0       1734   ssp.o
+        20          6        192          0        512        568   startup_lpc11uxx.o
+       344         16          0          4          0       2318   system_lpc11uxx.o
+       248         22          0          0          0       8865   systick.o
+       544         74          0         16         16      10791   timer16.o
+      1316         50          0          0         16       4721   timer32.o
+       736         30          0          0         28       3183   uart.o
+      3464        162          0         16        356       9858   usbcore.o
+         0          0        188          0          0        811   usbdesc.o
+      2200         76          0          0         72       8947   usbhw.o
+       252          8         20          0          0       2392   usbuser.o
+
+    ----------------------------------------------------------------------
+     16500        834       1168       4188       1348     102922   Object Totals
+         0          0         32          0          0          0   (incl. Generated)
+         0          0          0          4          2          0   (incl. Padding)
+
+    ----------------------------------------------------------------------
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Member Name
+
+         0          0          0          0          0          0   entry.o
+         0          0          0          0          0          0   entry10a.o
+         0          0          0          0          0          0   entry11a.o
+         4          0          0          0          0          0   entry12b.o
+         8          4          0          0          0          0   entry2.o
+         4          0          0          0          0          0   entry5.o
+         0          0          0          0          0          0   entry7b.o
+         0          0          0          0          0          0   entry8b.o
+         8          4          0          0          0          0   entry9a.o
+        30          0          0          0          0          0   handlers.o
+        40          0          0          0          0         72   idiv.o
+        36          8          0          0          0         68   init.o
+        36          0          0          0          0        100   memseta.o
+        44          0          0          0          0         72   uidiv.o
+        20          0          0          0          0         60   uread4.o
+        18          0          0          0          0         60   uwrite4.o
+
+    ----------------------------------------------------------------------
+       252         16          0          0          0        432   Library Totals
+         4          0          0          0          0          0   (incl. Padding)
+
+    ----------------------------------------------------------------------
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Name
+
+       248         16          0          0          0        432   mc_p.l
+
+    ----------------------------------------------------------------------
+       252         16          0          0          0        432   Library Totals
+
+    ----------------------------------------------------------------------
+
+==============================================================================
+
+
+      Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
+
+     16752        850       1168       4188       1348     101570   Grand Totals
+     16752        850       1168       4188       1348     101570   ELF Image Totals
+     16752        850       1168       4188          0          0   ROM Totals
+
+==============================================================================
+
+    Total RO  Size (Code + RO Data)                17920 (  17.50kB)
+    Total RW  Size (RW Data + ZI Data)              5536 (   5.41kB)
+    Total ROM Size (Code + RO Data + RW Data)      22108 (  21.59kB)
+
+==============================================================================
+

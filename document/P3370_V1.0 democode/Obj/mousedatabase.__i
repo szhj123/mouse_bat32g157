@@ -1,0 +1,1 @@
+-c --cpu Cortex-M0 -D__MICROLIB -g -O0 --apcs=interwork --asm --interleave -I.\Inc -I "C:\Keil\ARM\INC" -I "C:\Keil\ARM\INC\NXP\LPC11Uxx" -D__DEBUG_FLASH -o ".\Obj\mousedatabase.o" --omf_browse ".\Obj\mousedatabase.crf" --depend ".\Obj\mousedatabase.d" "Src\MouseDatabase.c"

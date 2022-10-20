@@ -1,0 +1,13 @@
+.\obj\systick.o: Src\Systick.c
+.\obj\systick.o: .\Inc\LPC11Uxx.h
+.\obj\systick.o: .\Inc\core_cm0.h
+.\obj\systick.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\obj\systick.o: .\Inc\core_cmInstr.h
+.\obj\systick.o: .\Inc\core_cmFunc.h
+.\obj\systick.o: .\Inc\system_LPC11Uxx.h
+.\obj\systick.o: .\Inc\Type.h
+.\obj\systick.o: .\Inc\core_cm0.h
+.\obj\systick.o: .\Inc\Gpio.h
+.\obj\systick.o: .\Inc\Uart.h
+.\obj\systick.o: .\Inc\Systick.h
+.\obj\systick.o: .\Inc\Timer32.h

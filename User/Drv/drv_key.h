@@ -15,8 +15,8 @@
 #define KEY_MOUSE_MIDDLE         0x0003
 #define KEY_MEDIA_FORWARD        0x0004
 #define KEY_MEDIA_BACKWARD       0x0005
-#define KEY_MEDIA_DIP_INC        0x0006
-#define KEY_MEDIA_DIP_DEC        0x0007
+#define KEY_MEDIA_DPI_INC        0x0006
+#define KEY_MEDIA_DPI_DEC        0x0007
 #define KEY_MEDIA_FIRE           0x0008
 #define KEY_MEDIA_REPORT_RATE    0x0009
 

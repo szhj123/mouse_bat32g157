@@ -1,0 +1,9 @@
+.\obj\uart.o: Src\uart.c
+.\obj\uart.o: .\Inc\LPC11Uxx.h
+.\obj\uart.o: .\Inc\core_cm0.h
+.\obj\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\obj\uart.o: .\Inc\core_cmInstr.h
+.\obj\uart.o: .\Inc\core_cmFunc.h
+.\obj\uart.o: .\Inc\system_LPC11Uxx.h
+.\obj\uart.o: .\Inc\Type.h
+.\obj\uart.o: .\Inc\uart.h
