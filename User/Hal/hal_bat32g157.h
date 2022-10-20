@@ -13,6 +13,7 @@
 #include "dma.h"
 #include "spi.h"
 #include "tim4.h"
+#include "tim8.h"
 #include "sci.h"
 #include "flash.h"
 
