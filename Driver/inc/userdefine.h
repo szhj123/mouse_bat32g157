@@ -271,27 +271,27 @@ typedef enum
 }while(0)
 
 #define TO01_PORT_SETTING() do{ \
-        PORT->PC09CFG = PTCFG_TO01; /* allocate TO01 to PC09 */ \
-        PORT->PCLRC =  (1 << 9);    /* PC09 output low level */ \
-        PORT->PMC  &= ~(1 << 9);    /* PC09 is used as TO00 output */ \
-        PORT->POMC &= ~(1 << 9);    /* PC09 is normal output mode */ \
-        PORT->PMCC &= ~(1 << 9);    /* PC09 digital function */ \
+        PORT->PD09CFG = PTCFG_TO01; /* allocate TO01 to PD09 */ \
+        PORT->PCLRD =  (1 << 9);    /* PD09 output low level */ \
+        PORT->PMD  &= ~(1 << 9);    /* PD09 is used as TO00 output */ \
+        PORT->POMD &= ~(1 << 9);    /* PD09 is normal output mode */ \
+        PORT->PMCD &= ~(1 << 9);    /* PD09 digital function */ \
 }while(0)
 
 #define TO02_PORT_SETTING() do{ \
-        PORT->PC10CFG = PTCFG_TO02; /* allocate TO02 to PC10 */ \
-        PORT->PCLRC =  (1 << 10);   /* PC10 output low level */ \
-        PORT->PMC  &= ~(1 << 10);   /* PC10 is used as TO02 output */ \
-        PORT->POMC &= ~(1 << 10);   /* PC10 is normal output mode */ \
-        PORT->PMCC &= ~(1 << 10);   /* PC10 digital function */ \
+        PORT->PD10CFG = PTCFG_TO02; /* allocate TO02 to PD10 */ \
+        PORT->PCLRD =  (1 << 10);   /* PD10 output low level */ \
+        PORT->PMD  &= ~(1 << 10);   /* PD10 is used as TO02 output */ \
+        PORT->POMD &= ~(1 << 10);   /* PD10 is normal output mode */ \
+        PORT->PMCD &= ~(1 << 10);   /* PD10 digital function */ \
 }while(0)
 
 #define TO03_PORT_SETTING() do{ \
-        PORT->PC11CFG = PTCFG_TO03; /* allocate TO03 to PC11 */ \
-        PORT->PCLRC =  (1 << 11);   /* PC11 output low level */ \
-        PORT->PMC  &= ~(1 << 11);   /* PC11 is used as TO03 output */ \
-        PORT->POMC &= ~(1 << 11);   /* PC11 is normal output mode */ \
-        PORT->PMCC &= ~(1 << 11);   /* PC11 digital function */ \
+        PORT->PD11CFG = PTCFG_TO03; /* allocate TO03 to PD11 */ \
+        PORT->PCLRD =  (1 << 11);   /* PD11 output low level */ \
+        PORT->PMD  &= ~(1 << 11);   /* PD11 is used as TO03 output */ \
+        PORT->POMD &= ~(1 << 11);   /* PD11 is normal output mode */ \
+        PORT->PMCD &= ~(1 << 11);   /* PD11 digital function */ \
 }while(0)
 
 /* ================================================================================================================== */

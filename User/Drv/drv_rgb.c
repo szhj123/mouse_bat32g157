@@ -20,5 +20,17 @@
 void Drv_Rgb_Init(void )
 {
     Hal_Rgb_Gpio_Init();
+
+    Hal_Rgb_Pwm_Init();
+
+    Hal_Rgb_Pwm_Set_Duty(255, 0, 0);
+
+    Hal_Rgb_Gpio_Clr(PORTA, PIN0);
+    Hal_Rgb_Gpio_Clr(PORTA, PIN1);
+    Hal_Rgb_Gpio_Clr(PORTA, PIN3);
+    
+    Hal_Rgb_Gpio_Clr(PORTA, PIN12);
+    Hal_Rgb_Gpio_Clr(PORTA, PIN13);
+    Hal_Rgb_Gpio_Clr(PORTA, PIN14);
 }
 
