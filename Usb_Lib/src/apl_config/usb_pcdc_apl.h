@@ -53,7 +53,7 @@ extern uint8_t *gp_apl_string_table[];
  Exported global functions (to be accessed by other files)
  ******************************************************************************/
 
-void    Usb_Init (void);
+void    usb_main (void);
 
 #endif /* USB_PCDC_APL_H */
 /******************************************************************************

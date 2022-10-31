@@ -14,7 +14,7 @@
  *  USB_ECHO              : Loop back(Echo) mode
  *  USB_KEYBOARD          : Keyboard mode
  */
-#define OPERATION_MODE      (USB_KEYBOARD)
+#define OPERATION_MODE      (USB_ECHO)
 
 /** [Select USE power saving control]
  * define               : Use power saving control

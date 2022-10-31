@@ -13,6 +13,7 @@
 #ifndef USB_EXTERN_H
 #define USB_EXTERN_H
 
+#include "usb_basic_mini_config.h"
 
 /*******************************************************************************
  Typedef definitions
@@ -140,7 +141,7 @@ extern uint16_t     g_usb_cstd_bemp_skip[USB_MAX_PIPE_NO + 1u];
  ******************************************************************************/
 extern usb_err_t usb_module_start (void);
 extern usb_err_t usb_module_stop (void);
-extern void      usb_cpu_delay_xms (uint16_t time);
+extern void      usb_cpu_delay_xms (uint32_t time);
 extern void      usb_cpu_delay_1us (uint16_t time);
 extern void      usb_cpu_usbint_init (void);
 extern uint16_t  usb_chattering (uint16_t *p_syssts);
@@ -458,22 +459,35 @@ extern uint16_t  usb_cstd_get_pid (uint16_t pipe);
 #endif /* defined(USB_CFG_HVND_USE) */
 
 #if defined(USB_CFG_HHID_USE)
-    extern void        hid_registration (void);
+    extern void        usb_hhid_registration (void);
     extern uint16_t    usb_hhid_pipe_info(uint8_t *table, uint16_t length);
 #endif /* defined(USB_CFG_HHID_USE) */
 
 #if defined(USB_CFG_HCDC_USE)
-    extern void        cdc_registration(void);                        /* Sample driver registration */
+    extern void        usb_hcdc_registration(void);                        /* Sample driver registration */
     extern void        set_control_line_state(usb_ctrl_t *p_ctrl);
     extern void        get_line_coding(usb_ctrl_t *p_ctrl);
     extern void        usb_hcdc_device_state(uint16_t data, uint16_t state);
     extern uint16_t    usb_hcdc_pipe_info(uint8_t *table, uint16_t length);
 #endif /* defined(USB_CFG_HCDC_USE) */
 
+//#if defined(USB_CFG_HMSC_USE)
+//    extern void        usb_hmsc_strg_cmd_complete(usb_tskinfo_t   *p_mess);
+//    extern uint16_t    USB_HmscStrgDriveSearch (usb_hutr_t *ptr, uint16_t addr, usb_hcb_t complete);
+//    extern void        msc_registration( void );
+//#endif /* defined(USB_CFG_HMSC_USE) */
+
 #if defined(USB_CFG_HMSC_USE)
-    extern void        usb_hmsc_strg_cmd_complete(usb_tskinfo_t   *p_mess);
-    extern uint16_t    USB_HmscStrgDriveSearch (usb_hutr_t *ptr, uint16_t addr, usb_hcb_t complete);
-    extern void        msc_registration( void );
+void      usb_hmsc_registration(void);
+void      usb_hmsc_strg_drive_task (void);
+uint16_t  usb_hmsc_pipe_info(uint8_t *table, uint16_t length);
+#if (BSP_CFG_RTOS_USED != 0)    /* RTOS */
+void      usb_hmsc_driver_start (void);
+void      usb_hmsc_storage_driver_start (void);
+void      usb_hmsc_task (void);
+#else  /* (BSP_CFG_RTOS_USED != 0) */
+void      usb_hmsc_process (usb_tskinfo_t *mess);
+#endif /* (BSP_CFG_RTOS_USED != 0) */
 #endif /* defined(USB_CFG_HMSC_USE) */
 
 #if defined(USB_CFG_PVND_USE)

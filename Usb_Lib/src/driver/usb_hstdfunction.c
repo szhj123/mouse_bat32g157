@@ -11,6 +11,7 @@
 #include "usb_typedef.h"
 #include "usb_reg_access.h"            /* Definition of the USB register access macro */
 #include "usb_extern.h"
+#include "usb.h"
 
 #if defined(USB_CFG_HCDC_USE)
     #include "usb_hcdc.h"
@@ -1972,7 +1973,7 @@ void usb_hstd_host_registration (void)
     #endif /* defined(USB_CFG_HHID_USE) */
 
     #if defined(USB_CFG_HMSC_USE)
-    msc_registration();                         /* Sample driver registration. */
+    usb_hmsc_registration();                         /* Sample driver registration. */
 
     #endif /* defined(USB_CFG_HMSC_USE) */
 

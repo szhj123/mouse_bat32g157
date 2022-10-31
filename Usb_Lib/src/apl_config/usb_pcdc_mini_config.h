@@ -17,8 +17,7 @@
  */
 #define USB_CFG_PCDC_BULK_IN        (USB_PIPE1)
 #define USB_CFG_PCDC_BULK_OUT       (USB_PIPE2)
-//#define USB_CFG_PCDC_INT_IN         (USB_PIPE6)
-#define USB_CFG_PCDC_INT_IN         (USB_PIPE8)	//laidi Composite PCDC and PHID
+#define USB_CFG_PCDC_INT_IN         (USB_PIPE6)
 
 
 #endif  /* USB_PCDC_MINI_CONFIG_H */

@@ -11,6 +11,7 @@ Includes <System Includes> , "Project Includes"
 #include "usb_typedef.h"
 #include "usb_reg_access.h"            /* Definition of the USB register access macro */
 #include "usb_extern.h"
+#include "usb.h"
 
 #if (USB_CFG_MODE & USB_CFG_HOST) == USB_CFG_HOST
 

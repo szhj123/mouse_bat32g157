@@ -3,8 +3,6 @@
  * Description  : USB common macro define header
  ******************************************************************************/
 
-
-
 /*******************************************************************************
  Includes   <System Includes> , "Project Includes"
  ******************************************************************************/
@@ -22,6 +20,10 @@
 
 #define USB_CFG_LITTLE          (0u)
 #define USB_CFG_BIG             (1u)
+
+//usb_basic_define.h
+/* USB bus reset signal output waiting time */
+#define USB_TATTDB          (3000)    /* RX111 (Chapter 7.1.7.3 TATTDB) minimum duration of 100 ms */
 
 
 /*****************************************************************************
@@ -566,7 +568,7 @@
         (usb_cbinfo_t) (CLB), (usb_strct_t)(KEY) ))
 #define USB_REL_BLK(BLK)              (usb_hstd_rel_blk((uint8_t)(BLK)))
 
-#define usb_hstd_scheduler          R_usb_cstd_Scheduler
+//#define usb_hstd_scheduler          	usb_cstd_Scheduler
 
 /* Descriptor size */
 #define USB_DEVICESIZE                  (20u)   /* Device Descriptor size */

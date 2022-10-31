@@ -35,6 +35,7 @@ Includes   <System Includes> , "Project Includes"
 #if defined(USB_CFG_PCDC_USE)
     #include "usb_pcdc_mini_if.h"
 #endif /* defined(USB_CFG_PCDC_USE) */
+
 /*******************************************************************************
  Macro definitions
  ******************************************************************************/

@@ -25,6 +25,7 @@
     #include "usb_phid_mini_config.h"
 #endif /* defined(USB_CFG_PHID_USE) */
 
+
 #if ((USB_CFG_DTC == USB_CFG_ENABLE) || (USB_CFG_DMA == USB_CFG_ENABLE))
     //#include "usb_dmac.h"
 #endif  /* ((USB_CFG_DTC == USB_CFG_ENABLE) || (USB_CFG_DMA == USB_CFG_ENABLE)) */
@@ -1050,6 +1051,21 @@ uint8_t         usb_pstd_get_pipe_no (uint8_t type, uint8_t dir)
 
     #if defined(USB_CFG_PVND_USE)
 
+		if (USB_EP_ISO == type)
+    {
+        /* Interrupt PIPE Loop */
+        /* WAIT_LOOP */
+        for (pipe = USB_ISO_PIPE_START; pipe < (USB_ISO_PIPE_END + 1); pipe++)
+        {
+            /* Check Free pipe */
+            if (USB_FALSE == g_usb_cstd_pipe_tbl[pipe].use_flag)
+            {
+                pipe_no = pipe; /* Set Free pipe */
+                break;
+            }
+        }
+    }
+		
     if (USB_EP_BULK == type)
     {
         /* BULK PIPE Loop */

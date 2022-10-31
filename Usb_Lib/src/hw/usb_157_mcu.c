@@ -320,7 +320,9 @@ void usb_cpu_int_enable (void)
      b6 IEN6 Interrupt enable bit
      b7 IEN7 Interrupt enable bit
      */
-    R_BSP_InterruptRequestEnable(VECT(USB0, USBI0)); /* Enable USB0 interrupt */
+//    R_BSP_InterruptRequestEnable(VECT(USB0, USBI0)); /* Enable USB0 interrupt */
+		INTC_ClearPendingIRQ(USBI_IRQn); /* clear USBI interrupt flag */
+		INTC_EnableIRQ(USBI_IRQn);       /* enable USBI interrupt */
 } /*End of function usb_cpu_int_enable */
 
 /******************************************************************************
@@ -341,7 +343,9 @@ void usb_cpu_int_disable (void)
      b6 IEN6 Interrupt enable bit
      b7 IEN7 Interrupt enable bit
      */
-    R_BSP_InterruptRequestDisable(VECT(USB0, USBI0)); /* Disable USB0 interrupt */
+//    R_BSP_InterruptRequestDisable(VECT(USB0, USBI0)); /* Disable USB0 interrupt */
+			INTC_ClearPendingIRQ(USBI_IRQn); /* clear USBI interrupt flag */
+			INTC_DisableIRQ(USBI_IRQn);       /* enable USBI interrupt */
 } /*End of function usb_cpu_int_disable */
 
 #endif  /* (USB_CFG_MODE & USB_CFG_HOST) == USB_CFG_HOST */

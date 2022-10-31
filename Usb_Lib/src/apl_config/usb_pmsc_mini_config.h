@@ -21,8 +21,15 @@
  * USB_CFG_PMSC_BULK_IN     : Pipe number (USB_PIPE1 to USB_PIPE5)  MSC Bulk In Pipe
  * USB_CFG_PMSC_BULK_OUT    : Pipe number (USB_PIPE1 to USB_PIPE5)  MSC Bulk Out Pipe
  */
+ 
+#include "usb_basic_mini_config.h"
+#if defined(USB_CFG_PVND_USE) && defined(USB_CFG_PCDC_USE)
+#define USB_CFG_PMSC_BULK_IN        (USB_PIPE3)
+#define USB_CFG_PMSC_BULK_OUT       (USB_PIPE4)
+#else
 #define USB_CFG_PMSC_BULK_IN        (USB_PIPE1)
 #define USB_CFG_PMSC_BULK_OUT       (USB_PIPE2)
+#endif
 
 /* Vendor Information in INQUIRY Data Format */
 /* Note : Be sure to specify 8 bytes of data in double quotation marks. */
@@ -37,7 +44,7 @@
 #define USB_CFG_PMSC_REVISION           ("1.00")
 
 /* Number of data blocks transferred at one time (512 * N) */
-#define USB_CFG_PMSC_TRANS_COUNT        (8)
+#define USB_CFG_PMSC_TRANS_COUNT        (2)
 
 
 #endif  /* USB_PMSC_MINI_CONFIG_H */

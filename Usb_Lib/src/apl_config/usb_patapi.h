@@ -2,16 +2,11 @@
  * File Name    : usb_patapi.h
  * Description  : USB APAPI Define Header
  ******************************************************************************/
-/******************************************************************************
- * History : DD.MM.YYYY Version  Description
- *         : 30.11.2018 1.00     First Release
- *         : 31.05.2019 1.11     Added support for GNUC and ICCRX.
- ******************************************************************************/
 
 /******************************************************************************
  Includes   <System Includes> , "Project Includes"
  ******************************************************************************/
-
+#include <stdint.h>
 #ifndef USB_PATAPI_H
 #define USB_PATAPI_H
 
@@ -20,7 +15,7 @@
  ******************************************************************************/
 
 /* Storage sector size */
-#define USB_ATAPI_BLOCK_UNIT    (0x0200UL)
+#define USB_ATAPI_BLOCK_UNIT    (0x1000UL)
 
 /* Operation when responding with a short packet to a command */
 /*  0: Respond to 0x00 with CSW with setting PIPE to STALL
@@ -119,19 +114,19 @@ typedef struct
 } usb_pmsc_cbm_t;
 
 /* Command Descriptor Block format define. */
-
 typedef struct
 {
-    union {
+    union
+    {
         uint8_t    BYTE;
         /* CPU bit order rigth */
-        struct (
-            uint8_t             b_lun      :3,  /* Logical Unit Number */
-            uint8_t             b_reserved :5
-        )BIT;
+        struct
+        {
+            uint8_t             b_lun      : 3; /* Logical Unit Number */
+            uint8_t             b_reserved : 5;
+        } BIT;
     };
 } usb_pmsc_lun_t;
-
 
 typedef struct
 {
@@ -140,20 +135,20 @@ typedef struct
     uint8_t             uc_data;
 } usb_pmsc_ptn0_t;
 
-
 typedef struct
 {
-    union {
+    union
+    {
         uint8_t    BYTE;
         /* CPU bit order rigth */
-        struct (
-            uint8_t             b_lun       :3, /* Logical Unit Number */
-            uint8_t             b_reserved4 :4,
-            uint8_t             b_immed     :1
-        )BIT;
+        struct
+        {
+            uint8_t             b_lun       : 3; /* Logical Unit Number */
+            uint8_t             b_reserved4 : 4;
+            uint8_t             b_immed     : 1;
+        } BIT;
     };
 } usb_pmsc_lun2_t;
-
 
 typedef struct
 {
@@ -165,21 +160,21 @@ typedef struct
     uint8_t             uc_rsv6[6];
 } usb_pmsc_ptn12_t;
 
-
 typedef struct
 {
-    union {
+    union
+    {
         uint8_t    BYTE;
         /* CPU bit order rigth */
-        R_BSP_ATTRIB_STRUCT_BIT_ORDER_RIGHT_4(
-            uint8_t             b_lun     :3,   /* Logical Unit Number */
-            uint8_t             b_fmtdata :1,   /* Fmt Data */
-            uint8_t             b_cmplist :1,   /* Cmp List */
-            uint8_t             b_defect  :3    /* Defect List Fomat */
-        )BIT;
+        struct
+        {
+            uint8_t             b_lun     : 3;  /* Logical Unit Number */
+            uint8_t             b_fmtdata : 1;  /* Fmt Data */
+            uint8_t             b_cmplist : 1;  /* Cmp List */
+            uint8_t             b_defect  : 3;  /* Defect List Fomat */
+        } BIT;
     };
 } usb_pmsc_lun3_t;
-
 
 typedef struct
 {
@@ -192,22 +187,22 @@ typedef struct
     uint8_t             uc_rsv6[6];
 } usb_pmsc_ptn378_t;
 
-
 typedef struct
 {
-    union {
+    union
+    {
         uint8_t    BYTE;
         /* CPU bit order rigth */
-        struct (
-            uint8_t             b_lun       :3, /* Logical Unit Number */
-            uint8_t             b_1         :1,
-            uint8_t             b_reserved2 :2,
-            uint8_t             b_bytechk   :1,
-            uint8_t             b_sp        :1
-        )BIT;
+        struct
+        {
+            uint8_t             b_lun       : 3; /* Logical Unit Number */
+            uint8_t             b_1         : 1;
+            uint8_t             b_reserved2 : 2;
+            uint8_t             b_bytechk   : 1;
+            uint8_t             b_sp        : 1;
+        } BIT;
     };
 } usb_pmsc_s_s_lun4_t;
-
 
 typedef struct
 {

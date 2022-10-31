@@ -37,6 +37,7 @@
     #include "usb_hmsc.h"
 #endif /* defined(USB_CFG_HMSC_USE) */
 
+
 #if ((USB_CFG_DTC == USB_CFG_ENABLE) || (USB_CFG_DMA == USB_CFG_ENABLE))
     //#include "usb_dmac.h"
 #endif  /* ((USB_CFG_DTC == USB_CFG_ENABLE) || (USB_CFG_DMA == USB_CFG_ENABLE)) */
@@ -105,7 +106,7 @@ usb_putr_t  *gp_usb_pstd_pipe[USB_MAX_PIPE_NO + 1u];   /* Message pipe */
 const uint8_t g_usb_pstd_pipe_no_tbl[] =
 {
     /* OUT pipe */          /* IN pipe */
-    #if defined(USB_CFG_PCDC_USE)
+		#if defined(USB_CFG_PCDC_USE)
     USB_CFG_PCDC_BULK_OUT,  USB_CFG_PCDC_BULK_IN,   /* USB_PCDC */
     USB_NULL,               USB_CFG_PCDC_INT_IN,    /* USB_PCDCC */
     #else
@@ -157,8 +158,10 @@ void (*gp_usb_pstd_callback[]) (usb_putr_t *, uint16_t, uint16_t) =
     #else
     USB_NULL, USB_NULL, /* USB_PHID (2) */
     #endif
+	
     /* PVNDR */
     USB_NULL, USB_NULL, /* USB_PVND  (3) */
+	
     /* HCDC, HCDCC */
     USB_NULL, USB_NULL, /* USB_HCDC  (4) */
     USB_NULL, USB_NULL, /* USB_HCDCC (5) */

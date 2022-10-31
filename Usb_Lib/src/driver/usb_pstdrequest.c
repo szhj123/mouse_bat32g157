@@ -1231,11 +1231,7 @@ void usb_pstd_class_request(usb_setup_t *p_req, uint16_t ctsq)
                 break;
 
             case USB_CS_WRDS :
-                #if defined(USB_CFG_PMSC_USE)
-                usb_pstd_class_request_wds(p_req);   /* class request (control write data stage) */
-                #else   /* defined(USB_CFG_PMSC_USE) */
                 usb_pstd_class_request_rwds(p_req);  /* class request (control write data stage) */
-                #endif  /* defined(USB_CFG_PMSC_USE) */
                 break;
 
             case USB_CS_WRND :
@@ -1284,8 +1280,8 @@ void usb_pstd_class_request_ioss (usb_setup_t *p_req)
  ******************************************************************************/
 void usb_pstd_class_request_rwds (usb_setup_t * p_req)
 {
-    #if defined(USB_CFG_PMSC_USE)
-
+    #if defined(USB_CFG_PMSC_USE )
+	
     usb_ctrl_t ctrl;
 
     /* Is a request receive target Interface? */
@@ -1364,7 +1360,8 @@ void usb_pstd_other_request (usb_setup_t *p_req)
 void usb_pstd_class_request_wnss (usb_setup_t *p_req)
 {
     #if defined(USB_CFG_PMSC_USE)
-
+		 usb_ctrl_t ctrl;
+	
     /* Is a request receive target Interface? */
     if ((0 == p_req->index) && ((p_req->type & USB_BMREQUESTTYPERECIP) == USB_INTERFACE))
     {
@@ -1374,7 +1371,17 @@ void usb_pstd_class_request_wnss (usb_setup_t *p_req)
         }
         else
         {
-            usb_pstd_set_stall_pipe0(); /* Req Error */
+						if(0x2200 == (p_req->type & USB_BREQUEST))
+						{
+							/* PCDC Set control line state (USB_PCDC_SET_CONTROL_LINE_STATE) Request */
+							ctrl.setup  = *p_req; /* Save setup data. */
+							ctrl.size   = 0;
+							ctrl.status = USB_ACK;
+							ctrl.type   = USB_REQUEST;
+							usb_cstd_set_event(USB_STS_REQUEST, &ctrl);
+						}else{
+							usb_pstd_set_stall_pipe0(); /* Req Error */
+						}
         }
     }
     else
@@ -1413,6 +1420,7 @@ void usb_pstd_class_request_wnss (usb_setup_t *p_req)
 void usb_pstd_class_request_rss (usb_setup_t *p_req)
 {
     #if defined(USB_CFG_PMSC_USE)
+	
     /* Is a request receive target Interface? */
     usb_ctrl_t ctrl;
 

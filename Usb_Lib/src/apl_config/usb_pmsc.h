@@ -6,7 +6,7 @@
 /******************************************************************************
  Includes   <System Includes> , "Project Includes"
  ******************************************************************************/
-
+#include <stdint.h>
 #ifndef USB_PMSC_H
 #define USB_PMSC_H
 
@@ -21,11 +21,11 @@
 
 /* CPU bit endian select (BIT_LITTLE:little, BIT_BIG:big) */
 #if USB_CFG_ENDIAN == USB_CFG_BIG
-#define USB_MSC_CBW_SIGNATURE           ((uint32_t)0x55534243)
-#define USB_MSC_CSW_SIGNATURE           ((uint32_t)0x55534253)
+    #define USB_MSC_CBW_SIGNATURE           ((uint32_t)0x55534243)
+    #define USB_MSC_CSW_SIGNATURE           ((uint32_t)0x55534253)
 #else   /* USB_CFG_ENDIAN == USB_CFG_BIG */
-#define USB_MSC_CBW_SIGNATURE           ((uint32_t)0x43425355)
-#define USB_MSC_CSW_SIGNATURE           ((uint32_t)0x53425355)
+    #define USB_MSC_CBW_SIGNATURE           ((uint32_t)0x43425355)
+    #define USB_MSC_CSW_SIGNATURE           ((uint32_t)0x53425355)
 #endif  /* USB_CFG_ENDIAN == USB_CFG_BIG */
 
 /******************************************************************************
@@ -114,37 +114,43 @@ typedef enum
 
 typedef struct
 {
-    union {
+    union
+    {
         uint8_t    BYTE;
         /* CPU bit order rigth */
-        struct (
-            uint8_t     reserved7 :7;
-            uint8_t     cbw_dir   :1;
-        )BIT;
+        struct
+        {
+            uint8_t     reserved7 : 7;
+            uint8_t     cbw_dir   : 1;
+        } BIT;
     };
 } usb_msc_bmcbw_flags_t;
 
 typedef struct
 {
-    union {
+    union
+    {
         uint8_t    BYTE;
         /* CPU bit order rigth */
-        struct (
-            uint8_t     bcbwlun   :4;
-            uint8_t     reserved4 :4;
-        )BIT;
+        struct
+        {
+            uint8_t     bcbwlun   : 4;
+            uint8_t     reserved4 : 4;
+        } BIT;
     };
 } usb_msc_bcbwlun_t;
 
 typedef struct
 {
-    union {
+    union
+    {
         uint8_t    BYTE;
         /* CPU bit order rigth */
-        struct (
-            uint8_t     bcbwcb_length :5;
-            uint8_t     reserved3     :3;
-        )BIT;
+        struct
+        {
+            uint8_t     bcbwcb_length : 5;
+            uint8_t     reserved3     : 3;
+        } BIT;
     };
 } usb_msc_bcbwcb_length_t;
 
@@ -160,12 +166,12 @@ typedef struct
     usb_msc_bmcbw_flags_t   bmcbw_flags;
     usb_msc_bcbwlun_t       bcbwlun;
     usb_msc_bcbwcb_length_t bcbwcb_length;
-#if ((USB_CFG_DTC == USB_CFG_ENABLE) || (USB_CFG_DMA == USB_CFG_ENABLE))
+    #if ((USB_CFG_DTC == USB_CFG_ENABLE) || (USB_CFG_DMA == USB_CFG_ENABLE))
     uint8_t                 cbwcb[(16 + 33)];   /* Full-Speed USB_MSC_CBW_t:64Byte*/
 
-#else   /* ((USB_CFG_DTC == USB_CFG_ENABLE) || (USB_CFG_DMA == USB_CFG_ENABLE)) */
+    #else   /* ((USB_CFG_DTC == USB_CFG_ENABLE) || (USB_CFG_DMA == USB_CFG_ENABLE)) */
     uint8_t                 cbwcb[16];
-#endif  /* ((USB_CFG_DTC == USB_CFG_ENABLE) || (USB_CFG_DMA == USB_CFG_ENABLE)) */
+    #endif  /* ((USB_CFG_DTC == USB_CFG_ENABLE) || (USB_CFG_DMA == USB_CFG_ENABLE)) */
 } usb_msc_cbw_t;
 
 /* CSW Structure define define. */
@@ -192,7 +198,7 @@ extern void     usb_cstd_set_event (usb_status_t event, usb_ctrl_t *ctrl);
 /******************************************************************************
  Exported global functions (to be accessed by other files)
  ******************************************************************************/
-/* void        usb_pmsc_receive_cbw(void); */
+void        usb_pmsc_receive_cbw(void);
 /* void        usb_pmsc_get_max_lun(uint16_t value, uint16_t index, uint16_t length); */
 /* void        usb_pmsc_mass_strage_reset(uint16_t value, uint16_t index, uint16_t length); */
 void        usb_pmsc_init (void);

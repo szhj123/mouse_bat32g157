@@ -34,7 +34,6 @@
 #define KBD_CODE_0              (0x27)      /* 0 */
 #define KBD_CODE_ENTER          (0x28)      /* '\n' */
 
-
 /*******************************************************************************
  Typedef definitions
  ******************************************************************************/
@@ -47,7 +46,6 @@ extern  const   uint8_t g_apl_device[];
 extern  const   uint8_t g_apl_configuration[];
 extern  const   uint8_t *gp_apl_string_table[];
 extern  const   uint8_t g_apl_report[];
-//extern  const   uint8_t g_apl_hid_report[];
 
 extern uint8_t g_remote_wakeup_enable;
 
@@ -55,7 +53,7 @@ extern uint8_t g_remote_wakeup_enable;
  Exported global functions (to be accessed by other files)
  ******************************************************************************/
 
-void Usb_Init (void);
+void usb_main (void);
 
 #endif /* USB_PHID_APL_H */
 /******************************************************************************
