@@ -1,0 +1,220 @@
+C51 COMPILER V9.60.0.0   MACRO                                                             09/23/2022 11:52:51 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MACRO
+OBJECT MODULE PLACED IN .\output\Macro.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\Macro.C LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTE
+                    -XTEND PRINT(.\Listings\Macro.lst) OBJECT(.\output\Macro.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\CFG.h"
+   4          #include "..\include\Auser.h"
+   5          #include ".\include\ABSACC.H"
+   6          //*************************************
+   7          U8 xdata Macro_Time[10];
+   8          U8 xdata Macro_Cycle_Time[10];
+   9          U8      xdata   Macro_Usb2_Data[16];
+  10          U8      xdata   Last_Macro_Usb2_Data[16];
+  11          U16 xdata Temp_Macro_Time;
+  12          U16 xdata  Delay_Macro_Time[10];
+  13          U32 xdata       fg_Next_Time;
+  14          bit b_02;
+  15          U32 xdata fg_Send_Macro;
+  16          U8 xdata Mcaro_Ctrl_Data=0;
+  17          U8      xdata   Last_Mcaro_Ctrl_Data;
+  18          void F_Clear_Macro_USB456(void)
+  19          {
+  20   1              U8 i;
+  21   1              for(i=0; i<16; i++)
+  22   1              {
+  23   2                      Macro_Usb2_Data[i] = 0x00;
+  24   2              }
+  25   1      }
+  26          //********************************************
+  27          void Judge_Macro_Data(void)
+  28          {
+  29   1              U8 i;
+  30   1              if(Mcaro_Ctrl_Data!=Last_Mcaro_Ctrl_Data)
+  31   1              {
+  32   2                      bSend_IN2=1;
+  33   2                      Last_Mcaro_Ctrl_Data=Mcaro_Ctrl_Data;
+  34   2              }
+  35   1              else
+  36   1              {
+  37   2                      for(i=0;i<16;i++)       
+  38   2                      {
+  39   3                              if(Macro_Usb2_Data[i]!=Last_Macro_Usb2_Data[i])
+  40   3                              {
+  41   4                                      b_02=1;
+  42   4                                      Last_Macro_Usb2_Data[i]=Macro_Usb2_Data[i];
+  43   4                              }
+  44   3                      }
+  45   2              }
+  46   1      }
+  47          void Deal_Macro_Time(U8 V_Macro_TimeL,V_Macro_TimeH)
+  48          {
+  49   1              U8 i1;
+  50   1              U32 i2;
+  51   1              i1=i2=0;
+  52   1              
+  53   1              Temp_Macro_Time=0x0000;
+  54   1              Temp_Macro_Time|=V_Macro_TimeH&0X0F;
+C51 COMPILER V9.60.0.0   MACRO                                                             09/23/2022 11:52:51 PAGE 2   
+
+  55   1              Temp_Macro_Time=Temp_Macro_Time<<7;
+  56   1              Temp_Macro_Time|=V_Macro_TimeL&0x7f;
+  57   1              Temp_Macro_Time++;
+  58   1              
+  59   1                      fg_Next_Time|=fg_Send_Macro;            
+  60   1      }
+  61          void Down_MacroKey_value(U8 V_MacroKey_2,V_MacroKey_0,V_MacroKey_1)
+  62          {
+  63   1              U8 i2,i3,i;
+  64   1              if(V_MacroKey_1&0xf0)
+  65   1                      {
+  66   2                              if(V_MacroKey_0&0x80)
+  67   2                                      Mcaro_Ctrl_Data&=~V_MacroKey_2;
+  68   2                              else    
+  69   2                                      Mcaro_Ctrl_Data|=V_MacroKey_2;
+  70   2                      }       
+  71   1              else
+  72   1                      {
+  73   2                                      if(Mode_USB)
+  74   2                                      {
+  75   3                                              i2=(V_MacroKey_2-4)/8;
+  76   3                                              i3=(V_MacroKey_2-4)%8;
+  77   3                                              //Deal_IN2_Data(i3);    
+  78   3                                              if(V_MacroKey_0&0x80)
+  79   3                                                      Macro_Usb2_Data[i2+1]&=~Deal_IN2_Data(i3);      
+  80   3                                              else
+  81   3                                                      Macro_Usb2_Data[i2+1]|=Deal_IN2_Data(i3);       
+  82   3                                      }
+  83   2                                      else
+  84   2                                      {       
+  85   3                                              i2=V_MacroKey_2/8;
+  86   3                                              i3=V_MacroKey_2%8;
+  87   3                                              //Deal_IN2_Data(i3);    
+  88   3                                              if(V_MacroKey_0&0x80)
+  89   3                                                      Macro_Usb2_Data[i2+2]&=~Deal_IN2_Data(i3);      
+  90   3                                              else
+  91   3                                                      Macro_Usb2_Data[i2+2]|=Deal_IN2_Data(i3);       
+  92   3                                      }
+  93   2                      }
+  94   1                      Judge_Macro_Data();
+  95   1      }
+  96          //*************************************
+  97          U8 xdata  Double_Time_Macro;
+  98          void Send_Macro_USB_Data(void)
+  99          {
+ 100   1              U8 i,i1=0;
+ 101   1              U32 i2;
+ 102   1              U8 i3;
+ 103   1              Double_Time_Macro++;
+ 104   1              if(Double_Time_Macro<2)
+ 105   1                      return;
+ 106   1                      Double_Time_Macro=0;
+ 107   1              //******************************
+ 108   1                      i2=0x01;
+ 109   1              for(i=0; i<10; i++)
+ 110   1              {               
+ 111   2                      if(i==0)
+ 112   2                              WriteEE_Address=0xBC00; 
+ 113   2                      else if(i==1)
+ 114   2                              WriteEE_Address=0xBCC0; 
+ 115   2                      else if(i==2)
+ 116   2                              WriteEE_Address=0xBE00; 
+C51 COMPILER V9.60.0.0   MACRO                                                             09/23/2022 11:52:51 PAGE 3   
+
+ 117   2                      else if(i==3)
+ 118   2                              WriteEE_Address=0xBEC0;         
+ 119   2                      else if(i==4)
+ 120   2                              WriteEE_Address=0xC000; 
+ 121   2                      else if(i==5)
+ 122   2                              WriteEE_Address=0xC0C0;         
+ 123   2                      else if(i==6)
+ 124   2                              WriteEE_Address=0xC200; 
+ 125   2                      else if(i==7)
+ 126   2                              WriteEE_Address=0xC2C0;                 
+ 127   2                      else if(i==8)
+ 128   2                              WriteEE_Address=0xC400; 
+ 129   2                      else if(i==9)
+ 130   2                              WriteEE_Address=0xC4C0;         
+ 131   2                      i3=0;
+ 132   2                      if(fg_Send_Macro&i2)
+ 133   2                      {
+ 134   3                              i1=Macro_Time[i]*3;
+ 135   3                              //if((Macro[i][i1+2])!=0x00)
+ 136   3                              if(CBYTE[WriteEE_Address+i1+2]!=0x00)   
+ 137   3                              {       
+ 138   4                                      if((fg_Next_Time&i2)==0)//处理时间
+ 139   4                                      {       
+ 140   5                                              //Deal_Macro_Time(Macro[i][i1],Macro[i][i1+1]);
+ 141   5                                              Deal_Macro_Time(CBYTE[WriteEE_Address+i1],CBYTE[WriteEE_Address+i1+1]);
+ 142   5                                              Delay_Macro_Time[i]=Temp_Macro_Time;
+ 143   5                                      }
+ 144   4                                              //Down_MacroKey_value(Macro[i][i1+2],Macro[i][i1],Macro[i][i1+1]);//键值
+ 145   4                                              Down_MacroKey_value(CBYTE[WriteEE_Address+i1+2],CBYTE[WriteEE_Address+i1],CBYTE[WriteEE_Address+i1+1]
+             -);
+ 146   4                                      if(Delay_Macro_Time[i]>0)//防止时间溢出
+ 147   4                                              Delay_Macro_Time[i]--;
+ 148   4                                      if(Delay_Macro_Time[i]==0)//时间结束出来下一次键动作
+ 149   4                                              {       
+ 150   5                                                      Macro_Time[i]++;
+ 151   5                                                      fg_Next_Time&=~i2;
+ 152   5                                                      if(i1>=189)
+ 153   5                                                      {
+ 154   6                                                              Macro_Time[i]=0x00;
+ 155   6                                                              fg_Next_Time&=~i2;
+ 156   6                                                              Macro_Cycle_Time[i]--;
+ 157   6                                                              if(Macro_Cycle_Time[i]==0)
+ 158   6                                                              {
+ 159   7                                                                      fg_Send_Macro&=~i2;
+ 160   7                                                              }
+ 161   6                                                              F_Clear_Macro_USB456();
+ 162   6                                                              Mcaro_Ctrl_Data=0;
+ 163   6                                                      }
+ 164   5                                              }
+ 165   4                                      
+ 166   4                              }
+ 167   3                              else
+ 168   3                              {
+ 169   4                                      Macro_Time[i]=0x00;
+ 170   4                                      fg_Next_Time&=~i2;
+ 171   4                                      Macro_Cycle_Time[i]--;
+ 172   4                                      if(Macro_Cycle_Time[i]==0)
+ 173   4                                      {
+ 174   5                                              fg_Send_Macro&=~i2;
+ 175   5                                      }
+ 176   4                                      F_Clear_Macro_USB456();
+ 177   4                                      Mcaro_Ctrl_Data=0;
+C51 COMPILER V9.60.0.0   MACRO                                                             09/23/2022 11:52:51 PAGE 4   
+
+ 178   4                              }
+ 179   3                              break;//return;
+ 180   3                      }
+ 181   2                      i2=i2<<1;
+ 182   2              }
+ 183   1              if(!fg_Send_Macro)
+ 184   1              {
+ 185   2                      for(i=0;i<16;i++)
+ 186   2                              Macro_Usb2_Data[i]=0;
+ 187   2                      Mcaro_Ctrl_Data=0;
+ 188   2              }       
+ 189   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1518    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     85      18
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

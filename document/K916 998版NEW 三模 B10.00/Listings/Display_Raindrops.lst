@@ -1,0 +1,59 @@
+C51 COMPILER V9.60.0.0   DISPLAY_RAINDROPS                                                 09/23/2022 11:52:50 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DISPLAY_RAINDROPS
+OBJECT MODULE PLACED IN .\output\Display_Raindrops.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\Display_Raindrops.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE D
+                    -EBUG OBJECTEXTEND PRINT(.\Listings\Display_Raindrops.lst) OBJECT(.\output\Display_Raindrops.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\mcu_def.h"
+   4          #include "..\include\pwm_control.h"
+   5          #include ".\include\Auser.h"
+   6          #include "..\include\CFG.h"
+   7          //****************************************
+   8          void Deal_Raindrops_Mode(void)
+   9          {
+  10   1              U8 i;
+  11   1              U16 randtmp;
+  12   1              if(!b_Raindrops_Mode)
+  13   1                      return; 
+  14   1                      Temp_Speed++;
+  15   1              if(Temp_Speed>Speed_Data+1)
+  16   1              {
+  17   2                      Temp_Speed=0;
+  18   2                      Run_Time++;
+  19   2                      if(Run_Time>5)
+  20   2                              Run_Time=0;
+  21   2                              
+  22   2                      for(i=0;i<6;i++)
+  23   2                      {
+  24   3                              randtmp=RandSub(i);
+  25   3                              randtmp=randtmp%125;
+  26   3                              if(((Image[R][randtmp]<=PWM_AddData(R,randtmp))&&       \
+  27   3                                      (Image[G][randtmp]<=PWM_AddData(G,randtmp))&&           \
+  28   3                                      (Image[B][randtmp])<=PWM_AddData(B,randtmp)))
+  29   3                              {       
+  30   4                                      Change_AColor_Time(randtmp);
+  31   4                              }
+  32   3                      }       
+  33   2              }
+  34   1      }
+  35          //****************************************
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    261    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----       3
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

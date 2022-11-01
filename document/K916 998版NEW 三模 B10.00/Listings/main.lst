@@ -1,0 +1,347 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              09/23/2022 11:52:49 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\output\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\main.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEX
+                    -TEND PRINT(.\Listings\main.lst) OBJECT(.\output\main.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\CFG.h"
+   4          #include "..\include\Auser.h"
+   5          #include "..\include\pwm_control.h"
+   6          #include "..\include\mcu_def.h"
+   7          #include <intrins.h>
+   8          #include <string.h>
+   9          extern void sys_init(void);
+  10          void PowerDown(void);
+  11          void Wireless_PowerDown(void);
+  12          bit b_ShutDown;
+  13          extern bit device_remote_wakeup_f;
+  14          extern U16 xdata Suspend_Counter;
+  15          extern bit usb_config_ok;
+  16          U8 xdata Module_LED_status;
+  17          U8 data Power_status;
+  18          bit     bPower_Up;
+  19          U16 xdata Delay_EFT_Times;
+  20          U16 xdata USB_Mode_Times;
+  21          U8 bdata Mode_now;//Mode_now=0;默认端口0
+  22          sbit    Mode_24G= Mode_now ^ 0;//P0.0
+  23          sbit    Mode_Bluetooth1= Mode_now ^ 1;//P0.1
+  24          sbit    Mode_Bluetooth2= Mode_now ^ 2;//P0.2
+  25          sbit    Mode_Bluetooth3= Mode_now ^ 3;//P0.3
+  26          sbit    Mode_USB= Mode_now ^ 4; //位定义，意思相当于用另外的字母去表示这个位。你可以理解为换了个名字，比如sbi
+             -t Key1 = P3 ^ 4，以后对Key1进行操作其实就是对P3.4进行操作
+  27          //Mode_USB:usb有线模式的拨动开关，等于1是打开USB有线，等于0是关闭USB有线
+  28          ///////////////////////////////////////////////////////////
+  29          void main(void)
+  30          {
+  31   1              CLR_WDT();
+  32   1              sys_init();//系统函数初始化
+  33   1              b_ShutDown=0;
+  34   1              device_remote_wakeup_f=0;
+  35   1              ET2 = 1;
+  36   1              EA = 1;
+  37   1              for(Speed_Data=0; Speed_Data<8; Speed_Data++)
+  38   1              {
+  39   2                      CLR_WDT();
+  40   2                      delay_us(50000);
+  41   2                      CLR_WDT();
+  42   2              }
+  43   1              Read_KeyIndex_Data();//读键值数据
+  44   1              CLR_WDT();
+  45   1              Read_Mode_Time();//读灯亮模式的时间
+  46   1              CLR_WDT();      
+  47   1              {
+  48   2                      pwm_init();//pwm初始化
+  49   2                      PWM00_ENABLE;//pwm0使能 使能相应的pwm中断，一使能就会进入pwm0中断函数里面
+  50   2                      IEN1|=0X02;
+  51   2              }       
+  52   1              while(1)
+  53   1              {
+C51 COMPILER V9.60.0.0   MAIN                                                              09/23/2022 11:52:49 PAGE 2   
+
+  54   2                      CLR_WDT();
+  55   2                      if((fg_suspend)&&(Mode_USB))//驱动发命令控制键盘休眠
+  56   2                      {
+  57   3                              if(usb_config_ok)
+  58   3                              PowerDown();//省电模式，低功耗
+  59   3                              fg_suspend = 0;
+  60   3                      }
+  61   2                      if((Wireless_suspend)&&(!Mode_USB))//在定时器2里一秒加一次，超过设定时间就休眠
+  62   2                      {
+  63   3                              Wireless_suspend=0;
+  64   3                              PowerDown();//省电模式，低功耗
+  65   3                      }       
+  66   2                      //-----------------------------------------
+  67   2                      CLR_WDT();      
+  68   2                      Wheel_Check();//检查鼠标滚轮
+  69   2                      if(fhas_change)//等Display_Mode(void)函数里的Temp_Time1++大于21就fhas_change=1；
+  70   2                      {       
+  71   3                              fhas_change=0;
+  72   3                              Move_Key_value();//移动键值
+  73   3                              Deal_Wheel();//鼠标滚轮控制音量大小
+  74   3                              Send_Usb_value();//发送USB值
+  75   3                              Send_Macro_USB_Data();//发送USB宏数据
+  76   3                              if(Mode_USB)//usb有线K,
+  77   3                              {               
+  78   4                                      IN1_IRQ_Prog_Data();//发送六键无冲？
+  79   4                                      IN2_IRQ_Prog_Data();//发送全键无冲？    
+  80   4                              }
+  81   3                              else//USB无线模式
+  82   3                              {
+  83   4                                      Send_Wireless_Data();//发送无线模式数据
+  84   4                                      Send_Module_Data();
+  85   4                              }
+  86   3                              if(!bSpeed_End)//bSpeed_End=1不00000000000需要调节灯模式的速度,=0说明需要调节灯模式的速度
+  87   3                              {       
+  88   4                                      Change_Mode();  //改变灯效模式和改变蓝牙、有线、2.4g模式切换
+  89   4                              }
+  90   3                      }
+  91   2                      if(fg_1ms)      //在定时器2中断里1ms成立一次
+  92   2                      {
+  93   3                              fg_1ms=0;
+  94   3                              Sacn_Key_Led_Up();      
+  95   3                              Send_Macro_USB_Data();//发送USB宏数据
+  96   3                      }       
+  97   2                      if(fg_8ms)//在定时器2中断里8ms成立一次
+  98   2                      {
+  99   3                              fg_8ms = 0;
+ 100   3                              if(!b_Record_Mode)
+ 101   3                              {       
+ 102   4                                      Deal_Image2_Data();     
+ 103   4                                      Display_Logo_Data();    
+ 104   4                                      Display_ChangLiang_Mode();//1
+ 105   4                                      Start_PWM_Led();                        //2     
+ 106   4                                      Start_Mode6_Led();              //3
+ 107   4                                      Deal_Mode_5();
+ 108   4                                      Deal_Raindrops_Mode();  //7
+ 109   4                                      Dispaly_BoLang_Mode();
+ 110   4                                      Deal_Rest();
+ 111   4                                      Start_Effect_light_Time1();
+ 112   4                                      Start_Effect_light_Time2();
+ 113   4                                      Deal_PaoMa_1();                 //4
+ 114   4                                      Deal_PaoMa_2();                 //5
+ 115   4                                      Deal_PaoMa_3(); 
+C51 COMPILER V9.60.0.0   MAIN                                                              09/23/2022 11:52:49 PAGE 3   
+
+ 116   4                                      Deal_PaoMa_4();
+ 117   4                              }
+ 118   3                      }       
+ 119   2                      if(fg_16ms)//在定时器2中断里16ms成立一次
+ 120   2                      {       
+ 121   3                              CLR_WDT();
+ 122   3                              F_Text_Opine();
+ 123   3                              Deal_Speed_LED_End();
+ 124   3                              Write_ReadState_Data();
+ 125   3                              Read_State_Data();      
+ 126   3                      
+ 127   3                              while(Ready_ok)
+ 128   3                              {
+ 129   4                                      CLR_WDT();
+ 130   4                                      Send_Module_Data();
+ 131   4                                      Delay_EFT_Times++;
+ 132   4                                      if(Delay_EFT_Times>1500)
+ 133   4                                      {       
+ 134   5                                              Ready_ok=0;
+ 135   5                                              break;
+ 136   5                                      }
+ 137   4                              }       
+ 138   3                              fg_16ms=0;      
+ 139   3                      }
+ 140   2              }
+ 141   1      }
+ 142          void delay_us(U16 cnt)
+ 143          {
+ 144   1              U16 i;
+ 145   1              for(i=0;i<cnt;i++)
+ 146   1              {
+ 147   2                      CLR_WDT();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
+ 148   2                      _nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
+ 149   2              }
+ 150   1      }
+ 151          void PowerDown(void)//低功耗模式
+ 152          {
+ 153   1              EA = 0;   
+ 154   1              ET2=0;
+ 155   1              Disenable_Pwm();        
+ 156   1              //-----------C--------------------
+ 157   1              P7PCR   &=~Bin(00010000);       //去掉上拉
+ 158   1              P7CR    |=Bin(00010000);                //输出
+ 159   1              P7              &=~Bin(00010000);       //0
+ 160   1              
+ 161   1              P6PCR   &=~Bin(00111111);       //去掉上拉
+ 162   1              P6CR    |=Bin(00111111);                //输出
+ 163   1              P6              &=~Bin(00111111);       //0
+ 164   1              
+ 165   1              P5PCR   &=~Bin(10000111);       //去掉上拉
+ 166   1              P5CR    |=Bin(10000111);                //输出
+ 167   1              P5              &=~Bin(10000111);       //0
+ 168   1              
+ 169   1              P4PCR   &=~Bin(01101101);       //去掉上拉
+ 170   1              P4CR    |=Bin(01101101);                //输出
+ 171   1              P4              &=~Bin(01101101);       //0
+ 172   1              
+ 173   1              P0PCR   &=~Bin(00100000);       //去掉上拉
+ 174   1              P0CR    |=Bin(00100000);                //输出
+ 175   1              P0              &=~Bin(00100000);       //0
+ 176   1              //-----------PWM---------------------
+ 177   1              P1PCR   &=~ Bin(00111111);      //去掉上拉
+C51 COMPILER V9.60.0.0   MAIN                                                              09/23/2022 11:52:49 PAGE 4   
+
+ 178   1              P1CR    |=Bin(00111111);                //输出
+ 179   1              P1              &=~Bin(00111111);       
+ 180   1              
+ 181   1              P2PCR   &=~ Bin(00111111);      //去掉上拉
+ 182   1              P2CR    |=Bin(00111111);                //输出
+ 183   1              P2              &=~Bin(00111111);       
+ 184   1              
+ 185   1              P3PCR   &=~ Bin(00111111);      //去掉上拉
+ 186   1              P3CR    |=Bin(00111111);                //输出
+ 187   1              P3              &=~Bin(00111111);       
+ 188   1              //----------------选项脚-------------------------
+ 189   1              P7PCR   &=~ Bin(10000000);      //去掉上拉
+ 190   1              P7CR    &=~Bin(1000000);                //输出
+ 191   1              P7      &=~Bin(1000000);                //0
+ 192   1              
+ 193   1              P5PCR   &=~ Bin(01100000);      //去掉上拉
+ 194   1              P5CR    &=~Bin(01100000);               //输出
+ 195   1              P5&=~Bin(01100000);             //0
+ 196   1              
+ 197   1              P0PCR   &=~Bin(11000000);       //去掉上拉
+ 198   1              P0CR    &=~Bin(11000000);               //输出
+ 199   1              P0              &=~Bin(11000000);       //0
+ 200   1              
+ 201   1              P7CR    |=Bin(01000000);
+ 202   1              P7              &=~Bin(01000000);
+ 203   1              LDO_D=0;
+ 204   1              SPI_MISO_DirIn;
+ 205   1              SPI_SCK_DirIn;
+ 206   1              SPI_MOSI_DirIn;
+ 207   1              SPI_MOT_DirIn;
+ 208   1              SPI_SS_DirIn;
+ 209   1              b_ShutDown=1;
+ 210   1              if(!Mode_USB)
+ 211   1              {
+ 212   2                      //USBCON&=~0X84;
+ 213   2                      EXF0 = 0x00;    //0x54; // EX Down-Edge trigger.        
+ 214   2                      EXF1 = 0xF3;    //外部中断标志寄存器
+ 215   2                      IENC = 0xF3;    // INT 4.0~4.7  外部中断4 通道选择位
+ 216   2                      IEN0|=0X02;     
+ 217   2      
+ 218   2                      EA = 1;
+ 219   2                      USBCON |= 0x01;  // 1:come in Suspend mode ??è?1ò?e×′ì?
+ 220   2                      CLKCON &= ~0x04; // 2:Clear CLKCON^FS 
+ 221   2                      PLLCON &= ~0x01; // 3:Clear PLLCON^PLLFS
+ 222   2                      PLLCON &= ~0x02; // 4:Clear PLLCON^PLLON
+ 223   2                      CLKCON &= ~0x08; // 5:Clear CLKCON^OSC2ON
+ 224   2                      
+ 225   2                      USBIE1|=0X85;   //6
+ 226   2                      USBIF1 &= ~0x85;
+ 227   2                      IEN1=0X00;      
+ 228   2                      USBCON&=~0XC4;  
+ 229   2                      REGCON&= ~0x01;_nop_();_nop_();_nop_();_nop_();
+ 230   2              }       
+ 231   1              else
+ 232   1              {       
+ 233   2                      //if(device_remote_wakeup_f)
+ 234   2                      {
+ 235   3                              EXF1 = 0x00;    //外部中断标志寄存器
+ 236   3                              IENC = 0xF3;    // INT 4.0~4.7  外部中断4 通道选择位
+ 237   3                              EXF0 = 0xC0;    // EX4 Down-Edge trigger.
+ 238   3                              IEN0|=0X02;     
+ 239   3                      }
+C51 COMPILER V9.60.0.0   MAIN                                                              09/23/2022 11:52:49 PAGE 5   
+
+ 240   2                      
+ 241   2                      EA = 1;
+ 242   2                       USBCON |= 0x01;  // 1:come in Suspend mode ??è?1ò?e×′ì?
+ 243   2                       CLKCON &= ~0x04; // 2:Clear CLKCON^FS 
+ 244   2                       PLLCON &= ~0x01; // 3:Clear PLLCON^PLLFS
+ 245   2                       PLLCON &= ~0x02; // 4:Clear PLLCON^PLLON
+ 246   2                      // CLKCON &= ~0x08; // 5:Clear CLKCON^OSC2ON
+ 247   2                      
+ 248   2                      USBIE1|=0X85;   //6
+ 249   2                      USBIF1 &= ~0x85;
+ 250   2                      IEN1=0X01;      
+ 251   2              }
+ 252   1              
+ 253   1              
+ 254   1              _nop_();_nop_();
+ 255   1              _nop_();_nop_();_nop_();
+ 256   1              //////////////////////////////////
+ 257   1              SUSLO = 0x55;
+ 258   1              PCON |= 0x02;           //7 Power-down
+ 259   1              _nop_();
+ 260   1              _nop_();
+ 261   1              _nop_();
+ 262   1              _nop_();
+ 263   1              _nop_();
+ 264   1              _nop_();
+ 265   1              CLR_WDT();
+ 266   1              EA = 0;
+ 267   1              EXF0 = 0x00;    // EX4 Down-Edge trigger.
+ 268   1              EXF1 = 0x00;
+ 269   1              IENC = 0x00;    //中断通道允许寄存器
+ 270   1              IEN0 &=~0X02;
+ 271   1              
+ 272   1              CLKCON = 0x08;          // OSC2CLK ON.
+ 273   1              delay_us(5);
+ 274   1              PLLCON |= 0x02;         // (OSC2CLK ON), PLLON=1.
+ 275   1              delay_us(33);
+ 276   1              CLR_WDT();
+ 277   1              PLLCON = 0x03;          // turn on the PLL CLOCK, the system clock is Internal RC;PLL的二分频作为OSCSCLK
+ 278   1              CLKCON = 0x0C;          // 24MHz
+ 279   1              
+ 280   1              delay_us(5);
+ 281   1              USBIF1 &= ~0x02;                // SUSPEND Flag
+ 282   1              USBCON &= ~0x01;        // exit Suspend, but Fail because IC.
+ 283   1              
+ 284   1              REGCON= REGCON_INIT;
+ 285   1              //usb_init();
+ 286   1              //if(fg_Remote)
+ 287   1              {       
+ 288   2                      USBCON |= 0x02;
+ 289   2                      fg_Remote=0;    
+ 290   2              }
+ 291   1              USBIE1=0X5F;    
+ 292   1              IEN1 |= 0x01;
+ 293   1              /////////////////////////////////////////
+ 294   1              IEN1|=0X02;
+ 295   1              PWM00_ENABLE;   
+ 296   1              PWM00DUTY2H = 0;//      (U8)((Temp_Brightness2)>>8);
+ 297   1              PWM00DUTY2L=    1280;//(U8)(Temp_Brightness2);
+ 298   1              //Init_PWM_Duty1();
+ 299   1              gpio_init();
+ 300   1              ldo_init();
+ 301   1              usb_init();
+C51 COMPILER V9.60.0.0   MAIN                                                              09/23/2022 11:52:49 PAGE 6   
+
+ 302   1              //---------------------
+ 303   1              fg_suspend = 0;
+ 304   1              b_ShutDown=0;
+ 305   1              Change_Mode2();
+ 306   1              Suspend_Counter = 0;
+ 307   1              bPower_Up=1;
+ 308   1              //Int_Logo_Data();
+ 309   1              EA = 1;
+ 310   1              ET2=1;
+ 311   1              
+ 312   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    664    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      5    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

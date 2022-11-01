@@ -1,0 +1,1 @@
+"src\usb_task.c" LARGE WARNINGLEVEL (0) OPTIMIZE (8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\usb_task.lst) OBJECT(.\output\usb_task.obj)

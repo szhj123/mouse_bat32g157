@@ -1,0 +1,1 @@
+"src\wheel.c" LARGE WARNINGLEVEL (0) OPTIMIZE (8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\wheel.lst) OBJECT(.\output\wheel.obj)

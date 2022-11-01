@@ -1,0 +1,37 @@
+; .\output\isp.SRC generated from: src\isp.c
+; COMPILER INVOKED BY:
+;        C:\Keil_v5\C51\BIN\C51.EXE src\isp.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\isp.lst) SRC(.\output\isp.SRC)
+
+
+NAME	ISP
+
+?PR?ISPJMP?ISP       SEGMENT CODE 
+	PUBLIC	ISPJMP
+; void ISPJMP(void);
+; 
+; 
+; 
+; void ISPJMP(void)
+
+	RSEG  ?PR?ISPJMP?ISP
+ISPJMP:
+	USING	0
+			; SOURCE LINE # 5
+; {
+			; SOURCE LINE # 6
+; #pragma asm
+; 	CLR IE.7
+	  CLR IE.7
+; 	MOV B, #0A5H 
+	  MOV B, #0A5H 
+; 	MOV A, #5AH
+	  MOV A, #5AH
+; 	LJMP		0xfF00
+	  LJMP		0xfF00
+; #pragma endasm	
+; }
+			; SOURCE LINE # 13
+	RET  	
+; END OF ISPJMP
+
+	END

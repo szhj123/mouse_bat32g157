@@ -1,0 +1,161 @@
+C51 COMPILER V9.02   USB_DATA_SEND                                                         10/19/2017 11:12:31 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE USB_DATA_SEND
+OBJECT MODULE PLACED IN .\output\usb_data_send.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE src\usb_data_send.c LARGE WARNINGLEVEL(0) BROWSE DEBUG OBJECTEXTEND PRINT(.
+                    -\Listings\usb_data_send.lst) OBJECT(.\output\usb_data_send.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\usb_db.h"
+   4          #include "..\include\mcu_def.h"
+   5          #include "..\include\usb_def.h"
+   6          #include ".\head\Auser.h"
+   7          #include <intrins.h>
+   8          #include <string.h>
+   9          //******************************************************************************
+  10          void IN1_IRQ_Prog_Data(void)
+  11          {
+  12   1              if(bSend_IN2)
+*** ERROR C202 IN LINE 12 OF SRC\USB_DATA_SEND.C: 'bSend_IN2': undefined identifier
+  13   1              {
+  14   2                      bSend_IN2=0;
+*** ERROR C202 IN LINE 14 OF SRC\USB_DATA_SEND.C: 'bSend_IN2': undefined identifier
+  15   2                      EA = 0;
+  16   2                      buffer_addr = IN1_BUFFER_ADDRESS;
+*** ERROR C202 IN LINE 16 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  17   2                      buffer_addr[0] =Send_data[0];
+*** ERROR C202 IN LINE 17 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  18   2                      buffer_addr[1] =0x00;
+*** ERROR C202 IN LINE 18 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  19   2                      buffer_addr[2] =Send_data[1];
+*** ERROR C202 IN LINE 19 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  20   2                      buffer_addr[3] =Send_data[2];
+*** ERROR C202 IN LINE 20 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  21   2                      buffer_addr[4] =Send_data[3];
+*** ERROR C202 IN LINE 21 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  22   2                      buffer_addr[5] =Send_data[4];
+*** ERROR C202 IN LINE 22 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  23   2                      buffer_addr[6] =Send_data[5];
+*** ERROR C202 IN LINE 23 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  24   2                      buffer_addr[7] =Send_data[6];
+*** ERROR C202 IN LINE 24 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  25   2                      IEP1CNT = 8;
+  26   2                      IN1_SET_READY;
+  27   2                      EA = 1;
+  28   2              }
+  29   1      }
+  30          void IN2_IRQ_Prog_Data(void)
+  31          {
+  32   1              U8 i;
+  33   1              if(b_04)
+*** ERROR C202 IN LINE 33 OF SRC\USB_DATA_SEND.C: 'b_04': undefined identifier
+  34   1              {
+  35   2                      b_04=0;
+*** ERROR C202 IN LINE 35 OF SRC\USB_DATA_SEND.C: 'b_04': undefined identifier
+  36   2                      EA = 0;
+  37   2                      buffer_addr = IN2_BUFFER_ADDRESS;
+*** ERROR C202 IN LINE 37 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  38   2                      buffer_addr[0] =6;
+*** ERROR C202 IN LINE 38 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  39   2                      buffer_addr[1] =0x00;
+C51 COMPILER V9.02   USB_DATA_SEND                                                         10/19/2017 11:12:31 PAGE 2   
+
+*** ERROR C202 IN LINE 39 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  40   2                      buffer_addr[2] =Usb2_Data[0];
+*** ERROR C202 IN LINE 40 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  41   2                      buffer_addr[3] =Usb2_Data[1];
+*** ERROR C202 IN LINE 41 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  42   2                      buffer_addr[4] =Usb2_Data[2];
+*** ERROR C202 IN LINE 42 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  43   2                      buffer_addr[5] =Usb2_Data[3];
+*** ERROR C202 IN LINE 43 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  44   2                      buffer_addr[6] =Usb2_Data[4];
+*** ERROR C202 IN LINE 44 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  45   2                      buffer_addr[7] =Usb2_Data[5];
+*** ERROR C202 IN LINE 45 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  46   2                      IEP2CNT = 8;
+  47   2                      IN2_SET_READY;
+  48   2                      EA = 1;
+  49   2              }
+  50   1              else if(b_05)
+*** ERROR C202 IN LINE 50 OF SRC\USB_DATA_SEND.C: 'b_05': undefined identifier
+  51   1              {
+  52   2                      b_05=0;
+*** ERROR C202 IN LINE 52 OF SRC\USB_DATA_SEND.C: 'b_05': undefined identifier
+  53   2                      EA = 0;
+  54   2                      buffer_addr = IN2_BUFFER_ADDRESS;
+*** ERROR C202 IN LINE 54 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  55   2                      buffer_addr[0] =7;
+*** ERROR C202 IN LINE 55 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  56   2                      buffer_addr[1] =Usb2_Data[6];
+*** ERROR C202 IN LINE 56 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  57   2                      buffer_addr[2] =Usb2_Data[7];
+*** ERROR C202 IN LINE 57 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  58   2                      buffer_addr[3] =Usb2_Data[8];
+*** ERROR C202 IN LINE 58 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  59   2                      buffer_addr[4] =Usb2_Data[9];
+*** ERROR C202 IN LINE 59 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  60   2                      buffer_addr[5] =Usb2_Data[10];
+*** ERROR C202 IN LINE 60 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  61   2                      buffer_addr[6] =Usb2_Data[11];
+*** ERROR C202 IN LINE 61 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  62   2                      buffer_addr[7] =Usb2_Data[12];
+*** ERROR C202 IN LINE 62 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  63   2                      IEP2CNT = 8;
+  64   2                      IN2_SET_READY;
+  65   2                      EA = 1;
+  66   2              }
+  67   1              else if(b_01)   
+*** ERROR C202 IN LINE 67 OF SRC\USB_DATA_SEND.C: 'b_01': undefined identifier
+  68   1              {
+  69   2                      b_01=0;
+*** ERROR C202 IN LINE 69 OF SRC\USB_DATA_SEND.C: 'b_01': undefined identifier
+  70   2                      EA = 0;
+  71   2                      IEP2CNT = 0x03;
+  72   2                      buffer_addr = IN2_BUFFER_ADDRESS;
+*** ERROR C202 IN LINE 72 OF SRC\USB_DATA_SEND.C: 'buffer_addr': undefined identifier
+  73   2                      *BUFFER_ADDR++ = 02;
+*** ERROR C202 IN LINE 73 OF SRC\USB_DATA_SEND.C: 'BUFFER_ADDR': undefined identifier
+  74   2                      *BUFFER_ADDR++ = Multimedia_Data[1];
+*** ERROR C202 IN LINE 74 OF SRC\USB_DATA_SEND.C: 'BUFFER_ADDR': undefined identifier
+  75   2                      *BUFFER_ADDR++ =Multimedia_Data[0];
+*** ERROR C202 IN LINE 75 OF SRC\USB_DATA_SEND.C: 'BUFFER_ADDR': undefined identifier
+  76   2                      IN2_SET_READY;
+  77   2                      EA = 1;
+C51 COMPILER V9.02   USB_DATA_SEND                                                         10/19/2017 11:12:31 PAGE 3   
+
+  78   2                      Multimedia_Data[0]=0;
+*** ERROR C202 IN LINE 78 OF SRC\USB_DATA_SEND.C: 'Multimedia_Data': undefined identifier
+  79   2                      Multimedia_Data[1]=0;
+*** ERROR C202 IN LINE 79 OF SRC\USB_DATA_SEND.C: 'Multimedia_Data': undefined identifier
+  80   2              }
+  81   1      }
+  82          /*
+  83          void IN1_IRQ_Prog(U8 *ctr, U8 len)
+  84          {                                                                                                                                               
+  85                  U8 i;
+  86                  buffer_addr = IN1_BUFFER_ADDRESS;
+  87                  for(i=0;i<len;i++)
+  88                  {
+  89                          buffer_addr[i] = *ctr;
+  90                          ctr++;
+  91                  }       
+  92                  buffer_addr[0] =0x00;
+  93                  buffer_addr[1] =0x00;
+  94                  buffer_addr[2] =0x00;
+  95                  buffer_addr[3] =0x00;
+  96                  buffer_addr[4] =0x00;
+  97                  buffer_addr[5] =0x00;
+  98                  buffer_addr[6] =0x00;
+  99                  buffer_addr[7] =0x00;
+ 100                  
+ 101                  IEP1CNT = len;
+ 102                  IN1_SET_READY;
+ 103          }       
+ 104          */
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  41 ERROR(S)

@@ -1,0 +1,1 @@
+"src\fill_rom.asm" SET (LARGE) DEBUG PRINT(.\Listings\fill_rom.lst) OBJECT(.\output\fill_rom.obj) EP

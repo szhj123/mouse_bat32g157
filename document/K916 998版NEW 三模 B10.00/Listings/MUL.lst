@@ -1,0 +1,48 @@
+A51 MACRO ASSEMBLER  MUL                                                                  06/03/2021 16:34:05 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02
+OBJECT MODULE PLACED IN .\output\MUL.obj
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE src\MUL.ASM SET(LARGE) DEBUG PRINT(.\Listings\MUL.lst) OBJECT(.\output\MUL
+                      .obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0086                 1     sfr INSCON =    0x86
+  00F1                 2     sfr AUXC =    0xF1
+  0084                 3     sfr DPL1 =    0x84             
+  0085                 4     sfr DPH1 =    0x85
+                       5     mul8by8         SEGMENT CODE         
+                       6     PUBLIC          _mul8by8
+----                   7     RSEG            mul8by8
+0000                   8     _mul8by8:  
+0000 5386F3            9              ANL    INSCON,#11110011b  ;??8????  
+0003 EF               10              MOV    A,R7
+0004 8DF0             11              MOV    B,R5
+0006 A4               12              mul    AB
+0007 AEF0             13              mov    R6,B
+0009 FF               14              mov    R7,A
+000A 22               15              RET
+                      16     
+                      17              end
+A51 MACRO ASSEMBLER  MUL                                                                  06/03/2021 16:34:05 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AUXC . . . . . . .  D ADDR   00F1H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+DPH1 . . . . . . .  D ADDR   0085H   A   
+DPL1 . . . . . . .  D ADDR   0084H   A   
+INSCON . . . . . .  D ADDR   0086H   A   
+MUL8BY8. . . . . .  C SEG    000BH       REL=UNIT
+_MUL8BY8 . . . . .  C ADDR   0000H   R   SEG=MUL8BY8
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

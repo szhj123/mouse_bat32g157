@@ -1,0 +1,102 @@
+C51 COMPILER V9.02   DISPALY_RAINMU_MODE                                                   01/09/2018 16:03:54 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE DISPALY_RAINMU_MODE
+OBJECT MODULE PLACED IN .\output\Dispaly_RainMu_Mode.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE src\Dispaly_RainMu_Mode.c LARGE WARNINGLEVEL(0) BROWSE DEBUG OBJECTEXTEND P
+                    -RINT(.\Listings\Dispaly_RainMu_Mode.lst) OBJECT(.\output\Dispaly_RainMu_Mode.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\mcu_def.h"
+   4          #include "..\include\pwm_control.h"
+   5          #include ".\include\Auser.h"
+   6          #include "..\include\CFG.h"
+   7          #include <intrins.h>
+   8          #include <string.h>
+   9          code const U8 Deal_RainMu_Tal   [36]=
+  10          {
+  11                  0,21,42,63,84,105,
+  12                  200,200,200,200,200,200,
+  13                  200,200,200,200,200,200,
+  14                  105,84,63,42,21,0,
+  15                  200,200,200,200,200,200,
+  16                  200,200,200,200,200,200,
+  17          };
+  18          //**************************************
+  19          void Deal_RainMu_Data(U8 NUM_Brightness)
+  20          {
+  21   1              U8 j;
+  22   1                      Brightness_s=0;
+  23   1              if(NUM_Brightness==0)
+  24   1                      Brightness_s=45;
+  25   1              else if(NUM_Brightness==1)
+  26   1                      Brightness_s=35;
+  27   1              else if(NUM_Brightness==2)
+  28   1                      Brightness_s=20;
+  29   1              else if(NUM_Brightness==3)
+  30   1                      Brightness_s=5;
+  31   1              else if(NUM_Brightness==4)
+  32   1                      Brightness_s=1; 
+  33   1              for(j=0; j<21; j++)
+  34   1              {
+  35   2                      //      Image[Image_Num+j]=50*Brightness_Wheels;
+  36   2                      KeyDown_Image2(Image_Num+j,Brightness_s);
+  37   2              }
+  38   1      }
+  39          //******************************************
+  40          void Dispaly_RainMu_Mode(void)
+  41          {
+  42   1              U8 i,i1,j;
+  43   1              if(!b_RainMu_Mode)
+  44   1                      return;
+  45   1              if(Speed_Data==0)
+  46   1                      i=5;
+  47   1              else if(Speed_Data==1)
+  48   1                      i=10;
+  49   1              else if(Speed_Data==2)
+  50   1                      i=15;   
+  51   1              else if(Speed_Data==3)
+  52   1                      i=20;           
+  53   1              else if(Speed_Data>=4)
+  54   1                      i=25;           
+C51 COMPILER V9.02   DISPALY_RAINMU_MODE                                                   01/09/2018 16:03:54 PAGE 2   
+
+  55   1              Temp_Speed++;
+  56   1              if(Temp_Speed>i)
+  57   1              {
+  58   2                      Temp_Speed=0;
+  59   2                      Give_All_Image(0x00);
+  60   2                      //***********************
+  61   2                      
+  62   2                      i1=Deal_RainMu_Tal[Run_Time];
+  63   2                      if(i1<200)
+  64   2                              Image_Num=i1;
+  65   2                              
+  66   2                      Deal_RainMu_Data(0);    
+  67   2                      for(j=1; j<4; j++)
+  68   2                      {
+  69   3                              if(Run_Time>j)
+  70   3                                      Deal_RainMu_Data(j);    
+  71   3                      }
+  72   2                              Run_Time++;     
+  73   2                      if(Run_Time>=36)
+  74   2                              Run_Time=0;
+  75   2              }
+  76   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    295    ----
+   CONSTANT SIZE    =     36    ----
+   XDATA SIZE       =   ----       3
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

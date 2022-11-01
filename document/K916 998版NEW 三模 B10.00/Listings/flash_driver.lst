@@ -1,0 +1,710 @@
+C51 COMPILER V9.60.0.0   FLASH_DRIVER                                                      09/23/2022 11:52:50 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE FLASH_DRIVER
+OBJECT MODULE PLACED IN .\output\flash_driver.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\flash_driver.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG 
+                    -OBJECTEXTEND PRINT(.\Listings\flash_driver.lst) OBJECT(.\output\flash_driver.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\mcu_def.h"
+   4          #include "..\include\pwm_control.h"
+   5          #include ".\include\Auser.h"
+   6          #include "..\include\CFG.h"
+   7          #include ".\include\ABSACC.H"
+   8          #include <intrins.h>
+   9          #include <string.h>
+  10          U16 xdata WriteEE_Address;
+  11          U16 xdata WriteEE_Address2;
+  12          static void Save_Mode_Time(void);
+  13          static void Read_KeyIndex_Data(void);
+  14          static void Read_Mode_Time(void);
+  15          static void Save_Macro_Data(void);
+  16          static void Save_Flash_Data(void);
+  17          #define switch_info()           FLASHCON |= 0x01
+  18          #define switch_main()           FLASHCON &= ~0x01
+  19          #define S_Macro_1                       94              //      0xBC00
+  20          #define S_Macro_2                       95              //      0xBE00
+  21          #define S_Macro_3                       96              //      0xC000
+  22          #define S_Macro_4                       97              //      0xC200
+  23          #define S_Macro_5                       98              //      0xC400
+  24          
+  25          #define S_FLASH_Key                             99              //<<2   //0xC600        99*512
+  26          #define S_FLASH_Mode_SECTOR2    100     //<<2   //0xC800        100*512
+  27          
+  28          #define S_FLASH_Mode_1                  101     //<<2   //0xCA00        101*512
+  29          #define S_FLASH_Mode_2                  102     //<<2   //0xCC00        102*512
+  30          #define S_FLASH_Mode_3                  103     //              0xCE00          103*512
+  31          
+  32          
+  33          bit     b_Start_Change_Mode2;
+  34          code const U8 USB_Tab6[21*6]=
+  35          {
+  36                  0x29,0x35,0x2b,0x39,            0x00,0x00,//c0
+  37                  0x00,0x1e,0x14,0x04,            0x1d,0x00,//c1
+  38                  0x3a,0x1f,0x1a,0x16,            0x1b,0x00,//c2  
+  39                  0x3b,0x20,0x08,0x07,            0x06,0x00,//c3
+  40                  0x3c,0x21,0x15,0x09,            0x19,0x00,//c4  
+  41                  0x3d,0x22,0x17,0x0a,            0x05,0x2c,//c5
+  42                  0x3e,0x23,0x1c,0x0b,            0x11,0x00,//c6
+  43                  0x3f,0x24,0x18,0x0d,            0x10,0x00,//c7
+  44                  0x40,0x25,0x0c,0x0e,            0x36,0x00,//c8
+  45                  
+  46                  0x41,0x26,0x12,0x0f,            0x37,0x00,//c9  
+  47                  0x42,0x27,0x13,0x33,            0x38,0x65,//c10
+  48                  0x43,0x2d,0x2f,0x34,            0x87,0x00,//c11
+  49                  0x44,0x2e,0x30,0x32,            0x64,0x00,//c12
+  50                  0x45,0x2a,0x31,0x28,            0x00,0x00,//c13
+  51                  
+  52                  0x46,0x49,0x4c,0X00,            0X00,0x50,//c14
+  53                  0x47,0x4a,0x4d,0X00,            0x52,0x51,//c15
+  54                  0x48,0x4b,0x4e,0X00,            0x00,0x4F,//c16
+C51 COMPILER V9.60.0.0   FLASH_DRIVER                                                      09/23/2022 11:52:50 PAGE 2   
+
+  55                  
+  56                  0x00,0x53,0x5F,0x5C,            0x59,0x62,//c17
+  57                  0x00,0x54,0x60,0x5D,            0x5a,0x00,//c18
+  58                  0x00,0x55,0x61,0x5e,            0x5b,0x63,//c19
+  59                  0x00,0x56,0x57,0X85,            0x58,0x00,//c20
+  60          };
+  61          void sector_erase(U8 data sec_num)
+  62          {
+  63   1              CLR_WDT();
+  64   1              EA = 0;
+  65   1              XPAGE = sec_num<<1;
+  66   1              IB_CON1 = 0xe6;
+  67   1              IB_CON2 = 0x05;
+  68   1              IB_CON3 = 0x0A;
+  69   1              IB_CON4 = 0x09;
+  70   1              IB_CON5 = 0x06;
+  71   1              _nop_();
+  72   1              _nop_();
+  73   1              _nop_();
+  74   1              _nop_();
+  75   1              IB_CON1 = 0;
+  76   1              IB_CON2 = 0;
+  77   1              IB_CON3 = 0;
+  78   1              IB_CON4 = 0;
+  79   1              IB_CON5 = 0;
+  80   1              EA = 1;
+  81   1      }
+  82          //***************************************
+  83          void sector_prog(U16 data sec_addr, U8 data prog_data)
+  84          {
+  85   1              EA = 0;
+  86   1              CLR_WDT();
+  87   1              XPAGE = sec_addr>>8;
+  88   1              IB_OFFSET = sec_addr;
+  89   1              IB_DATA = prog_data;
+  90   1              IB_CON1 = 0x6e;
+  91   1              IB_CON2 = 0x05;
+  92   1              IB_CON3 = 0x0A;
+  93   1              IB_CON4 = 0x09;
+  94   1              IB_CON5 = 0x06;
+  95   1              _nop_();
+  96   1              _nop_();
+  97   1              _nop_();
+  98   1              _nop_();
+  99   1              IB_CON1 = 0;
+ 100   1              IB_CON2 = 0;
+ 101   1              IB_CON3 = 0;
+ 102   1              IB_CON4 = 0;
+ 103   1              IB_CON5 = 0;
+ 104   1              EA = 1;
+ 105   1      }
+ 106          //************************************************
+ 107          void Clear_Flash_Data(void)
+ 108          {
+ 109   1              sector_erase(S_FLASH_Mode_1);
+ 110   1              sector_erase(S_FLASH_Mode_2);
+ 111   1              sector_erase(S_FLASH_Mode_3);
+ 112   1              
+ 113   1              sector_erase(S_Macro_1);
+ 114   1              sector_erase(S_Macro_2);
+ 115   1              sector_erase(S_Macro_3);
+ 116   1              sector_erase(S_Macro_4);
+C51 COMPILER V9.60.0.0   FLASH_DRIVER                                                      09/23/2022 11:52:50 PAGE 3   
+
+ 117   1              sector_erase(S_Macro_5);
+ 118   1      }
+ 119          code const U8 Image_Times_Tab2[28]={2,3,4,22,23,24,25,26,42,43,44,45,46,64,65,66,68,84,89,105,107,110,14,1
+             -5,37,36,58,57,};
+ 120          code const U8 Image_Times_Tab3[]={22,23,24,25,26,27,28,43,44,45,46,47,64,65,66,67,68,84,87,88,105,};
+ 121          void Read_WASD_Image(U8 Temp_Images)
+ 122          {
+ 123   1              U8 i,j,n,k;
+ 124   1              Clear_Mode_Data();
+ 125   1              b_WASD_Mode=1;
+ 126   1              Mode_Times=19;
+ 127   1              if(Image_Times==1)
+ 128   1                      WriteEE_Address = 0xCA00;
+ 129   1              else if(Image_Times==2)
+ 130   1                      WriteEE_Address = 0xCC00;
+ 131   1              else if(Image_Times==3)
+ 132   1                      WriteEE_Address = 0xCE00;
+ 133   1                              
+ 134   1              for(i=0; i<126; i++)    
+ 135   1              {
+ 136   2                      if(CBYTE[WriteEE_Address])
+ 137   2                              Image[0][i]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,i);
+ 138   2                      else
+ 139   2                              Image[0][i]=PWM_AddData(0,i);   
+ 140   2                      WriteEE_Address ++;             
+ 141   2                              
+ 142   2                      if(CBYTE[WriteEE_Address])
+ 143   2                              Image[1][i]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(1,i);
+ 144   2                      else
+ 145   2                              Image[1][i]=PWM_AddData(1,i);   
+ 146   2                      WriteEE_Address ++;     
+ 147   2                      
+ 148   2                      if(CBYTE[WriteEE_Address])
+ 149   2                              Image[2][i]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(2,i);
+ 150   2                      else
+ 151   2                              Image[2][i]=PWM_AddData(2,i);
+ 152   2                      WriteEE_Address ++;                     
+ 153   2              }
+ 154   1              n=CBYTE[WriteEE_Address];
+ 155   1              if(n!=0xAA)
+ 156   1              {
+ 157   2                      if(Image_Times==1)
+ 158   2                      {       
+ 159   3                      Image[0][1]=Image[0][44]=Image[0][64]=Image[0][65]=250*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,i);
+ 160   3                      Image[0][66]=Image[0][99]=Image[0][119]=Image[0][120]=Image[0][121]=250*Brightness_Wheels/Limit_Power*4+
+             -PWM_AddData(0,i);
+ 161   3                      }
+ 162   2                      else if(Image_Times==2)
+ 163   2                      {
+ 164   3                              for(i=0; i<sizeof(Image_Times_Tab2); i++)
+ 165   3                                      Image[1][Image_Times_Tab2[i]]=250*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,i);
+ 166   3                      }       
+ 167   2                      else if(Image_Times==3)
+ 168   2                      {
+ 169   3                              for(i=0; i<sizeof(Image_Times_Tab3); i++)
+ 170   3                                      Image[2][Image_Times_Tab3[i]]=250*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,i);
+ 171   3                      }
+ 172   2                      Save_Flash_Data();
+ 173   2              }
+ 174   1                      j=Brack_b(17);
+ 175   1                      j=Brack_b(18);
+ 176   1                      j=Brack_b(19);
+C51 COMPILER V9.60.0.0   FLASH_DRIVER                                                      09/23/2022 11:52:50 PAGE 4   
+
+ 177   1                      j=Brack_b(20);
+ 178   1                      
+ 179   1                      j=Brack_b(43);
+ 180   1                      j=Brack_b(44);
+ 181   1                      j=Brack_b(45);
+ 182   1                      j=Brack_b(52);
+ 183   1                      j=Brack_b(110);
+ 184   1                      j=Brack_b(114);
+ 185   1      }
+ 186          void Save_Flash_Data(void)
+ 187          {
+ 188   1              U8 i;
+ 189   1              if(Image_Times==1)
+ 190   1              {
+ 191   2                      sector_erase(S_FLASH_Mode_1);
+ 192   2                      WriteEE_Address = 0xCA00;       
+ 193   2              }
+ 194   1              else if(Image_Times==2)
+ 195   1              {
+ 196   2                      sector_erase(S_FLASH_Mode_2);
+ 197   2                      WriteEE_Address = 0xCC00;       
+ 198   2              }
+ 199   1              else if(Image_Times==3)
+ 200   1              {
+ 201   2                      sector_erase(S_FLASH_Mode_3);
+ 202   2                      WriteEE_Address = 0xCE00;       
+ 203   2              }
+ 204   1                      for(i=0; i<126; i++)
+ 205   1                      {
+ 206   2                              if((Image[0][i]!=PWM_AddData(0,i))&&(Image[0][i]))
+ 207   2                                      sector_prog(WriteEE_Address, 255);
+ 208   2                              else
+ 209   2                                      sector_prog(WriteEE_Address, 0);        
+ 210   2                              WriteEE_Address += 0x0001;      
+ 211   2                              
+ 212   2                              if((Image[1][i]!=PWM_AddData(1,i))&&(Image[1][i]))
+ 213   2                                      sector_prog(WriteEE_Address, 255);
+ 214   2                              else
+ 215   2                                      sector_prog(WriteEE_Address, 0);        
+ 216   2                              WriteEE_Address += 0x0001;      
+ 217   2                              
+ 218   2                              if((Image[2][i]!=PWM_AddData(2,i))&&(Image[2][i]))
+ 219   2                                      sector_prog(WriteEE_Address, 255);
+ 220   2                              else
+ 221   2                                      sector_prog(WriteEE_Address, 0);        
+ 222   2                              WriteEE_Address += 0x0001;      
+ 223   2                      }       
+ 224   1                      sector_prog(WriteEE_Address,0XAA);
+ 225   1                      WriteEE_Address += 0x0001;      
+ 226   1      }
+ 227          //****************************************************
+ 228          //****************************************************
+ 229          U8 xdata USB_Ind_Num;
+ 230          U16 xdata Usb_Ind_Length;
+ 231          U8 xdata Usb_Ind_Times;
+ 232          //bit USB_Data_Start;
+ 233          U8 xdata Data8_cnt1;
+ 234          U8 xdata Data8_cnt2;
+ 235          U8 data RLT_Index;
+ 236          U8 data RLT2_Index;
+ 237          U16 xdata Image2[3][126];
+ 238          bit b_Image2_Ok;
+C51 COMPILER V9.60.0.0   FLASH_DRIVER                                                      09/23/2022 11:52:50 PAGE 5   
+
+ 239          bit b_Feel_Mode;
+ 240          void Deal_Macro_Cnt(void)
+ 241          {
+ 242   1                      Data8_cnt1++;
+ 243   1                      if(Data8_cnt1>191)
+ 244   1                      {
+ 245   2                              Data8_cnt1=0;
+ 246   2                              Data8_cnt2++;
+ 247   2                      }
+ 248   1                      if(Data8_cnt2==0)
+ 249   1                              WriteEE_Address2 = 0xBC00+Data8_cnt1;   
+ 250   1                      else if(Data8_cnt2==1)
+ 251   1                              WriteEE_Address2 = 0xBCC0+Data8_cnt1;           
+ 252   1                      else if(Data8_cnt2==2)
+ 253   1                              WriteEE_Address2 = 0xBE00+Data8_cnt1;   
+ 254   1                      else if(Data8_cnt2==3)
+ 255   1                              WriteEE_Address2 = 0xBEC0+Data8_cnt1;   
+ 256   1                      else if(Data8_cnt2==4)
+ 257   1                              WriteEE_Address2 = 0xC000+Data8_cnt1;           
+ 258   1                      else if(Data8_cnt2==5)
+ 259   1                              WriteEE_Address2 = 0xC0C0+Data8_cnt1;           
+ 260   1                      else if(Data8_cnt2==6)
+ 261   1                              WriteEE_Address2 = 0xC200+Data8_cnt1;   
+ 262   1                      else if(Data8_cnt2==7)
+ 263   1                              WriteEE_Address2 = 0xC2C0+Data8_cnt1;   
+ 264   1                      else if(Data8_cnt2==8)
+ 265   1                              WriteEE_Address2 = 0xC400+Data8_cnt1;   
+ 266   1                      else if(Data8_cnt2==9)
+ 267   1                              WriteEE_Address2 = 0xC4C0+Data8_cnt1;           
+ 268   1      }
+ 269          void Deal_Feel_Data(void)
+ 270          {
+ 271   1              Data8_cnt2++;
+ 272   1              if(Data8_cnt2>2)
+ 273   1              {
+ 274   2                      Data8_cnt2=0;
+ 275   2                      Data8_cnt1++;
+ 276   2                      if(Data8_cnt1>=126)
+ 277   2                      Data8_cnt1=0;
+ 278   2              }       
+ 279   1      }
+ 280          void Deal_Image2_Data(void)
+ 281          {
+ 282   1              U8 i;
+ 283   1              if(Usb_Ind_Times)
+ 284   1              {
+ 285   2                      Usb_Ind_Times--;
+ 286   2                      if(Usb_Ind_Times==0)
+ 287   2                      {       
+ 288   3                              b_Feel_Mode=0;
+ 289   3                              b_Image2_Ok=0;
+ 290   3                              Change_Mode2(); 
+ 291   3                      }
+ 292   2              }
+ 293   1      }
+ 294          void Save_Imaging_Data(U8 Temp_USB_Data)//实时灯效
+ 295          {
+ 296   1              
+ 297   1              if(RLT_Index==0x01)//键盘键值   504
+ 298   1              {
+ 299   2                      if(RLT2_Index==1)
+ 300   2                      {
+C51 COMPILER V9.60.0.0   FLASH_DRIVER                                                      09/23/2022 11:52:50 PAGE 6   
+
+ 301   3                              if(Usb_ImageID==0)
+ 302   3                              {
+ 303   4                                      IPH1 = 0x01;//IPH1_INIT;
+ 304   4                                      IPL1 =  0x01;
+ 305   4                                      Usb_Ind_Length=504;
+ 306   4                                      sector_erase(S_FLASH_Key);
+ 307   4                                      WriteEE_Address2=0xC600;
+ 308   4                              }
+ 309   3                              else if(Usb_ImageID>3)
+ 310   3                              {
+ 311   4                                      sector_prog(WriteEE_Address2, Temp_USB_Data);
+ 312   4                                      WriteEE_Address2 += 0x0001;     
+ 313   4                                      
+ 314   4                                      Usb_Ind_Length--;
+ 315   4                              }
+ 316   3                      }
+ 317   2                      else
+ 318   2                      {
+ 319   3                              if(Usb_ImageID>=2)
+ 320   3                              {
+ 321   4                                      if(Usb_Ind_Length)
+ 322   4                                      {       
+ 323   5                                      sector_prog(WriteEE_Address2, Temp_USB_Data);
+ 324   5                                      WriteEE_Address2 += 0x0001;     
+ 325   5                                      Usb_Ind_Length--;
+ 326   5                                      }
+ 327   4                              }
+ 328   3                      }
+ 329   2              }       
+ 330   1              else if(RLT_Index==0x02)//模式灯效等    41长度，现在有效数据4个
+ 331   1              {
+ 332   2                      if(Usb_ImageID==0)
+ 333   2                      {
+ 334   3                              IPH1 = 0x01;//IPH1_INIT;
+ 335   3                              IPL1 =  0x01;
+ 336   3                              Clear_Mode_Data();
+ 337   3                      }
+ 338   2                      else if(Usb_ImageID==4)
+ 339   2                      {
+ 340   3                              Mode_Times=Change_Mode_Data(Temp_USB_Data);
+ 341   3                      }
+ 342   2                      else if(Usb_ImageID==6)
+ 343   2                      {
+ 344   3                              Speed_Data=5-Temp_USB_Data;
+ 345   3                      }
+ 346   2                      else if(Usb_ImageID==7)
+ 347   2                      {
+ 348   3                              Brightness_Wheels=Temp_USB_Data;
+ 349   3                      }
+ 350   2                      else if(Usb_ImageID==8)
+ 351   2                      {
+ 352   3                              Color_Times=0;
+ 353   3                              R_Color=Temp_USB_Data;          
+ 354   3                      }
+ 355   2                      else if(Usb_ImageID==9)
+ 356   2                      {
+ 357   3                              G_Color=Temp_USB_Data;
+ 358   3                      }
+ 359   2                      else if(Usb_ImageID==10)
+ 360   2                      {
+ 361   3                              B_Color=Temp_USB_Data;
+ 362   3                      }
+C51 COMPILER V9.60.0.0   FLASH_DRIVER                                                      09/23/2022 11:52:50 PAGE 7   
+
+ 363   2                      else if(Usb_ImageID==11)
+ 364   2                      {
+ 365   3                              if(Temp_USB_Data==1)
+ 366   3                                      Color_Times=8;
+ 367   3                              else
+ 368   3                                      Color_Times=0;
+ 369   3                      }
+ 370   2                      else if(Usb_ImageID==12)
+ 371   2                      {
+ 372   3                              Sleep_Times=Temp_USB_Data;
+ 373   3                      }       
+ 374   2                      else if(Usb_ImageID==60)
+ 375   2                      {
+ 376   3                              b_Start_Change_Mode2=1;
+ 377   3                              Change_Mode2();
+ 378   3                      }               
+ 379   2              }
+ 380   1              else if(RLT_Index==0x04)//Macro
+ 381   1              {
+ 382   2                      if(RLT2_Index==1)
+ 383   2                      {
+ 384   3                              if(Usb_ImageID==0)
+ 385   3                              {
+ 386   4                                      IPH1 = 0x01;//IPH1_INIT;
+ 387   4                                      IPL1 =  0x01;
+ 388   4                                      Usb_Ind_Length=192*10;
+ 389   4                                      sector_erase(S_Macro_1);
+ 390   4                                      sector_erase(S_Macro_2);
+ 391   4                                      sector_erase(S_Macro_3);
+ 392   4                                      sector_erase(S_Macro_4);
+ 393   4                                      sector_erase(S_Macro_5);
+ 394   4                                      Data8_cnt1=Data8_cnt2=0;
+ 395   4                                      WriteEE_Address2 = 0xBC00;      
+ 396   4                              }
+ 397   3                              else if(Usb_ImageID>3)
+ 398   3                              {
+ 399   4                                      if(Usb_Ind_Length)
+ 400   4                                      {       
+ 401   5                                              Usb_Ind_Length--;
+ 402   5                                              sector_prog(WriteEE_Address2, Temp_USB_Data);
+ 403   5                                              Deal_Macro_Cnt();       
+ 404   5                                      }       
+ 405   4                              }
+ 406   3                      }
+ 407   2                      else 
+ 408   2                      {
+ 409   3                              if(Usb_ImageID>=2)
+ 410   3                              {
+ 411   4                                      if(Usb_Ind_Length)
+ 412   4                                      {       
+ 413   5                                              Usb_Ind_Length--;
+ 414   5                                              sector_prog(WriteEE_Address2, Temp_USB_Data);
+ 415   5                                              Deal_Macro_Cnt();       
+ 416   5                                      }       
+ 417   4                              }
+ 418   3                      }
+ 419   2              }
+ 420   1              else if(RLT_Index==0x03)//游戏高手
+ 421   1              {
+ 422   2                      if(RLT2_Index==1)
+ 423   2                      {
+ 424   3                              if(Usb_ImageID==0)
+C51 COMPILER V9.60.0.0   FLASH_DRIVER                                                      09/23/2022 11:52:50 PAGE 8   
+
+ 425   3                              {
+ 426   4                                      IPH1 = 0x01;//IPH1_INIT;
+ 427   4                                      IPL1 =  0x01;
+ 428   4                              }       
+ 429   3                              else if(Usb_ImageID==4)
+ 430   3                              {
+ 431   4                                      Image_Times=Temp_USB_Data;
+ 432   4                                      Mode_Times=19;
+ 433   4                                      Change_Mode2(); 
+ 434   4                                      Data8_cnt1=0;
+ 435   4                                      Data8_cnt2=0;
+ 436   4                                      Usb_Ind_Length=126*3;
+ 437   4                              }       
+ 438   3                              if(Usb_ImageID>4)
+ 439   3                              {
+ 440   4                                      if(Usb_Ind_Length)
+ 441   4                                      {       
+ 442   5                                              Usb_Ind_Length--;
+ 443   5                                              Image[Data8_cnt2][Deal_Tbl_Image2(Data8_cnt1)]=Temp_USB_Data*4+PWM_AddData(Data8_cnt2,Deal_Tbl_Image2
+             -(Data8_cnt1));
+ 444   5                                              Deal_Feel_Data();
+ 445   5                                      }
+ 446   4                              }
+ 447   3                      }
+ 448   2                      else
+ 449   2                      {
+ 450   3                              if(Usb_ImageID>=2)
+ 451   3                              {
+ 452   4                                      if(Usb_Ind_Length)
+ 453   4                                      {       
+ 454   5                                              Usb_Ind_Length--;
+ 455   5                                              Image[Data8_cnt2][Deal_Tbl_Image2(Data8_cnt1)]=Temp_USB_Data*4+PWM_AddData(Data8_cnt2,Deal_Tbl_Image2
+             -(Data8_cnt1));
+ 456   5                                              Deal_Feel_Data();
+ 457   5                                              if(Usb_Ind_Length==0)
+ 458   5                                                      Save_Flash_Data();
+ 459   5                                      }
+ 460   4                              }
+ 461   3                      }
+ 462   2              }
+ 463   1              else if(RLT_Index==0x06)
+ 464   1              {
+ 465   2                      if(RLT2_Index==1)
+ 466   2                      {
+ 467   3                              if(Usb_ImageID==0)
+ 468   3                              {
+ 469   4                                      Usb_Ind_Length=126*3;
+ 470   4                                      Data8_cnt1=Data8_cnt2=0;
+ 471   4                                      b_ChangLiang_Mode=0;
+ 472   4                                      b_SuiMie_Mode=b_HuXi_Mode=b_WASD_Mode=0;
+ 473   4                                      b_LiuGuang_Mode6=b_LiuGuang_Mode=b_LiuGuang_Mode2=b_LiuGuang_Mode3=b_LiuGuang_Mode4=0;
+ 474   4                                      b_Pao_Heng=b_HangPao_Mode=b_SuiLiang_Mode=b_HengMie_Mode=b_PaoMa1_Mode=0;
+ 475   4                                      b_PaoMa2_Mode=b_PaoMa3_Mode=b_PaoMa4_Mode=b_Raindrops_Mode=0;
+ 476   4                                      b_Effect_light_1=b_Effect_light_2=b_BoLang_Mode=0;
+ 477   4                                      b_LiuGuang_Mode5=b_LiuGuang_Mode7=0;
+ 478   4                                      b_Feel_Mode=1;
+ 479   4                              }
+ 480   3                              else if(Usb_ImageID>3)
+ 481   3                              {
+ 482   4                                      if(Usb_Ind_Length)
+ 483   4                                      {       
+ 484   5                                              Usb_Ind_Length--;
+C51 COMPILER V9.60.0.0   FLASH_DRIVER                                                      09/23/2022 11:52:50 PAGE 9   
+
+ 485   5                                              Image2[Data8_cnt2][Deal_Tbl_Image2(Data8_cnt1)]=Temp_USB_Data*4+PWM_AddData(Data8_cnt2,Deal_Tbl_Image
+             -2(Data8_cnt1));
+ 486   5                                              if(Temp_USB_Data)
+ 487   5                                                      CLR_WDT();              
+ 488   5                                              Deal_Feel_Data();
+ 489   5                                      }
+ 490   4                              }
+ 491   3                      }
+ 492   2                      else if(RLT2_Index>1)
+ 493   2                      {
+ 494   3                              if(Usb_ImageID>=2)
+ 495   3                              {
+ 496   4                                      if(Usb_Ind_Length)
+ 497   4                                      {       
+ 498   5                                              Usb_Ind_Length--;
+ 499   5                                              Image2[Data8_cnt2][Deal_Tbl_Image2(Data8_cnt1)]=Temp_USB_Data*4+PWM_AddData(Data8_cnt2,Deal_Tbl_Image
+             -2(Data8_cnt1));
+ 500   5                                              Deal_Feel_Data();
+ 501   5                                              if(Usb_Ind_Length==0)
+ 502   5                                              {       
+ 503   6                                                      b_Image2_Ok=1;
+ 504   6                                                      Usb_Ind_Times=200;
+ 505   6                                              }
+ 506   5                                      }
+ 507   4                              }
+ 508   3                      }
+ 509   2              }
+ 510   1              Usb_ImageID++;
+ 511   1      }
+ 512          //****************************************************
+ 513          /*
+ 514          0(esc)|         6 |
+ 515          1|                  7 |
+ 516          2|                  8 |
+ 517          3|                  9 |
+ 518          4|                  10|
+ 519          5(ctrl_l)|          11|
+ 520          */
+ 521          void Read_KeyIndex_Data(void)
+ 522          {
+ 523   1              U16 i;
+ 524   1              U16 i1;
+ 525   1              U16 b_General_Data;
+ 526   1              b_General_Data=0;
+ 527   1              WriteEE_Address=0xC600;
+ 528   1              for(i=0; i<504; i++)
+ 529   1              {
+ 530   2                      if(CBYTE[WriteEE_Address+i])
+ 531   2                              b_General_Data++;
+ 532   2              }
+ 533   1              if(Reset_Mode)//复位模式按下
+ 534   1                      b_General_Data=0;
+ 535   1              WriteEE_Address=0xC600;
+ 536   1              if((b_General_Data<50)|Reset_Mode)      //写Flash
+ 537   1              {       
+ 538   2                      sector_erase(S_FLASH_Key);
+ 539   2                      for(i=0; i<126; i++)
+ 540   2                      {
+ 541   3                              i1=WriteEE_Address+i*4;
+ 542   3                              if(i==5)
+ 543   3                              {
+ 544   4                                      sector_prog(i1, 0x00);
+C51 COMPILER V9.60.0.0   FLASH_DRIVER                                                      09/23/2022 11:52:50 PAGE 10  
+
+ 545   4                                      sector_prog(i1+1, 0x01);//Ctrl_L
+ 546   4                                      sector_prog(i1+2, 0);
+ 547   4                                      sector_prog(i1+3, 0x00);
+ 548   4                              }
+ 549   3                              else if(i==4)
+ 550   3                              {
+ 551   4                                      sector_prog(i1, 0x00);
+ 552   4                                      sector_prog(i1+1, 0x02);//SHIFT_L       
+ 553   4                                      sector_prog(i1+2, 0);
+ 554   4                                      sector_prog(i1+3, 0x00);
+ 555   4                              }
+ 556   3                              else if(i==17)
+ 557   3                              {
+ 558   4                                      sector_prog(i1, 0x00);
+ 559   4                                      sector_prog(i1+1, 0x04);//ALT_L
+ 560   4                                      sector_prog(i1+2, 0);
+ 561   4                                      sector_prog(i1+3, 0x00);
+ 562   4                              }
+ 563   3                              else if(i==11)
+ 564   3                              {
+ 565   4                                      sector_prog(i1, 0x00);
+ 566   4                                      sector_prog(i1+1, 0x08);//Win_L
+ 567   4                                      sector_prog(i1+2, 0);
+ 568   4                                      sector_prog(i1+3, 0x00);
+ 569   4                              }
+ 570   3                              else if(i==83)          
+ 571   3                              {
+ 572   4                                      sector_prog(i1, 0x00);
+ 573   4                                      sector_prog(i1+1, 0x10);//Ctrl_R
+ 574   4                                      sector_prog(i1+2, 0);
+ 575   4                                      sector_prog(i1+3, 0x00);
+ 576   4                              }
+ 577   3                              else if(i==82)
+ 578   3                              {
+ 579   4                                      sector_prog(i1, 0x00);
+ 580   4                                      sector_prog(i1+1, 0x20);//SHIFT_R       
+ 581   4                                      sector_prog(i1+2, 0);
+ 582   4                                      sector_prog(i1+3, 0x00);
+ 583   4                              }
+ 584   3                              else if(i==53)
+ 585   3                              {
+ 586   4                                      sector_prog(i1, 0x00);
+ 587   4                                      sector_prog(i1+1, 0x40);//ALT_R
+ 588   4                                      sector_prog(i1+2, 0);
+ 589   4                                      sector_prog(i1+3, 0x00);
+ 590   4                              }
+ 591   3                              else
+ 592   3                              {
+ 593   4                                      sector_prog(i1, 0x00);
+ 594   4                                      sector_prog(i1+1, 0x00);
+ 595   4                                      sector_prog(i1+2, USB_Tab6[i]);
+ 596   4                                      sector_prog(i1+3, 0x00);
+ 597   4                              }
+ 598   3                      }
+ 599   2              }
+ 600   1      }
+ 601          //****************************************************
+ 602          void Save_Mode_Time(void)
+ 603          {
+ 604   1              sector_erase(S_FLASH_Mode_SECTOR2);
+ 605   1              sector_prog(0xC800, 0x5A);
+ 606   1              sector_prog(0xC801, Mode_Times);
+C51 COMPILER V9.60.0.0   FLASH_DRIVER                                                      09/23/2022 11:52:50 PAGE 11  
+
+ 607   1              sector_prog(0xC802, Image_Times);
+ 608   1              sector_prog(0xC803, Color_Times);
+ 609   1              sector_prog(0xC804, Sleep_Times);
+ 610   1              sector_prog(0xC805, Mode_Bluetooth_Times);      
+ 611   1              sector_prog(0xC806, R_Color);
+ 612   1              sector_prog(0xC807, G_Color);
+ 613   1              sector_prog(0xC808, B_Color);
+ 614   1              sector_prog(0xC809, Brightness_Wheels);
+ 615   1              sector_prog(0xC80A, Logo_Mode_Times);
+ 616   1      }
+ 617          void Read_Mode_Time(void)
+ 618          {
+ 619   1              U8 i,n,j;
+ 620   1              n=i=j=0;
+ 621   1              i= CBYTE[0xC800];
+ 622   1              Mode_Times= CBYTE[0xC801];
+ 623   1              Image_Times= CBYTE[0xC802];
+ 624   1              Color_Times= CBYTE[0xC803];
+ 625   1              Sleep_Times= CBYTE[0xC804];
+ 626   1              Mode_Bluetooth_Times= CBYTE[0xC805];
+ 627   1              R_Color= CBYTE[0xC806];
+ 628   1              G_Color= CBYTE[0xC807];
+ 629   1              B_Color= CBYTE[0xC808];
+ 630   1              Brightness_Wheels= CBYTE[0xC809];
+ 631   1              Logo_Mode_Times= CBYTE[0xC80A];
+ 632   1              if(i!=0x5A)
+ 633   1                      {
+ 634   2                              Mode_Times=6;
+ 635   2                              Image_Times=1;
+ 636   2                              Color_Times=8;
+ 637   2                              Sleep_Times=1;
+ 638   2                              Mode_now=0;
+ 639   2                              Mode_Bluetooth_Times=1;
+ 640   2                              Deal_Wireless_Name();
+ 641   2                              Brightness_Wheels=4;
+ 642   2                      }       
+ 643   1              Speed_Data=3;   
+ 644   1              Last_CL_Brightness_Wheels=0xAA; 
+ 645   1              Power_status_Data=0xAA;
+ 646   1              Clear_All_Image();      
+ 647   1              Int_Logo_Data();
+ 648   1              Change_Mode2();
+ 649   1      }
+ 650          
+ 651          
+ 652          
+ 653          
+ 654          
+ 655          
+ 656          
+ 657          
+ 658          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   3928    ----
+   CONSTANT SIZE    =    175    ----
+   XDATA SIZE       =    766      12
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      3    ----
+C51 COMPILER V9.60.0.0   FLASH_DRIVER                                                      09/23/2022 11:52:50 PAGE 12  
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

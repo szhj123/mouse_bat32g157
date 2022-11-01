@@ -1,0 +1,779 @@
+C51 COMPILER V9.60.0.0   STD_SCAN                                                          09/23/2022 11:52:49 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE STD_SCAN
+OBJECT MODULE PLACED IN .\output\std_scan.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\std_scan.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG OBJE
+                    -CTEXTEND PRINT(.\Listings\std_scan.lst) OBJECT(.\output\std_scan.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\mcu_def.h"
+   4          #include "..\include\pwm_control.h"
+   5          #include "..\include\key_decode.h"
+   6          #include ".\include\Auser.h"
+   7          #include "..\include\CFG.h"
+   8          #include ".\include\ABSACC.H"
+   9          #include <intrins.h>
+  10          #include <string.h>
+  11          //*******************************
+  12          bit fhas_change;        
+  13          U8      idata   V_Data[21];
+  14          U8      xdata   Last_V_Data[21];
+  15          U8      idata   break_Data[21];
+  16          U8 data         Scan_TimeUp;//¼ì²âfnÊÇ·ñ°´ÏÂ£¬°´ÏÂÖµµÈÓÚ0£¬Ã»°´ÏÂÖµ´óÓÚ0
+  17          U16 data        No_Key_Times;//ÓÐ°´¼üÖµ¾Í»áÇåÁã£¬»òÕßÃ¿¸ô1sÇåÁã
+  18          U16 data        No_Key_Times2;//ÔÚ¶¨Ê±Æ÷2ÀïÃ¿¸ô1sÍ³¼Æ°´¼ü¿ÕÏÐÊ±¼ä£¬ÓÐ°´¼ü°´ÏÂ£¬»òÕßÇý¶¯·¢ÃüÁîÁË¾Í»áÇåÁã
+  19          U8      data    bi;//bi=0x00:µ¥¸ö¼üÖµ  bi=0xaa:Áù¸ö¼üÖµ  bi=0x00:ÖØ¸´¼üÖµ
+  20          U8      idata   Multimedia_Data[2];
+  21          U8      idata   Last_Multimedia_Data[2];
+  22          U8      idata   Usb2_Data[16];
+  23          U8      idata   Last_Usb2_Data[16];
+  24          U8      idata   Send_data[7];
+  25          U8      idata   Last_Send_data[7];
+  26          U8      data    Touch_Long_Delay;
+  27          U8      data    ALU1;
+  28          U8      data    Key_Index;
+  29          bit     bSend_IN2;
+  30          bit     bFn;  //fnÊÇ·ñ°´ÏÂ±êÖ¾£¬°´ÏÂÊÇ1£¬Ã»°´ÏÂÊÇ0
+  31          bit     Ready_6;//=1ÊÇÒ»´ÎÐÔ°´ÏÂÁù¸ö¼ü£¬=0ÊÇÒ»´ÎÐÔÃ»°´ÏÂÁù¸ö¼ü
+  32          bit     b_01;
+  33          bit     b_04;
+  34          bit     bchange_key;
+  35          bit     bWin_Locks;//=1ÊÇËø×¡win¼ü£¬=0ÊÇÃ»Ëø×¡win¼ü
+  36          bit     bAll_Key_Lock;
+  37          U8      xdata Sleep_Times;
+  38          bit     Wireless_suspend;//¶Ë¿ÚÎªµÍµçÆ½¾Í½øÀ´£¬Õâ¸öÖµ=1 ¿ØÖÆÐÝÃß£¬ÓÉ²¦¶¯¿ª¹Ø¾ö¶¨
+  39          bit     Wire_suspend_1;
+  40          bit     b_IOS_Mode;
+  41          bit     Reset_Mode;
+  42          //*******************************
+  43          bit     bSpeed_End;
+  44          code const U8 USB_Tab_Fn[21*6]=//fn+Ò»Ð©×éºÏ¼üµÄhid¼üÂë
+  45          {
+  46                  0x00,                   0x00,           0x00,                           0x00,           0x00,   0x00,  //c0 esc-¡·Ctrl_L
+  47                  0x00,                   H_S1,           M_Nop,                          G_IOS_0,        0x00,   G_WIN, //c1
+  48                  M_Computer,             H_S2,           M_Nop,                          G_IOS_1,        0x00,   0x00,  //c2     
+  49                  M_Home,                 H_S3,           M_Nop,                          0x00,           0x00,   0x00,  //c3
+  50                  M_Mail,                 0x00,           0x00,                           0x00,           0x00,   0x00,  //c4     
+  51                  M_Calculator,   0x00,           0x00,                           0x00,           0x00,   C_REST,//c5
+  52                  M_Media,                0x00,           0x48,                           0x00,           0x00,   0x00,  //c6
+  53                  M_Stop,                 0x00,           KEY_HOME,KEY_END,       0x00,           0x00,              //c7
+  54                  M_Previous,             0x00,           KEY_PGUP,KEY_PGDN,      0x00,           0x00,              //c8         
+C51 COMPILER V9.60.0.0   STD_SCAN                                                          09/23/2022 11:52:49 PAGE 2   
+
+  55                  M_Play,                 0x00,           0x00,                           0x00,           0x00,   0x00,  //c9     
+  56                  M_Next,                 0x00,           M_Nop,                          0x00,           0x00,   0x00,  //c10
+  57                  M_Mute,                 0x00,           0x00,                           0x00,           0x00,   0x00,  //c11
+  58                  M_VDn,                  0x00,           0x00,                           0x00,           0x00,   0x00,  //c12
+  59                  M_VUp,                  0x00,           0x00,                           0x00,           0x00,   0x00,  //c13
+  60                  H_Record,               H_Logo,         0x00,                           0x00,           0x00,   H_SDn, //c14    
+  61                  H_Mode,                 0x00,           0x00,                           0X00,           H_BUp,  H_BDn, //c15
+  62                  H_Color,                0x00,           0x00,                           0X00,           0x00,   H_SUp, //c16
+  63                  0x00,                   0x00,           0x00,                           0X00,           0x00,   0x00,  //c17
+  64                  0x00,                   0x00,           0x00,                           0X00,           0x00,   0x00,  //c18
+  65                  0x00,                   0x00,           0x00,                           0X00,           0x00,   0x00,  //c19
+  66                  0x00,                   0x00,           0x00,                           0X00,           0x00,   0x00,  //c20
+  67          };
+  68          //****************************************
+  69          void F_Clear_Send_data()//Çå³ý·¢ËÍÊý¾ÝÊý×é
+  70          {
+  71   1              U8 i;
+  72   1              for(i=0; i<7; i++)
+  73   1              {
+  74   2                      Send_data[i] = 0;
+  75   2              }
+  76   1      }
+  77          void F_Clear_USB456(void)//Çå³ý´ý·¢ËÍusbÊý¾Ý,Ïñ¶àÃ½ÌåÖ®ÀàµÄ
+  78          {
+  79   1              U8 i;
+  80   1              for(i=0; i<16; i++)
+  81   1              {
+  82   2                      Usb2_Data[i] = 0x00;
+  83   2              }
+  84   1              Multimedia_Data[0]=0x00;
+  85   1              Multimedia_Data[1]=0x00;
+  86   1      }
+  87          U8 Deal_IN2_Data(U8 Data_i)//°Ñ¶Á½øÀ´µÄ²ÎÊý×óÒÆ1Î»£¬ÔÙ·µ»Ø³öÈ¥
+  88          {
+  89   1              U8 i;
+  90   1              i=1<<Data_i;    
+  91   1              return (i);
+  92   1      }
+  93          void Deal_Keybord_Data(U8 Data_Temp2)//ÅÐ¶ÏÊÇ·ñÒ»´ÎÐÔ²É¼¯µ½6¸öµÄ¼üÅÌÊý¾ÝºÍÅÐ¶Ï²É¼¯µ½µÄ¼üÖµÊÇ·ñÖØ¸´
+  94          {
+  95   1              U8 i,j;
+  96   1                      bi=0x00;
+  97   1                      j=0x01;
+  98   1                      for(i=1; i<7; i++)//Ñ­»·Áù´Î£¬1µ½6
+  99   1                      {
+ 100   2                              if(Send_data[i]==Data_Temp2)
+ 101   2                              {
+ 102   3                                      ALU1|=j;
+ 103   3                                      bi=0xff;        
+ 104   3                                      break;
+ 105   3                              }
+ 106   2                              j=j<<1;
+ 107   2                      }
+ 108   1                      if((Ready_6)&&(bi!=0xff))//Ò»´ÎÐÔ²É¼¯µ½Áù¸ö¼üÖµReady_6=1²¢ÇÒ¼üÖµÃ»ÓÐÖØ¸´
+ 109   1                              bi=0xaa;
+ 110   1      }
+ 111          void Deal_Keybord_Data2(U8 Keybord_Data)//´¦Àíµ¥¸ö¼üÅÌÊý¾Ý
+ 112          {
+ 113   1              U8 i,j;
+ 114   1              j=0x01;
+ 115   1              for(i=1; i<7; i++)
+ 116   1              {
+C51 COMPILER V9.60.0.0   STD_SCAN                                                          09/23/2022 11:52:49 PAGE 3   
+
+ 117   2                      if(!Send_data[i])
+ 118   2                      {
+ 119   3                              Send_data[i]=Keybord_Data;
+ 120   3                              ALU1|=j;
+ 121   3                              break;
+ 122   3                      }
+ 123   2                      j=j<<1;
+ 124   2              }
+ 125   1      }
+ 126          void Keyboard_Up_Vale(void)//Õâ¸öº¯Êý²»ÖªµÀ¾ßÌåÓÐÊ²Ã´ÓÃ
+ 127          {
+ 128   1              U8 i2,i3,j;
+ 129   1              U32 i;
+ 130   1              U8 Temp0,Temp1,Temp2,Temp3;
+ 131   1              U16 Temp_Key_Index;
+ 132   1              Temp_Key_Index=Key_Index*4;
+ 133   1              Temp0=CBYTE[0xC600+Temp_Key_Index];
+ 134   1              Temp1=CBYTE[0xC600+Temp_Key_Index+1];
+ 135   1              Temp2=CBYTE[0xC600+Temp_Key_Index+2];
+ 136   1              Temp3=CBYTE[0xC600+Temp_Key_Index+3];
+ 137   1      }
+ 138          void Keyboard_Tab_Vale(void)
+ 139          {
+ 140   1              U8 i2,i3,j;
+ 141   1              U32 i;
+ 142   1              U8      Temp0,Temp1,Temp2,Temp3;
+ 143   1              U16 Temp_Key_Index;
+ 144   1              j=Deal_Tbl_Image2(Key_Index);//·µ»ØÄÇ¸ö±»°´ÏÂµÄ°´¼ü±àºÅ 0~125
+ 145   1              Temp_Key_Index=Key_Index*4;//Key_Index:°´¼üË÷ÒýÖµ£¬´Ó0 forÑ­»·¼Ó¼Óµ½125
+ 146   1              if(!bFn)//fn°´¼üÃ»°´ÏÂ
+ 147   1              {       
+ 148   2                      Temp0=CBYTE[0xC600+Temp_Key_Index];
+ 149   2                      Temp1=CBYTE[0xC600+Temp_Key_Index+1];
+ 150   2                      Temp2=CBYTE[0xC600+Temp_Key_Index+2];
+ 151   2                      Temp3=CBYTE[0xC600+Temp_Key_Index+3];
+ 152   2                      if(j==17)//Ä³¸ö°´¼ü
+ 153   2                              Multimedia_Tab_Data(1);//ÉÏÒ»Çú
+ 154   2                      else if(j==18)
+ 155   2                              Multimedia_Tab_Data(3);//²¥·Å/ÔÝÍ£
+ 156   2                      else if(j==19)
+ 157   2                              Multimedia_Tab_Data(0);//ÏÂÒ»Çú
+ 158   2                      else if(j==20)
+ 159   2                              Multimedia_Tab_Data(4);//¾²Òô   
+ 160   2              }
+ 161   1              else//fn°´¼ü°´ÏÂ
+ 162   1              {
+ 163   2                      Temp2=USB_Tab_Fn[Key_Index];//¸ù¾ÝÐòºÅµÃµ½Ò»¸öhid¼üÂë
+ 164   2                      if(Temp2>0)     //ËµÃ÷fn+°´¼üÊÇÓÐÐ§×éºÏ¼ü¹¦ÄÜ
+ 165   2                      {       
+ 166   3                              Temp0=0x80;
+ 167   3                              Temp1=Temp3=0;
+ 168   3                              switch(Temp2)
+ 169   3                              {
+ 170   4                                      case C_REST://¸´Î»¼ü£¬°´ÏÂ³¬¹ýÒ»¶¨Ê±¼ä¾Í»áÖ´ÐÐ¸´Î»
+ 171   4                                              if((!b_Record_Mode)&&(!b_Feel_Mode))
+ 172   4                                              {       
+ 173   5                                                      Touch_Long_Delay++;
+ 174   5                                                      if(Touch_Long_Delay>250)
+ 175   5                                                      {
+ 176   6                                                              Touch_Long_Delay=0;
+ 177   6                                                              Clear_Mode_Data();//Çå³ýÄ£Ê½Êý¾Ý
+ 178   6                                                              Reset_Mode=1;//¸´Î»Ä£Ê½±êÖ¾µÈÓÚ1
+C51 COMPILER V9.60.0.0   STD_SCAN                                                          09/23/2022 11:52:49 PAGE 4   
+
+ 179   6                                                      }
+ 180   5                                              }
+ 181   4                                      break;  
+ 182   4                                      //---------------------------------
+ 183   4                                      case M_Computer:        //F1
+ 184   4                                              if(!b_IOS_Mode)//µÚ3ÐÐµÚ1ÁÐµÄ°´¼ü°´ÏÂÁË£¬b_IOS_Mode=0£¬  µÚ3ÐÐµÚ2ÁÐµÄ°´¼ü°´ÏÂÁË£¬b_IOS_Mode=1£¬ÐÐÁÐ´Ó
+             -0¿ªÊ¼  
+ 185   4                                                      Multimedia_Tab_Data(M_Computer&0x7F);
+ 186   4                                              else
+ 187   4                                                      Temp2=0x3A;     //3a£ºf1µÄhid¼üÂëÖµ
+ 188   4                                      break;
+ 189   4                                      //---------------------------------
+ 190   4                                      case M_Home:
+ 191   4                                              if(!b_IOS_Mode) //F2
+ 192   4                                                      Multimedia_Tab_Data(M_Home&0x7F);
+ 193   4                                              else
+ 194   4                                                      Temp2=0x3B;             
+ 195   4                                      break;  
+ 196   4                                      //---------------------------------
+ 197   4                                      case M_Mail:
+ 198   4                                              if(!b_IOS_Mode) //F3
+ 199   4                                                      Multimedia_Tab_Data(M_Mail&0x7F);
+ 200   4                                              else
+ 201   4                                                      Temp2=0x3C;             
+ 202   4                                      break;  
+ 203   4                                      //---------------------------------
+ 204   4                                      case M_Calculator:
+ 205   4                                              if(!b_IOS_Mode) //F4
+ 206   4                                                      Multimedia_Tab_Data(M_Calculator&0x7F);
+ 207   4                                              else
+ 208   4                                                      Temp2=0x3D;             
+ 209   4                                      break;  
+ 210   4                                      //---------------------------------
+ 211   4                                      case M_Media:
+ 212   4                                              if(!b_IOS_Mode) //F5
+ 213   4                                                      Multimedia_Tab_Data(M_Media&0x7F);
+ 214   4                                              else
+ 215   4                                                      Temp2=0x3E;             
+ 216   4                                      break;
+ 217   4                                      //---------------------------------
+ 218   4                                      case M_Stop:
+ 219   4                                              if(!b_IOS_Mode) //F6
+ 220   4                                                      Multimedia_Tab_Data(M_Stop&0x7F);
+ 221   4                                              else
+ 222   4                                                      Temp2=0x3F;     
+ 223   4                                      break;  
+ 224   4                                      //---------------------------------
+ 225   4                                      case M_Previous://F7
+ 226   4                                              Multimedia_Tab_Data(M_Previous&0x7F);
+ 227   4                                      break;  
+ 228   4                                      //---------------------------------
+ 229   4                                      case M_Play://F8
+ 230   4                                              Multimedia_Tab_Data(M_Play&0x7F);
+ 231   4                                      break;  
+ 232   4                                      //---------------------------------
+ 233   4                                      case M_Next://F9
+ 234   4                                              Multimedia_Tab_Data(M_Next&0x7F);
+ 235   4                                      break;
+ 236   4                                      //---------------------------------
+ 237   4                                      case M_Mute://F10
+ 238   4                                              Multimedia_Tab_Data(M_Mute&0x7F);
+ 239   4                                      break;  
+C51 COMPILER V9.60.0.0   STD_SCAN                                                          09/23/2022 11:52:49 PAGE 5   
+
+ 240   4                                      //---------------------------------
+ 241   4                                      case M_VDn://F11
+ 242   4                                              Multimedia_Tab_Data(M_VDn&0x7F);
+ 243   4                                      break;  
+ 244   4                                      //---------------------------------
+ 245   4                                      case M_VUp://F12
+ 246   4                                              Multimedia_Tab_Data(M_VUp&0x7F);
+ 247   4                                      break;  
+ 248   4                                      //---------------------------------     
+ 249   4                                      case  G_WIN://fn+win Ëø¶¨½â¿ªwin¼ü
+ 250   4                                              if(break_Data[1]&0x20)
+ 251   4                                              {
+ 252   5                                                      bWin_Locks=~bWin_Locks; 
+ 253   5                                              }
+ 254   4                                      break;          
+ 255   4                                      //---------------------------------
+ 256   4                                      case  G_IOS_0:  //µÚ3ÐÐµÚ1ÁÐ°´¼ü°´ÏÂ ÐÐÁÐ´Ó0¿ªÊ¼
+ 257   4                                              if(break_Data[1]&0x08)
+ 258   4                                              {
+ 259   5                                                      b_IOS_Mode=0;
+ 260   5                                                      bSpeed_End=1;
+ 261   5                                              //      Save_KeyIndex_Data();   
+ 262   5                                              }
+ 263   4                                      break;
+ 264   4                                      //---------------------------------
+ 265   4                                      case  G_IOS_1:  //µÚ3ÐÐµÚ2ÁÐ°´¼ü°´ÏÂ ÐÐÁÐ´Ó0¿ªÊ¼ 
+ 266   4                                              if(break_Data[2]&0x08)
+ 267   4                                              {
+ 268   5                                                      b_IOS_Mode=1;
+ 269   5                                                      bSpeed_End=1;
+ 270   5                                              //      Save_KeyIndex_Data();
+ 271   5                                              }
+ 272   4                                      break;
+ 273   4                                      //---------------------------------
+ 274   4                                      case  H_Mode    :
+ 275   4                                              if(break_Data[15]&0x01)//µÆµÄÄ£Ê½++
+ 276   4                                              {
+ 277   5                                                      Mode_Times++;
+ 278   5                                                      if(Mode_Times>21)//¼Óµ½21¸öÄ£Ê½ÓÖ´ÓµÚÒ»¸öÂÖÑ¯¿ªÊ¼
+ 279   5                                                      Mode_Times=1;   
+ 280   5                                                      Change_Mode2(); //Ö´ÐÐ21ÖÖµÆÐ§Ä£Ê½
+ 281   5                                              }       
+ 282   4                                      break;
+ 283   4                                      //---------------------------------
+ 284   4                                      case  H_Logo    :
+ 285   4                                              if(break_Data[14]&0x02)//²à¹âµÆÄ£Ê½ÇÐ»»£¬fn+ins
+ 286   4                                              {
+ 287   5                                                      Logo_Mode_Times++;
+ 288   5                                                      if(Logo_Mode_Times>3)
+ 289   5                                                      Logo_Mode_Times=0;      
+ 290   5                                                      Int_Logo_Data();//²à¹âµÆÄ£Ê½ÇÐ»»º¯Êý
+ 291   5                                              }       
+ 292   4                                      break;
+ 293   4                                      //---------------------------------
+ 294   4                                      case  H_Record:
+ 295   4                                              if((break_Data[14]&0x01)&&(b_WASD_Mode))
+ 296   4                                              {
+ 297   5                                                      if(!b_Record_Mode)
+ 298   5                                                      {
+ 299   6                                                              b_Record_Mode=1;
+ 300   6                                                              Clear_All_Image();
+ 301   6                                                              bSpeed_End=1;
+C51 COMPILER V9.60.0.0   STD_SCAN                                                          09/23/2022 11:52:49 PAGE 6   
+
+ 302   6                                                      }       
+ 303   5                                                      else
+ 304   5                                                      {
+ 305   6                                                              b_Record_Mode=0;
+ 306   6                                                              bSpeed_End=0;
+ 307   6                                                              Save_Flash_Data();//±£´æflashÊý¾Ý
+ 308   6                                                              Save_Mode_Time();//±£´æÄ£Ê½Ê±¼ä
+ 309   6                                                      }
+ 310   5                                              }       
+ 311   4                                      break;
+ 312   4                                      //---------------------------------
+ 313   4                                      case  H_S1      :
+ 314   4                                              if(break_Data[1]&0x02)
+ 315   4                                              {
+ 316   5                                                      Mode_Times=19;  
+ 317   5                                                      Image_Times=1;//¶ÁÈ¡flash²»Í¬µØÖ·µÄÖµ
+ 318   5                                                      Change_Mode2(); 
+ 319   5                                              }       
+ 320   4                                      break;
+ 321   4                                      //---------------------------------
+ 322   4                                      case  H_S2      :
+ 323   4                                              if(break_Data[2]&0x02)
+ 324   4                                              {
+ 325   5                                                      Mode_Times=19;  
+ 326   5                                                      Image_Times=2;
+ 327   5                                                      Change_Mode2(); 
+ 328   5                                              }       
+ 329   4                                      break;
+ 330   4                                      //---------------------------------
+ 331   4                                      case  H_S3      :
+ 332   4                                              if(break_Data[3]&0x02)
+ 333   4                                              {
+ 334   5                                                      Mode_Times=19;  
+ 335   5                                                      Image_Times=3;
+ 336   5                                                      Change_Mode2(); 
+ 337   5                                              }       
+ 338   4                                      break;
+ 339   4                                      //---------------------------------
+ 340   4                                      case H_Color://¿ØÖÆµÆµÄÑÕÉ«-µ¥É«Ä£Ê½
+ 341   4                                              if((break_Data[16]&0x01)&&(!b_WASD_Mode))
+ 342   4                                              {
+ 343   5                                                              if(Color_Times==0)//ºì--»Æ--À¶--ÂÌ¡£¡£¡£
+ 344   5                                                                      Color_Times=7;
+ 345   5                                                              Color_Times++;
+ 346   5                                                              if(Color_Times>8)
+ 347   5                                                                      Color_Times=1;
+ 348   5                                                              Last_CL_Brightness_Wheels=0xAA; 
+ 349   5                                                              b_Cloes_Mode=0;
+ 350   5                                                              Clear_All_Image();      
+ 351   5                                                              if((!b_SuiLiang_Mode)&&(!b_HangPao_Mode)&&(!b_PaoMa1_Mode)      \
+ 352   5                                                                      &&(!b_PaoMa2_Mode)&&(!b_PaoMa3_Mode)&&(!b_PaoMa4_Mode)  \
+ 353   5                                                                      &&(!b_Effect_light_1)&&(!b_Effect_light_2))
+ 354   5                                                              Let_NUM_Image();        //¸øËùÓÐ°´¼ü ¸¶ÑÕÉ«
+ 355   5                                                              Int_Mode6_Data();
+ 356   5                                                              if(b_WASD_Mode)
+ 357   5                                                                      Read_WASD_Image(Image_Times);
+ 358   5                                                              Save_Mode_Time();
+ 359   5                                              }
+ 360   4                                      break;
+ 361   4                                      //---------------------------------
+ 362   4                                      case H_BUp:
+ 363   4                                              if(break_Data[15]&0x10)
+C51 COMPILER V9.60.0.0   STD_SCAN                                                          09/23/2022 11:52:49 PAGE 7   
+
+ 364   4                                              {
+ 365   5                                                      Last_CL_Brightness_Wheels=0xAA; 
+ 366   5                                                      Brightness_Add();//ÁÁ¶ÈÔö¼Óµ÷½Ú
+ 367   5                                              }       
+ 368   4                                      break;  
+ 369   4                                      //---------------------------------
+ 370   4                                      case H_BDn:     
+ 371   4                                              if(break_Data[15]&0x20)
+ 372   4                                              {
+ 373   5                                                      Last_CL_Brightness_Wheels=0xAA; 
+ 374   5                                                      Brightness_Sub();//ÁÁ¶È¼õÉÙµ÷½Ú
+ 375   5                                              }       
+ 376   4                                      break;  
+ 377   4                                      //---------------------------------
+ 378   4                                      case H_SUp:     
+ 379   4                                              if(break_Data[16]&0x20)
+ 380   4                                              {
+ 381   5                                                      if(Speed_Data)//ÏÔÊ¾²¨ÀËÄ£Ê½µÄËÙ¶Èµ÷½Ú£¬ËÙ¶È±äÂý
+ 382   5                                                              Speed_Data--;
+ 383   5                                                      if(Speed_Data==0)
+ 384   5                                                              bSpeed_End=1;   //bSpeed_End=1²»ÐèÒªµ÷½ÚµÆÄ£Ê½µÄËÙ¶È,=0ËµÃ÷ÐèÒªµ÷½ÚµÆÄ£Ê½µÄËÙ¶È
+ 385   5                                              }       
+ 386   4                                      break;  
+ 387   4                                      //---------------------------------
+ 388   4                                      case H_SDn:     
+ 389   4                                              if(break_Data[14]&0x20)
+ 390   4                                              {
+ 391   5                                                      if(Speed_Data<4)//ÏÔÊ¾²¨ÀËÄ£Ê½µÄËÙ¶Èµ÷½Ú£¬ËÙ¶È±ä¿ì
+ 392   5                                                              Speed_Data++;
+ 393   5                                                      if(Speed_Data==4)
+ 394   5                                                              bSpeed_End=1;
+ 395   5                                              }       
+ 396   4                                      break;          
+ 397   4                              }
+ 398   3                      }
+ 399   2                      else//fn+°´¼üÊÇÎÞÐ§×éºÏ¼ü
+ 400   2                      {
+ 401   3                              Temp0=CBYTE[0xC600+Temp_Key_Index];
+ 402   3                              Temp1=CBYTE[0xC600+Temp_Key_Index+1];
+ 403   3                              Temp2=CBYTE[0xC600+Temp_Key_Index+2];
+ 404   3                              Temp3=CBYTE[0xC600+Temp_Key_Index+3];
+ 405   3                      }
+ 406   2              }
+ 407   1              //***************FN*****************
+ 408   1              if(Temp0==0x80)//fn+°´¼üµÃ³öÒ»¸öÓÐÐ§×éºÏ¼üÖµ¾Í»á³ÉÁ¢
+ 409   1              {
+ 410   2                      if((Temp2&0x80)==0)//Temp2µÚ0Î»²»Îª1¾Í³ÉÁ¢  1000 0000  Temp2£¡=0x8y~0xfy(yÊÇ0µ½f) °´ÁËfn+°´¼üµÃµ½µÄÓÐÐ§×
+             -éºÏ¼ü¶¼´óÓÚ0x80
+ 411   2                      {
+ 412   3                              Deal_Keybord_Data(Temp2);
+ 413   3                              if(bi==0x00)//µ¥¸ö°´¼ü
+ 414   3                              Deal_Keybord_Data2(Temp2);
+ 415   3                      }
+ 416   2              }       
+ 417   1              //***********Õý³£°´¼üÖµ**************
+ 418   1              else if(Temp0==0x00)//Ã»ÓÐfn°´ÏÂ£¬Ö»ÓÐÆäËü¼ü
+ 419   1              {       
+ 420   2                      if(b_IOS_Mode)
+ 421   2                      {
+ 422   3                              if(Temp1==0x08)
+ 423   3                                      Temp1=0x04;//L_Alt
+ 424   3                              else if(Temp1==0x04)
+C51 COMPILER V9.60.0.0   STD_SCAN                                                          09/23/2022 11:52:49 PAGE 8   
+
+ 425   3                                      Temp1=0x08;//L_win
+ 426   3                              else if(Temp1==0x40)
+ 427   3                                      Temp1=0x80;//R_WIN
+ 428   3                      }       
+ 429   2                      if(bWin_Locks)//Ëø×¡ÁËwin¼ü
+ 430   2                      {
+ 431   3                              if(j==115)
+ 432   3                                      Temp2=0;
+ 433   3                      }       
+ 434   2                      Send_data[0]|=Temp1;    //Shift...  ÌØÊâ¼ü£ºshift Ctrl Alt win
+ 435   2                      if((bWin_Locks)&&(!b_IOS_Mode))//Ëø×¡ÁËwin¼ü
+ 436   2                      {
+ 437   3                              Send_data[0]&=~0x88;//0x88:1000 1000     ~0x88:0111 0111,²»¼ÇÂ¼L_WinºÍR_WinµÄÖµ£¬°´ÏÂÈ¥winÃ»ÓÐÓÃ
+ 438   3                      }
+ 439   2                      if(Temp2)       
+ 440   2                      {       
+ 441   3                              Deal_Keybord_Data(Temp2);
+ 442   3                              if(bi==0x00)
+ 443   3                              Deal_Keybord_Data2(Temp2);
+ 444   3                      }
+ 445   2                      if(Temp3)       
+ 446   2                      {       
+ 447   3                              Deal_Keybord_Data(Temp3);
+ 448   3                              if(bi==0x00)
+ 449   3                              Deal_Keybord_Data2(Temp3);
+ 450   3                      }
+ 451   2                      //--------------------
+ 452   2                      if(bi==0xaa)
+ 453   2                      {       
+ 454   3                              if(Mode_USB)
+ 455   3                              {       
+ 456   4                                      if(Temp2)
+ 457   4                                      {       
+ 458   5                                              if(Temp2!=0xb0)//1011 0000
+ 459   5                                              {       
+ 460   6                                                      i2=(Temp2-4)/8;
+ 461   6                                                      i3=(Temp2-4)%8;
+ 462   6                                                      Usb2_Data[i2+1]|=Deal_IN2_Data(i3);
+ 463   6                                              }
+ 464   5                                      }
+ 465   4                                      if(Temp3)
+ 466   4                                      {       
+ 467   5                                              if(Temp3!=0xb0)
+ 468   5                                              {
+ 469   6                                                      i2=(Temp3-4)/8;
+ 470   6                                                      i3=(Temp3-4)%8;
+ 471   6                                                      Usb2_Data[i2+1]|=Deal_IN2_Data(i3);
+ 472   6                                              }
+ 473   5                                      }
+ 474   4                              }
+ 475   3                              else
+ 476   3                              {
+ 477   4                                      if(Temp2)
+ 478   4                                      {       
+ 479   5                                              if(Temp2!=0xb0)
+ 480   5                                              {       
+ 481   6                                                      i2=Temp2/8;
+ 482   6                                                      i3=Temp2%8;
+ 483   6                                                      Usb2_Data[i2+2]|=Deal_IN2_Data(i3);
+ 484   6                                              }
+ 485   5                                      }
+ 486   4                                      if(Temp3)
+C51 COMPILER V9.60.0.0   STD_SCAN                                                          09/23/2022 11:52:49 PAGE 9   
+
+ 487   4                                      {       
+ 488   5                                              if(Temp3!=0xb0)
+ 489   5                                              {
+ 490   6                                                      i2=Temp3/8;
+ 491   6                                                      i3=Temp3%8;
+ 492   6                                                      Usb2_Data[i2+2]|=Deal_IN2_Data(i3);
+ 493   6                                              }
+ 494   5                                      }
+ 495   4                              }
+ 496   3                      }
+ 497   2              }
+ 498   1              //**************¶àÃ½Ìå******************
+ 499   1              else if(Temp0==0x01)//¶àÃ½Ìå
+ 500   1              {
+ 501   2                      Multimedia_Data[0]=Temp2;
+ 502   2                      Multimedia_Data[1]=Temp3;
+ 503   2              }
+ 504   1              //*****************ºê********************
+ 505   1              else if(Temp0==0x02)
+ 506   1              {
+ 507   2                      if(Temp2==0x04) //°´×¡Ò»Ö±·¢
+ 508   2                              {       
+ 509   3                                      i=0x0001;
+ 510   3                                      i=i<<Temp1;
+ 511   3                                      fg_Send_Macro|=i;
+ 512   3                                      Macro_Cycle_Time[Temp1]=1;
+ 513   3                              }
+ 514   2                      else if(Temp2==0x01)//·¢¼¸´Î
+ 515   2                              {       
+ 516   3                                      i=0x000001;
+ 517   3                                      i=i<<Temp1;
+ 518   3                                      if(break_Data[Port_Data(Key_Index)]&Pin_Data(Key_Index))
+ 519   3                                      {
+ 520   4                                              fg_Send_Macro|=i;
+ 521   4                                              Macro_Cycle_Time[Temp1]=Temp3;
+ 522   4                                      }       
+ 523   3                              }
+ 524   2              }
+ 525   1      }
+ 526          void Move_Key_value(void)//ÒÆ¶¯¼üÖµ
+ 527          { 
+ 528   1              U8 xdata i,i1,y,Key_Count;
+ 529   1              U16 j;
+ 530   1              Key_Count=0;
+ 531   1              Key_Index=0;    //¸Õ½øÀ´ÇåÁã
+ 532   1                      bFn=0;//Çå³ýÉÏÒ»´Îfn°´ÏÂµÄºÛ¼£
+ 533   1              if(V_Data[9]&0x20)//fn°´¼ü±»°´ÏÂ
+ 534   1                      bFn=1;  
+ 535   1              for(i=0;i<21;i++)
+ 536   1              {
+ 537   2                      if(V_Data[i])//Èç¹ûÓÐ°´¼ü°´ÏÂ£¬°´¼üÖµ++
+ 538   2                              Key_Count++;
+ 539   2              }
+ 540   1              i1=0;
+ 541   1              for(i=0;i<21;i++)//Ñ­»·21ÁÐ
+ 542   1              {
+ 543   2                      if(V_Data[i]!=Last_V_Data[i])//ÏÖÔÚµÄ¼üÖµ×´Ì¬ºÍÉÏÒ»´Î¼üÖµ×´Ì¬²»Ò»ÖÂ
+ 544   2                      {       
+ 545   3                              Last_V_Data[i]=V_Data[i];//°ÑÏÖÔÚµÄ¼üÖµ×´Ì¬¸³¸øÉÏÒ»´Î¼üÖµ
+ 546   3                              i1=1;
+ 547   3                      }
+ 548   2              }
+C51 COMPILER V9.60.0.0   STD_SCAN                                                          09/23/2022 11:52:49 PAGE 10  
+
+ 549   1              if(i1==1)//ÓÐ¼üÖµ×´Ì¬¸Ä±ä¾ÍÍË³ö¸Ãº¯Êý
+ 550   1                      return;
+ 551   1              if(Key_Count)//°´ÏÂµÄ¼üÖµ´óÓÚ0£¬ÓÐ°´¼ü°´ÏÂ
+ 552   1              {       
+ 553   2                      No_Key_Times=0;
+ 554   2                      No_Key_Times2=0;
+ 555   2                      if(bFn)//fn°´¼ü°´ÏÂ
+ 556   2                              Scan_TimeUp=0;
+ 557   2                      else//fn°´¼üÃ»°´ÏÂ      
+ 558   2                              Scan_TimeUp=110;
+ 559   2              }
+ 560   1              else//Ã»ÓÐÈÎºÎ°´¼ü°´ÏÂ
+ 561   1              {
+ 562   2                      F_Clear_Send_data();//Çå³ý·¢ËÍÊý¾Ý
+ 563   2                      F_Clear_USB456();//Çå³ý´ý·¢ËÍusbÊý¾Ý,Ïñ¶àÃ½ÌåÖ®ÀàµÄ
+ 564   2                      for(i=0;i<21;i++)
+ 565   2                              break_Data[i]=0X3F;//0011 1111
+ 566   2                      if(Scan_TimeUp)//Ã»ÓÐfn°´¼ü°´ÏÂ
+ 567   2                              Scan_TimeUp--;
+ 568   2                      Ready_6=0;
+ 569   2      
+ 570   2                      /*ÐÝÃßÊ±¼ä*/
+ 571   2                      if(Sleep_Times==1)                      //5min
+ 572   2                              j=300;
+ 573   2                      else if(Sleep_Times==2) //10min
+ 574   2                              j=600;  
+ 575   2                      else if(Sleep_Times==3) //20min
+ 576   2                              j=1200;
+ 577   2                      else if(Sleep_Times==4) //30min
+ 578   2                              j=1800; 
+ 579   2                      else if(Sleep_Times==5) //Mac min
+ 580   2                              j=0xFFFF;               
+ 581   2                      else
+ 582   2                              j=300;  
+ 583   2                      if(No_Key_Times2>j)//No_Key_Times2:ÔÚ¶¨Ê±Æ÷2ÀïÒ»Ãë¼ÓÒ»´Î£¬³¬¹ýÉè¶¨Ê±¼ä¾ÍÐÝÃß
+ 584   2                      {       
+ 585   3                              No_Key_Times2=0;
+ 586   3                              if(!Mode_USB)//Õâ¸ö¶Ë¿ÚÎªµÍµçÆ½0¾Í½øÀ´
+ 587   3                                      Wireless_suspend=1;
+ 588   3                              else if(Mode_USB)//Õâ¸ö¶Ë¿ÚÎª¸ßµçÆ½0¾Í½øÀ´
+ 589   3                                      fg_suspend=1;//Wire_suspend_1=1;
+ 590   3                      }       
+ 591   2                      return;//Ã»°´¼ü¾ÍÍË³öÕâ¸öº¯Êý£¬²»¼ÌÐøÖ´ÐÐÏÂÃæµÄÄÚÈÝ
+ 592   2              }       
+ 593   1              ALU1=0; 
+ 594   1              F_Clear_USB456();//Çå³ý´ý·¢ËÍusbÊý¾Ý,Ïñ¶àÃ½ÌåÖ®ÀàµÄ
+ 595   1              Send_data[0]=0;
+ 596   1              for(i1=0;i1<21;i1++)
+ 597   1              {
+ 598   2                              y=0x01;
+ 599   2                      for(i=0;i<6;i++)
+ 600   2                      {
+ 601   3                              if(V_Data[i1]&y)//y¸Õ¿ªÊ¼µÄÖµÎª0x01£¬forÑ­»·Áù´Î£¬Ã¿´Î×óÒÆÒ»Î»£¬Ñ­»·ÍêÓÖ±ä³É0x01£»  ÓÐ°´¼ü°´ÏÂ
+ 602   3                              {       //ÓÐ°´¼ü°´ÏÂÊ±£¬µÚ0ÐÐV_Data[i1]µÄÖµÊÇ0x01  µÚ1ÐÐV_Data[i1]µÄÖµÊÇ0x02  µÚ2ÐÐV_Data[i1]µÄÖµÊÇ0x04¡£¡£¡£
+             -¡£µÚ5ÐÐV_Data[i1]µÄÖµÊÇ0x20
+ 603   4                                      Keyboard_Tab_Vale();    
+ 604   4                                      Deal_KeyDown(); //LEDµÆµÄÄ£Ê½±ä»»£¬Ñ¡ÔñÄÄÖÖÄ£Ê½
+ 605   4                                      break_Data[i1]&=~y;
+ 606   4                              }
+ 607   3                              else//Ã»°´¼ü°´ÏÂ
+ 608   3                              {
+ 609   4                                      break_Data[i1]|=y;
+C51 COMPILER V9.60.0.0   STD_SCAN                                                          09/23/2022 11:52:49 PAGE 11  
+
+ 610   4                                      Keyboard_Up_Vale();     //²»ÖªµÀÓÐÊ²Ã´ÓÃ£¬²é¿´º¯Êý¾ßÌåÒ²Ã»ËµÓÃµ½ÄÄÀï
+ 611   4                              }
+ 612   3                              Key_Index++;//°´¼üÐòºÅ ×î¶à¼Óµ½21*6
+ 613   3                              y=y<<1;
+ 614   3                      }
+ 615   2              }
+ 616   1              if(Mode_USB)//usbÓÐÏßÄ£Ê½ÏÂ
+ 617   1              {       
+ 618   2                      if((Send_data[1])&&(Send_data[2])&&(Send_data[3])&&(Send_data[4])&&(Send_data[5])&&(Send_data[6]))//Áù¸ö
+             -¼üÖµ¶¼ÓÐÊý¾Ý
+ 619   2                              Ready_6=1;      
+ 620   2              }
+ 621   1              else
+ 622   1              {       
+ 623   2                      if((Send_data[1])&&(Send_data[2])&&(Send_data[3])&&(Send_data[4])&&(Send_data[5]))//Îå¸ö¼üÖµ¶¼ÓÐÊý¾Ý
+ 624   2                              Ready_6=1;              
+ 625   2              }
+ 626   1              {       
+ 627   2                      if(!(ALU1&0x01))//ÓÐ²É¼¯µ½¼üÖµ¾Í²»½øÀ´
+ 628   2                              Send_data[1]=0;//Çå¿ÕÊý×éµÄ°´¼üÊý¾Ý
+ 629   2                      if(!(ALU1&0x02))
+ 630   2                              Send_data[2]=0; 
+ 631   2                      if(!(ALU1&0x04))
+ 632   2                              Send_data[3]=0;
+ 633   2                      if(!(ALU1&0x08))
+ 634   2                              Send_data[4]=0;
+ 635   2                      if(!(ALU1&0x10))
+ 636   2                              Send_data[5]=0; 
+ 637   2                      if(!(ALU1&0x20))
+ 638   2                              Send_data[6]=0; 
+ 639   2              }       
+ 640   1              //------------------------------------  
+ 641   1      }
+ 642          void Send_Usb_value(void)//·¢ËÍUSBÖµ
+ 643          {
+ 644   1              U8 i;
+ 645   1              for(i=0;i<7;i++)//Áù¼üÎÞ³å¼üÖµ
+ 646   1              {
+ 647   2                      if(Send_data[i]!=Last_Send_data[i])//ÉÏÒ»´Î²É¼¯µÄÊý¾ÝºÍµ±Ç°²É¼¯µÄÊý¾Ý²»ÏàµÈ  
+ 648   2                      {
+ 649   3                              bSend_IN2=1;
+ 650   3                              Last_Send_data[i]=Send_data[i];//µ±Ç°²É¼¯µ½µÄ¼üÖµ¸³Öµ¸øÉÏÒ»´Î²É¼¯µÄ¼üÖµÊý×é
+ 651   3                      }
+ 652   2              }
+ 653   1              for(i=0;i<16;i++)       //È«¼üÎÞ³å¼üÖµ
+ 654   1              {
+ 655   2                      if(Usb2_Data[i]!=Last_Usb2_Data[i])
+ 656   2                      {
+ 657   3                              b_04=1;
+ 658   3                              Last_Usb2_Data[i]=Usb2_Data[i];
+ 659   3                      }
+ 660   2              }
+ 661   1              for(i=0;i<2;i++)        //¶àÃ½ÌåÊý¾Ý
+ 662   1              {
+ 663   2                      if(Multimedia_Data[i]!=Last_Multimedia_Data[i])
+ 664   2                              {
+ 665   3                                      b_01=1;
+ 666   3                                      Last_Multimedia_Data[i]=Multimedia_Data[i];
+ 667   3                              }
+ 668   2              }
+ 669   1      }
+ 670          //--------------------------------------
+C51 COMPILER V9.60.0.0   STD_SCAN                                                          09/23/2022 11:52:49 PAGE 12  
+
+ 671          void Deal_Rest_Data(void)
+ 672          {
+ 673   1              Clear_Mode_Data();
+ 674   1              Read_KeyIndex_Data();
+ 675   1              b_IOS_Mode=0;
+ 676   1              Mode_Times=6;
+ 677   1              Image_Times=1;
+ 678   1              Color_Times=8; 
+ 679   1              bWin_Locks=bAll_Key_Lock=bchange_key=0;
+ 680   1              Brightness_Wheels=5;
+ 681   1              Speed_Data=2;
+ 682   1              Sleep_Times=1;
+ 683   1              Clear_Flash_Data();
+ 684   1              Change_Mode2(); 
+ 685   1              Reset_Mode=0;
+ 686   1      }
+ 687          void Deal_Rest(void)
+ 688          {
+ 689   1              U8 i;
+ 690   1              if(Reset_Mode)
+ 691   1              {       
+ 692   2                      Run_Time++;
+ 693   2                      if(Run_Time<100)
+ 694   2                              {
+ 695   3                                      for(i=0; i<126; i++)
+ 696   3                                      {
+ 697   4                                              Image[0][i]=1024;
+ 698   4                                              Image[1][i]=0;
+ 699   4                                              Image[2][i]=0;
+ 700   4                                      }
+ 701   3                              }
+ 702   2                      else if(Run_Time==100)
+ 703   2                              {
+ 704   3                                      for(i=0; i<126; i++)
+ 705   3                                      {
+ 706   4                                              Image[1][i]=1024;
+ 707   4                                              Image[0][i]=0;
+ 708   4                                              Image[2][i]=0;
+ 709   4                                      }
+ 710   3                              }
+ 711   2                      else if(Run_Time==200)
+ 712   2                              {
+ 713   3                                      for(i=0; i<126; i++)
+ 714   3                                      {
+ 715   4                                              Image[2][i]=1024;
+ 716   4                                              Image[1][i]=0;
+ 717   4                                              Image[0][i]=0;
+ 718   4                                      }
+ 719   3                              }       
+ 720   2                      else if(Run_Time>300)
+ 721   2                              {
+ 722   3                                      Run_Time=310;
+ 723   3                                      
+ 724   3                                      Deal_Rest_Data();
+ 725   3                              }       
+ 726   2              }
+ 727   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   2886    ----
+   CONSTANT SIZE    =    126    ----
+C51 COMPILER V9.60.0.0   STD_SCAN                                                          09/23/2022 11:52:49 PAGE 13  
+
+   XDATA SIZE       =     22      30
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      9    ----
+   IDATA SIZE       =     92    ----
+   BIT SIZE         =     14    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

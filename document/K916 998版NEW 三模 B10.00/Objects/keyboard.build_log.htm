@@ -1,0 +1,65 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: £gVision V5.14.2.1
+Copyright (C) 2015 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: chen kai, sino, LIC=9W1X7-E3GNB-AYNV0-BWKVG-ZRP7N-NLXAI
+ 
+Tool Versions:
+Toolchain:       PK51 Prof. Developers Kit  Version: 9.55
+Toolchain Path:  C:\Keil_v5\C51\BIN
+C Compiler:      C51.exe V9.55
+Assembler:       A51.exe V8.02c
+Linker/Locator:  BL51.exe V6.22
+Library Manager: LIB51.exe V4.30.1.0
+Hex Converter:   OH51.exe V2.7.0.0
+CPU DLL:         S8051.DLL V3.101.0.0
+Dialog DLL:      DP51.DLL V2.62.0.1
+Target DLL:      SH51.DLL V1.00
+Dialog DLL:      TP51.DLL V2.58
+ 
+<h2>Project:</h2>
+D:\keyboard\SH68F90 keyboard\SH68F90 game keyboard software\F90_keyboard\keyboard.uvproj
+Project File Date:  08/08/2017
+
+<h2>Output:</h2>
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling interrupt.c...
+compiling main.c...
+compiling sys_init.c...
+compiling usb_task.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SYS_IDLE?SYS_INIT
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SYS_PD?SYS_INIT
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?USB_QUERYINT_PROG?USB_TASK
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?OUT2_IRQ_PROG?USB_TASK
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_FILL_IN2_BUF?USB_TASK
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?IN2_IRQ_PROG?USB_TASK
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  SWITCH_SFR_BANK0
+    MODULE:  .\Objects\usb_task.obj (USB_TASK)
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  SWITCH_SFR_BANK1
+    MODULE:  .\Objects\usb_task.obj (USB_TASK)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  SWITCH_SFR_BANK1
+    MODULE:  .\Objects\usb_task.obj (USB_TASK)
+    ADDRESS: 0A62H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  SWITCH_SFR_BANK0
+    MODULE:  .\Objects\usb_task.obj (USB_TASK)
+    ADDRESS: 0A68H
+Program Size: data=20.1 xdata=34 code=3824
+".\Objects\keyboard" - 0 Error(s), 10 Warning(s).
+</pre>
+</body>
+</html>

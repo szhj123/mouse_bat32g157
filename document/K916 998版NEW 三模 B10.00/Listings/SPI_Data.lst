@@ -1,0 +1,578 @@
+C51 COMPILER V9.60.0.0   SPI_DATA                                                          09/23/2022 11:52:51 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE SPI_DATA
+OBJECT MODULE PLACED IN .\output\SPI_Data.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\SPI_Data.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG OBJE
+                    -CTEXTEND PRINT(.\Listings\SPI_Data.lst) OBJECT(.\output\SPI_Data.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\mcu_def.h"
+   4          #include "..\include\pwm_control.h"
+   5          #include ".\include\Auser.h"
+   6          #include "..\include\CFG.h"
+   7          #include <intrins.h>
+   8          #include <string.h>
+   9          bit     Ready_ok;
+  10          U8 xdata Module_Data[32];
+  11          U16 xdata Module_DataTimes;
+  12          U8 xdata Check_Data;
+  13          U8 xdata Module_State_Data[4];
+  14          U8 xdata Wirte_State;
+  15          U8 xdata Module_LED_status2;
+  16          void Clear_Module_Data(void)
+  17          {
+  18   1              U8 i;   
+  19   1              for(i=0;i<32;i++)
+  20   1                      Module_Data[i]=0;
+  21   1      }
+  22          void Write_Module_Data(U8 wdata)
+  23          {
+  24   1              U8 i;   
+  25   1              SPI_SCK=1;
+  26   1              for(i=0;i<8;i++)
+  27   1              {
+  28   2                      SPI_SCK=0;
+  29   2                       if(wdata & 0x80)
+  30   2                          SPI_MOSI=1;
+  31   2                      else
+  32   2                          SPI_MOSI=0;
+  33   2                     SPI_SCK=1;
+  34   2                      wdata <<= 1;
+  35   2              }
+  36   1              SPI_MOSI=1;
+  37   1      }
+  38          void Clear_All_ModeBit(void)
+  39          {
+  40   1              Mode_24G=0;
+  41   1              Mode_Bluetooth1=0;
+  42   1              Mode_Bluetooth2=0;
+  43   1              Mode_Bluetooth3=0;
+  44   1              Mode_USB=0;
+  45   1      }
+  46          //---------------------------------------------------
+  47          void Module_Command_Data(U8 Temp_Module)
+  48          {
+  49   1                      Module_Data[0]=0xAA;
+  50   1                      Module_Data[1]=0x03;
+  51   1                      Module_Data[2]=0X01;
+  52   1              switch(Temp_Module)
+  53   1              {
+  54   2                      case 0://切换2.4G
+C51 COMPILER V9.60.0.0   SPI_DATA                                                          09/23/2022 11:52:51 PAGE 2   
+
+  55   2                              Module_Data[3]=0X00;
+  56   2                              Module_Data[4]=0X00;
+  57   2                      break;  
+  58   2                      case 1://切换2.4G配对
+  59   2                              Module_Data[3]=0X01;
+  60   2                              Module_Data[4]=0X00;
+  61   2                      break;  
+  62   2                      case 2://蓝牙1 切换
+  63   2                              Module_Data[3]=0X00;
+  64   2                              Module_Data[4]=0X01;
+  65   2                      break;  
+  66   2                      case 3://蓝牙1 切换 进入配对
+  67   2                              Module_Data[3]=0X01;
+  68   2                              Module_Data[4]=0X01;
+  69   2                      break;  
+  70   2                      case 4://蓝牙2 切换
+  71   2                              Module_Data[3]=0X00;
+  72   2                              Module_Data[4]=0X02;
+  73   2                      break;  
+  74   2                      case 5://蓝牙2 切换 进入配对
+  75   2                              Module_Data[3]=0X01;
+  76   2                              Module_Data[4]=0X02;
+  77   2                      break;  
+  78   2                      case 6://蓝牙3 切换
+  79   2                              Module_Data[3]=0X00;
+  80   2                              Module_Data[4]=0X03;
+  81   2                      break;  
+  82   2                      case 7://蓝牙3 切换 进入配对
+  83   2                              Module_Data[3]=0X01;
+  84   2                              Module_Data[4]=0X03;
+  85   2                      break;  
+  86   2                      case 8://进入USB
+  87   2                              Module_Data[2]=0X06;    
+  88   2                              Module_Data[3]=0X01;
+  89   2                              Module_Data[4]=0X00;
+  90   2                      break;  
+  91   2                      case 9://退出USB
+  92   2                              Module_Data[2]=0X06;    
+  93   2                              Module_Data[3]=0X01;
+  94   2                              Module_Data[4]=0X00;
+  95   2                      break;  
+  96   2              }
+  97   1      }
+  98          //**********************************
+  99          void Send_TextMode_Data(U8 Temp_Module)
+ 100          {
+ 101   1              Module_Data[0]=0xAA;
+ 102   1              Module_Data[1]=0x03;
+ 103   1              Module_Data[2]=0X03;
+ 104   1              switch(Temp_Module)
+ 105   1              {
+ 106   2                      case 0://2.4G   测试模式
+ 107   2                              Module_Data[3]=0x00;//0X05;
+ 108   2                      break;  
+ 109   2                      case 1://BLE    测试模式
+ 110   2                              Module_Data[3]=1;       //      0x01;//
+ 111   2                      break;  
+ 112   2                      case 2://清除蓝牙配对记录
+ 113   2                              Module_Data[3]=0x02;//0X25;
+ 114   2                      break;  
+ 115   2                      case 3://EMI 测试模式
+ 116   2                              Module_Data[3]=0x03;//0X35;
+C51 COMPILER V9.60.0.0   SPI_DATA                                                          09/23/2022 11:52:51 PAGE 3   
+
+ 117   2                      break;  
+ 118   2                      case 4://蓝牙3.0 测试模式
+ 119   2                              Module_Data[3]=4;
+ 120   2                      break;  
+ 121   2              }
+ 122   1      }
+ 123          //---------------------------------------------------
+ 124          void Int_Module(void)
+ 125          {
+ 126   1              Clear_All_ModeBit();
+ 127   1              Clear_Module_Data();
+ 128   1              Ready_ok=1;
+ 129   1              Module_DataTimes=0;
+ 130   1              Check_Data=0;
+ 131   1      }
+ 132          void Send_Module_Data(void)
+ 133          {
+ 134   1              U8 i;
+ 135   1              if(!Ready_ok)
+ 136   1                      return;
+ 137   1              SPI_SCK_Out;
+ 138   1              SPI_MOSI_Out;
+ 139   1              SPI_MOT_Out;
+ 140   1              SPI_SS_Out;
+ 141   1              delay_us(1);
+ 142   1              SPI_MOT=0;
+ 143   1              delay_us(3);
+ 144   1      //      if(SLEEP_PIN)
+ 145   1              {
+ 146   2                      SPI_SS=0;       
+ 147   2                      if(bPower_Up)
+ 148   2                      {
+ 149   3                              bPower_Up=0;
+ 150   3                              return;
+ 151   3                      }       
+ 152   2                      delay_us(53);
+ 153   2                      while(Module_DataTimes!=Module_Data[1]+3)
+ 154   2                      {
+ 155   3                              if(Module_DataTimes)
+ 156   3                              {       
+ 157   4                                      Write_Module_Data(Module_Data[Module_DataTimes-1]);
+ 158   4                                      Check_Data=Module_Data[Module_DataTimes-1]+Check_Data;
+ 159   4                              }
+ 160   3                              Module_DataTimes++;
+ 161   3                      }
+ 162   2                      Check_Data=0x55-Check_Data;
+ 163   2                      Write_Module_Data(Check_Data);
+ 164   2                      Module_DataTimes=0;
+ 165   2                      Ready_ok=0;     
+ 166   2                      SPI_SCK=1;
+ 167   2                      SPI_SS=1;       
+ 168   2                      SPI_MOT=1;
+ 169   2                      SPI_SCK_DirIn;
+ 170   2                      SPI_SS_DirIn;
+ 171   2                      SPI_MOT_DirIn;
+ 172   2              }
+ 173   1      }
+ 174          //********************************
+ 175          void Send_Wireless_Data(void)//发送无线数据
+ 176          {
+ 177   1              if(Ready_ok)
+ 178   1                      return;
+C51 COMPILER V9.60.0.0   SPI_DATA                                                          09/23/2022 11:52:51 PAGE 4   
+
+ 179   1              if(b_Record_Mode)
+ 180   1                      return; 
+ 181   1              if(bSend_IN2|b_04|b_02)
+ 182   1              {
+ 183   2                      Clear_Module_Data();
+ 184   2                      Module_Data[0]=0xAA;
+ 185   2                      Module_Data[1]=0x1D ;
+ 186   2                      Module_Data[2]=0X02;
+ 187   2                      Module_Data[3]=Send_data[0]|Mcaro_Ctrl_Data;
+ 188   2                      Module_Data[4]=Send_data[1];
+ 189   2                      Module_Data[5]=Send_data[2];
+ 190   2                      Module_Data[6]=Send_data[3];
+ 191   2                      Module_Data[7]=Send_data[4];
+ 192   2                      Module_Data[8]=Send_data[5];            
+ 193   2                      Module_Data[9]= 0;//    Send_data[6];
+ 194   2                      if(b_02)
+ 195   2                      {
+ 196   3                      Module_Data[10]=Macro_Usb2_Data[2];
+ 197   3                      Module_Data[11]=Macro_Usb2_Data[3];
+ 198   3                      Module_Data[12]=Macro_Usb2_Data[4];
+ 199   3                      Module_Data[13]=Macro_Usb2_Data[5];
+ 200   3                      Module_Data[14]=Macro_Usb2_Data[6];
+ 201   3                      Module_Data[15]=Macro_Usb2_Data[7];             
+ 202   3                      Module_Data[16]=Macro_Usb2_Data[8];
+ 203   3                      Module_Data[17]=Macro_Usb2_Data[9];
+ 204   3                      Module_Data[18]=Macro_Usb2_Data[10];            
+ 205   3                      Module_Data[19]=Macro_Usb2_Data[11];
+ 206   3                      
+ 207   3                      Module_Data[20]=Macro_Usb2_Data[12];
+ 208   3                      Module_Data[21]=Macro_Usb2_Data[13];
+ 209   3                      Module_Data[22]=Macro_Usb2_Data[14];
+ 210   3                      Module_Data[23]=Macro_Usb2_Data[15];
+ 211   3                      Module_Data[24]=0;//Macro_Usb2_Data[16];
+ 212   3                      Module_Data[25]=0;//Macro_Usb2_Data[17];        
+ 213   3                      }
+ 214   2                      else
+ 215   2                      {
+ 216   3                      Module_Data[10]=Usb2_Data[2];
+ 217   3                      Module_Data[11]=Usb2_Data[3];
+ 218   3                      Module_Data[12]=Usb2_Data[4];
+ 219   3                      Module_Data[13]=Usb2_Data[5];
+ 220   3                      Module_Data[14]=Usb2_Data[6];
+ 221   3                      Module_Data[15]=Usb2_Data[7];           
+ 222   3                      Module_Data[16]=Usb2_Data[8];
+ 223   3                      Module_Data[17]=Usb2_Data[9];
+ 224   3                      Module_Data[18]=Usb2_Data[10];          
+ 225   3                      Module_Data[19]=Usb2_Data[11];
+ 226   3                      
+ 227   3                      Module_Data[20]=Usb2_Data[12];
+ 228   3                      Module_Data[21]=Usb2_Data[13];
+ 229   3                      Module_Data[22]=Usb2_Data[14];
+ 230   3                      Module_Data[23]=Usb2_Data[15];
+ 231   3                      Module_Data[24]=0;//Usb2_Data[16];
+ 232   3                      Module_Data[25]=0;//Usb2_Data[17];
+ 233   3                      }
+ 234   2                      Module_Data[26]=0;//            Usb2_Data[17];
+ 235   2                      Module_Data[27]=0;//            Usb2_Data[18];
+ 236   2                      Module_Data[28]=0;//            Usb2_Data[19];          
+ 237   2                      Module_Data[29]=0;//            Usb2_Data[20];
+ 238   2                      Module_Data[30]=0;//            Usb2_Data[6];
+ 239   2                      Ready_ok=1;
+ 240   2                      b_04=bSend_IN2=0;
+C51 COMPILER V9.60.0.0   SPI_DATA                                                          09/23/2022 11:52:51 PAGE 5   
+
+ 241   2                      b_02=0;
+ 242   2                      Module_DataTimes=0;
+ 243   2                      Check_Data=0; 
+ 244   2              }
+ 245   1              else if(b_01)
+ 246   1              {
+ 247   2                      
+ 248   2                      Module_Data[0]=0xAA;
+ 249   2                      Module_Data[1]=0x0B ;
+ 250   2                      Module_Data[2]=0X05;
+ 251   2                      Module_Data[3]=0;
+ 252   2                      Module_Data[4]=0;
+ 253   2                      Module_Data[5]=0;
+ 254   2                      Module_Data[6]=0;
+ 255   2                      Module_Data[7]=0;
+ 256   2                      Module_Data[8]=0;
+ 257   2                      if(b_01)
+ 258   2                      {       
+ 259   3                              Module_Data[9]=Multimedia_Data[1];
+ 260   3                              Module_Data[10]=Multimedia_Data[0];
+ 261   3                      }
+ 262   2              
+ 263   2                      Module_Data[11]=0;
+ 264   2                      Module_Data[12]=0;
+ 265   2                      Ready_ok=1;
+ 266   2                      Module_DataTimes=0;
+ 267   2                      Check_Data=0; 
+ 268   2                      Multimedia_Data[0]=0;
+ 269   2                      Multimedia_Data[1]=0;
+ 270   2      //              Multimedia_Wheel_Data=0;
+ 271   2                      b_01=0;
+ 272   2              }       
+ 273   1      }       
+ 274          //***************************************
+ 275          bit b_Ready_To_Read;
+ 276          U8 xdata Record_Read_Times;
+ 277          //U8 xdata Delay_Times_Module;
+ 278          U8 xdata Delay_Times_Module2;
+ 279          void Module_Read_Data(U8 Temp_Module)
+ 280          {
+ 281   1              Module_Data[0]=0xAA;
+ 282   1              Module_Data[1]=0x03;
+ 283   1              Module_Data[2]=0X0A;
+ 284   1              Module_Data[3]=0X00;
+ 285   1              Module_Data[4]=0X00;
+ 286   1      }
+ 287          
+ 288          void Change_Wireless_Name_50(void)
+ 289          {
+ 290   1              U8 i;
+ 291   1              Check_Data=0;
+ 292   1              Module_Data[0]=0xAA;
+ 293   1              Module_Data[1]=0x1D;
+ 294   1              Module_Data[2]=0X08;
+ 295   1              Module_Data[3]=0X00;
+ 296   1              
+ 297   1              Module_Data[4]=8;
+ 298   1              
+ 299   1              Module_Data[5]='R';
+ 300   1              Module_Data[6]='K';
+ 301   1              Module_Data[7]=' ';
+ 302   1              Module_Data[8]='K';
+C51 COMPILER V9.60.0.0   SPI_DATA                                                          09/23/2022 11:52:51 PAGE 6   
+
+ 303   1              Module_Data[9]='B';
+ 304   1              Module_Data[10]='5';
+ 305   1              Module_Data[11]='.';
+ 306   1              Module_Data[12]='0';
+ 307   1              Module_Data[13]=0;
+ 308   1              
+ 309   1      }
+ 310          void Change_Wireless_Name_30(void)
+ 311          {
+ 312   1              U8 i;
+ 313   1              Check_Data=0;
+ 314   1              Module_Data[0]=0xAA;
+ 315   1              Module_Data[1]=0x1D;
+ 316   1              Module_Data[2]=0X08;
+ 317   1              Module_Data[3]=0X01;
+ 318   1              
+ 319   1              Module_Data[4]=8;
+ 320   1              
+ 321   1              Module_Data[5]='R';
+ 322   1              Module_Data[6]='K';
+ 323   1              Module_Data[7]=' ';
+ 324   1              Module_Data[8]='K';
+ 325   1              Module_Data[9]='B';
+ 326   1              Module_Data[10]='3';
+ 327   1              Module_Data[11]='.';
+ 328   1              Module_Data[12]='0';
+ 329   1              Module_Data[13]=0;
+ 330   1      }
+ 331          void Deal_Wireless_Name(void)
+ 332          {
+ 333   1              Change_Wireless_Name_50();
+ 334   1              Ready_ok=1;
+ 335   1              Send_Module_Data();
+ 336   1              CLR_WDT();
+ 337   1              delay_us(17000);
+ 338   1              CLR_WDT();
+ 339   1              Change_Wireless_Name_30();
+ 340   1              Ready_ok=1;
+ 341   1              Send_Module_Data();
+ 342   1              CLR_WDT();
+ 343   1              delay_us(17000);
+ 344   1              CLR_WDT();
+ 345   1              
+ 346   1      }
+ 347          //***********************************
+ 348          U8 Read_Module_Data(void)
+ 349          {
+ 350   1              U8 i,dat;
+ 351   1              dat=0;
+ 352   1              SPI_SCK=0;
+ 353   1              for(i=0;i<8;i++)
+ 354   1              {
+ 355   2                      SPI_SCK=0;
+ 356   2                      dat<<=1;
+ 357   2                      if(SPI_MISO)
+ 358   2                              dat|=0X01;
+ 359   2                      else
+ 360   2                              dat&=0xfe;
+ 361   2                      SPI_SCK=1;      
+ 362   2              }
+ 363   1              SPI_SCK=1;
+ 364   1              return dat;
+C51 COMPILER V9.60.0.0   SPI_DATA                                                          09/23/2022 11:52:51 PAGE 7   
+
+ 365   1      }
+ 366          
+ 367          void Write_ReadState_Data(void)
+ 368          {
+ 369   1              if(Ready_ok)
+ 370   1                      return;
+ 371   1              if(Mode_USB)
+ 372   1                      return; 
+ 373   1              //if(Scan_TimeUp)
+ 374   1              //      return;         
+ 375   1                      
+ 376   1              Delay_Times_Module2++;
+ 377   1              if(Delay_Times_Module2<10)
+ 378   1              return;
+ 379   1              Delay_Times_Module2=0;
+ 380   1                      
+ 381   1              Ready_ok=1;     
+ 382   1              Module_DataTimes=0;
+ 383   1              Check_Data=0;   
+ 384   1              Module_Read_Data(0);
+ 385   1              Send_Module_Data();
+ 386   1              b_Ready_To_Read=1;
+ 387   1              Record_Read_Times=0;
+ 388   1      }
+ 389          void Read_State_Data(void)
+ 390          {
+ 391   1              U8 i,j;
+ 392   1              if(!b_Ready_To_Read)
+ 393   1                      return;
+ 394   1              b_Ready_To_Read=0;      
+ 395   1              SPI_MOT_Out
+ 396   1              SPI_SCK_Out
+ 397   1              SPI_SS_Out
+ 398   1              delay_us(203);
+ 399   1              SPI_MOT=0;
+ 400   1              SPI_SS=0;       
+ 401   1              delay_us(3);
+ 402   1              EA=0;   
+ 403   1              Module_State_Data[0]=Read_Module_Data();
+ 404   1              Module_State_Data[1]=Read_Module_Data();
+ 405   1              Module_State_Data[3]=Read_Module_Data();
+ 406   1              Module_State_Data[2]=Read_Module_Data();
+ 407   1              EA=1;
+ 408   1              Ready_ok=0;
+ 409   1              b_Ready_To_Read=0;
+ 410   1              SPI_SS=1;       
+ 411   1              SPI_MOT=1;
+ 412   1              SPI_SCK_DirIn;
+ 413   1              SPI_SS_DirIn;
+ 414   1              SPI_MOT_DirIn;
+ 415   1              i=0x55-(Module_State_Data[2]+Module_State_Data[3]);
+ 416   1              if((Module_State_Data[0]==0xBB)&&(Module_State_Data[1]==i))// 处理读出来的正确数据
+ 417   1              {
+ 418   2                      Module_LED_status=Module_State_Data[2]&0x07;
+ 419   2                      
+ 420   2                      Wirte_State=Module_State_Data[2]&0x18;
+ 421   2                      Wirte_State=Wirte_State>>3;
+ 422   2                      Wirte_State|=0x80;
+ 423   2                      
+ 424   2                      Module_LED_status2=Module_State_Data[2]&0x60;
+ 425   2                      Module_LED_status2|=0X01;
+ 426   2                      
+C51 COMPILER V9.60.0.0   SPI_DATA                                                          09/23/2022 11:52:51 PAGE 8   
+
+ 427   2                      Power_status=0;
+ 428   2                      Power_status=Module_State_Data[3]&0x07;
+ 429   2                      Power_status=Power_status<<1;
+ 430   2                      if(Module_State_Data[2]&0x80)
+ 431   2                      Power_status|=0x01;
+ 432   2              }       
+ 433   1              
+ 434   1      }
+ 435          void Lang_KeyDown_ModuleMode(U8 Temp_ModuleMode_Times)
+ 436          {
+ 437   1              Int_Module();
+ 438   1              Clear_Text_EMI_Data();  
+ 439   1              switch(Temp_ModuleMode_Times)
+ 440   1              {
+ 441   2                      case 0: 
+ 442   2                              //Mode_24G=1;
+ 443   2                              //Module_Command_Data(1);
+ 444   2                      break;
+ 445   2                      case 1: 
+ 446   2                              Mode_24G=1;
+ 447   2                              Module_Command_Data(1);
+ 448   2                      break;
+ 449   2                      case 2: 
+ 450   2                              Mode_Bluetooth1=1;
+ 451   2                              Module_Command_Data(3);
+ 452   2                      break;
+ 453   2                      case 3: 
+ 454   2                              Mode_Bluetooth2=1;
+ 455   2                              Module_Command_Data(5);
+ 456   2                      break;
+ 457   2                      case 4: 
+ 458   2                              Mode_Bluetooth3=1;
+ 459   2                              Module_Command_Data(7);
+ 460   2                      break;
+ 461   2              }
+ 462   1              Send_Module_Data();
+ 463   1              if(b_WASD_Mode)
+ 464   1              Read_WASD_Image(Image_Times);
+ 465   1      }
+ 466          U16 xdata  Change_ModeTimes;
+ 467          void Short_KeyDown_ModuleMode(U8 Temp_ModuleMode_Times)
+ 468          {
+ 469   1              U8 i;
+ 470   1              Int_Module();
+ 471   1              Clear_Text_EMI_Data();
+ 472   1              Change_ModeTimes=250;
+ 473   1              Power_status=9;
+ 474   1              switch(Temp_ModuleMode_Times)
+ 475   1              {
+ 476   2                      case 0: 
+ 477   2                              Mode_USB=1;
+ 478   2                              Save_Mode_Time();
+ 479   2                              Module_Command_Data(8);
+ 480   2                              Module_State_Data[0]=Module_State_Data[1]=Module_State_Data[2]=Module_State_Data[3]=0;
+ 481   2                              //RSTSTAT = 0x07;
+ 482   2                              //              while(1);
+ 483   2                      break;
+ 484   2                      case 1: 
+ 485   2                              //USBCON &= ~0xC0;
+ 486   2                              Mode_24G=1;
+ 487   2                              if(Mode_Bluetooth_Times!=4)
+ 488   2                              {       
+C51 COMPILER V9.60.0.0   SPI_DATA                                                          09/23/2022 11:52:51 PAGE 9   
+
+ 489   3                                      Mode_Bluetooth_Times=4;
+ 490   3                                      Save_Mode_Time();
+ 491   3                              }
+ 492   2                              Module_Command_Data(0);
+ 493   2      //                      Lsat_Mode_now=Mode_now;
+ 494   2                              Module_LED_status=0;
+ 495   2                              bSpeed_data=0;
+ 496   2                              Module_State_Data[0]=Module_State_Data[1]=Module_State_Data[2]=Module_State_Data[3]=0;
+ 497   2                      break;
+ 498   2                      case 2: 
+ 499   2                              //USBCON &= ~0xC0;
+ 500   2                              Mode_Bluetooth1=1;      
+ 501   2                              if(Mode_Bluetooth_Times!=1)
+ 502   2                              {       
+ 503   3                                      Mode_Bluetooth_Times=1;
+ 504   3                                      Save_Mode_Time();
+ 505   3                              }
+ 506   2                              Module_Command_Data(2);
+ 507   2                              Module_LED_status=0;
+ 508   2                              bSpeed_data=0;
+ 509   2                              Module_State_Data[0]=Module_State_Data[1]=Module_State_Data[2]=Module_State_Data[3]=0;
+ 510   2                      break;
+ 511   2                      case 3: 
+ 512   2                              Mode_Bluetooth2=1;
+ 513   2                              if(Mode_Bluetooth_Times!=2)
+ 514   2                              {       
+ 515   3                                      Mode_Bluetooth_Times=2;
+ 516   3                                      Save_Mode_Time();
+ 517   3                              }
+ 518   2                              Module_Command_Data(4);
+ 519   2                              Module_LED_status=0;
+ 520   2                              bSpeed_data=0;
+ 521   2                              Module_State_Data[0]=Module_State_Data[1]=Module_State_Data[2]=Module_State_Data[3]=0;
+ 522   2                      break;
+ 523   2                      case 4: 
+ 524   2                              Mode_Bluetooth3=1;
+ 525   2                              if(Mode_Bluetooth_Times!=3)
+ 526   2                              {       
+ 527   3                                      Mode_Bluetooth_Times=3;
+ 528   3                                      Save_Mode_Time();
+ 529   3                              }
+ 530   2                              Module_Command_Data(6);
+ 531   2                              Module_LED_status=0;
+ 532   2                              bSpeed_data=0;
+ 533   2                              Module_State_Data[0]=Module_State_Data[1]=Module_State_Data[2]=Module_State_Data[3]=0;
+ 534   2                      break;
+ 535   2              }
+ 536   1              if(b_WASD_Mode)
+ 537   1              Read_WASD_Image(Image_Times);
+ 538   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1560    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     45       8
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

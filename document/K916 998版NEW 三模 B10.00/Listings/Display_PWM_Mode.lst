@@ -1,0 +1,59 @@
+C51 COMPILER V9.60.0.0   DISPLAY_PWM_MODE                                                  09/23/2022 11:52:49 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DISPLAY_PWM_MODE
+OBJECT MODULE PLACED IN .\output\Display_PWM_Mode.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\Display_PWM_Mode.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DE
+                    -BUG OBJECTEXTEND PRINT(.\Listings\Display_PWM_Mode.lst) OBJECT(.\output\Display_PWM_Mode.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\mcu_def.h"
+   4          #include "..\include\pwm_control.h"
+   5          #include ".\include\Auser.h"
+   6          #include "..\include\CFG.h"
+   7          #include <intrins.h>
+   8          #include <string.h>
+   9          //U8 xdata      TimeTemp1;
+  10          U8 xdata        Last_CL_Brightness_Wheels;
+  11          //************³£ÁÁÄ£Ê½**********************
+  12          void Display_ChangLiang_Mode(void)
+  13          {
+  14   1              U8 j,i;
+  15   1              
+  16   1              if(b_ChangLiang_Mode|b_WASD_Mode)//|b_SuiMie_Mode|b_HengMie_Mode)
+  17   1              {       
+  18   2                      if((Last_CL_Brightness_Wheels==0xaa)&&(b_ChangLiang_Mode))
+  19   2                      {       
+  20   3                              Last_CL_Brightness_Wheels=0;
+  21   3                              Let_NUM_Image();
+  22   3                      }       
+  23   2                      j=Brack_b(17);
+  24   2                      j=Brack_b(18);
+  25   2                      j=Brack_b(19);
+  26   2                      j=Brack_b(20);
+  27   2                      
+  28   2                      j=Brack_b(43);
+  29   2                      j=Brack_b(44);
+  30   2                      j=Brack_b(45);
+  31   2                      j=Brack_b(52);
+  32   2                      j=Brack_b(110);
+  33   2                      j=Brack_b(114);
+  34   2              }
+  35   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     72    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      1       1
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

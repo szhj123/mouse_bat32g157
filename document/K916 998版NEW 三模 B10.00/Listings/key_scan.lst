@@ -1,0 +1,13 @@
+C51 COMPILER V9.02   KEY_SCAN                                                              01/04/2018 14:52:13 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE KEY_SCAN
+OBJECT MODULE PLACED IN .\output\key_scan.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE src\key_scan.c LARGE WARNINGLEVEL(0) BROWSE DEBUG OBJECTEXTEND PRINT(.\List
+                    -ings\key_scan.lst) OBJECT(.\output\key_scan.obj)
+
+line level    source
+
+*** ERROR C318 OF src\key_scan.c: can't open file 'src\key_scan.c'
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

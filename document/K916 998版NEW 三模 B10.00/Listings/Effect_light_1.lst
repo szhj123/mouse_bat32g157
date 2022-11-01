@@ -1,0 +1,91 @@
+C51 COMPILER V9.60.0.0   EFFECT_LIGHT_1                                                    09/23/2022 11:52:50 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE EFFECT_LIGHT_1
+OBJECT MODULE PLACED IN .\output\Effect_light_1.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\Effect_light_1.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBU
+                    -G OBJECTEXTEND PRINT(.\Listings\Effect_light_1.lst) OBJECT(.\output\Effect_light_1.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\mcu_def.h"
+   4          #include "..\include\pwm_control.h"
+   5          #include ".\include\Auser.h"
+   6          #include "..\include\CFG.h"
+   7          #include <intrins.h>
+   8          #include <string.h>
+   9          U8 xdata        b_Effect_light_1_Cpl;
+  10          code const U8 Effect1_Tab[21]=
+  11          {
+  12                  0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
+  13          };
+  14          code const U8 Effect1_Tab2[21]=
+  15          {
+  16                  20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0,
+  17          };
+  18          void Start_Effect_light_Time1(void)     
+  19          {
+  20   1              U8 j,n;
+  21   1              U8 i,i2;
+  22   1              if(!b_Effect_light_1)
+  23   1                      return;
+  24   1              Temp_Speed++;
+  25   1              if(Temp_Speed>Speed_Data+5)
+  26   1              {
+  27   2                      Temp_Speed=0;   
+  28   2                      i=Effect1_Tab[Run_Time];
+  29   2                      i2=Effect1_Tab2[Run_Time];
+  30   2                              
+  31   2                              Change_AColor_Time(i);  //Give_NUM_Image(i,n,50*Brightness_Wheels);     
+  32   2                              Change_AColor_Time(i2+21);      //Give_NUM_Image(i2+21,n,50*Brightness_Wheels);         
+  33   2                              Change_AColor_Time(i+42);       //Give_NUM_Image(i+42,n,50*Brightness_Wheels);  
+  34   2                              Change_AColor_Time(i2+63);      //Give_NUM_Image(i2+63,n,50*Brightness_Wheels);
+  35   2                              Change_AColor_Time(i+84);       //Give_NUM_Image(i+84,n,50*Brightness_Wheels);  
+  36   2                              Change_AColor_Time(i2+105);     //Give_NUM_Image(i2+105,n,50*Brightness_Wheels);
+  37   2                              
+  38   2                              Deal_K45_Image();
+  39   2                      if(b_Effect_light_1_Cpl)
+  40   2                              Run_Time--;     
+  41   2                      else
+  42   2                              Run_Time++;     
+  43   2                      if(Run_Time>=21)
+  44   2                      {
+  45   3                              b_Effect_light_1_Cpl=0xff; 
+  46   3                               Run_Time=20;
+  47   3                      }
+  48   2                      if(Run_Time==0)
+  49   2                      {
+  50   3                              b_Effect_light_1_Cpl=0;
+  51   3                      }               
+  52   2              }
+  53   1      }
+  54          
+C51 COMPILER V9.60.0.0   EFFECT_LIGHT_1                                                    09/23/2022 11:52:50 PAGE 2   
+
+  55          
+  56          
+  57          
+  58          
+  59          
+  60          
+  61          
+  62          
+  63          
+  64          
+  65          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    214    ----
+   CONSTANT SIZE    =     42    ----
+   XDATA SIZE       =      1       4
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,7 @@
+".\Objects\STARTUP.obj",
+".\Objects\interrupt.obj",
+".\Objects\main.obj",
+".\Objects\sys_init.obj",
+".\Objects\usb_task.obj" 
+TO ".\Objects\keyboard" 
+PRINT(".\Listings\keyboard.m51") RAMSIZE(256) 

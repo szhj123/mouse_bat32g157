@@ -1,0 +1,251 @@
+C51 COMPILER V9.60.0.0   DISPLAY_PAOMA2                                                    09/23/2022 11:52:50 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DISPLAY_PAOMA2
+OBJECT MODULE PLACED IN .\output\Display_PaoMa2.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\Display_PaoMa2.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBU
+                    -G OBJECTEXTEND PRINT(.\Listings\Display_PaoMa2.lst) OBJECT(.\output\Display_PaoMa2.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\mcu_def.h"
+   4          #include "..\include\pwm_control.h"
+   5          #include ".\include\Auser.h"
+   6          #include "..\include\CFG.h"
+   7          #include <intrins.h>
+   8          #include <string.h>
+   9          bit     b_PaoMa1;
+  10          bit     b_PaoMa2;
+  11          bit     b_PaoMa3;
+  12          bit     b_PaoMa4;
+  13          code const U8 Deal_PaoMa_21_Tab0        [139]=
+  14          {
+  15                  14,13,12,11,10,9,8,7,6,5,4,3,2,1,0,
+  16                  21,42,63,84,105,
+  17                  106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,
+  18                  104,83,62,41,
+  19                  40,39,38,37,36,35,34,33,32,31,30,29,28,27,26,25,24,23,22,
+  20                  43,64,85,
+  21                  86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,
+  22                  82,61,60,59,58,57,56,55,54,53,52,51,50,49,48,47,46,45,44,
+  23                  65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,
+  24                  
+  25                  60,59,58,57,56,55,54,55,54,53,52,51,
+  26                  125,125,125,125,125,125,125,
+  27          };
+  28          code const U8 Deal_PaoMa_21_Tab2        [30]=
+  29          {
+  30                  /*
+  31                  52,31,30,50,71,72,
+  32                  52,31,30,50,71,72,
+  33                  51,
+  34                  */
+  35                  29,30,51,71,70,49,
+  36                  29,30,51,71,70,49,
+  37                  29,30,51,71,70,49,
+  38                  29,30,51,71,70,49,
+  39                  50,125,125,125,125,125,
+  40          };
+  41          //------------------------------------------------------------------
+  42          //------------------------------------------------------------------
+  43          code const U8 Deal_PaoMa_21_Tab3_1_U    [9]=
+  44          {
+  45                  50,49,48,47,46,45,44,43,42,
+  46          };
+  47          code const U8 Deal_PaoMa_21_Tab3_2_U    [10]=
+  48          {
+  49                  125,71,70,69,68,67,66,65,64,63,
+  50          };
+  51          code const U8 Deal_PaoMa_21_Tab3_3_U    [11]=
+  52          {
+  53                  125,30,29,28,27,26,25,24,23,22,21,
+  54          };
+C51 COMPILER V9.60.0.0   DISPLAY_PAOMA2                                                    09/23/2022 11:52:50 PAGE 2   
+
+  55          code const U8 Deal_PaoMa_21_Tab3_4_U    [11]=
+  56          {
+  57                  125,125,92,91,90,89,88,87,86,85,84,
+  58          };
+  59          code const U8 Deal_PaoMa_21_Tab3_5_U    [12]=
+  60          {
+  61                  125,125,9,8,7,6,5,4,3,2,1,0,
+  62          };
+  63          code const U8 Deal_PaoMa_21_Tab3_6_U    [11]=
+  64          {
+  65                  125,125,125,
+  66                  113,112,110,109,108,107,106,105,
+  67          };
+  68          //------------------------------------------------------------------
+  69          code const U8 Deal_PaoMa_21_Tab3_1_D    [11]=
+  70          {
+  71                  52,53,54,55,56,57,58,59,60,61,62,
+  72          };
+  73          code const U8 Deal_PaoMa_21_Tab3_2_D    [13]=
+  74          {
+  75                  125,72,73,74,75,76,77,78,79,80,81,82,83,
+  76          };
+  77          code const U8 Deal_PaoMa_21_Tab3_3_D    [12]=
+  78          {
+  79                  125,31,32,33,34,35,36,37,38,39,40,41,
+  80          };
+  81          code const U8 Deal_PaoMa_21_Tab3_4_D    [14]=
+  82          {
+  83                  125,125,93,94,95,96,97,98,99,100,101,102,103,104,
+  84          };
+  85          code const U8 Deal_PaoMa_21_Tab3_5_D    [13]=
+  86          {
+  87                  125,125,10,11,12,13,14,15,16,17,18,19,20,
+  88          };
+  89          code const U8 Deal_PaoMa_21_Tab3_6_D    [14]=
+  90          {
+  91                  125,125,125,
+  92                  114,115,116,117,118,119,120,121,122,123,124,
+  93          };
+  94          //***************K801 型跑马*************************
+  95          void Deal_PaoMa_2(void)
+  96          {
+  97   1              U8 i,j;
+  98   1              U8 n;
+  99   1              if(b_PaoMa2_Mode)
+ 100   1              {
+ 101   2                              j=Speed_Data+2;         
+ 102   2                      if(b_PaoMa1)            //跑马
+ 103   2                      {               
+ 104   3                              Temp_Speed++;
+ 105   3                              if(Temp_Speed>j)
+ 106   3                              {
+ 107   4                                      Temp_Speed=0;
+ 108   4                                      if(Run_Time<145)
+ 109   4                                      {       
+ 110   5                                              i=Deal_PaoMa_21_Tab0[Run_Time];
+ 111   5                                              Change_AColor_Time(i);
+ 112   5                                              Deal_K45_Image();
+ 113   5                                      }
+ 114   4                                      Run_Time++;     
+ 115   4                                      if(Run_Time>139)
+ 116   4                                      {       
+C51 COMPILER V9.60.0.0   DISPLAY_PAOMA2                                                    09/23/2022 11:52:50 PAGE 3   
+
+ 117   5                                              Run_Time=0;
+ 118   5                                              b_PaoMa2=1;
+ 119   5                                              b_PaoMa1=0;
+ 120   5                                      }
+ 121   4                                      
+ 122   4                              }
+ 123   3                      }
+ 124   2                      else if(b_PaoMa2)       //花型
+ 125   2                      {
+ 126   3                              Temp_Speed++;
+ 127   3                              if(Temp_Speed>j+4)
+ 128   3                              {
+ 129   4                                      Temp_Speed=0;
+ 130   4                                      if(Run_Time<30)
+ 131   4                                      {       
+ 132   5                                              i=Deal_PaoMa_21_Tab2[Run_Time];
+ 133   5                                              Change_AColor_Time(i);
+ 134   5                                              Deal_K45_Image();
+ 135   5                                      }
+ 136   4                                      Run_Time++;     
+ 137   4                                      if(Run_Time>30)
+ 138   4                                      {       
+ 139   5                                              Run_Time=0;
+ 140   5                                              b_PaoMa2=0;
+ 141   5                                              b_PaoMa1=0;
+ 142   5                                              b_PaoMa3=1;
+ 143   5                                      }
+ 144   4                              }
+ 145   3                      }
+ 146   2                      else if(b_PaoMa3)       //散开
+ 147   2                      {
+ 148   3                              Temp_Speed++;
+ 149   3                              if(Temp_Speed>j*3)
+ 150   3                              {       
+ 151   4                                      Temp_Speed=0;
+ 152   4                                      if(Run_Time<9)
+ 153   4                                      {       
+ 154   5                                              i=Deal_PaoMa_21_Tab3_1_U[Run_Time];
+ 155   5                                              Change_AColor_Time(i);
+ 156   5                                      }
+ 157   4                                      if(Run_Time<10)
+ 158   4                                      {       
+ 159   5                                              i=Deal_PaoMa_21_Tab3_2_U[Run_Time];
+ 160   5                                              Change_AColor_Time(i);  
+ 161   5                                      }
+ 162   4                                      if(Run_Time<11)
+ 163   4                                      {       
+ 164   5                                              i=Deal_PaoMa_21_Tab3_3_U[Run_Time];
+ 165   5                                              Change_AColor_Time(i);  
+ 166   5                                              i=Deal_PaoMa_21_Tab3_4_U[Run_Time];
+ 167   5                                              Change_AColor_Time(i);
+ 168   5                                              i=Deal_PaoMa_21_Tab3_6_U[Run_Time];
+ 169   5                                              Change_AColor_Time(i);
+ 170   5                                              i=Deal_PaoMa_21_Tab3_1_D[Run_Time];
+ 171   5                                              Change_AColor_Time(i);
+ 172   5                                      }
+ 173   4                                      if(Run_Time<12)
+ 174   4                                      {       
+ 175   5                                              i=Deal_PaoMa_21_Tab3_5_U[Run_Time];
+ 176   5                                              Change_AColor_Time(i);
+ 177   5                                              i=Deal_PaoMa_21_Tab3_3_D[Run_Time];
+ 178   5                                              Change_AColor_Time(i);
+C51 COMPILER V9.60.0.0   DISPLAY_PAOMA2                                                    09/23/2022 11:52:50 PAGE 4   
+
+ 179   5                                      }
+ 180   4                                      if(Run_Time<13)
+ 181   4                                      {       
+ 182   5                                              i=Deal_PaoMa_21_Tab3_2_D[Run_Time];
+ 183   5                                              Change_AColor_Time(i);
+ 184   5                                              i=Deal_PaoMa_21_Tab3_5_D[Run_Time];
+ 185   5                                              Change_AColor_Time(i);
+ 186   5                                      }
+ 187   4                                      if(Run_Time<14)
+ 188   4                                      {       
+ 189   5                                              i=Deal_PaoMa_21_Tab3_4_D[Run_Time];
+ 190   5                                              Change_AColor_Time(i);
+ 191   5                                              i=Deal_PaoMa_21_Tab3_6_D[Run_Time];
+ 192   5                                              Change_AColor_Time(i);
+ 193   5                                      }
+ 194   4                                      Deal_K45_Image();
+ 195   4                                      Run_Time++;
+ 196   4                                      if(Run_Time>25)
+ 197   4                                      {
+ 198   5                                              Run_Time=0;
+ 199   5                                              b_PaoMa4=1;
+ 200   5                                              b_PaoMa3=0;
+ 201   5                                              b_PaoMa2=0;
+ 202   5                                              b_PaoMa1=0;
+ 203   5                                      }
+ 204   4                              }
+ 205   3                      }
+ 206   2                      else if(b_PaoMa4)       
+ 207   2                      {       
+ 208   3                              Temp_Speed++;
+ 209   3                              if(Temp_Speed>j)
+ 210   3                              {
+ 211   4                                              Temp_Speed=0;
+ 212   4                                      //---------------------------------
+ 213   4                                              Run_Time=0;
+ 214   4                                              b_PaoMa2=0;
+ 215   4                                              b_PaoMa3=0;
+ 216   4                                              b_PaoMa4=0;
+ 217   4                                              b_PaoMa1=1;
+ 218   4                              }
+ 219   3                      }
+ 220   2              }
+ 221   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    737    ----
+   CONSTANT SIZE    =    310    ----
+   XDATA SIZE       =   ----       3
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      4    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

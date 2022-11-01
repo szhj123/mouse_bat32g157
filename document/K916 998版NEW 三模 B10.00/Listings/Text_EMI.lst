@@ -1,0 +1,101 @@
+C51 COMPILER V9.60.0.0   TEXT_EMI                                                          09/23/2022 11:52:51 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE TEXT_EMI
+OBJECT MODULE PLACED IN .\output\Text_EMI.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\Text_EMI.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG OBJE
+                    -CTEXTEND PRINT(.\Listings\Text_EMI.lst) OBJECT(.\output\Text_EMI.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\mcu_def.h"
+   4          #include "..\include\pwm_control.h"
+   5          #include ".\include\Auser.h"
+   6          #include "..\include\CFG.h"
+   7          #include <intrins.h>
+   8          #include <string.h>
+   9          
+  10          U8 Text_EMI_Times;
+  11          U8 Text_BT30_Times;
+  12          //bit   b_EMI_24Mode;
+  13          //bit   b_EMI_30Mode;
+  14          bit     b_Mode24_Up;
+  15          bit     b_ModeBT30_Up;
+  16          void Clear_Text_EMI_Data(void)
+  17          {
+  18   1      //      b_EMI_24Mode=0;
+  19   1      //      b_EMI_30Mode=0;
+  20   1      }
+  21          void Text_EMI_Mode(void)
+  22          {
+  23   1              if((V_Data[5]&0x08)&&(bFn))
+  24   1              {
+  25   2                      if(b_Mode24_Up)
+  26   2                      {
+  27   3                              Text_EMI_Times++;
+  28   3                              if(Text_EMI_Times>250)
+  29   3                              {       
+  30   4                                      b_Mode24_Up=0;
+  31   4                                      Text_EMI_Times=0;
+  32   4                                      
+  33   4                                      Mode_Times=0;   
+  34   4                                      Change_Mode2(); 
+  35   4                                      
+  36   4                                      Int_Module();
+  37   4                                      Send_TextMode_Data(3);
+  38   4                                      Mode_24G=1;
+  39   4                              }
+  40   3                      }
+  41   2              }
+  42   1              else
+  43   1              {
+  44   2                      Text_EMI_Times=0;
+  45   2                      b_Mode24_Up=1;
+  46   2              }       
+  47   1               /*
+  48   1              if(((Mode_Bluetooth1)|(Mode_Bluetooth2)|(Mode_Bluetooth3))&&(V_Data[5]&0x08)&&(bFn))
+  49   1              {
+  50   1                      if(b_ModeBT30_Up)
+  51   1                      {
+  52   1                              Text_BT30_Times++;
+  53   1                              if(Text_BT30_Times>250)
+  54   1                              {       
+C51 COMPILER V9.60.0.0   TEXT_EMI                                                          09/23/2022 11:52:51 PAGE 2   
+
+  55   1                                      b_ModeBT30_Up=0;
+  56   1                                      Text_BT30_Times=0;
+  57   1                                      
+  58   1                                      Mode_Times=0;   
+  59   1                                      Change_Mode2(); 
+  60   1                                      
+  61   1      //                              b_EMI_30Mode=1;
+  62   1                                      Int_Module();
+  63   1                                      Send_TextMode_Data(1);
+  64   1                                      Mode_Bluetooth1=1;
+  65   1                              }
+  66   1                      }
+  67   1              }
+  68   1              else
+  69   1              {
+  70   1                      Text_BT30_Times=0;
+  71   1                      b_ModeBT30_Up=1;
+  72   1              }       
+  73   1              */
+  74   1              
+  75   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     59    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      2    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

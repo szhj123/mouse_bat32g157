@@ -1,0 +1,1 @@
+"src\sys_init.c" LARGE WARNINGLEVEL (0) OPTIMIZE (8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\sys_init.lst) OBJECT(.\output\sys_init.obj)

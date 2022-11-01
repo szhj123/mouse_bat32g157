@@ -1,0 +1,1425 @@
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE USB_TASK
+OBJECT MODULE PLACED IN .\output\usb_task.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\usb_task.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG OBJE
+                    -CTEXTEND PRINT(.\Listings\usb_task.lst) OBJECT(.\output\usb_task.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\usb_db.h"
+   4          #include "..\include\mcu_def.h"
+   5          #include "..\include\CFG.h"
+   6          #include "..\include\usb_def.h"
+   7          #include "..\include\auser.h"
+   8          #include <intrins.h>
+   9          #include <string.h>
+  10          bit usb_config_ok;
+  11          bit     fg_LedMode;
+  12          U16 xdata       Usb_ImageID;
+  13          U16 xdata       out0_dat_cnt;
+  14          U8 xdata        RX_DATA[8];
+  15          //////////////////////////
+  16          U8 xdata        usb_irq_reg1;
+  17          U8 xdata        usb_irq_reg2;
+  18          U8 xdata        *buffer_addr;
+  19          U8 xdata        usb_rx_data[8]; 
+  20          U8 xdata        ep0_phase;
+  21          xdata U8        code *code_pt;
+  22          U16 xdata       in0_dat_cnt;
+  23          U16 xdata        usb_length;
+  24          U8 data LED_status;
+  25          bit device_remote_wakeup_f;
+  26          U8 xdata EP1_IDLE_TIME;
+  27          U8 xdata EP1_IDLE_COUNT;
+  28          U8 xdata Protocol_type0,Protocol_type1;
+  29          U8 xdata Suspend_Counter;
+  30          bit     fg_suspend;//驱动发命令=1控制休眠，也可由拨动开关决定
+  31          
+  32          U8 xdata configution_value;
+  33          //U8 xdata usb_config_flag;
+  34          xdata rx0_buffer_union rx0_buffer;
+  35          U8 xdata Suspend_Counter;
+  36          U8 xdata *out_address;
+  37          //U8 xdata out2_length;
+  38           /////////////////////////////////////////////////////////
+  39          static void prep_ep0_out_dat(void);
+  40          static void prep_ep0_out_KeyMacro_dat(void);
+  41          static void prep_ep0_out_KeyMode_dat(void);
+  42          static void prep_ep0_out_Color_dat(void);//接收0X0B的数据
+  43          static void prep_General_ep0_in_dat(void);
+  44          static void prep_KeyMacro_ep0_in_dat(void);
+  45          static void prep_LedMode_ep0_in_dat(void);
+  46          static void prep_Color_ep0_in_dat(void);
+  47          extern void usb_init(void);
+  48          extern void ISPJMP(void);
+  49          /******************************************************************************************
+  50          Code emu (皌竚ㄧ计)
+  51          ******************************************************************************************/
+  52          code void (*request_func_table[]) (void) =
+  53          {
+  54                  stall_ep0,                                           //0
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 2   
+
+  55                  clear_remote_wakeup,            //1
+  56                  clear_endpoint_halt,            //2
+  57                  set_remote_wakeup,                      //3
+  58                  set_endpoint_halt,                      //4
+  59                  set_address,                                //5
+  60                  set_configuration,                      //6
+  61                  set_interface,                                  //7
+  62                  set_descriptor,                                 //8
+  63                  get_device_status,                      //9
+  64                  get_interface_status,           //10
+  65                  get_endpoint_status,            //11
+  66                  get_descriptor,                                 //12
+  67                  get_configuration,                      //13
+  68                  get_interface,                                  //14
+  69                  get_report,                                                     //15
+  70                  set_report,                                                     //16
+  71                  USB_HID_SETIDLE,                                //17
+  72                  USB_HID_GET_IDLE,                               //18
+  73                  USB_HID_SETPROTOCOL,            //19
+  74                  USB_HID_GETPROTOCOL                     //20
+  75          };
+  76          /******************************************************************************************
+  77          setup_request_index
+  78          ******************************************************************************************/
+  79          enum setup_request_index
+  80          {
+  81                  stall_ep0_index,                                        //0
+  82                  ClearRemoteWakeup_index,        //1
+  83                  ClearEndpointHalt_index,        //2
+  84                  SetRemoteWakeup_index,          //3
+  85                  SetEndpointStall_index,         //4
+  86                  SetAddress_index,                                       //5
+  87                  SetConfiguration_index,         //6
+  88                  SetInterface_index,                             //7
+  89                  SetDescriptor_index,                    //8
+  90                  GetDeviceStatus_index,          //9
+  91                  GetInterfaceStatus_index,       //10
+  92                  GetEndpointStatus_index,        //11
+  93                  GetDescriptor_index,                    //12
+  94                  GetConfiguration_index,         //13
+  95                  GetInterface_index,                             //14
+  96                  GetReport_index,                                        //15
+  97                  SetReport_index,                                        //16
+  98                  USB_HID_SETIDLE_index,          //17
+  99                  USB_HID_GET_IDLE_index,         //18
+ 100                  USB_HID_SET_PROTOCOL_index,     //19
+ 101                  USB_HID_GET_PROTOCOL_index      //20
+ 102          };
+ 103          enum setup_request_index function_index;
+ 104          /******************************************************************************************
+ 105          SETUP data
+ 106          ******************************************************************************************/
+ 107          const U8 code setup_req_table[] =
+ 108          {
+ 109                  HOST_TO_DEVICE | STANDARD | DEVICE,     USB_CLEAR_FEATURE,
+ 110                  ClearRemoteWakeup_index,                // clear device feature 0x00, 0x01
+ 111          
+ 112                  HOST_TO_DEVICE | STANDARD | ENDPOINT,   USB_CLEAR_FEATURE,
+ 113                  ClearEndpointHalt_index,                // clear feature: clear endpoint halt //0x02, 0x01
+ 114          
+ 115                  HOST_TO_DEVICE | STANDARD | DEVICE,     USB_SET_FEATURE,
+ 116                  SetRemoteWakeup_index,                  // set device feature 0x00, 0x03
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 3   
+
+ 117          
+ 118                  HOST_TO_DEVICE | STANDARD | ENDPOINT,   USB_SET_FEATURE,
+ 119                  SetEndpointStall_index,                 // set feature: set endpoint stall //0x02 0x03
+ 120          
+ 121                  HOST_TO_DEVICE | STANDARD | DEVICE,     USB_SET_ADDRESS,
+ 122                  SetAddress_index,                               // set address 0x00, 0x05
+ 123          
+ 124                  HOST_TO_DEVICE | STANDARD | DEVICE,     USB_SET_CONFIGURATION,
+ 125                  SetConfiguration_index,                 // set configuration 0x00, 0x09
+ 126          
+ 127                  HOST_TO_DEVICE | STANDARD | INTERFACE,  USB_SET_INTERFACE,
+ 128                  SetInterface_index,                             // set interface 0x01, 0x0B
+ 129          
+ 130                  HOST_TO_DEVICE | STANDARD | DEVICE,     USB_SET_DESCRIPTOR,
+ 131                  SetDescriptor_index,                    // set descriptor 0x00, 0x07
+ 132          
+ 133                  DEVICE_TO_HOST | STANDARD | DEVICE,     USB_GET_STATUS,
+ 134                  GetDeviceStatus_index,                  // get device status :0x80 0x00
+ 135          
+ 136                  DEVICE_TO_HOST | STANDARD | DEVICE,     USB_GET_DESCRIPTOR,
+ 137                  GetDescriptor_index,                    // get descriptor //0x80 0x06
+ 138          
+ 139                  DEVICE_TO_HOST | STANDARD | INTERFACE,  USB_GET_DESCRIPTOR,
+ 140                  GetDescriptor_index,                    // get descriptor //0x81 0x06
+ 141          
+ 142                  DEVICE_TO_HOST | STANDARD | DEVICE,     USB_GET_CONFIGURATION,
+ 143                  GetConfiguration_index,                 // get configuration //0x80 0x08
+ 144          
+ 145                  DEVICE_TO_HOST | STANDARD | INTERFACE,  USB_GET_STATUS,
+ 146                  GetInterfaceStatus_index,               // get interface status //0x81 0x00
+ 147          
+ 148                  DEVICE_TO_HOST | STANDARD | ENDPOINT,   USB_GET_STATUS,
+ 149                  GetEndpointStatus_index,                // get endpoint status //0x82 0x00
+ 150          
+ 151                  DEVICE_TO_HOST | STANDARD | INTERFACE,  USB_GET_INTERFACE,
+ 152                  GetInterface_index,                             // get endpoint status //0x81 0x0A
+ 153          
+ 154                  DEVICE_TO_HOST | CLASS | INTERFACE,     HID_GET_REPORT,
+ 155                  GetReport_index,                                // get report: 0xA1, 0x01
+ 156          
+ 157                  HOST_TO_DEVICE | CLASS | INTERFACE,     HID_SET_REPORT,
+ 158                  SetReport_index,                                // set report: 0x21, 0x09
+ 159          
+ 160                  HOST_TO_DEVICE | CLASS | INTERFACE,             HID_SET_IDLE,
+ 161                  USB_HID_SETIDLE_index,                  //set idle: 0x21, 0x0A
+ 162          
+ 163                  DEVICE_TO_HOST | CLASS | INTERFACE,             HID_GET_IDLE,
+ 164                  USB_HID_GET_IDLE_index,                 //get idle: 0xA1, 0x02
+ 165          
+ 166                  HOST_TO_DEVICE | CLASS | INTERFACE,             HID_SET_PROTOCOL,
+ 167                  USB_HID_SET_PROTOCOL_index,             //set protocol: 0x21, 0x0b
+ 168          
+ 169          
+ 170                  DEVICE_TO_HOST | CLASS | INTERFACE,             HID_GET_PROTOCOL,
+ 171                  USB_HID_GET_PROTOCOL_index,             //get protocol: 0xA1, 0x03
+ 172          };
+ 173          //////////////////////////////////////////////////////////////////////////////////////////////////////////
+             -/////////////////////
+ 174          //////////////////////////////////////////////////////////////////////////////////////////////////////////
+             -/////////////////////
+ 175          /* USB_COMPUTER_PROCESS*/
+ 176          //////////////////////////////////////////////////////////////////////////////////////////////////////////
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 4   
+
+             -/////////////////////
+ 177          //////////////////////////////////////////////////////////////////////////////////////////////////////////
+             -/////////////////////
+ 178          void USB_QueryINT_Prog(void)
+ 179          {
+ 180   1              usb_irq_reg1 = USBIF1;
+ 181   1              if(usb_irq_reg1 != 0x00)                                                //check USBIF1 flag
+ 182   1              {
+ 183   2                      if(usb_irq_reg1 & BIT3)                                 // SOF 
+ 184   2                      {
+ 185   3                              USBIF1 &= ~BIT3;        //clear SOF flag        
+ 186   3                              USBSOF_BT_1ms();                
+ 187   3                              USB_Mode_Times=0;                       
+ 188   3                              mode_change_flag=1;     
+ 189   3                              No_Key_Times2=0;                        
+ 190   3                      }
+ 191   2                      else
+ 192   2                      {
+ 193   3                              USBIF1 &= ~(BIT4|BIT3);                                 // Clear SETUPIF & SOF first
+ 194   3                              USBIF1 &= ~(BIT6|BIT5);                                 //SETUP OVERIF &  OW
+ 195   3      
+ 196   3                              if(usb_irq_reg1 & BIT7)                                 //USB POWER ON INT
+ 197   3                              {
+ 198   4                                      USBIF1 &= ~BIT7;
+ 199   4                                      USB_INIT();
+ 200   4                                      //Suspend_Counter=0x00;
+ 201   4                              }
+ 202   3                              else if(usb_irq_reg1 & BIT4)                    //SETUP INT
+ 203   3                              {
+ 204   4                                      SETUP_IRQ_Prog();
+ 205   4                              }
+ 206   3                              else if(usb_irq_reg1 & BIT2)                    //RESUME INT
+ 207   3                              {
+ 208   4                                      USBIF1 &= ~BIT2;                        
+ 209   4                              }
+ 210   3                              else if(usb_irq_reg1 & BIT1)                    //SUSPEND INT
+ 211   3                              {
+ 212   4                                      USBIF1 &= ~BIT1;        
+ 213   4                                      SUSPEND_IRQ_Prog();
+ 214   4                              }
+ 215   3                              else if(usb_irq_reg1 & BIT0)                    //BUS RESET
+ 216   3                              {
+ 217   4                                      USBIF1 &= ~BIT0;        
+ 218   4                              /*      if(usb_config_ok)                               
+ 219   4                                              usb_reset_error_falg = 1;*/
+ 220   4                              //      esd_flag = 1;
+ 221   4                                      usb_config_ok = 0;
+ 222   4                                      USBCON |= 0x20;                                                         //softreset
+ 223   4                                      _nop_();_nop_();_nop_();
+ 224   4                                      _nop_();_nop_();_nop_();
+ 225   4                                      USBCON &= ~0x20;                                                                //clear softreset
+ 226   4      
+ 227   4                                      usb_init();
+ 228   4                                      OUT0_SET_READY;
+ 229   4                              }
+ 230   3                      }
+ 231   2              }
+ 232   1              else
+ 233   1              {
+ 234   2                      usb_irq_reg2 = USBIF2;
+ 235   2                      if(usb_irq_reg2 != 0x00)                                                //check USBIF1 flag
+ 236   2                      {
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 5   
+
+ 237   3                                      
+ 238   3                              if(usb_irq_reg2 & BIT6)                                         // EP2 OUT Event INT
+ 239   3                              {
+ 240   4                                      USBIF2 &= ~BIT6;
+ 241   4                                      OUT2_SET_READY
+ 242   4                                      
+ 243   4                              }
+ 244   3                              else if(usb_irq_reg2 & BIT5)                            // EP1 OUT Event INT
+ 245   3                              {
+ 246   4                                      USBIF2 &= ~BIT5;
+ 247   4                              ////////////////////////////
+ 248   4                              //      OUT1_IRQ_Prog();
+ 249   4                              //      OUT1_SET_READY
+ 250   4                              /////////////////////////
+ 251   4                              }       
+ 252   3                               
+ 253   3                                      
+ 254   3                              else if(usb_irq_reg2 & BIT4)                            // EP0 OUT Event INT
+ 255   3                              {
+ 256   4                                      USBIF2 &= ~BIT4;
+ 257   4                                      OUT0_IRQ_Prog();
+ 258   4                                      OUT0_SET_READY
+ 259   4                              }
+ 260   3                              else if(usb_irq_reg2 & BIT2)                                    // EP2 IN Event INT
+ 261   3                              {
+ 262   4                                      USBIF2 &= ~BIT2;
+ 263   4                                      //IN2_IRQ_Prog();
+ 264   4                              }  
+ 265   3                              else if(usb_irq_reg2 & BIT1)                                    // EP1 IN Event INT
+ 266   3                              {
+ 267   4                                      USBIF2 &= ~BIT1;
+ 268   4                              }
+ 269   3                              else if(usb_irq_reg2 & BIT0)                                    // EP0 IN Event INT
+ 270   3                              {
+ 271   4                                      USBIF2 &= ~BIT0;
+ 272   4                                      IN0_IRQ_Prog();
+ 273   4                              }
+ 274   3                      }
+ 275   2              }
+ 276   1      }
+ 277          /******************************************************************************
+ 278          USB emu task Prog
+ 279          ******************************************************************************/
+ 280          /************************SETUP INT*******************************************/
+ 281          void SETUP_IRQ_Prog(void)
+ 282          {
+ 283   1              U8 code *table_ptr = setup_req_table;
+ 284   1              EA = 0;
+ 285   1              get_out_usb_buffer();
+ 286   1              EA = 1;
+ 287   1              function_index = stall_ep0_index;       //default stall_ep0
+ 288   1              do
+ 289   1              { // 琩тUSB㏑摸
+ 290   2                      if((table_ptr[0] == usb_rx_data[0]) && (table_ptr[1] == usb_rx_data[1]))
+ 291   2                      {
+ 292   3                              function_index = table_ptr[2];
+ 293   3                              break;
+ 294   3                      }
+ 295   2                      table_ptr += 3;
+ 296   2              }while(table_ptr < (setup_req_table + sizeof(setup_req_table)));
+ 297   1      
+ 298   1              (*request_func_table[function_index]) ();
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 6   
+
+ 299   1      }
+ 300          /************************function_index = 0 (stall_ep0)/*stop out*//**************************************
+             -*****/
+ 301          static void stall_ep0(void)
+ 302          {
+ 303   1              IN0_SET_STALL;
+ 304   1              OUT0_SET_STALL;
+ 305   1      }
+ 306          /************************function_index = 1 (clear_remote_wakeup)/*睲埃环祘酬眶*//************************
+             -*******************/
+ 307          static void clear_remote_wakeup(void)
+ 308          {
+ 309   1              ep0_phase = NEW_SETUP_PHASE;
+ 310   1      
+ 311   1              if((usb_rx_data[0]&0x1f)==DEVICE_TYPE)
+ 312   1              {
+ 313   2                      device_remote_wakeup_f = 0;
+ 314   2              }
+ 315   1              IN0_SetReady();
+ 316   1      }
+ 317          /************************function_index = 2 (clear_endpoint_halt)/*睲埃EP0,EP1,EP2窽ゎ块夹癘*//*********
+             -************/
+ 318          static void clear_endpoint_halt(void)
+ 319          {
+ 320   1              ep0_phase = NEW_SETUP_PHASE;
+ 321   1      
+ 322   1              if((usb_rx_data[0]&0x1f)==ENDPOINT_TYPE)
+ 323   1              {
+ 324   2                      if(usb_rx_data[4]==0)
+ 325   2                      {
+ 326   3                              IN0_CANCEL_STALL;
+ 327   3                              OUT0_CANCEL_STALL;
+ 328   3                      }
+ 329   2                      else if(usb_rx_data[4] == 0x81)
+ 330   2                      {
+ 331   3                              IN1_CANCEL_STALL;
+ 332   3                      }
+ 333   2                      else if(usb_rx_data[4] == 0x82)
+ 334   2                      {
+ 335   3                              IN2_CANCEL_STALL;
+ 336   3                      }
+ 337   2                      else
+ 338   2                      {
+ 339   3                              stall_ep0();
+ 340   3                              return;
+ 341   3                      }
+ 342   2              }
+ 343   1              IN0_SetReady();
+ 344   1      }
+ 345          /************************function_index = 3 (set_remote_wakeup)/*砞竚环祘酬眶*//**************************
+             -*****************/
+ 346           static void set_remote_wakeup(void)
+ 347          {
+ 348   1              ep0_phase = NEW_SETUP_PHASE;
+ 349   1      
+ 350   1              if((usb_rx_data[0]&0x1f)==DEVICE_TYPE)
+ 351   1              {
+ 352   2                      device_remote_wakeup_f = 1;
+ 353   2              }
+ 354   1              IN0_SetReady();
+ 355   1      }
+ 356          /************************function_index = 4 (set_endpoint_halt)/*砞竚EP1┪EP2氨ゎ块*//******************
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 7   
+
+             -**************/
+ 357          static void set_endpoint_halt(void)
+ 358          {
+ 359   1              ep0_phase = NEW_SETUP_PHASE;
+ 360   1      
+ 361   1              if((usb_rx_data[0]&0x1f)==ENDPOINT_TYPE)
+ 362   1              {
+ 363   2                      if(usb_rx_data[4]==0x81)
+ 364   2                      {
+ 365   3                              IN1_SET_STALL;
+ 366   3                      }
+ 367   2                      else if(usb_rx_data[4]==0x82)
+ 368   2                      {
+ 369   3                              IN2_SET_STALL;
+ 370   3                      }
+ 371   2                      else
+ 372   2                      {
+ 373   3                              stall_ep0();
+ 374   3                      }
+ 375   2              }
+ 376   1              else
+ 377   1              {
+ 378   2                      stall_ep0();
+ 379   2                      return;
+ 380   2              }
+ 381   1                              IN0_SetReady();
+ 382   1      } 
+ 383          /************************function_index = 5 (set_address)/*砞竚USB*//*****************************
+             -***/
+ 384          static void set_address(void)
+ 385          {
+ 386   1              ep0_phase = NEW_SETUP_PHASE;
+ 387   1              IEP0CNT &= ~0x0f;
+ 388   1              OUT0_SET_STALL;
+ 389   1              IN0_SET_READY;
+ 390   1      }
+ 391          /************************function_index = 6 (set_configuration)/*砞竚皌竚*//**************************
+             -******/
+ 392          static void set_configuration(void)
+ 393          {
+ 394   1              ep0_phase = NEW_SETUP_PHASE;
+ 395   1      
+ 396   1              if(USBADDR)
+ 397   1              {
+ 398   2                      if( (usb_rx_data[2]==0) || (usb_rx_data[2]==1) )
+ 399   2                      {
+ 400   3                              configution_value = usb_rx_data[2];
+ 401   3                              //usb_config_flag = 1;
+ 402   3                              usb_config_ok = 1;
+ 403   3                              IEP0CNT &= ~0x0f;
+ 404   3                              IN0_SET_READY;
+ 405   3                      }
+ 406   2                      else
+ 407   2                      {
+ 408   3                              stall_ep0();
+ 409   3                      }
+ 410   2              }
+ 411   1              else
+ 412   1              {
+ 413   2                      stall_ep0();
+ 414   2              }
+ 415   1              IN0_SetReady();
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 8   
+
+ 416   1                      IEN0 |= 0x01;
+ 417   1      //      IEN1 |= 0x02; //enable pwm0 int
+ 418   1      }
+ 419          /************************function_index = 7 (set_interface)/*砞竚钡*//******************************
+             -**/
+ 420          /*,interface0琌mouse,interface1Τ夹龄絃,碈砰龄絃,ISP单贺*/
+ 421          static void set_interface(void)
+ 422          {
+ 423   1              ep0_phase = NEW_SETUP_PHASE;
+ 424   1              {
+ 425   2                      if((usb_rx_data[2]==0)&&(usb_rx_data[4]==0))
+ 426   2                      {
+ 427   3                              IEP0CNT &= ~0x0f;
+ 428   3                              IN0_SET_READY;
+ 429   3                              OUT0_SET_STALL;
+ 430   3                      }
+ 431   2                      else if((usb_rx_data[2]==0)&&(usb_rx_data[4]==1))
+ 432   2                      {
+ 433   3                              IEP0CNT &= ~0x0f;
+ 434   3                              IN0_SET_READY;
+ 435   3                              OUT0_SET_STALL;
+ 436   3                      }
+ 437   2                      else
+ 438   2                      {
+ 439   3                              stall_ep0();
+ 440   3                      }
+ 441   2              }
+ 442   1      }
+ 443           /************************function_index = 8 (set_descriptor)//*砞竚磞瓃才,ぃや*///*********************
+             -***********/
+ 444           static void set_descriptor(void)
+ 445          {
+ 446   1              stall_ep0();
+ 447   1      }
+ 448          /************************function_index = 9 (get_device_status)//*莉砞称篈*///************************
+             -********/
+ 449           static void get_device_status(void)
+ 450          {
+ 451   1              ep0_phase = OUT0_STATUS_PHASE;
+ 452   1              if((usb_rx_data[0]&0x1f)==DEVICE_TYPE)
+ 453   1              {
+ 454   2                      IEP0CNT &= ~0x0f;
+ 455   2                      IEP0CNT |= 2;
+ 456   2                      buffer_addr = IN0_BUFFER_ADDRESS;
+ 457   2                      if(device_remote_wakeup_f)
+ 458   2                              *buffer_addr++ = 0x02;
+ 459   2                      else
+ 460   2                              *buffer_addr++ = 0x00;
+ 461   2                      *buffer_addr = 0;
+ 462   2                      IN0_SET_READY;
+ 463   2              }
+ 464   1              else
+ 465   1              {
+ 466   2                      stall_ep0();
+ 467   2              }
+ 468   1      }
+ 469          /************************function_index = 10 (get_interface_status)//*莉钡篈*///********************
+             -************/
+ 470          static void get_interface_status(void)
+ 471          {
+ 472   1              if((usb_rx_data[0]&0x1f)==INTERFACE_TYPE)
+ 473   1              {
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 9   
+
+ 474   2                      if( (usb_rx_data[4]==0) || (usb_rx_data[4]==1) )                //interface0┪interface1
+ 475   2                      {
+ 476   3                              IEP0CNT &= ~0x0f;
+ 477   3                              IEP0CNT |= 2;
+ 478   3      
+ 479   3                              buffer_addr = IN0_BUFFER_ADDRESS;
+ 480   3                              *buffer_addr++ = 0;
+ 481   3                              *buffer_addr = 0;
+ 482   3                              IN0_SET_READY;
+ 483   3                      }
+ 484   2                      else
+ 485   2                      {
+ 486   3                              stall_ep0();
+ 487   3                      }
+ 488   2              }
+ 489   1              else
+ 490   1              {
+ 491   2                      stall_ep0();
+ 492   2              }
+ 493   1      } 
+ 494          /************************function_index = 11 (get_endpoint_status)//*莉狠翴篈*///*********************
+             -***********/
+ 495          static void get_endpoint_status(void)
+ 496          {
+ 497   1              if((usb_rx_data[0]&0x1f)==ENDPOINT_TYPE)
+ 498   1              {
+ 499   2                      IEP0CNT &= ~0x0f;
+ 500   2                      IEP0CNT |= 2;
+ 501   2                      if(usb_rx_data[4]==0x80)
+ 502   2                      {
+ 503   3                              buffer_addr = IN0_BUFFER_ADDRESS;
+ 504   3                              *buffer_addr++ = ((EP0CON&0x02))>>1;    
+ 505   3                              *buffer_addr = 0;
+ 506   3                      }
+ 507   2                      else if(usb_rx_data[4]==0x81)
+ 508   2                      {
+ 509   3                              buffer_addr = IN0_BUFFER_ADDRESS;
+ 510   3                      //      *buffer_addr++ = ((EP1CON&0x02))>>1;
+ 511   3                              *buffer_addr++ = ((EP1CON&0x08))>>3;
+ 512   3                              *buffer_addr = 0;
+ 513   3                      }
+ 514   2                      else if(usb_rx_data[4]==0x82)
+ 515   2                      {
+ 516   3                              buffer_addr = IN0_BUFFER_ADDRESS;
+ 517   3                      //      *buffer_addr++ = ((EP2CON&0x02))>>1;
+ 518   3                              *buffer_addr++ = ((EP2CON&0x08))>>3;
+ 519   3                              *buffer_addr = 0;
+ 520   3                      }
+ 521   2                      else
+ 522   2                      {
+ 523   3                              stall_ep0();
+ 524   3                              return;
+ 525   3                      }
+ 526   2                      IN0_SET_READY;
+ 527   2              }
+ 528   1              else
+ 529   1              {
+ 530   2                      stall_ep0();
+ 531   2              }
+ 532   1      }
+ 533          /************************function_index = 12 (get_descriptor)//*莉磞瓃才*///****************************
+             -****/
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 10  
+
+ 534          static void get_descriptor(void)
+ 535          {
+ 536   1              if(usb_rx_data[3]==GET_DEVICE_DESCRIPTOR)                       //莉砞称磞瓃才
+ 537   1              {
+ 538   2                      code_pt = &device_descriptor;
+ 539   2                      in0_dat_cnt = sizeof(device_descriptor);
+ 540   2                      usb_length = (usb_rx_data[7]<<8) | usb_rx_data[6];
+ 541   2                      in0_dat_cnt = (usb_length<in0_dat_cnt)?usb_length:in0_dat_cnt;
+ 542   2              }
+ 543   1              else if(usb_rx_data[3]==GET_CONFIG_DESCRIPTOR)          //莉皌竚磞瓃才
+ 544   1              {
+ 545   2                      code_pt = &config_descriptor;
+ 546   2                      in0_dat_cnt = sizeof(config_descriptor);
+ 547   2                      usb_length = (usb_rx_data[7]<<8) | usb_rx_data[6];
+ 548   2                      in0_dat_cnt = (usb_length<in0_dat_cnt)?usb_length:in0_dat_cnt;
+ 549   2              }
+ 550   1              else if(usb_rx_data[3]==GET_STRING_DESCRIPTOR)          //莉才﹃磞瓃才
+ 551   1              {
+ 552   2                      if(usb_rx_data[2]==STRING_LANGUAGE_ID)                          //粂ē
+ 553   2                      {
+ 554   3                              code_pt = &str_dp_langID;
+ 555   3                              in0_dat_cnt = sizeof(str_dp_langID);
+ 556   3                              usb_length = (usb_rx_data[7]<<8) | usb_rx_data[6];
+ 557   3                              in0_dat_cnt = (usb_length<in0_dat_cnt)?usb_length:in0_dat_cnt;
+ 558   3                      }
+ 559   2                      else if(usb_rx_data[2]==STRING_MANUFACTURER)            //紅坝
+ 560   2                      {
+ 561   3                              code_pt = &str_dp_manufact;
+ 562   3                              in0_dat_cnt = sizeof(str_dp_manufact);
+ 563   3                              usb_length = (usb_rx_data[7]<<8) | usb_rx_data[6];
+ 564   3                              in0_dat_cnt = (usb_length<in0_dat_cnt)?usb_length:in0_dat_cnt;
+ 565   3                      }
+ 566   2                      else if(usb_rx_data[2]==STRING_PRODUCT)                         //玻珇
+ 567   2                      {
+ 568   3                              code_pt = &str_dp_product;
+ 569   3                              in0_dat_cnt = sizeof(str_dp_product);
+ 570   3                              usb_length = (usb_rx_data[7]<<8) | usb_rx_data[6];
+ 571   3                              in0_dat_cnt = (usb_length<in0_dat_cnt)?usb_length:in0_dat_cnt;
+ 572   3                      }
+ 573   2                      else if(usb_rx_data[2]==STRING_SERIAL_NUMBER)           //セ腹
+ 574   2                      {
+ 575   3                              code_pt = &str_dp_sn;
+ 576   3                              in0_dat_cnt = sizeof(str_dp_sn);
+ 577   3                              usb_length = (usb_rx_data[7]<<8) | usb_rx_data[6];
+ 578   3                              in0_dat_cnt = (usb_length<in0_dat_cnt)?usb_length:in0_dat_cnt;
+ 579   3                      }
+ 580   2                      else if(usb_rx_data[2]==STRING_SINO)                            //い縪砞称疭ㄒ
+ 581   2                      {
+ 582   3                              code_pt = &str_dp_sino;
+ 583   3                              in0_dat_cnt = sizeof(str_dp_sino);
+ 584   3                              usb_length = (usb_rx_data[7]<<8) | usb_rx_data[6];
+ 585   3                              in0_dat_cnt = (usb_length<in0_dat_cnt)?usb_length:in0_dat_cnt;
+ 586   3                      }
+ 587   2                      else
+ 588   2                      {
+ 589   3                              stall_ep0();
+ 590   3                              return;
+ 591   3                      }
+ 592   2              }
+ 593   1              else if(usb_rx_data[3]==USB_REPORT)                                     //莉USB厨磞瓃才
+ 594   1              {
+ 595   2                      if(usb_rx_data[4] == 0)                                                         //莉狠翴1厨磞瓃才
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 11  
+
+ 596   2                      {
+ 597   3                              code_pt = &HID_report_desc1;
+ 598   3                              in0_dat_cnt = sizeof(HID_report_desc1);
+ 599   3                              usb_length = (usb_rx_data[7]<<8) | usb_rx_data[6];
+ 600   3                              in0_dat_cnt = (usb_length<in0_dat_cnt)?usb_length:in0_dat_cnt;
+ 601   3                      }
+ 602   2                      else if(usb_rx_data[4] == 1)                                    //莉狠翴2厨磞瓃才
+ 603   2                      {
+ 604   3                              code_pt = &HID_report_desc2;
+ 605   3                              in0_dat_cnt = sizeof(HID_report_desc2);
+ 606   3                              usb_length = (usb_rx_data[7]<<8) | usb_rx_data[6];
+ 607   3                              in0_dat_cnt = (usb_length<in0_dat_cnt)?usb_length:in0_dat_cnt;
+ 608   3                      }
+ 609   2                      else
+ 610   2                      {
+ 611   3                              stall_ep0();
+ 612   3                              return;
+ 613   3                      }
+ 614   2              }
+ 615   1              else if(usb_rx_data[3]==USB_HID)                                        //莉HID磞瓃才
+ 616   1              {                                                                                               
+ 617   2                      if(usb_rx_data[4] == 0)                                                         //莉HID1磞瓃才
+ 618   2                      {
+ 619   3                              code_pt = &hid_descriptor1;
+ 620   3                              in0_dat_cnt = sizeof(hid_descriptor1);
+ 621   3                              usb_length = (usb_rx_data[7]<<8) | usb_rx_data[6];
+ 622   3                              in0_dat_cnt = (usb_length<in0_dat_cnt)?usb_length:in0_dat_cnt;
+ 623   3                      }
+ 624   2                      else if(usb_rx_data[4] == 1)                                    //莉HID2磞瓃才
+ 625   2                      {
+ 626   3                              code_pt = &hid_descriptor2;
+ 627   3                              in0_dat_cnt = sizeof(hid_descriptor2);
+ 628   3                              usb_length = (usb_rx_data[7]<<8) | usb_rx_data[6];
+ 629   3                              in0_dat_cnt = (usb_length<in0_dat_cnt)?usb_length:in0_dat_cnt;
+ 630   3                      }
+ 631   2                      else
+ 632   2                      {
+ 633   3                              stall_ep0();
+ 634   3                              return;
+ 635   3                      }
+ 636   2              }
+ 637   1              else
+ 638   1              {
+ 639   2                      stall_ep0();
+ 640   2                      return;
+ 641   2              }
+ 642   1              prep_ep0_in_dat();
+ 643   1              USBIF2&=~BIT0;
+ 644   1              IN0_SET_READY;
+ 645   1      }
+ 646          /************************function_index = 13 (get_configuration)//*莉皌竚计沮*///***********************
+             -*********/
+ 647          static void get_configuration(void)
+ 648          {
+ 649   1              ep0_phase = OUT0_STATUS_PHASE;
+ 650   1              IEP0CNT &= ~0x0f;
+ 651   1              IEP0CNT = 1;
+ 652   1              buffer_addr = IN0_BUFFER_ADDRESS;
+ 653   1              *buffer_addr = configution_value;
+ 654   1              IN0_SET_READY;
+ 655   1      }
+ 656          /************************function_index = 14 (get_interface)//*莉钡计沮*///***************************
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 12  
+
+             -*****/
+ 657            static void get_interface(void)
+ 658          {
+ 659   1              ep0_phase = OUT0_STATUS_PHASE;
+ 660   1              IEP0CNT &= ~0x0f;
+ 661   1              IEP0CNT = 1;
+ 662   1              buffer_addr = IN0_BUFFER_ADDRESS;
+ 663   1              *buffer_addr = 0;
+ 664   1              IN0_SET_READY;
+ 665   1      }
+ 666          /************************function_index = 15 (get_report)//*莉HID砞称厨*///***************************
+             -*****/
+ 667          /*获取HID设备报告 往PC发送**/
+ 668          static void get_report(void)
+ 669          {
+ 670   1              if( (rx0_buffer.Bdata[5]==0x00) && (rx0_buffer.Bdata[4]==interface0_PHASE) && (rx0_buffer.Bdata[2]==0x00)
+             -                \
+ 671   1               && (rx0_buffer.Bdata[3]==REPORT_TYPE_OUTPUT) && (usb_rx_data[6]==0x00) )       //get LED status
+ 672   1              {
+ 673   2                      IEP0CNT &= ~0x0f;
+ 674   2                      IEP0CNT |= usb_rx_data[6];
+ 675   2                      buffer_addr = IN0_BUFFER_ADDRESS;
+ 676   2                      *buffer_addr = LED_status;
+ 677   2                      IN0_SET_READY;
+ 678   2              }
+ 679   1              /*
+ 680   1              else if((usb_rx_data[2]==General_RID)&&(usb_rx_data[3]==REPORT_TYPE_FEATURE)&&(usb_rx_data[4]==interface1
+             -_PHASE)        \
+ 681   1                      &&(usb_rx_data[6]==0xf9)&&(usb_rx_data[7]==0x01))
+ 682   1              {
+ 683   1                      
+ 684   1                      in0_dat_cnt = 505;//0x240
+ 685   1                      prep_General_ep0_in_dat();
+ 686   1                      IN0_SET_READY;
+ 687   1              }
+ 688   1              */
+ 689   1              else if((usb_rx_data[2]==LedMode_RID)&&(usb_rx_data[3]==REPORT_TYPE_FEATURE)    \
+ 690   1                      &&(usb_rx_data[4]==interface1_PHASE)&&(usb_rx_data[6]==65)&&(usb_rx_data[7]==0))
+ 691   1              {
+ 692   2                      in0_dat_cnt = 65;//0x31
+ 693   2                      prep_LedMode_ep0_in_dat();
+ 694   2                      IN0_SET_READY;                  
+ 695   2              }
+ 696   1              
+ 697   1              else
+ 698   1              {
+ 699   2                      stall_ep0();
+ 700   2              }
+ 701   1      }
+ 702          /************************function_index = 16 (set_report)//*砞竚HID砞称厨*///***************************
+             -*****/
+ 703          /*设置HID设备报告       PC发数据下来    */
+ 704          static void set_report(void)
+ 705          {
+ 706   1              if( (usb_rx_data[2]==0x00) && (usb_rx_data[3]==REPORT_TYPE_OUTPUT) && (usb_rx_data[4]==interface0_PHASE)        
+             -        \
+ 707   1               && (usb_rx_data[5]==0x00) && (usb_rx_data[6]==0x01) && (usb_rx_data[7]==0x00) )
+ 708   1              {
+ 709   2                      ep0_phase = OUT0_LED_PHASE;
+ 710   2                      OUT0_SET_READY;
+ 711   2              }
+ 712   1              else if( (usb_rx_data[2]==0x00) && (usb_rx_data[3]==REPORT_TYPE_OUTPUT) && (usb_rx_data[4]==interface1_PH
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 13  
+
+             -ASE)                \
+ 713   1               && (usb_rx_data[5]==0x00) && (usb_rx_data[6]==0x01) && (usb_rx_data[7]==0x00) )
+ 714   1              {
+ 715   2                      ep0_phase = OUT0_Rev_PHASE;
+ 716   2                      OUT0_SET_READY;
+ 717   2              }
+ 718   1              else if((usb_rx_data[2]==ISP_RID)&&(usb_rx_data[3]==REPORT_TYPE_FEATURE)&&(usb_rx_data[4]==interface1_PHA
+             -SE))
+ 719   1              {
+ 720   2                      ep0_phase = OUT0_ISP_PHASE;
+ 721   2                      OUT0_SET_READY;
+ 722   2              }
+ 723   1              ////////////////////////////////////////
+ 724   1              
+ 725   1              else if((usb_rx_data[2]==LedMode_RID)&&(usb_rx_data[3]==REPORT_TYPE_FEATURE)&&(usb_rx_data[4]==interface1
+             -_PHASE)&&(usb_rx_data[6]==65)&&(usb_rx_data[7]==0))
+ 726   1              {
+ 727   2                      out0_dat_cnt = 65;//0x1F8+1
+ 728   2                      ep0_phase = OUT0_KeyMode_PHASE;
+ 729   2                      OEP0CNT &= ~0x0f;       
+ 730   2                      OUT0_SET_READY;         
+ 731   2              }
+ 732   1              /////////////////////////////////////////////////////////////////////////////////////////////////////////
+             -////////////
+ 733   1              else
+ 734   1              {
+ 735   2                      stall_ep0();
+ 736   2              }
+ 737   1      }
+ 738          /************************function_index = 17 (USB_HID_SETIDLE)//*砞竚IDLE*///*****************************
+             -***/
+ 739           static void USB_HID_SETIDLE(void)
+ 740          {
+ 741   1              EP1_IDLE_TIME = EP1_IDLE_COUNT = usb_rx_data[3];
+ 742   1              IEP0CNT &= ~0x0f;
+ 743   1              IN0_SET_READY;
+ 744   1      }
+ 745          /************************function_index = 18 (USB_HID_GET_IDLE)/ /*莉IDLE*///***************************
+             -*****/
+ 746          static void USB_HID_GET_IDLE(void)
+ 747          {
+ 748   1              buffer_addr = IN0_BUFFER_ADDRESS;
+ 749   1              *buffer_addr = EP1_IDLE_TIME;
+ 750   1              IEP0CNT &= ~0x0f;
+ 751   1              IEP0CNT = 0x01;
+ 752   1              IN0_SET_READY;
+ 753   1      }
+ 754          /************************function_index = 19 (USB_HID_SETPROTOCOL)/ /*砞竚某*///************************
+             -********/
+ 755          static void USB_HID_SETPROTOCOL(void)
+ 756          {
+ 757   1              if(usb_rx_data[4]==0x00)        // Interface0
+ 758   1              {
+ 759   2                      Protocol_type0 = usb_rx_data[2];
+ 760   2              }
+ 761   1              else if(usb_rx_data[4]==0x01)   // Interface1
+ 762   1              {
+ 763   2                      Protocol_type1 = usb_rx_data[2];
+ 764   2              }
+ 765   1              IEP0CNT &= ~0x0f;
+ 766   1              IN0_SET_READY;
+ 767   1      }
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 14  
+
+ 768          /************************function_index = 20 (USB_HID_GETPROTOCOL)/ /*莉某*///************************
+             -********/
+ 769          static void USB_HID_GETPROTOCOL(void)
+ 770          {
+ 771   1              buffer_addr = IN0_BUFFER_ADDRESS;
+ 772   1              if(usb_rx_data[4]==0x00)        // Interface0
+ 773   1              {
+ 774   2                      *buffer_addr = Protocol_type0;
+ 775   2              }
+ 776   1              else if(usb_rx_data[4]==0x01)   // Interface1
+ 777   1              {
+ 778   2                      *buffer_addr = Protocol_type1;
+ 779   2              }
+ 780   1              IEP0CNT &= ~0x0f;
+ 781   1              IEP0CNT = 1;
+ 782   1              IN0_SET_READY;
+ 783   1      }
+ 784          //******************************************************************************
+ 785          //*USB珽癬い耞*
+ 786          //******************************************************************************
+ 787          void SUSPEND_IRQ_Prog(void)
+ 788          {
+ 789   1              if(Suspend_Counter > 200)        
+ 790   1              {
+ 791   2                      fg_suspend = 1;
+ 792   2              }
+ 793   1              else
+ 794   1              {
+ 795   2                      if(usb_config_ok)
+ 796   2                              Suspend_Counter++;
+ 797   2              }       
+ 798   1      //              fg_suspend = 1;
+ 799   1      }
+ 800          //******************************************************************************
+ 801          //*狠翴0块い耞*
+ 802          //******************************************************************************
+ 803          void OUT0_IRQ_Prog(void)
+ 804          {
+ 805   1              if(ep0_phase==OUT0_LED_PHASE)                   //scrlk,capslk,numlk LED
+ 806   1              {
+ 807   2                      ep0_phase = 0;
+ 808   2                      buffer_addr = OUT0_BUFFER_ADDRESS;
+ 809   2                      LED_status = buffer_addr[0];
+ 810   2                      IEP0CNT &= ~0x0f;
+ 811   2                      IN0_SET_READY;
+ 812   2              }
+ 813   1              else if(ep0_phase==OUT0_Rev_PHASE)                      //莉scrlk,capslk,numlk LED
+ 814   1              {
+ 815   2                      ep0_phase = 0;
+ 816   2                      IEP0CNT &= ~0x0f;
+ 817   2                      IN0_SET_READY;
+ 818   2              }
+ 819   1              //-------------------------------------------------------------------
+ 820   1              else if(ep0_phase==OUT0_KeyMode_PHASE)//
+ 821   1              {
+ 822   2                      CLRWDT();                       //接收0X0A的数据
+ 823   2                      prep_ep0_out_KeyMode_dat();//接收0X0A的数据
+ 824   2              }       
+ 825   1              //-------------------------------------------------------------------
+ 826   1              else if(ep0_phase==OUT0_ISP_PHASE)
+ 827   1              {
+ 828   2                      ep0_phase = 0;
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 15  
+
+ 829   2                      buffer_addr = OUT0_BUFFER_ADDRESS;
+ 830   2                      if(buffer_addr[0]==0x05)
+ 831   2                      {
+ 832   3                              switch(buffer_addr[1])
+ 833   3                              {
+ 834   4                                      case 0x75:              // go to ISP Program
+ 835   4                                              ISPJMP();
+ 836   4                                              break;    
+ 837   4                                      default:
+ 838   4                                              break;    
+ 839   4                              }                                 
+ 840   3                      }
+ 841   2              }
+ 842   1              else
+ 843   1              {
+ 844   2                      ep0_phase = 0;
+ 845   2                      IEP0CNT &= ~0x0f;
+ 846   2                      IN0_SET_READY;
+ 847   2              }
+ 848   1              //ep0_phase may be OUT0_STATUS_PHASE or IN0_DATA_PHASE
+ 849   1      }
+ 850          //******************************************************************************
+ 851          //*端点0输入中断*给PC发送数据
+ 852          //******************************************************************************
+ 853          void IN0_IRQ_Prog(void)
+ 854          {
+ 855   1              if(ep0_phase == IN0_DATA_PHASE)
+ 856   1              {
+ 857   2                      /*
+ 858   2                      if(fg_General)
+ 859   2                      {
+ 860   2                              //prep_General_ep0_in_dat();//给PC发送数据
+ 861   2                      }
+ 862   2                      else 
+ 863   2                      */      
+ 864   2                      if(fg_LedMode)
+ 865   2                      {       
+ 866   3                              prep_LedMode_ep0_in_dat();      
+ 867   3                      }
+ 868   2                      else
+ 869   2                              prep_ep0_in_dat();
+ 870   2                              
+ 871   2                      IN0_SET_READY;
+ 872   2                      OUT0_SET_READY;                                         //PC in0 may only occur once
+ 873   2              }
+ 874   1              else if(ep0_phase == OUT0_STATUS_PHASE)
+ 875   1              {
+ 876   2                      OUT0_SET_READY;
+ 877   2                      IN0_SET_STALL;
+ 878   2              }
+ 879   1              else                                                            //NEW_SETUP_PHASE
+ 880   1              {
+ 881   2                      IN0_SET_STALL;
+ 882   2                      OUT0_SET_READY;
+ 883   2                      if( (usb_rx_data[0]==(HOST_TO_DEVICE | STANDARD | DEVICE)) &&   \
+ 884   2                              (usb_rx_data[1]==USB_SET_ADDRESS) )             //5:set address
+ 885   2                      {
+ 886   3                              USBADDR = usb_rx_data[2];
+ 887   3                      }
+ 888   2              }
+ 889   1      
+ 890   1      }
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 16  
+
+ 891          //******************************************************************************
+ 892          //* USB task base define
+ 893          //******************************************************************************
+ 894          void get_out_usb_buffer(void)
+ 895          {
+ 896   1              buffer_addr = OUT0_BUFFER_ADDRESS;
+ 897   1              usb_rx_data[0] = buffer_addr[0];
+ 898   1              usb_rx_data[1] = buffer_addr[1];
+ 899   1              usb_rx_data[2] = buffer_addr[2];
+ 900   1              usb_rx_data[3] = buffer_addr[3];
+ 901   1              usb_rx_data[4] = buffer_addr[4];
+ 902   1              usb_rx_data[5] = buffer_addr[5];
+ 903   1              usb_rx_data[6] = buffer_addr[6];
+ 904   1              usb_rx_data[7] = buffer_addr[7];
+ 905   1      }
+ 906          void IN0_SetReady(void)
+ 907          {
+ 908   1              IEP0CNT &= ~0x0f;
+ 909   1              EP0CON |= BIT2;
+ 910   1      }
+ 911          void fill_in0_buf(U8 code *ctr, U8 len)
+ 912          {
+ 913   1              U8 i;
+ 914   1              buffer_addr = IN0_BUFFER_ADDRESS;
+ 915   1      
+ 916   1              for(i=0;i<len;i++)
+ 917   1              {
+ 918   2                      buffer_addr[i] = *ctr;
+ 919   2                      ctr++;
+ 920   2              }
+ 921   1      }
+ 922          static void prep_ep0_in_dat(void)
+ 923          {
+ 924   1              if(in0_dat_cnt == 0)
+ 925   1              {
+ 926   2                      ep0_phase = OUT0_STATUS_PHASE;
+ 927   2                      IEP0CNT &= ~0x0f;
+ 928   2              }
+ 929   1              else if (in0_dat_cnt > EP0_MAX_SIZE )
+ 930   1              {
+ 931   2                      ep0_phase       = IN0_DATA_PHASE;
+ 932   2                      in0_dat_cnt -= EP0_MAX_SIZE;
+ 933   2                      fill_in0_buf(code_pt, EP0_MAX_SIZE);
+ 934   2                      code_pt += 8;
+ 935   2                      IEP0CNT &= ~0x0f;
+ 936   2                      IEP0CNT |= EP0_MAX_SIZE;
+ 937   2              }
+ 938   1              else if (in0_dat_cnt == EP0_MAX_SIZE)
+ 939   1              {
+ 940   2                      ep0_phase = IN0_DATA_PHASE;
+ 941   2                      fill_in0_buf(code_pt, EP0_MAX_SIZE);
+ 942   2                      in0_dat_cnt = 0;
+ 943   2                      IEP0CNT &= ~0x0f;
+ 944   2                      IEP0CNT |= EP0_MAX_SIZE;
+ 945   2              }
+ 946   1              else
+ 947   1              {
+ 948   2                      ep0_phase = OUT0_STATUS_PHASE;
+ 949   2                      fill_in0_buf(code_pt, in0_dat_cnt);
+ 950   2      
+ 951   2                      IEP0CNT &= ~0x0f;
+ 952   2                      IEP0CNT |= in0_dat_cnt;
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 17  
+
+ 953   2              }
+ 954   1      }
+ 955          //*****************接收0X0A的数据*********************
+ 956          void GET_OUT_BUFFER(void)
+ 957          {
+ 958   1              buffer_addr = OUT0_BUFFER_ADDRESS;
+ 959   1              RX_DATA[0] = buffer_addr[0];
+ 960   1              RX_DATA[1] = buffer_addr[1];
+ 961   1              RX_DATA[2] = buffer_addr[2];
+ 962   1              RX_DATA[3] = buffer_addr[3];
+ 963   1              RX_DATA[4] = buffer_addr[4];
+ 964   1              RX_DATA[5] = buffer_addr[5];
+ 965   1              RX_DATA[6] = buffer_addr[6];
+ 966   1              RX_DATA[7] = buffer_addr[7];
+ 967   1      }
+ 968          static void prep_ep0_out_KeyMode_dat(void)//接收0X0A的数据
+ 969          {
+ 970   1              if(out0_dat_cnt == 0)
+ 971   1              {
+ 972   2                      ep0_phase = 0;
+ 973   2                      OEP0CNT &= ~0x0f;
+ 974   2                      IN0_SET_READY;
+ 975   2              }
+ 976   1              else if (out0_dat_cnt > EP0_MAX_SIZE )//EP0_MAX_SIZE=8
+ 977   1              {
+ 978   2                      ep0_phase = OUT0_KeyMode_PHASE;
+ 979   2                      GET_OUT_BUFFER();
+ 980   2                      if(out0_dat_cnt == 65)
+ 981   2                      {
+ 982   3                              Usb_ImageID=0;
+ 983   3                                      RLT2_Index=RX_DATA[2];
+ 984   3                              if(RLT2_Index==1)
+ 985   3                                      RLT_Index=RX_DATA[3];
+ 986   3                              Save_Imaging_Data(RX_DATA[1]);          //07    Usb_ImageID 0   总包数
+ 987   3                              Save_Imaging_Data(RX_DATA[2]);          //              Usb_ImageID 1   当前包数
+ 988   3                              Save_Imaging_Data(RX_DATA[3]);          //              Usb_ImageID 2   Index
+ 989   3                              Save_Imaging_Data(RX_DATA[4]);          //              Usb_ImageID 3   无用
+ 990   3                              Save_Imaging_Data(RX_DATA[5]);          //              Usb_ImageID 4   data 开始
+ 991   3                              Save_Imaging_Data(RX_DATA[6]);  
+ 992   3                              Save_Imaging_Data(RX_DATA[7]);  
+ 993   3                              out0_dat_cnt -= 8;  
+ 994   3                      }
+ 995   2                      else
+ 996   2                      {
+ 997   3                              Save_Imaging_Data(RX_DATA[0]);  
+ 998   3                              Save_Imaging_Data(RX_DATA[1]);  
+ 999   3                              Save_Imaging_Data(RX_DATA[2]);  
+1000   3                              Save_Imaging_Data(RX_DATA[3]);  
+1001   3                              Save_Imaging_Data(RX_DATA[4]);  
+1002   3                              Save_Imaging_Data(RX_DATA[5]);  
+1003   3                              Save_Imaging_Data(RX_DATA[6]);  
+1004   3                              Save_Imaging_Data(RX_DATA[7]);  
+1005   3                              out0_dat_cnt -= 8;  //EP0_MAX_SIZE=8
+1006   3                      }
+1007   2              }
+1008   1              else
+1009   1              {       
+1010   2                      ep0_phase = 0;
+1011   2                      GET_OUT_BUFFER();
+1012   2                      //for(Data_cnt=0;Data_cnt<EP0_MAX_SIZE-out0_dat_cnt;Data_cnt++)
+1013   2                      {
+1014   3                              Save_Imaging_Data(RX_DATA[0]);
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 18  
+
+1015   3                      }
+1016   2                      out0_dat_cnt = 0;  //EP0_MAX_SIZE=
+1017   2      //              cnt=0;
+1018   2                      OEP0CNT &= ~0x0f;
+1019   2                      IN0_SET_READY;
+1020   2                      IPH1 = 0x02;//IPH1_INIT;
+1021   2                      IPL1 =  0x02;
+1022   2              }
+1023   1      
+1024   1      }
+1025          //************************************
+1026          static void prep_LedMode_ep0_in_dat(void)//给PC发送数据
+1027          {
+1028   1              U8 i,i2;
+1029   1              if( in0_dat_cnt==65)
+1030   1              {       
+1031   2                      ep0_phase       = IN0_DATA_PHASE;
+1032   2                      in0_dat_cnt -= EP0_MAX_SIZE;
+1033   2                      buffer_addr =  IN0_BUFFER_ADDRESS;
+1034   2                      buffer_addr[0] = 1;
+1035   2                      buffer_addr[1] = 1;
+1036   2                      buffer_addr[2] = 1;
+1037   2                      buffer_addr[3] = 1;
+1038   2                      buffer_addr[4] = 1;
+1039   2                      buffer_addr[5] = 0;
+1040   2                      buffer_addr[6] = 0;
+1041   2                      buffer_addr[7] = 0;
+1042   2                      IEP0CNT &= ~0x0f;
+1043   2                      IEP0CNT |= EP0_MAX_SIZE;
+1044   2                      fg_LedMode=1;
+1045   2              }
+1046   1              else if (in0_dat_cnt > EP0_MAX_SIZE )
+1047   1              {
+1048   2                      ep0_phase       = IN0_DATA_PHASE;
+1049   2                      in0_dat_cnt -= EP0_MAX_SIZE;
+1050   2                      code_pt += 8;
+1051   2                      IEP0CNT &= ~0x0f;
+1052   2                      IEP0CNT |= EP0_MAX_SIZE;
+1053   2              }
+1054   1              else if (in0_dat_cnt == EP0_MAX_SIZE)
+1055   1              {
+1056   2                      ep0_phase = IN0_DATA_PHASE;
+1057   2                      buffer_addr = IN0_BUFFER_ADDRESS;
+1058   2                      for(i=0;i<8;i++)
+1059   2                      {
+1060   3                      buffer_addr[i] = 0x00;
+1061   3                      }
+1062   2                      in0_dat_cnt = 0;
+1063   2                      IEP0CNT &= ~0x0f;
+1064   2                      IEP0CNT |= EP0_MAX_SIZE;
+1065   2              }       
+1066   1              else if(in0_dat_cnt == 0)
+1067   1              {
+1068   2                      ep0_phase = OUT0_STATUS_PHASE;
+1069   2                      IEP0CNT &= ~0x0f;
+1070   2      //              cnt=0;
+1071   2                      in0_dat_cnt = 0;
+1072   2                      fg_LedMode=0;
+1073   2              }
+1074   1              else
+1075   1              {
+1076   2                      ep0_phase = OUT0_STATUS_PHASE;
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 19  
+
+1077   2                      buffer_addr = IN0_BUFFER_ADDRESS;
+1078   2                      for(i=0;i<8;i++)
+1079   2                      {
+1080   3                      buffer_addr[i] = 0x00;
+1081   3                      }
+1082   2      
+1083   2                      IEP0CNT &= ~0x0f;
+1084   2                      IEP0CNT |= in0_dat_cnt;
+1085   2                      in0_dat_cnt = 0;
+1086   2              }
+1087   1      }
+1088          //***********************************************
+1089          void Deal_FN_Data(void)
+1090          {
+1091   1              if(Send_data[1]==0xb0)
+1092   1                      Send_data[1]=0x00;
+1093   1              else if(Send_data[2]==0xb0)
+1094   1                      Send_data[2]=0x00;
+1095   1              else if(Send_data[3]==0xb0)
+1096   1                      Send_data[3]=0x00;
+1097   1              else if(Send_data[4]==0xb0)
+1098   1                      Send_data[4]=0x00;
+1099   1              else if(Send_data[5]==0xb0)
+1100   1                      Send_data[5]=0x00;      
+1101   1              else if(Send_data[6]==0xb0)
+1102   1                      Send_data[6]=0x00;              
+1103   1      }
+1104          void Deal_Send_Data(void)
+1105          {
+1106   1              U8 i;
+1107   1              if(b_Record_Mode)
+1108   1                      return;
+1109   1              if(!Send_data[1])//数组第1位等于0
+1110   1              {
+1111   2                      Send_data[1]=Send_data[2];
+1112   2                      Send_data[2]=0;
+1113   2                      if(!Send_data[1])//数组第1位等于0，判断数组第2位是不是等于0，等于零会进来
+1114   2                      {
+1115   3                              Send_data[1]=Send_data[3];
+1116   3                              Send_data[3]=0;
+1117   3                      }       
+1118   2                      if(!Send_data[1])//数组第1位等于0，判断数组第3位是不是等于0，等于零会进来
+1119   2                      {
+1120   3                              Send_data[1]=Send_data[4];
+1121   3                              Send_data[4]=0;
+1122   3                      }       
+1123   2                      if(!Send_data[1])//数组第1位等于0，判断数组第4位是不是等于0，等于零会进来
+1124   2                      {
+1125   3                              Send_data[1]=Send_data[5];
+1126   3                              Send_data[5]=0;
+1127   3                      }
+1128   2                      if(!Send_data[1])//数组第1位等于0，判断数组第5位是不是等于0，等于零会进来
+1129   2                      {
+1130   3                              Send_data[1]=Send_data[6];
+1131   3                              Send_data[6]=0;
+1132   3                      }       
+1133   2              }       
+1134   1              ////////////////////
+1135   1              if(!Send_data[2])//数组第2位等于0
+1136   1              {
+1137   2                      Send_data[2]=Send_data[3];
+1138   2                      Send_data[3]=0;
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 20  
+
+1139   2                      if(!Send_data[2])//数组第2位等于0，判断数组第3位是不是等于0，等于零会进来
+1140   2                      {
+1141   3                              Send_data[2]=Send_data[4];
+1142   3                              Send_data[4]=0;
+1143   3                      }       
+1144   2                      if(!Send_data[2])//数组第2位等于0，判断数组第4位是不是等于0，等于零会进来
+1145   2                      {
+1146   3                              Send_data[2]=Send_data[5];
+1147   3                              Send_data[5]=0;
+1148   3                      }
+1149   2                      if(!Send_data[2])//数组第2位等于0，判断数组第5位是不是等于0，等于零会进来
+1150   2                      {
+1151   3                              Send_data[2]=Send_data[6];
+1152   3                              Send_data[6]=0;
+1153   3                      }       
+1154   2              }       
+1155   1              ////////////////////
+1156   1              if(!Send_data[3])//数组第3位等于0
+1157   1              {
+1158   2                      Send_data[3]=Send_data[4];
+1159   2                      Send_data[4]=0;
+1160   2                      if(!Send_data[3])//数组第3位等于0，判断数组第4位是不是等于0，等于零会进来
+1161   2                      {
+1162   3                              Send_data[3]=Send_data[5];
+1163   3                              Send_data[5]=0;
+1164   3                      }
+1165   2                      if(!Send_data[3])//数组第3位等于0，判断数组第5位是不是等于0，等于零会进来
+1166   2                      {
+1167   3                              Send_data[3]=Send_data[6];
+1168   3                              Send_data[6]=0;
+1169   3                      }       
+1170   2              }       
+1171   1              ////////////////////
+1172   1              if(!Send_data[4])//数组第4位等于0
+1173   1              {
+1174   2                      Send_data[4]=Send_data[5];
+1175   2                      Send_data[5]=0;
+1176   2                      if(!Send_data[4])//数组第4位等于0，判断数组第5位是不是等于0，等于零会进来
+1177   2                      {
+1178   3                              Send_data[4]=Send_data[6];
+1179   3                              Send_data[6]=0;
+1180   3                      }       
+1181   2              }       
+1182   1              ////////////////////
+1183   1              if(!Send_data[5])//数组第5位等于0
+1184   1              {
+1185   2                      Send_data[5]=Send_data[6];
+1186   2                      Send_data[6]=0;
+1187   2              }       
+1188   1              ////////////////////
+1189   1              for(i=1; i<7; i++)
+1190   1              {
+1191   2                      Last_Send_data[i] =Send_data[i];
+1192   2              }
+1193   1      }
+1194          void IN1_IRQ_Prog_Data(void)
+1195          {
+1196   1              if(bSend_IN2)
+1197   1              {
+1198   2                      bSend_IN2=0;
+1199   2                      Deal_Send_Data();       
+1200   2                      Deal_FN_Data();
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 21  
+
+1201   2                      buffer_addr = IN1_BUFFER_ADDRESS;
+1202   2                      if((!bAll_Key_Lock)&(!b_Record_Mode))
+1203   2                      {       
+1204   3                              buffer_addr[0] =Send_data[0]|Mcaro_Ctrl_Data;
+1205   3                              buffer_addr[1] =0x00;
+1206   3                              buffer_addr[2] =Send_data[1];
+1207   3                              buffer_addr[3] =Send_data[2];
+1208   3                              buffer_addr[4] =Send_data[3];
+1209   3                              buffer_addr[5] =Send_data[4];
+1210   3                              buffer_addr[6] =Send_data[5];
+1211   3                              buffer_addr[7] =Send_data[6];
+1212   3                      }
+1213   2                      else
+1214   2                      {       
+1215   3                              buffer_addr[0] =0x00;
+1216   3                              buffer_addr[1] =0x00;
+1217   3                              buffer_addr[2] =0x00;
+1218   3                              buffer_addr[3] =0x00;
+1219   3                              buffer_addr[4] =0x00;
+1220   3                              buffer_addr[5] =0x00;
+1221   3                              buffer_addr[6] =0x00;
+1222   3                              buffer_addr[7] =0x00;
+1223   3                      }       
+1224   2                      
+1225   2                      /*
+1226   2                      Send_data[0]=Send_data[1]=Send_data[2]=0;
+1227   2                      Send_data[3]=Send_data[4]=Send_data[5]=Send_data[6]=0;
+1228   2                      
+1229   2                      Last_Send_data[0]=Send_data[0];
+1230   2                      Last_Send_data[1]=Send_data[1];
+1231   2                      Last_Send_data[2]=Send_data[2];
+1232   2                      Last_Send_data[3]=Send_data[3];
+1233   2                      Last_Send_data[4]=Send_data[4];
+1234   2                      Last_Send_data[5]=Send_data[5];
+1235   2                      Last_Send_data[6]=Send_data[6];
+1236   2                      */
+1237   2                      IEP1CNT = 8;
+1238   2                      IN1_SET_READY;
+1239   2              }
+1240   1      }
+1241          void IN2_IRQ_Prog_Data(void)
+1242          {
+1243   1              U8 i;
+1244   1              if(b_04)
+1245   1              {
+1246   2                      b_04=0;
+1247   2              //      EA = 0;
+1248   2                      buffer_addr = IN2_BUFFER_ADDRESS;
+1249   2                      buffer_addr[0] =6;
+1250   2              //      buffer_addr[1] =Mcaro_Ctrl_Data;
+1251   2                              
+1252   2                      for(i=1;i<16;i++)
+1253   2                              {
+1254   3                                      if((!bAll_Key_Lock)&(!b_Record_Mode))
+1255   3                                              buffer_addr[i] =Usb2_Data[i];
+1256   3                                      else
+1257   3                                              buffer_addr[i] =0;
+1258   3                              }
+1259   2                      IEP2CNT = 16;
+1260   2                      IN2_SET_READY;
+1261   2              }
+1262   1              /*
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 22  
+
+1263   1              else if(b_022)  
+1264   1              {
+1265   1                      b_022=0;
+1266   1              //      EA = 0;
+1267   1                      buffer_addr = IN2_BUFFER_ADDRESS;
+1268   1                      buffer_addr[0] =6;
+1269   1                      //buffer_addr[1] =0;
+1270   1                      for(i=1;i<16;i++)
+1271   1                              {
+1272   1                                      if((!bAll_Key_Lock)&(!b_Record_Mode)&(!Manual_Record_UNM))
+1273   1                                      {       
+1274   1                                              buffer_addr[i] =Macro_Usb2_Data2[i];
+1275   1                                      }
+1276   1                                      else
+1277   1                                              buffer_addr[i] =0;
+1278   1                              }
+1279   1                      IEP2CNT = 16;
+1280   1                      IN2_SET_READY;
+1281   1              }
+1282   1              */
+1283   1              else if(b_01)   
+1284   1              {
+1285   2                      b_01=0;
+1286   2                      IEP2CNT = 0x03;
+1287   2                      buffer_addr = IN2_BUFFER_ADDRESS;
+1288   2                      buffer_addr[0] = 02;
+1289   2                      if((!bAll_Key_Lock)&(!b_Record_Mode))
+1290   2                      {       
+1291   3                              buffer_addr[1] = Multimedia_Data[1];
+1292   3                              buffer_addr[2] =Multimedia_Data[0];
+1293   3                      }
+1294   2                      else
+1295   2                      {
+1296   3                              buffer_addr[1] = 0;
+1297   3                              buffer_addr[2] =0;
+1298   3                      }
+1299   2                      IN2_SET_READY;
+1300   2                      //Multimedia_Data[0]=0;
+1301   2                      //Multimedia_Data[1]=0;
+1302   2              }
+1303   1              else if(b_02)   
+1304   1              {
+1305   2                      
+1306   2                      b_02=0;
+1307   2              //      EA = 0;
+1308   2                      buffer_addr = IN2_BUFFER_ADDRESS;
+1309   2                      buffer_addr[0] =6;
+1310   2                      //buffer_addr[1] =Mcaro_Ctrl_Data;
+1311   2                              
+1312   2                      for(i=1;i<16;i++)
+1313   2                              {
+1314   3                                      if((!bAll_Key_Lock)&(!b_Record_Mode))
+1315   3                                              buffer_addr[i] =Macro_Usb2_Data[i];
+1316   3                                      else
+1317   3                                              buffer_addr[i] =0;
+1318   3                              }
+1319   2                      IEP2CNT = 16;
+1320   2                      IN2_SET_READY;
+1321   2                      
+1322   2              }
+1323   1      }
+1324          
+C51 COMPILER V9.60.0.0   USB_TASK                                                          09/23/2022 11:52:49 PAGE 23  
+
+1325          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   4290    ----
+   CONSTANT SIZE    =    506    ----
+   XDATA SIZE       =     48       5
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      4    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

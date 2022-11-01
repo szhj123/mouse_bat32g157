@@ -1,0 +1,112 @@
+A51 MACRO ASSEMBLER  FILL_ROM                                                             09/23/2022 11:52:51 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\output\fill_rom.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE src\fill_rom.asm SET(LARGE) DEBUG PRINT(.\Listings\fill_rom.lst) OBJECT
+                      (.\output\fill_rom.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     
+                       2     
+----                   3     CSEG    AT              0x1100   
+1100                   4     ID_BYTE00:
+                       5                     REPT    8       
+                       6     DB      0x00                
+                       7                     ENDM
+                      16                                     
+                      17     
+----                  18     CSEG    AT              0x3100   
+3100                  19     ID_BYTE01:
+                      20                     REPT    8       
+                      21     DB      0x00                
+                      22                     ENDM
+                      31     
+                      32     
+----                  33     CSEG    AT              0x5100   
+5100                  34     ID_BYTE02:
+                      35                     REPT    8       
+                      36     DB      0x00                
+                      37                     ENDM            
+                      46                             
+                      47                     
+                      48     
+----                  49     CSEG    AT              0x7100   
+7100                  50     ID_BYTE03:
+                      51                     REPT    8       
+                      52     DB      0x00                
+                      53                      ENDM           
+                      62                     
+                      63     
+----                  64     CSEG    AT              0x9100   
+9100                  65     ID_BYTE04:
+                      66                     REPT    8       
+                      67     DB      0x00                
+                      68                     ENDM                                            
+                      77                                     
+                      78     ;//////////////////0xb100~0xb107/////////////////////////////////////////////
+----                  79     CSEG    AT              0xb100   
+B100                  80     ID_BYTE05:
+                      81                     REPT    8       
+                      82     DB      0x00                
+                      83                     ENDM                    
+                      92                                     
+                      93     ;//////////////////0xd100~0xd107/////////////////////////////////////////////
+                      94     ;CSEG   AT              0xd100  //rom start address             
+                      95     ;ID_BYTE06:
+                      96     ;               REPT    8       
+                      97     ;DB     0x00               //fill 0 to rom 
+                      98     ;               ENDM                    
+                      99                                     
+                     100     ;//////////////////0xf100~0xf107/////////////////////////////////////////////
+                     101     ;CSEG   AT              0xf100  //rom start address             
+                     102     ;ID_BYTE07:
+                     103                     ;REPT   8       
+                     104     ;DB     0x00               //fill 0 to rom 
+                     105                     ;ENDM                                   
+A51 MACRO ASSEMBLER  FILL_ROM                                                             09/23/2022 11:52:51 PAGE     2
+
+                     106                     
+                     107     END             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+                                             
+A51 MACRO ASSEMBLER  FILL_ROM                                                             09/23/2022 11:52:51 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ID_BYTE00. . . . .  C ADDR   1100H   A   
+ID_BYTE01. . . . .  C ADDR   3100H   A   
+ID_BYTE02. . . . .  C ADDR   5100H   A   
+ID_BYTE03. . . . .  C ADDR   7100H   A   
+ID_BYTE04. . . . .  C ADDR   9100H   A   
+ID_BYTE05. . . . .  C ADDR   B100H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

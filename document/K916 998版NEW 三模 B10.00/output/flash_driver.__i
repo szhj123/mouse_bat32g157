@@ -1,0 +1,1 @@
+"src\flash_driver.c" LARGE WARNINGLEVEL (0) OPTIMIZE (8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\flash_driver.lst) OBJECT(.\output\flash_driver.obj)

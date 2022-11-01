@@ -1,0 +1,741 @@
+C51 COMPILER V9.60.0.0   LED_CON                                                           09/23/2022 11:52:49 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE LED_CON
+OBJECT MODULE PLACED IN .\output\led_con.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\led_con.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG OBJEC
+                    -TEXTEND PRINT(.\Listings\led_con.lst) OBJECT(.\output\led_con.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\mcu_def.h"
+   4          #include "..\include\pwm_control.h"
+   5          #include ".\include\Auser.h"
+   6          #include ".\include\ABSACC.H"
+   7          U8 data Image_Num;
+   8          code const U8 Change_Mode_Tab[22]=
+   9          {
+  10                  0,
+  11                  6,//随波逐流
+  12                  7,//按键涟漪
+  13                  8,//彩虹轮盘
+  14                  9,//正旋光波
+  15                  20,//两层流动
+  16                  11,//繁星点点
+  17                  
+  18                  10,//流光溢彩       
+  19                  
+  20                  13,//花开富贵
+  21                  14,//跑马
+  22                  15,//旋转风暴       
+  23                  16,//蛇形跑马
+  24                  17,//川流不息
+  25                  18,//斜拉变化       
+  26                  19,//自定义
+  27                  12,//RGB扩散          彩虹轮盘
+  28                  21,//随机霓虹
+  29                  1,
+  30                  2,//呼吸
+  31          
+  32                  3,//霓虹
+  33                  4,//踏雪无痕        
+  34                  5,//一触即发                
+  35          };
+  36          U8 Change_Mode_Data(U8 Temp_Imge2)
+  37          {
+  38   1              U8 i;
+  39   1              i=Change_Mode_Tab[Temp_Imge2];
+  40   1              return(i);      
+  41   1      }
+  42          code const U8 Key_Scan_Port[126] =
+  43          {
+  44                  0,0,0,  0,0,0,
+  45                  1,1,1,  1,1,1,
+  46                  2,2,2,  2,2,2,
+  47                  3,3,3,  3,3,3,
+  48                  4,4,4,  4,4,4,
+  49                  5,5,5,  5,5,5,
+  50                  6,6,6,  6,6,6,
+  51                  7,7,7,  7,7,7,
+  52                  8,8,8,  8,8,8,
+  53                  9,9,9,  9,9,9,  
+  54                  10,10,10,       10,10,10,
+C51 COMPILER V9.60.0.0   LED_CON                                                           09/23/2022 11:52:49 PAGE 2   
+
+  55                  11,11,11,       11,11,11,
+  56                  12,12,12,       12,12,12,
+  57                  13,13,13,       13,13,13,
+  58                  14,14,14,       14,14,14,
+  59                  15,15,15,       15,15,15,
+  60                  16,16,16,       16,16,16,
+  61                  17,17,17,       17,17,17,
+  62                  18,18,18,       18,18,18,
+  63                  19,19,19,       19,19,19,
+  64                  20,20,20,       20,20,20,
+  65          };
+  66          code const U8 Key_Scan_Pin[126] =
+  67          {
+  68                  0x01,0x02,0x04,0x08,0x10,0x20,
+  69                  0x01,0x02,0x04,0x08,0x10,0x20,
+  70                  0x01,0x02,0x04,0x08,0x10,0x20,
+  71                  0x01,0x02,0x04,0x08,0x10,0x20,
+  72                  0x01,0x02,0x04,0x08,0x10,0x20,
+  73                  
+  74                  0x01,0x02,0x04,0x08,0x10,0x20,
+  75                  0x01,0x02,0x04,0x08,0x10,0x20,
+  76                  0x01,0x02,0x04,0x08,0x10,0x20,
+  77                  0x01,0x02,0x04,0x08,0x10,0x20,
+  78                  0x01,0x02,0x04,0x08,0x10,0x20,
+  79                  
+  80                  0x01,0x02,0x04,0x08,0x10,0x20,
+  81                  0x01,0x02,0x04,0x08,0x10,0x20,
+  82                  0x01,0x02,0x04,0x08,0x10,0x20,
+  83                  0x01,0x02,0x04,0x08,0x10,0x20,
+  84                  0x01,0x02,0x04,0x08,0x10,0x20,
+  85                  
+  86                  0x01,0x02,0x04,0x08,0x10,0x20,
+  87                  0x01,0x02,0x04,0x08,0x10,0x20,
+  88                  0x01,0x02,0x04,0x08,0x10,0x20,
+  89                  0x01,0x02,0x04,0x08,0x10,0x20,
+  90                  0x01,0x02,0x04,0x08,0x10,0x20,
+  91                  0x01,0x02,0x04,0x08,0x10,0x20,
+  92          };
+  93          U8 Port_Data(U8 Temp_Imge2)
+  94          {
+  95   1              U8 i;
+  96   1              i=Key_Scan_Port[Temp_Imge2];
+  97   1              return(i);
+  98   1      }
+  99          code const U8 Key_PWM_Port[3][126] =
+ 100          {
+ 101                  {                       /* R */
+ 102                          39,39,39,39,39, 39,39,39,39,39, 39,39,39,39,39, 39,39,39,39,39, 39,
+ 103                          42,42,42,42,42, 42,42,42,42,42, 42,42,42,42,42, 42,42,42,42,42, 42,
+ 104                          45,45,45,45,45, 45,45,45,45,45, 45,45,45,45,45, 45,45,45,45,45, 45,
+ 105                          48,48,48,48,48, 48,48,48,48,48, 48,48,48,48,48, 48,48,48,48,48, 48,
+ 106                          51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,51,51,51,51, 51,
+ 107                          54,54,54,54,54, 54,54,54,54,54, 54,54,54,54,54, 54,54,54,54,54, 54,
+ 108                  },
+ 109                  {                       /* G */
+ 110                          38,38,38,38,38, 38,38,38,38,38, 38,38,38,38,38, 38,38,38,38,38, 38,
+ 111                          41,41,41,41,41, 41,41,41,41,41, 41,41,41,41,41, 41,41,41,41,41, 41,
+ 112                          44,44,44,44,44, 44,44,44,44,44, 44,44,44,44,44, 44,44,44,44,44, 44,
+ 113                          47,47,47,47,47, 47,47,47,47,47, 47,47,47,47,47, 47,47,47,47,47, 47,
+ 114                          50,50,50,50,50, 50,50,50,50,50, 50,50,50,50,50, 50,50,50,50,50, 50,
+ 115                          53,53,53,53,53, 53,53,53,53,53, 53,53,53,53,53, 53,53,53,53,53, 53,
+ 116                  },
+C51 COMPILER V9.60.0.0   LED_CON                                                           09/23/2022 11:52:49 PAGE 3   
+
+ 117                  {                       /* B */
+ 118                          40,40,40,40,40, 40,40,40,40,40, 40,40,40,40,40, 40,40,40,40,40, 40,
+ 119                          43,43,43,43,43, 43,43,43,43,43, 43,43,43,43,43, 43,43,43,43,43, 43,
+ 120                          46,46,46,46,46, 46,46,46,46,46, 46,46,46,46,46, 46,46,46,46,46, 46,
+ 121                          49,49,49,49,49, 49,49,49,49,49, 49,49,49,49,49, 49,49,49,49,49, 49,
+ 122                          52,52,52,52,52, 52,52,52,52,52, 52,52,52,52,52, 52,52,52,52,52, 52,
+ 123                          55,55,55,55,55, 55,55,55,55,55, 55,55,55,55,55, 55,55,55,55,55, 55,
+ 124                  },
+ 125                  
+ 126          };
+ 127          U8 PWM_AddData(U8 Temp_Imge2,Temp_Imge2Data)
+ 128          {
+ 129   1              U8 i;
+ 130   1              i=Key_PWM_Port[Temp_Imge2][Temp_Imge2Data];
+ 131   1              return(i);
+ 132   1      }
+ 133          U8 Pin_Data(U8 Temp_Imge2)
+ 134          {
+ 135   1              U8 i;
+ 136   1              i=Key_Scan_Pin[Temp_Imge2];
+ 137   1              return(i);
+ 138   1      }
+ 139          void Deal_WASD_LED(U8 Temp_Im2) 
+ 140          {
+ 141   1              U16 Temp_WriteEE_Address;
+ 142   1              if(b_Record_Mode)
+ 143   1                      return;
+ 144   1              if(Image_Times==1)
+ 145   1                      Temp_WriteEE_Address = 0xCA00;
+ 146   1              else if(Image_Times==2)
+ 147   1                      Temp_WriteEE_Address = 0xCC00;
+ 148   1              else if(Image_Times==3)
+ 149   1                      Temp_WriteEE_Address = 0xCE00;
+ 150   1              //flash_driver.c 需要存FLASH
+ 151   1              {       
+ 152   2                      if(CBYTE[Temp_WriteEE_Address+Temp_Im2*3])
+ 153   2                              Image[0][Temp_Im2]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,Temp_Im2);
+ 154   2                      else
+ 155   2                              Image[0][Temp_Im2]=PWM_AddData(0,Temp_Im2);     
+ 156   2                              
+ 157   2                      if(CBYTE[Temp_WriteEE_Address+Temp_Im2*3+1])
+ 158   2                              Image[1][Temp_Im2]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(1,Temp_Im2);
+ 159   2                      else
+ 160   2                              Image[1][Temp_Im2]=PWM_AddData(1,Temp_Im2);     
+ 161   2                      
+ 162   2                      if(CBYTE[Temp_WriteEE_Address+Temp_Im2*3+2])
+ 163   2                              Image[2][Temp_Im2]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(2,Temp_Im2);
+ 164   2                      else
+ 165   2                              Image[2][Temp_Im2]=PWM_AddData(2,Temp_Im2);
+ 166   2                      }
+ 167   1      
+ 168   1      }
+ 169          U8 Brack_b(U8 Temp_Imge2)
+ 170          {
+ 171   1              U8 i;
+ 172   1              i=1;
+ 173   1              if(Mode_USB)
+ 174   1                      Module_LED_status=LED_status;//LED_status:由驱动发命令控制
+ 175   1              if(Temp_Imge2==17)      //Num
+ 176   1              {
+ 177   2                      if(bSpeed_End)
+ 178   2                              i=0;
+C51 COMPILER V9.60.0.0   LED_CON                                                           09/23/2022 11:52:49 PAGE 4   
+
+ 179   2                      else if(Module_LED_status&0x01)
+ 180   2                      {       
+ 181   3                              Image[0][Temp_Imge2]=1020+PWM_AddData(0,Temp_Imge2);
+ 182   3                              Image[1][Temp_Imge2]=1020+PWM_AddData(1,Temp_Imge2);
+ 183   3                              Image[2][Temp_Imge2]=1020+PWM_AddData(2,Temp_Imge2);
+ 184   3                              i=0;
+ 185   3                      }
+ 186   2                      else
+ 187   2                      {       
+ 188   3                              Image[0][Temp_Imge2]=0+PWM_AddData(0,Temp_Imge2);
+ 189   3                              Image[1][Temp_Imge2]=0+PWM_AddData(1,Temp_Imge2);
+ 190   3                              Image[2][Temp_Imge2]=0+PWM_AddData(2,Temp_Imge2);
+ 191   3                              i=0;
+ 192   3                      }       
+ 193   2              }       
+ 194   1              else if(Temp_Imge2==18) //CAP
+ 195   1              {
+ 196   2                      if(bSpeed_End)
+ 197   2                              i=0;
+ 198   2                      else if(Module_LED_status&0x02)
+ 199   2                      {       
+ 200   3                              Image[0][Temp_Imge2]=1020+PWM_AddData(0,Temp_Imge2);
+ 201   3                              Image[1][Temp_Imge2]=1020+PWM_AddData(1,Temp_Imge2);
+ 202   3                              Image[2][Temp_Imge2]=1020+PWM_AddData(2,Temp_Imge2);
+ 203   3                              i=0;
+ 204   3                      }
+ 205   2                      else
+ 206   2                      {       
+ 207   3                              Image[0][Temp_Imge2]=0+PWM_AddData(0,Temp_Imge2);
+ 208   3                              Image[1][Temp_Imge2]=0+PWM_AddData(1,Temp_Imge2);
+ 209   3                              Image[2][Temp_Imge2]=0+PWM_AddData(2,Temp_Imge2);
+ 210   3                              i=0;
+ 211   3                      }       
+ 212   2              }
+ 213   1              else if(Temp_Imge2==19)//SCL
+ 214   1              {
+ 215   2                      if(bSpeed_End)
+ 216   2                              i=0;
+ 217   2                      else if(Module_LED_status&0x04)
+ 218   2                      {       
+ 219   3                              Image[0][Temp_Imge2]=1020+PWM_AddData(0,Temp_Imge2);
+ 220   3                              Image[1][Temp_Imge2]=1020+PWM_AddData(1,Temp_Imge2);
+ 221   3                              Image[2][Temp_Imge2]=1020+PWM_AddData(2,Temp_Imge2);
+ 222   3                              i=0;
+ 223   3                      }
+ 224   2                      else
+ 225   2                      {       
+ 226   3                              Image[0][Temp_Imge2]=0+PWM_AddData(0,Temp_Imge2);
+ 227   3                              Image[1][Temp_Imge2]=0+PWM_AddData(1,Temp_Imge2);
+ 228   3                              Image[2][Temp_Imge2]=0+PWM_AddData(2,Temp_Imge2);
+ 229   3                              i=0;
+ 230   3                      }       
+ 231   2              }
+ 232   1              else if(Temp_Imge2==20)//win
+ 233   1              {
+ 234   2                      if(bSpeed_End)
+ 235   2                              i=0;
+ 236   2                      else if(bWin_Locks)//fn+win按一下翻转一次值，0 1 0 1来回翻转
+ 237   2                      {       
+ 238   3                              Image[0][Temp_Imge2]=1020+PWM_AddData(0,Temp_Imge2);
+ 239   3                              Image[1][Temp_Imge2]=1020+PWM_AddData(1,Temp_Imge2);
+ 240   3                              Image[2][Temp_Imge2]=1020+PWM_AddData(2,Temp_Imge2);
+C51 COMPILER V9.60.0.0   LED_CON                                                           09/23/2022 11:52:49 PAGE 5   
+
+ 241   3                              i=0;
+ 242   3                      }
+ 243   2                      else
+ 244   2                      {       
+ 245   3                              Image[0][Temp_Imge2]=0+PWM_AddData(0,Temp_Imge2);
+ 246   3                              Image[1][Temp_Imge2]=0+PWM_AddData(1,Temp_Imge2);
+ 247   3                              Image[2][Temp_Imge2]=0+PWM_AddData(2,Temp_Imge2);
+ 248   3                              i=0;
+ 249   3                      }       
+ 250   2              }
+ 251   1              //***********************
+ 252   1              else if(Temp_Imge2==43)
+ 253   1              {
+ 254   2                      if(Mode_Bluetooth1&&(bSpeed_data!=0xAA))
+ 255   2                      {       
+ 256   3                              Image[1][Temp_Imge2]=bSpeed_data*4+PWM_AddData(1,Temp_Imge2);
+ 257   3                              Image[2][Temp_Imge2]=bSpeed_data*4+PWM_AddData(2,Temp_Imge2);
+ 258   3                              Image[0][Temp_Imge2]=bSpeed_data*4+PWM_AddData(0,Temp_Imge2);
+ 259   3                              i=0;
+ 260   3                      }
+ 261   2                      else
+ 262   2                      {
+ 263   3                              if(b_ChangLiang_Mode)
+ 264   3                              {
+ 265   4                                      Give_NUM_Image(Temp_Imge2,Color_Times,255);
+ 266   4                                      i=0;    
+ 267   4                              }
+ 268   3                              else if(b_WASD_Mode)
+ 269   3                              {
+ 270   4                                      Deal_WASD_LED(Temp_Imge2);
+ 271   4                                      i=0;
+ 272   4                              }
+ 273   3                              else
+ 274   3                              {
+ 275   4                                      i=1;
+ 276   4                              }
+ 277   3                      }
+ 278   2              }       
+ 279   1              else if(Temp_Imge2==44)
+ 280   1              {
+ 281   2                      if(Mode_Bluetooth2&&(bSpeed_data!=0xAA))
+ 282   2                      {       
+ 283   3                              Image[1][Temp_Imge2]=bSpeed_data*4+PWM_AddData(1,Temp_Imge2);
+ 284   3                              Image[2][Temp_Imge2]=bSpeed_data*4+PWM_AddData(2,Temp_Imge2);
+ 285   3                              Image[0][Temp_Imge2]=bSpeed_data*4+PWM_AddData(0,Temp_Imge2);
+ 286   3                              i=0;
+ 287   3                      }
+ 288   2                      else
+ 289   2                      {
+ 290   3                              if(b_ChangLiang_Mode)
+ 291   3                              {
+ 292   4                                      Give_NUM_Image(Temp_Imge2,Color_Times,255);
+ 293   4                                      i=0;    
+ 294   4                              }
+ 295   3                              else if(b_WASD_Mode)
+ 296   3                              {
+ 297   4                                      Deal_WASD_LED(Temp_Imge2);
+ 298   4                                      i=0;
+ 299   4                              }
+ 300   3                              else
+ 301   3                              {
+ 302   4                                      i=1;
+C51 COMPILER V9.60.0.0   LED_CON                                                           09/23/2022 11:52:49 PAGE 6   
+
+ 303   4                              }
+ 304   3                      }
+ 305   2              }       
+ 306   1              else if(Temp_Imge2==45)
+ 307   1              {
+ 308   2                      if(Mode_Bluetooth3&&(bSpeed_data!=0xAA))
+ 309   2                      {       
+ 310   3                              Image[1][Temp_Imge2]=bSpeed_data*4+PWM_AddData(1,Temp_Imge2);
+ 311   3                              Image[2][Temp_Imge2]=bSpeed_data*4+PWM_AddData(2,Temp_Imge2);
+ 312   3                              Image[0][Temp_Imge2]=bSpeed_data*4+PWM_AddData(0,Temp_Imge2);
+ 313   3                              i=0;
+ 314   3                      }
+ 315   2                      else
+ 316   2                      {
+ 317   3                              if(b_ChangLiang_Mode)
+ 318   3                              {
+ 319   4                                      Give_NUM_Image(Temp_Imge2,Color_Times,255);
+ 320   4                                      i=0;    
+ 321   4                              }
+ 322   3                              else if(b_WASD_Mode)
+ 323   3                              {
+ 324   4                                      Deal_WASD_LED(Temp_Imge2);
+ 325   4                                      i=0;
+ 326   4                              }
+ 327   3                              else
+ 328   3                              {
+ 329   4                                      i=1;
+ 330   4                              }
+ 331   3                      }       
+ 332   2              }       
+ 333   1              else if(Temp_Imge2==52)
+ 334   1              {
+ 335   2                      if(Mode_24G&&(bSpeed_data!=0xAA))
+ 336   2                      {       
+ 337   3                              Image[2][Temp_Imge2]=bSpeed_data*4+PWM_AddData(2,Temp_Imge2);
+ 338   3                              Image[1][Temp_Imge2]=bSpeed_data*4+PWM_AddData(1,Temp_Imge2);
+ 339   3                              Image[0][Temp_Imge2]=bSpeed_data*4+PWM_AddData(0,Temp_Imge2);
+ 340   3                              i=0;
+ 341   3                      }
+ 342   2                      else
+ 343   2                      {
+ 344   3                              if(b_ChangLiang_Mode)
+ 345   3                              {
+ 346   4                                      Give_NUM_Image(Temp_Imge2,Color_Times,255);
+ 347   4                                      i=0;    
+ 348   4                              }
+ 349   3                              else if(b_WASD_Mode)
+ 350   3                              {
+ 351   4                                      Deal_WASD_LED(Temp_Imge2);
+ 352   4                                      i=0;
+ 353   4                              }
+ 354   3                              else
+ 355   3                              {
+ 356   4                                      i=1;
+ 357   4                              }
+ 358   3                      }
+ 359   2              }       
+ 360   1              //-----------------------------------
+ 361   1              else if(Temp_Imge2==110)
+ 362   1              {
+ 363   2                      if(fg_Power_Led|fg_Power_Led2)
+ 364   2                      {
+C51 COMPILER V9.60.0.0   LED_CON                                                           09/23/2022 11:52:49 PAGE 7   
+
+ 365   3                              Image[1][Temp_Imge2]=bSpeed_data2*4+PWM_AddData(1,Temp_Imge2);
+ 366   3                              Image[0][Temp_Imge2]=bSpeed_data2*4+PWM_AddData(0,Temp_Imge2);
+ 367   3                              Image[2][Temp_Imge2]=bSpeed_data2*4+PWM_AddData(2,Temp_Imge2);
+ 368   3                              i=0;
+ 369   3                      }
+ 370   2                      else
+ 371   2                      {
+ 372   3                              if(b_ChangLiang_Mode)
+ 373   3                              {
+ 374   4                                      Give_NUM_Image(Temp_Imge2,Color_Times,255);
+ 375   4                                      i=0;    
+ 376   4                              }
+ 377   3                              else if(b_WASD_Mode)
+ 378   3                              {
+ 379   4                                      Deal_WASD_LED(Temp_Imge2);
+ 380   4                                      i=0;
+ 381   4                              }
+ 382   3                              else
+ 383   3                              {
+ 384   4                                      i=1;
+ 385   4                              }
+ 386   3                      }
+ 387   2              }
+ 388   1              else if(Temp_Imge2==114)
+ 389   1              {
+ 390   2                      if(Power_status_Data!=0xaa)
+ 391   2                      {
+ 392   3                              Image[1][Temp_Imge2]=0*4+PWM_AddData(1,Temp_Imge2);
+ 393   3                              Image[0][Temp_Imge2]=Power_status_Data*4+PWM_AddData(0,Temp_Imge2);
+ 394   3                              Image[2][Temp_Imge2]=0*4+PWM_AddData(2,Temp_Imge2);
+ 395   3                              i=0;
+ 396   3                      }       
+ 397   2                      else
+ 398   2                      {
+ 399   3                              if(b_ChangLiang_Mode)
+ 400   3                              {
+ 401   4                                      Give_NUM_Image(Temp_Imge2,Color_Times,255);
+ 402   4                                      i=0;    
+ 403   4                              }
+ 404   3                              else if(b_WASD_Mode)
+ 405   3                              {
+ 406   4                                      Deal_WASD_LED(Temp_Imge2);
+ 407   4                                      i=0;
+ 408   4                              }
+ 409   3                              else
+ 410   3                              {
+ 411   4                                      i=1;
+ 412   4                              }
+ 413   3                      }
+ 414   2              }       
+ 415   1              //--------------Logo------------------------
+ 416   1              else if((Temp_Imge2==108)|(Temp_Imge2==109)|(Temp_Imge2==111)|(Temp_Imge2==112)|(Temp_Imge2==116)|(Temp_I
+             -mge2==117)|(Temp_Imge2==123)|(Temp_Imge2==125))
+ 417   1              {
+ 418   2                      i=0;
+ 419   2              }
+ 420   1              /*
+ 421   1              else if(Temp_Imge2==108)
+ 422   1              {
+ 423   1                      Image[0][Temp_Imge2]=Logo_Image[0]+PWM_AddData(0,Temp_Imge2);
+ 424   1                      Image[1][Temp_Imge2]=Logo_Image[0]+PWM_AddData(1,Temp_Imge2);
+ 425   1                      Image[2][Temp_Imge2]=Logo_Image[0]+PWM_AddData(2,Temp_Imge2);
+C51 COMPILER V9.60.0.0   LED_CON                                                           09/23/2022 11:52:49 PAGE 8   
+
+ 426   1                      i=0;
+ 427   1              }       
+ 428   1              else if(Temp_Imge2==109)
+ 429   1              {
+ 430   1                      Image[0][Temp_Imge2]=Logo_Image[1]+PWM_AddData(0,Temp_Imge2);
+ 431   1                      Image[1][Temp_Imge2]=Logo_Image[1]+PWM_AddData(1,Temp_Imge2);
+ 432   1                      Image[2][Temp_Imge2]=Logo_Image[1]+PWM_AddData(2,Temp_Imge2);
+ 433   1                      i=0;
+ 434   1              }
+ 435   1              else if(Temp_Imge2==111)
+ 436   1              {
+ 437   1                      Image[0][Temp_Imge2]=Logo_Image[2]+PWM_AddData(0,Temp_Imge2);
+ 438   1                      Image[1][Temp_Imge2]=Logo_Image[2]+PWM_AddData(1,Temp_Imge2);
+ 439   1                      Image[2][Temp_Imge2]=Logo_Image[2]+PWM_AddData(2,Temp_Imge2);
+ 440   1                      i=0;
+ 441   1              }
+ 442   1              else if(Temp_Imge2==112)
+ 443   1              {
+ 444   1                      Image[0][Temp_Imge2]=Logo_Image[3]+PWM_AddData(0,Temp_Imge2);
+ 445   1                      Image[1][Temp_Imge2]=Logo_Image[3]+PWM_AddData(1,Temp_Imge2);
+ 446   1                      Image[2][Temp_Imge2]=Logo_Image[3]+PWM_AddData(2,Temp_Imge2);
+ 447   1                      i=0;
+ 448   1              }
+ 449   1              else if(Temp_Imge2==116)
+ 450   1              {
+ 451   1                      Image[0][Temp_Imge2]=Logo_Image[4]+PWM_AddData(0,Temp_Imge2);
+ 452   1                      Image[1][Temp_Imge2]=Logo_Image[4]+PWM_AddData(1,Temp_Imge2);
+ 453   1                      Image[2][Temp_Imge2]=Logo_Image[4]+PWM_AddData(2,Temp_Imge2);
+ 454   1                      i=0;
+ 455   1              }
+ 456   1              else if(Temp_Imge2==117)
+ 457   1              {
+ 458   1                      Image[0][Temp_Imge2]=Logo_Image[5]+PWM_AddData(0,Temp_Imge2);
+ 459   1                      Image[1][Temp_Imge2]=Logo_Image[5]+PWM_AddData(1,Temp_Imge2);
+ 460   1                      Image[2][Temp_Imge2]=Logo_Image[5]+PWM_AddData(2,Temp_Imge2);
+ 461   1                      i=0;
+ 462   1              }       
+ 463   1              else if(Temp_Imge2==123)
+ 464   1              {
+ 465   1                      Image[0][Temp_Imge2]=Logo_Image[6]+PWM_AddData(0,Temp_Imge2);
+ 466   1                      Image[1][Temp_Imge2]=Logo_Image[6]+PWM_AddData(1,Temp_Imge2);
+ 467   1                      Image[2][Temp_Imge2]=Logo_Image[6]+PWM_AddData(2,Temp_Imge2);
+ 468   1                      i=0;
+ 469   1              }
+ 470   1              else if(Temp_Imge2==125)
+ 471   1              {
+ 472   1                      Image[0][Temp_Imge2]=Logo_Image[7]+PWM_AddData(0,Temp_Imge2);
+ 473   1                      Image[1][Temp_Imge2]=Logo_Image[7]+PWM_AddData(1,Temp_Imge2);
+ 474   1                      Image[2][Temp_Imge2]=Logo_Image[7]+PWM_AddData(2,Temp_Imge2);
+ 475   1                      i=0;
+ 476   1              }
+ 477   1              */
+ 478   1              return(i);
+ 479   1      }
+ 480          code const U8 Image_Num_Tab[126]=
+ 481          {
+ 482                  0,21,42,        63,84,105,
+ 483                  1,22,43,        64,85,106,
+ 484                  2,23,44,        65,86,107,
+ 485                  3,24,45,        66,87,108,
+ 486                  4,25,46,        67,88,109,
+ 487                  5,26,47,        68,89,110,
+C51 COMPILER V9.60.0.0   LED_CON                                                           09/23/2022 11:52:49 PAGE 9   
+
+ 488                  6,27,48,        69,90,111,
+ 489                  7,28,49,        70,91,112,
+ 490                  8,29,50,        71,92,113,
+ 491                  9,30,51,        72,93,114,      //
+ 492                  10,31,52,       73,94,115,//
+ 493                  11,32,53,       74,95,116,
+ 494                  12,33,54,       75,96,117,
+ 495                  13,34,55,       76,97,118,//,
+ 496                  14,35,56,       77,98,119,
+ 497                  15,36,57,       78,99,120,
+ 498                  16,37,58,       79,100,121,
+ 499                  17,38,59,       80,101,122,
+ 500                  18,39,60,       81,102,123,
+ 501                  19,40,61,       82,103,124,
+ 502                  20,41,62,       83,104,125,
+ 503          };
+ 504          void Deal_K45_Image(void)
+ 505          {
+ 506   1              
+ 507   1      }
+ 508          U8 Deal_Down_K45_Image(U8 Temp_Imge2)
+ 509          {
+ 510   1              U8 i;
+ 511   1              i=Temp_Imge2;
+ 512   1              //if(Temp_Imge2==95)
+ 513   1              //      i=85;
+ 514   1              return(i);      
+ 515   1      }
+ 516          void Deal_Tbl_Image(Key_Image)//Image_Num:被按下的按键编号
+ 517          {
+ 518   1              Image_Num=Image_Num_Tab[Key_Image];
+ 519   1      }
+ 520          U8 Deal_Tbl_Image2(Key_Image2)//返回那个被按下的按键编号  0~125
+ 521          {
+ 522   1              U8 i;
+ 523   1              i=Image_Num_Tab[Key_Image2];
+ 524   1              return(i);
+ 525   1      }
+ 526          int RandSub(U8 T_RandSub)
+ 527          {
+ 528   1              U16 tmp;
+ 529   1              U16 tmp2;
+ 530   1              tmp=TL2;
+ 531   1              tmp=(tmp<<8)|TH2;
+ 532   1              tmp=tmp+T_RandSub;
+ 533   1              return rand();                          
+ 534   1      }
+ 535          void Let_NUM_Image(void)                //给所有按键 付颜色
+ 536          {
+ 537   1              U8 i;
+ 538   1              for(i=0; i<126; i++)
+ 539   1              {
+ 540   2                      if((i!=17)&&(i!=18)&&(i!=19)&&(i!=20)&&(i!=108)&&(i!=109)&&(i!=111)&&(i!=112)&&(i!=116)&&(i!=117)&&(i!=1
+             -23)&&(i!=125))
+ 541   2                              Change_AColor_Time(i);
+ 542   2              }
+ 543   1      }
+ 544          void Clear_All_Image(void)
+ 545          {
+ 546   1              U8 i;
+ 547   1              for(i=0; i<126; i++)
+ 548   1              {
+C51 COMPILER V9.60.0.0   LED_CON                                                           09/23/2022 11:52:49 PAGE 10  
+
+ 549   2                      if((i!=17)&&(i!=18)&&(i!=19)&&(i!=20)&&(i!=108)&&(i!=109)&&(i!=111)&&(i!=112)&&(i!=116)&&(i!=117)&&(i!=1
+             -23)&&(i!=125))
+ 550   2                      {       
+ 551   3                              Image[0][i]=PWM_AddData(0,i);
+ 552   3                              Image[1][i]=PWM_AddData(1,i);
+ 553   3                              Image[2][i]=PWM_AddData(2,i);
+ 554   3                      }
+ 555   2              }
+ 556   1      }
+ 557          void Give_NUM_Image(U8 Temp_NUM,Temp_Color,Image_Brightness)//wei  Color_Times  值
+ 558          {
+ 559   1              if(Temp_Color==1)       //R
+ 560   1              {
+ 561   2                      Image[R][Temp_NUM]=Image_Brightness*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,Temp_NUM);
+ 562   2                      Image[G][Temp_NUM]=PWM_AddData(G,Temp_NUM);
+ 563   2                      Image[B][Temp_NUM]=PWM_AddData(B,Temp_NUM);
+ 564   2              }
+ 565   1              else if(Temp_Color==2)  //黄色
+ 566   1              {
+ 567   2                      Image[R][Temp_NUM]=Image_Brightness*Brightness_Wheels/Limit_Power*4+PWM_AddData(R,Temp_NUM);
+ 568   2                      Image[G][Temp_NUM]=Image_Brightness*Brightness_Wheels/Limit_Power*4+PWM_AddData(G,Temp_NUM);
+ 569   2                      Image[B][Temp_NUM]=PWM_AddData(B,Temp_NUM);
+ 570   2              }
+ 571   1              else if(Temp_Color==3)  //绿色
+ 572   1              {
+ 573   2                      Image[G][Temp_NUM]=Image_Brightness*Brightness_Wheels/Limit_Power*4+PWM_AddData(G,Temp_NUM);
+ 574   2                      Image[R][Temp_NUM]=PWM_AddData(R,Temp_NUM);
+ 575   2                      Image[B][Temp_NUM]=PWM_AddData(B,Temp_NUM);
+ 576   2              }
+ 577   1              else if(Temp_Color==4)  //蓝色
+ 578   1              {
+ 579   2                      Image[B][Temp_NUM]=Image_Brightness*Brightness_Wheels/Limit_Power*4+PWM_AddData(B,Temp_NUM);
+ 580   2                      Image[R][Temp_NUM]=PWM_AddData(R,Temp_NUM);
+ 581   2                      Image[G][Temp_NUM]=PWM_AddData(G,Temp_NUM);
+ 582   2              }       
+ 583   1              else if(Temp_Color==5)  //青色
+ 584   1              {
+ 585   2                      Image[G][Temp_NUM]=Image_Brightness*Brightness_Wheels/Limit_Power*4+PWM_AddData(G,Temp_NUM);
+ 586   2                      Image[B][Temp_NUM]=Image_Brightness*Brightness_Wheels/Limit_Power*4+PWM_AddData(B,Temp_NUM);
+ 587   2                      Image[R][Temp_NUM]=PWM_AddData(R,Temp_NUM);
+ 588   2              }
+ 589   1              else if(Temp_Color==6)  //紫色
+ 590   1              {
+ 591   2                      Image[B][Temp_NUM]=Image_Brightness*Brightness_Wheels/Limit_Power*4+PWM_AddData(B,Temp_NUM);
+ 592   2                      Image[R][Temp_NUM]=Image_Brightness*Brightness_Wheels/Limit_Power*4+PWM_AddData(R,Temp_NUM);
+ 593   2                      Image[G][Temp_NUM]=PWM_AddData(G,Temp_NUM);
+ 594   2              }
+ 595   1              else if(Temp_Color==7)  // 白色色
+ 596   1              {
+ 597   2                      Image[B][Temp_NUM]=Image_Brightness*Brightness_Wheels/Limit_Power*4+PWM_AddData(B,Temp_NUM);
+ 598   2                      Image[R][Temp_NUM]=Image_Brightness*Brightness_Wheels/Limit_Power*4+PWM_AddData(R,Temp_NUM);
+ 599   2                      Image[G][Temp_NUM]=Image_Brightness*Brightness_Wheels/Limit_Power*4+PWM_AddData(G,Temp_NUM);
+ 600   2              }
+ 601   1              else if(Temp_Color==8)  //紫色
+ 602   1              {
+ 603   2                      Image[B][Temp_NUM]=Image_Brightness*Brightness_Wheels/Limit_Power*4+PWM_AddData(B,Temp_NUM);
+ 604   2                      Image[R][Temp_NUM]=Image_Brightness*Brightness_Wheels/Limit_Power*4+PWM_AddData(R,Temp_NUM);
+ 605   2                      Image[G][Temp_NUM]=PWM_AddData(G,Temp_NUM);
+ 606   2              }       
+ 607   1      }
+ 608          void KeyDown_Image2(Temp_Image_Num,NUM_Brightness)      //Brightness Max 45     
+ 609          {
+C51 COMPILER V9.60.0.0   LED_CON                                                           09/23/2022 11:52:49 PAGE 11  
+
+ 610   1              U8 i;
+ 611   1              i=Temp_Image_Num;
+ 612   1              {
+ 613   2                      if(NUM_Brightness==0)
+ 614   2                      {
+ 615   3                              if((Temp_Image_Num>=0)&&(Temp_Image_Num<21))
+ 616   3                              {       
+ 617   4                                      Change_AColor_Time(Temp_Image_Num);//Give_NUM_Image(Temp_Image_Num,j,255);
+ 618   4                              }
+ 619   3                      }
+ 620   2                      else if(NUM_Brightness==1)
+ 621   2                      {
+ 622   3                              if((Temp_Image_Num<42)&&(Temp_Image_Num>20))
+ 623   3                              {       
+ 624   4                                      Change_AColor_Time(Temp_Image_Num);//Give_NUM_Image(Temp_Image_Num,j,255);
+ 625   4                              }
+ 626   3                      }
+ 627   2                      else if(NUM_Brightness==2)
+ 628   2                      {
+ 629   3                              if((Temp_Image_Num<63)&&(Temp_Image_Num>41))    //R2
+ 630   3                              {       
+ 631   4                                      Change_AColor_Time(Temp_Image_Num);//Give_NUM_Image(Temp_Image_Num,j,255);
+ 632   4                              }
+ 633   3                      }
+ 634   2                      else if(NUM_Brightness==3)
+ 635   2                      {
+ 636   3                              if((Temp_Image_Num<84)&&(Temp_Image_Num>62))    //R3
+ 637   3                              {       
+ 638   4                                      Change_AColor_Time(Temp_Image_Num);//Give_NUM_Image(Temp_Image_Num,j,255);
+ 639   4                              }
+ 640   3                      }
+ 641   2                      else if(NUM_Brightness==4)
+ 642   2                      {
+ 643   3                              if((Temp_Image_Num<105)&&(Temp_Image_Num>83))   //R4
+ 644   3                              {       
+ 645   4                                      Change_AColor_Time(Temp_Image_Num);//Give_NUM_Image(Temp_Image_Num,j,255);
+ 646   4                              }
+ 647   3                      }
+ 648   2                      else if(NUM_Brightness==5)
+ 649   2                      {
+ 650   3                              if((Temp_Image_Num<125)&&(Temp_Image_Num>104))//R5
+ 651   3                              {       
+ 652   4                                      Change_AColor_Time(Temp_Image_Num);//Give_NUM_Image(Temp_Image_Num,j,255);
+ 653   4                              }
+ 654   3                      }       
+ 655   2              }
+ 656   1              Deal_K45_Image();
+ 657   1      }
+ 658          code const U8 Multimedia_Tab6[18]=
+ 659          {
+ 660                  0xB5,//0        Next Track       下一曲
+ 661                  0xB6,//1        Previous Track   上一曲
+ 662                  0xB7,//2        Stop             停止
+ 663                  0xCD,//3        Play/ Pause      播放/暂停
+ 664                  0xE2,//4        Mute 0           静音
+ 665                  0xE9,//5        Volume Up        增大音量
+ 666                  0xEA,//6        Volume Down      减小音量
+ 667                      
+ 668                  0x83,//7        Media Select     多媒体选择
+ 669                  0x8A,//8        Mail             邮箱，邮件
+ 670                  0x92,//9        Calculator       计算器
+ 671                  0x94,//10       My Computer          我的电脑
+C51 COMPILER V9.60.0.0   LED_CON                                                           09/23/2022 11:52:49 PAGE 12  
+
+ 672                      
+ 673                  0x21,//11       WWW Search       搜索
+ 674                  0x23,//12       WWW Home         家
+ 675                  0x24,//13       WWW Back         返回
+ 676                  0x25,//14       WWW Forward      转发，正向，传送
+ 677                  0x26,//15       WWW Stop         停止
+ 678                  0x27,//16       WWW Refresh      刷新
+ 679                  0x2A,//17       WWW Favorites    收藏夹
+ 680                  
+ 681          };
+ 682          void Multimedia_Tab_Data(U8 No_Multimedia)//根据序号来选择多媒体功能
+ 683          {
+ 684   1               Multimedia_Data[1]=Multimedia_Tab6[No_Multimedia];//根据序号来选择多媒体功能
+ 685   1              if(Multimedia_Data[1]<=0x2a)//Multimedia_Data[1]得到的值小于0x2a   No_Multimedia：11~17进入这�
+             -�
+ 686   1                      Multimedia_Data[0]=2;
+ 687   1              else if((Multimedia_Data[1]<=0x94)&&(Multimedia_Data[1]>=0x83)) //No_Multimedia：7~10进入这里
+ 688   1                      Multimedia_Data[0]=1;
+ 689   1              else //上面两个条件都不满足  No_Multimedia：0~6进入这里
+ 690   1                      Multimedia_Data[0]=0;   
+ 691   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   4293    ----
+   CONSTANT SIZE    =    796    ----
+   XDATA SIZE       =   ----      17
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

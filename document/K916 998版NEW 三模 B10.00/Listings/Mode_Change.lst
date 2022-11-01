@@ -1,0 +1,729 @@
+C51 COMPILER V9.60.0.0   MODE_CHANGE                                                       09/23/2022 11:52:49 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MODE_CHANGE
+OBJECT MODULE PLACED IN .\output\Mode_Change.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\Mode_Change.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG O
+                    -BJECTEXTEND PRINT(.\Listings\Mode_Change.lst) OBJECT(.\output\Mode_Change.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\CFG.h"
+   4          #include "..\include\Auser.h"
+   5          U8 xdata        Mode_Times;
+   6          U8 xdata        Long_Push_Times;
+   7          U8 data         Brightness_Wheels;
+   8          U8 data Speed_Data;
+   9          U8 data Color_Times;
+  10          U16 xdata Run_Time;
+  11          bit     b_Cloes_Mode;
+  12          bit     b_Home_Up;
+  13          bit     b_Home_Up2;
+  14          bit     b_Cap_Up;
+  15          bit     b_ChangLiang_Mode;
+  16          bit     b_HuXi_Mode;
+  17          bit     b_PaoMa1_Mode;
+  18          bit     b_PaoMa2_Mode;
+  19          bit     b_SuiLiang_Mode;
+  20          bit     b_SuiMie_Mode;
+  21          bit     b_Raindrops_Mode;
+  22          bit     b_BoLang_Mode;
+  23          bit     b_WASD_Mode;
+  24          bit     b_Effect_light_1;
+  25          bit     b_Effect_light_2;
+  26          bit     b_Pao_Heng;
+  27          bit     b_LiuGuang_Mode;
+  28          bit     b_LiuGuang_Mode2;
+  29          bit     b_LiuGuang_Mode3;
+  30          bit     b_LiuGuang_Mode4;
+  31          bit     b_LiuGuang_Mode5;
+  32          bit     b_LiuGuang_Mode6;
+  33          bit     b_LiuGuang_Mode7;
+  34          bit     b_HengMie_Mode;
+  35          bit     b_HangPao_Mode;
+  36          bit     b_PaoMa3_Mode;
+  37          bit     b_PaoMa4_Mode;
+  38          bit     b_Flower_Mode;
+  39          bit     b_HuXi_Mode2;
+  40          bit     b_Text_Mode;
+  41          bit     mode_change_flag;
+  42          U8 xdata Mode_Bluetooth_Times;
+  43          U8 xdata Opine_times;
+  44          U8 xdata Opine_Data;
+  45          bit fg_Power_Led;
+  46          bit fg_Power_Led2;
+  47          //**********************************
+  48          void Clear_Mode_Data(void)//清除模式数据
+  49          {
+  50   1              U8 i;
+  51   1              for(i=0; i<126; i++)
+  52   1              {
+  53   2                      NUM_Image[0][i]=NUM_Image[1][i]=NUM_Image[2][i]=0;
+  54   2              }
+C51 COMPILER V9.60.0.0   MODE_CHANGE                                                       09/23/2022 11:52:49 PAGE 2   
+
+  55   1              b_ChangLiang_Mode=b_HuXi_Mode=0;
+  56   1              b_LiuGuang_Mode=b_PaoMa1_Mode=0;
+  57   1              b_Flower_Mode=b_PaoMa2_Mode=b_SuiLiang_Mode=0;
+  58   1              b_SuiMie_Mode=b_Raindrops_Mode=0;
+  59   1              b_HangPao_Mode=b_Pao_Heng=b_BoLang_Mode=0;
+  60   1              b_PaoMa4_Mode=b_Effect_light_1=b_Effect_light_2=0;
+  61   1              b_HuXi_Mode2=b_LiuGuang_Mode2=b_WASD_Mode=0;
+  62   1              b_LiuGuang_Mode3=b_LiuGuang_Mode4=0;
+  63   1              Clear_All_Image();
+  64   1              b_HengMie_Mode=0;
+  65   1              b_LiuGuang_Mode5=b_LiuGuang_Mode6=0;
+  66   1              Temp_Speed=Run_Time=0;
+  67   1              Last_CL_Brightness_Wheels=0xAA;
+  68   1              b_Effect_light_1_Cpl=0x00;
+  69   1              b_PaoMa3_Mode=b_Record_Mode=0;
+  70   1              b_PaoMa1=1;
+  71   1              b_Text_Mode=0;
+  72   1              b_LiuGuang_Mode7=b_PaoMa2=b_PaoMa3=b_PaoMa4=0;
+  73   1              b_PaoMa1=1;
+  74   1      }
+  75          void Change_Mode2(void)//执行21种灯效
+  76          {
+  77   1              Clear_Mode_Data();
+  78   1              if(Mode_Times==1)               //常亮  1
+  79   1                      {
+  80   2                              Last_CL_Brightness_Wheels=0xAA;
+  81   2                              b_ChangLiang_Mode=1;
+  82   2                              Let_NUM_Image();
+  83   2                      }
+  84   1              else  if(Mode_Times==2) 
+  85   1                      {
+  86   2                              b_HuXi_Mode=1;//呼吸    16
+  87   2                              Let_NUM_Image();
+  88   2                      }
+  89   1              else  if(Mode_Times==3) 
+  90   1                      {
+  91   2                              b_LiuGuang_Mode=1;      //霓虹  18
+  92   2                              Int_Mode6_Data();
+  93   2                      }       
+  94   1                      /////////////////////////////////////////
+  95   1              else  if(Mode_Times==4) 
+  96   1                      {
+  97   2                              b_SuiLiang_Mode=1;//踏雪无痕    17
+  98   2                      }       
+  99   1              else  if(Mode_Times==5) 
+ 100   1                      {
+ 101   2                              b_HangPao_Mode=1;//一触即发     6
+ 102   2                      }               
+ 103   1              else  if(Mode_Times==6)         
+ 104   1                      {
+ 105   2                              b_LiuGuang_Mode2=1;//随波逐流   Color v
+ 106   2                              Int_Mode6_Data();
+ 107   2                      }               
+ 108   1              else  if(Mode_Times==7) 
+ 109   1                      {
+ 110   2                              b_Pao_Heng=1;           //涟漪扩散      5按键涟漪
+ 111   2                      }       
+ 112   1              else  if(Mode_Times==8)         
+ 113   1                      {
+ 114   2                              b_LiuGuang_Mode3=1;//彩虹轮盘   2流光异彩
+ 115   2                              Int_Mode6_Data();
+ 116   2                      }       
+C51 COMPILER V9.60.0.0   MODE_CHANGE                                                       09/23/2022 11:52:49 PAGE 3   
+
+ 117   1              else  if(Mode_Times==9) 
+ 118   1                      {
+ 119   2                              b_BoLang_Mode=1;//正旋光波      14
+ 120   2                      }               
+ 121   1              else  if(Mode_Times==10)        
+ 122   1                      {
+ 123   2                              b_LiuGuang_Mode4=1;//Color v
+ 124   2                              Int_Mode6_Data();
+ 125   2                      }       
+ 126   1              else  if(Mode_Times==11)        
+ 127   1                      {
+ 128   2                              b_Raindrops_Mode=1;//繁星点点   11
+ 129   2                      }       
+ 130   1              else  if(Mode_Times==12)        
+ 131   1                      {
+ 132   2                              b_LiuGuang_Mode6=1;//Color v
+ 133   2                              Int_Mode6_Data();
+ 134   2                      }       
+ 135   1                      ///////////////////////////////////////////
+ 136   1              else  if(Mode_Times==13)        
+ 137   1                      {
+ 138   2                              b_PaoMa1_Mode=1;//花开富贵      9
+ 139   2                      }                       
+ 140   1              else  if(Mode_Times==14)        
+ 141   1                      {
+ 142   2                              b_PaoMa2_Mode=1;//跑马  8
+ 143   2                      }               
+ 144   1              else  if(Mode_Times==15)        
+ 145   1                      {
+ 146   2                              b_PaoMa3_Mode=1;//旋转风暴      7
+ 147   2                      }       
+ 148   1              else  if(Mode_Times==16)        
+ 149   1                      {
+ 150   2                              b_PaoMa4_Mode=1;//蛇形跑马      10
+ 151   2                      }       
+ 152   1                      ////////////////////////////////////////
+ 153   1              else  if(Mode_Times==17)        
+ 154   1                      {
+ 155   2                              b_Effect_light_1=1;//穿插对跑   12川流不息
+ 156   2                      }       
+ 157   1              else  if(Mode_Times==18)        
+ 158   1                      {
+ 159   2                              b_Effect_light_2=1;//斜拉变化   13
+ 160   2                      }               
+ 161   1              else  if(Mode_Times==19)        //  指点江山
+ 162   1                      {
+ 163   2                              b_WASD_Mode=1;
+ 164   2                              Read_WASD_Image(Image_Times);
+ 165   2                      }               
+ 166   1              ///////////////////////////////////////////
+ 167   1              else  if(Mode_Times==20)        //两层流动
+ 168   1                      {
+ 169   2                              b_LiuGuang_Mode5=1;
+ 170   2                              Int_Mode6_Data();
+ 171   2                      }               
+ 172   1              else  if(Mode_Times==21)        //随机霓虹
+ 173   1                      {
+ 174   2                              b_LiuGuang_Mode7=1;
+ 175   2                              Int_Mode6_Data();
+ 176   2                      }               
+ 177   1              else  if(Mode_Times==30)        
+ 178   1                      {
+C51 COMPILER V9.60.0.0   MODE_CHANGE                                                       09/23/2022 11:52:49 PAGE 4   
+
+ 179   2                              b_Text_Mode=1;
+ 180   2                      }               
+ 181   1                      Save_Mode_Time();
+ 182   1      }
+ 183          //-------------------------------------------
+ 184          void Change_Mode(void)
+ 185          {
+ 186   1              if(V_Data[0]&0x08)
+ 187   1              {
+ 188   2                      if(b_Cap_Up)
+ 189   2                      {       
+ 190   3                              b_Cap_Up=0;
+ 191   3                              if(!Mode_USB)
+ 192   3                              {
+ 193   4                                      if(Module_LED_status&0x02)
+ 194   4                                              Module_LED_status&=~0x02;
+ 195   4                                      else
+ 196   4                                              Module_LED_status|=0x02;        
+ 197   4                              }       
+ 198   3                      }
+ 199   2              }
+ 200   1              else
+ 201   1                      b_Cap_Up=1;
+ 202   1              if(!bFn)//fn按键没按下
+ 203   1                      return;
+ 204   1              if((V_Data[9]&0x04)&&(V_Data[9]&0x08))
+ 205   1              {
+ 206   2                      if(b_Home_Up2)
+ 207   2                      {
+ 208   3                              b_Home_Up2=0;   
+ 209   3                              Mode_Times=1;   
+ 210   3                              Color_Times=7;
+ 211   3                              Change_Mode2(); 
+ 212   3                      }
+ 213   2              }
+ 214   1              else
+ 215   1                      b_Home_Up2=1;           
+ 216   1              //---------------------------------------------------------------------------------------------
+ 217   1              if((V_Data[1]&0x04)|(V_Data[2]&0x04)|(V_Data[3]&0x04)|(V_Data[10]&0x04)|(V_Data[5]&0x04))
+ 218   1                      {
+ 219   2                              if(b_Home_Up)
+ 220   2                              {
+ 221   3                                      Long_Push_Times++;
+ 222   3                                      if(Long_Push_Times>150)//长按 进入配对
+ 223   3                                      {
+ 224   4                                              Long_Push_Times=0;
+ 225   4                                              b_Home_Up=0;
+ 226   4                                              if(Mode_Bluetooth1|Mode_Bluetooth2|Mode_Bluetooth3|Mode_24G)
+ 227   4                                              {       
+ 228   5                                                      if(V_Data[1]&0x04)      //Q     BLE1
+ 229   5                                                      {
+ 230   6                                                              Lang_KeyDown_ModuleMode(2);
+ 231   6                                                      }
+ 232   5                                                      else if(V_Data[2]&0x04)//W      BLE2
+ 233   5                                                      {
+ 234   6                                                              Lang_KeyDown_ModuleMode(3);
+ 235   6                                                      }       
+ 236   5                                                      else if(V_Data[3]&0x04)//E      BLE3
+ 237   5                                                      {
+ 238   6                                                              Lang_KeyDown_ModuleMode(4);
+ 239   6                                                      }       
+ 240   5                                                      else if(V_Data[10]&0x04)//E     2.4G
+C51 COMPILER V9.60.0.0   MODE_CHANGE                                                       09/23/2022 11:52:49 PAGE 5   
+
+ 241   5                                                      {
+ 242   6                                                              Lang_KeyDown_ModuleMode(1);
+ 243   6                                                      }       
+ 244   5                                              }
+ 245   4                                      }
+ 246   3                                      else            //短按
+ 247   3                                      {       
+ 248   4                                              if(Long_Push_Times==2)
+ 249   4                                              {
+ 250   5                                                      if(Mode_Bluetooth1|Mode_Bluetooth2|Mode_Bluetooth3|Mode_24G)
+ 251   5                                                      {       
+ 252   6                                                              if(V_Data[1]&0x04)      //Q     BLE1
+ 253   6                                                              {
+ 254   7                                                                      Short_KeyDown_ModuleMode(2);
+ 255   7                                                              }
+ 256   6                                                              else if(V_Data[2]&0x04)//W      BLE2
+ 257   6                                                              {
+ 258   7                                                                      Short_KeyDown_ModuleMode(3);
+ 259   7                                                              }       
+ 260   6                                                              else if(V_Data[3]&0x04)//E      BLE3
+ 261   6                                                              {
+ 262   7                                                                      Short_KeyDown_ModuleMode(4);
+ 263   7                                                              }
+ 264   6                                                              else if(V_Data[10]&0x04)//E     2.4
+ 265   6                                                              {
+ 266   7                                                                      Short_KeyDown_ModuleMode(1);
+ 267   7                                                              }       
+ 268   6                                                      }
+ 269   5                                              }
+ 270   4                                      }
+ 271   3                              }
+ 272   2                      }
+ 273   1              else
+ 274   1                      {       
+ 275   2                              b_Home_Up=1;    
+ 276   2                              Long_Push_Times=0;
+ 277   2                      }       
+ 278   1      }
+ 279          //---------------------------------------------
+ 280          void Brightness_Sub(void)
+ 281          {
+ 282   1              if(Brightness_Wheels>0)
+ 283   1              {       
+ 284   2                      Brightness_Wheels--;
+ 285   2                      Int_Mode6_Data();
+ 286   2                      if(b_WASD_Mode)
+ 287   2                              Read_WASD_Image(Image_Times);
+ 288   2                      Save_Mode_Time();
+ 289   2              }
+ 290   1              if(Brightness_Wheels==0)
+ 291   1                      bSpeed_End=1;
+ 292   1      }
+ 293          void Brightness_Add(void)
+ 294          {
+ 295   1              U8 i;
+ 296   1              if(Brightness_Wheels<5)
+ 297   1              {       
+ 298   2                      Brightness_Wheels++;
+ 299   2                      Int_Mode6_Data();
+ 300   2                      if(b_WASD_Mode)
+ 301   2                              Read_WASD_Image(Image_Times);
+ 302   2                      Save_Mode_Time();
+C51 COMPILER V9.60.0.0   MODE_CHANGE                                                       09/23/2022 11:52:49 PAGE 6   
+
+ 303   2              }
+ 304   1              if(Brightness_Wheels==5)
+ 305   1                      bSpeed_End=1;   
+ 306   1      }
+ 307          
+ 308          //***************************************
+ 309          U8 xdata USB_Opine_Times;
+ 310          U8 xdata USB_Opine_Times2;
+ 311          U8 xdata USB_Opine_Times3;
+ 312          U8      xdata   Last_Time1;
+ 313          U8      xdata   Last_Time2;
+ 314          bit     USB_Opine_Up;
+ 315          bit     Power_All_Up;
+ 316          bit     b_PowerLow;
+ 317          U8      xdata   Power_status_Data;
+ 318          U8      xdata   Power_status_Delay;
+ 319          void F_Text_Opine(void)
+ 320          {
+ 321   1              U8 i;
+ 322   1              if(USB_Opine)
+ 323   1              {
+ 324   2                      LDO_D=0;
+ 325   2                      b_PowerLow=0;
+ 326   2                      Power_status_Data=0xAA;
+ 327   2                      USB_Opine_Times++;
+ 328   2                      if(USB_Opine_Times>5)
+ 329   2                      {       
+ 330   3                              USB_Opine_Times=6;
+ 331   3                              /*
+ 332   3                              if(Power_In)    //充满
+ 333   3                              {
+ 334   3                                      USB_Opine_Times2++;
+ 335   3                                      if(USB_Opine_Times2>220)
+ 336   3                                      {       
+ 337   3                                              if(Power_All_Up)
+ 338   3                                              {       
+ 339   3                                                      Power_All_Up=0;
+ 340   3                                                      if(!fg_Power_Led2)
+ 341   3                                                      {
+ 342   3                                                              fg_Power_Led2=1;
+ 343   3                                                               Last_Time2=0;
+ 344   3                                                              Last_Time1=0;
+ 345   3                                                      }
+ 346   3                                              }
+ 347   3                                      }
+ 348   3                              }
+ 349   3                              else
+ 350   3                              {
+ 351   3                                      Power_All_Up=1;
+ 352   3                                      USB_Opine_Times2=0;
+ 353   3                              }
+ 354   3                              //----------------------------
+ 355   3                              if(USB_Opine_Up)
+ 356   3                              {       
+ 357   3                                      USB_Opine_Up=0;
+ 358   3                                      if(!fg_Power_Led)
+ 359   3                                      {
+ 360   3                                              fg_Power_Led=1;
+ 361   3                                                 Last_Time2=0;
+ 362   3                                              Last_Time1=0;
+ 363   3                                      }
+ 364   3                              }
+C51 COMPILER V9.60.0.0   MODE_CHANGE                                                       09/23/2022 11:52:49 PAGE 7   
+
+ 365   3                              */
+ 366   3                      }
+ 367   2              }
+ 368   1              else
+ 369   1              {
+ 370   2                      USB_Opine_Up=1;
+ 371   2                      LDO_D=1;
+ 372   2                      fg_Power_Led2=0;
+ 373   2                      USB_Opine_Times=0;
+ 374   2                      if((Power_status<3)&&(!Mode_USB))
+ 375   2                      {
+ 376   3                              Power_status_Delay++;
+ 377   3                              if(Power_status_Delay>30)
+ 378   3                              {
+ 379   4                                      Power_status_Delay=0;
+ 380   4                                      if(Power_status_Data)
+ 381   4                                              Power_status_Data=0;
+ 382   4                                      else
+ 383   4                                              Power_status_Data=255;
+ 384   4                              }
+ 385   3                              if(Power_status<2)
+ 386   3                              {       
+ 387   4                                      b_PowerLow=1;
+ 388   4                              }
+ 389   3                      }       
+ 390   2                      if(Power_status>3)
+ 391   2                      {
+ 392   3                              Power_status_Data=0xAA;
+ 393   3                              b_PowerLow=0;
+ 394   3                      }
+ 395   2              }                       
+ 396   1              Opine_times++;
+ 397   1              if(Opine_times>15)
+ 398   1              {
+ 399   2                      Opine_times=0;
+ 400   2                      if(Usb_In)
+ 401   2                      {
+ 402   3                              //mode_change_flag=0;
+ 403   3                              if(!Mode_USB)
+ 404   3                              {
+ 405   4                                      Short_KeyDown_ModuleMode(0);
+ 406   4                                      USB_Opine_Times3=2;
+ 407   4                              }
+ 408   3                              else if(USB_Opine_Times3)
+ 409   3                              {
+ 410   4                                      Short_KeyDown_ModuleMode(0);
+ 411   4                                      USB_Opine_Times3--;
+ 412   4                              }       
+ 413   3                      }       
+ 414   2                      else
+ 415   2                      {
+ 416   3                              if(Mode_Bluetooth_Times==1)
+ 417   3                                      {       
+ 418   4                                              if(!Mode_Bluetooth1)
+ 419   4                                              Short_KeyDown_ModuleMode(2);
+ 420   4                                      }
+ 421   3                              else if(Mode_Bluetooth_Times==2)
+ 422   3                                      {       
+ 423   4                                              if(!Mode_Bluetooth2)
+ 424   4                                              Short_KeyDown_ModuleMode(3);
+ 425   4                                      }
+ 426   3                              else if(Mode_Bluetooth_Times==3)
+C51 COMPILER V9.60.0.0   MODE_CHANGE                                                       09/23/2022 11:52:49 PAGE 8   
+
+ 427   3                                      {       
+ 428   4                                              if(!Mode_Bluetooth3)
+ 429   4                                              Short_KeyDown_ModuleMode(4);
+ 430   4                                      }
+ 431   3                              else if(Mode_Bluetooth_Times==4)
+ 432   3                                      {
+ 433   4                                              if(!Mode_24G)
+ 434   4                                              Short_KeyDown_ModuleMode(1);
+ 435   4                                      }
+ 436   3                      }
+ 437   2              }
+ 438   1                              
+ 439   1      }
+ 440          //*******************************************
+ 441          U8      xdata   Last_Time3;
+ 442          U8  xdata       bSpeed_data;
+ 443          U8  xdata       bSpeed_data2;
+ 444          U8      xdata   Last_Time11;
+ 445          U8      xdata   Last_Time22;
+ 446          U8 Pair_State(U8 Temp_Imge2)
+ 447          {
+ 448   1              U8 i;
+ 449   1                      i=0;
+ 450   1              if(Temp_Imge2==0x81)            //对码
+ 451   1                      i=1;    //快闪
+ 452   1              else if(Temp_Imge2==0x82)       //回连
+ 453   1                      i=2;    //慢闪
+ 454   1              else if(Temp_Imge2==0x83)       //连接
+ 455   1                      i=0;    //常亮
+ 456   1              else if(Temp_Imge2==0x80)       //断开
+ 457   1                      i=3;    //灭
+ 458   1              return(i);
+ 459   1      }
+ 460          void Deal_Speed_LED_End(void)
+ 461          {
+ 462   1              //0 常亮  1快闪   2慢闪   3关
+ 463   1              U8 i,j,n,i2;
+ 464   1              U16 i1;
+ 465   1              if(Change_ModeTimes)
+ 466   1                      Change_ModeTimes--;
+ 467   1              i=0;
+ 468   1              if(bSpeed_End)
+ 469   1              {
+ 470   2                      Last_Time11++;
+ 471   2                      if(Last_Time11<15)
+ 472   2                      {
+ 473   3                              for(i2=17; i2<21; i2++)
+ 474   3                              {
+ 475   4                                      Image[0][i2]=0+PWM_AddData(0,i2);
+ 476   4                                      Image[1][i2]=0+PWM_AddData(1,i2);
+ 477   4                                      Image[2][i2]=0+PWM_AddData(2,i2);
+ 478   4                              }
+ 479   3                      }
+ 480   2                      else if(Last_Time11<30) //R
+ 481   2                      {
+ 482   3                              for(i2=17; i2<21; i2++)
+ 483   3                              {
+ 484   4                                      Image[0][i2]=1020+PWM_AddData(0,i2);
+ 485   4                                      Image[1][i2]=1020+PWM_AddData(1,i2);
+ 486   4                                      Image[2][i2]=1020+PWM_AddData(2,i2);
+ 487   4                              }
+ 488   3                      }
+C51 COMPILER V9.60.0.0   MODE_CHANGE                                                       09/23/2022 11:52:49 PAGE 9   
+
+ 489   2                      else if(Last_Time11<45)
+ 490   2                      {
+ 491   3                              for(i2=17; i2<21; i2++)
+ 492   3                              {
+ 493   4                                      Image[0][i2]=0+PWM_AddData(0,i2);
+ 494   4                                      Image[1][i2]=0+PWM_AddData(1,i2);
+ 495   4                                      Image[2][i2]=0+PWM_AddData(2,i2);
+ 496   4                              }
+ 497   3                      }
+ 498   2                      else if(Last_Time11<60) //G
+ 499   2                      {
+ 500   3                              for(i2=17; i2<21; i2++)
+ 501   3                              {
+ 502   4                                      Image[1][i2]=1020+PWM_AddData(1,i2);
+ 503   4                                      Image[0][i2]=1020+PWM_AddData(0,i2);
+ 504   4                                      Image[2][i2]=1020+PWM_AddData(2,i2);
+ 505   4                              }
+ 506   3                      }
+ 507   2                      else if(Last_Time11<75)
+ 508   2                      {
+ 509   3                              for(i2=17; i2<21; i2++)
+ 510   3                              {
+ 511   4                                      Image[0][i2]=0+PWM_AddData(0,i2);
+ 512   4                                      Image[1][i2]=0+PWM_AddData(1,i2);
+ 513   4                                      Image[2][i2]=0+PWM_AddData(2,i2);
+ 514   4                              }
+ 515   3                      }
+ 516   2                      else if(Last_Time11<90) //B
+ 517   2                      {
+ 518   3                              for(i2=17; i2<21; i2++)
+ 519   3                              {
+ 520   4                                      Image[2][i2]=1020+PWM_AddData(2,i2);
+ 521   4                                      Image[1][i2]=1020+PWM_AddData(1,i2);
+ 522   4                                      Image[0][i2]=1020+PWM_AddData(0,i2);
+ 523   4                              }
+ 524   3                      }
+ 525   2                      else if(Last_Time11>90)
+ 526   2                      {
+ 527   3                              //Clear_All_Image();
+ 528   3                              Last_Time11=0;
+ 529   3                              if(!b_Record_Mode)
+ 530   3                                      bSpeed_End=0;
+ 531   3                              //Last_CL_Brightness_Wheels=0xAA;
+ 532   3                      }
+ 533   2              }               
+ 534   1              else if(fg_Power_Led|fg_Power_Led2)
+ 535   1              {
+ 536   2                      Last_Time11++;
+ 537   2                      if(Last_Time11>30)
+ 538   2                      {
+ 539   3                              Last_Time11=0;
+ 540   3                              
+ 541   3                              if(Last_Time22==0)
+ 542   3                                      bSpeed_data2=0;
+ 543   3                              else if(Last_Time22==1)
+ 544   3                                      bSpeed_data2=250;
+ 545   3                                      
+ 546   3                              else if(Last_Time22==2)
+ 547   3                                      bSpeed_data2=0; 
+ 548   3                              else if(Last_Time22==3)
+ 549   3                                      bSpeed_data2=250;
+ 550   3                                      
+C51 COMPILER V9.60.0.0   MODE_CHANGE                                                       09/23/2022 11:52:49 PAGE 10  
+
+ 551   3                              else if(Last_Time22==4)
+ 552   3                                      bSpeed_data2=0;         
+ 553   3                              else if(Last_Time22==5)
+ 554   3                                      bSpeed_data2=250;       
+ 555   3                                      
+ 556   3                              else if(Last_Time22==6)
+ 557   3                                      bSpeed_data2=0; 
+ 558   3                              else if(Last_Time22==7)
+ 559   3                                      bSpeed_data2=250;
+ 560   3                                      
+ 561   3                              else if(Last_Time22==8)
+ 562   3                                      bSpeed_data2=0;         
+ 563   3                              else if(Last_Time22==9)
+ 564   3                                      bSpeed_data2=250;       
+ 565   3                              else if(Last_Time22==10)
+ 566   3                                      bSpeed_data2=0;         
+ 567   3                                      i2=6;
+ 568   3                              if(fg_Power_Led2)
+ 569   3                                      i2=10;  
+ 570   3                              Last_Time22++;
+ 571   3                              if(Last_Time22>i2)
+ 572   3                                      {
+ 573   4                                              Last_Time22=0;
+ 574   4                                              fg_Power_Led=fg_Power_Led2=0;
+ 575   4                                              Last_CL_Brightness_Wheels=0xAA;
+ 576   4                                      }               
+ 577   3                      }       
+ 578   2              }       
+ 579   1              if(Mode_24G)
+ 580   1              {
+ 581   2                      if(Module_LED_status2==1)
+ 582   2                      {       
+ 583   3                              fg_suspend = 0;
+ 584   3                              USB_Mode_Times=0;
+ 585   3                              i=Pair_State(Wirte_State);
+ 586   3                      }
+ 587   2                      else if(Change_ModeTimes==0)
+ 588   2                      {
+ 589   3                              Short_KeyDown_ModuleMode(1);
+ 590   3                      }
+ 591   2              }
+ 592   1              else if(Mode_Bluetooth1)
+ 593   1              {
+ 594   2                      if(Module_LED_status2==0x21)
+ 595   2                      {       
+ 596   3                              fg_suspend = 0;
+ 597   3                              USB_Mode_Times=0;
+ 598   3                              i=Pair_State(Wirte_State);
+ 599   3                      }
+ 600   2                      else if(Change_ModeTimes==0)
+ 601   2                      {
+ 602   3                              Short_KeyDown_ModuleMode(2);
+ 603   3                      }
+ 604   2              }
+ 605   1              else if(Mode_Bluetooth2)
+ 606   1              {
+ 607   2                      if(Module_LED_status2==0x41)
+ 608   2                      {       
+ 609   3                              fg_suspend = 0;
+ 610   3                              USB_Mode_Times=0;
+ 611   3                              i=Pair_State(Wirte_State);
+ 612   3                      }
+C51 COMPILER V9.60.0.0   MODE_CHANGE                                                       09/23/2022 11:52:49 PAGE 11  
+
+ 613   2                      else if(Change_ModeTimes==0)
+ 614   2                      {
+ 615   3                              Short_KeyDown_ModuleMode(3);
+ 616   3                      }
+ 617   2                              
+ 618   2              }
+ 619   1              else if(Mode_Bluetooth3)
+ 620   1              {
+ 621   2                      if(Module_LED_status2==0x61)    
+ 622   2                      {       
+ 623   3                              fg_suspend = 0;
+ 624   3                              USB_Mode_Times=0;
+ 625   3                              i=Pair_State(Wirte_State);
+ 626   3                      }
+ 627   2                      else if(Change_ModeTimes==0)
+ 628   2                      {
+ 629   3                              Short_KeyDown_ModuleMode(4);
+ 630   3                      }
+ 631   2              }
+ 632   1              //---------------------------------------------
+ 633   1              switch(i)
+ 634   1              {
+ 635   2                      case 0: 
+ 636   2                              bSpeed_data=0XAA;
+ 637   2                              //Last_CL_Brightness_Wheels=0XAA;
+ 638   2                      break;
+ 639   2                      //--------------------------------
+ 640   2                      case 1:         //快闪
+ 641   2                              Last_Time2++;
+ 642   2                              if(Last_Time2>12)
+ 643   2                              {
+ 644   3                                      Last_Time2=0;
+ 645   3                                      if(Last_Time1)
+ 646   3                                      {       
+ 647   4                                              Last_Time1=0;
+ 648   4                                              bSpeed_data=0;
+ 649   4                                      }
+ 650   3                                      else
+ 651   3                                      {       
+ 652   4                                              Last_Time1=1;
+ 653   4                                              bSpeed_data=250;        
+ 654   4                                      }       
+ 655   3                              }       
+ 656   2                      break;
+ 657   2                      //--------------------------------
+ 658   2                      case 2:         //慢闪
+ 659   2                              Last_Time2++;
+ 660   2                              if(Last_Time2>50)
+ 661   2                              {
+ 662   3                                      Last_Time2=0;
+ 663   3                                      if(Last_Time1)
+ 664   3                                      {       
+ 665   4                                              Last_Time1=0;
+ 666   4                                              bSpeed_data=0;
+ 667   4                                      }
+ 668   3                                      else
+ 669   3                                      {       
+ 670   4                                              Last_Time1=1;
+ 671   4                                              bSpeed_data=250;        
+ 672   4                                      }       
+ 673   3                              }       
+ 674   2                      break;
+C51 COMPILER V9.60.0.0   MODE_CHANGE                                                       09/23/2022 11:52:49 PAGE 12  
+
+ 675   2                      //--------------------------------
+ 676   2                      case 3:         //关灯
+ 677   2                              bSpeed_data=0XAA;
+ 678   2                      break;
+ 679   2                      //--------------------------------
+ 680   2              }
+ 681   1              
+ 682   1                      
+ 683   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   2410    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     19       8
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =     36    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

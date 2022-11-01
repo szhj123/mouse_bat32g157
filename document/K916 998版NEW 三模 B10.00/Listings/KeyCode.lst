@@ -1,0 +1,60 @@
+C51 COMPILER V9.60.0.0   KEYCODE                                                           09/23/2022 11:52:49 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE KEYCODE
+OBJECT MODULE PLACED IN .\output\KeyCode.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\KeyCode.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG OBJEC
+                    -TEXTEND PRINT(.\Listings\KeyCode.lst) OBJECT(.\output\KeyCode.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\mcu_def.h"
+   4          #include "..\include\key_decode.h"
+   5          #include "..\include\usb_def.h"
+   6          #include "..\include\pwm_control.h"
+   7          #include "..\include\auser.h"
+   8          extern U8 data  LED_status;
+   9          U8 xdata        Last_LED_status;
+  10          void updata_Status_Led(void)
+  11          {
+  12   1      
+  13   1               /*
+  14   1              if(!Mode_USB)
+  15   1                      return;
+  16   1              if(Ready_ok)
+  17   1                      return; 
+  18   1              if(LED_status!=Last_LED_status)
+  19   1              {       
+  20   1                      Last_LED_status=LED_status;
+  21   1                      Module_Led_Data(LED_status);
+  22   1              }
+  23   1               */
+  24   1      }
+  25          
+  26          
+  27          
+  28          
+  29          
+  30          
+  31          
+  32          
+  33          
+  34          
+  35          
+  36          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =      1    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      1    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

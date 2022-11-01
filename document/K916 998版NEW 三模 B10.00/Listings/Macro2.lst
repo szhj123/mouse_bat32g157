@@ -1,0 +1,13 @@
+C51 COMPILER V9.02   MACRO2                                                                07/05/2021 11:13:42 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE MACRO2
+OBJECT MODULE PLACED IN .\output\Macro2.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE src\Macro2.C LARGE WARNINGLEVEL(0) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\Macro2.lst) OBJECT(.\output\Macro2.obj)
+
+line level    source
+
+*** ERROR C318 OF src\Macro2.C: can't open file 'src\Macro2.C'
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

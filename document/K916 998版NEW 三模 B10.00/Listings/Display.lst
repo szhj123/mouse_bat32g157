@@ -1,0 +1,375 @@
+C51 COMPILER V9.60.0.0   DISPLAY                                                           09/23/2022 11:52:49 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DISPLAY
+OBJECT MODULE PLACED IN .\output\Display.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\Display.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG OBJEC
+                    -TEXTEND PRINT(.\Listings\Display.lst) OBJECT(.\output\Display.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\mcu_def.h"
+   4          #include "..\include\pwm_control.h"
+   5          #include ".\include\Auser.h"
+   6          #include "..\include\CFG.h"
+   7          U16 data        Temp_Brightness2;
+   8          U8 data Temp_Time1;
+   9          U16 xdata       Image[3][126];
+  10          void Disenable_Pwm(void)
+  11          {        
+  12   1              PWM01_DISABLE;  
+  13   1              PWM02_DISABLE;  
+  14   1              PWM03_DISABLE;  
+  15   1              PWM04_DISABLE;  
+  16   1              PWM05_DISABLE;  
+  17   1              PWM10_DISABLE;  
+  18   1              PWM11_DISABLE;  
+  19   1              PWM12_DISABLE;  
+  20   1              PWM13_DISABLE;  
+  21   1              PWM14_DISABLE;  
+  22   1              PWM15_DISABLE;  
+  23   1              PWM20_DISABLE;  
+  24   1              PWM21_DISABLE;  
+  25   1              PWM22_DISABLE;  
+  26   1              PWM23_DISABLE;  
+  27   1              PWM24_DISABLE;  
+  28   1              PWM25_DISABLE;  
+  29   1              PWM00_DISABLE; 
+  30   1      //      PWM40_DISABLE; 
+  31   1      }
+  32          void Enable_all_pwm(void)
+  33          {
+  34   1              PWM00CON=PWM00CON_INIT|0x40;
+  35   1              PWM01CON=PWM01CON_INIT;
+  36   1              PWM02CON=PWM02CON_INIT;
+  37   1      
+  38   1              PWM03CON=PWM03CON_INIT;
+  39   1              PWM04CON=PWM04CON_INIT;
+  40   1              PWM05CON=PWM05CON_INIT;
+  41   1      
+  42   1              PWM10CON=PWM10CON_INIT;
+  43   1              PWM11CON=PWM11CON_INIT;
+  44   1              PWM12CON=PWM12CON_INIT;
+  45   1      
+  46   1              PWM13CON=PWM13CON_INIT;
+  47   1              PWM14CON=PWM14CON_INIT;
+  48   1              PWM15CON=PWM15CON_INIT;
+  49   1                                              
+  50   1              PWM20CON=PWM20CON_INIT;
+  51   1              PWM21CON=PWM21CON_INIT;
+  52   1              PWM22CON=PWM22CON_INIT;
+  53   1      
+  54   1              PWM23CON=PWM23CON_INIT;
+C51 COMPILER V9.60.0.0   DISPLAY                                                           09/23/2022 11:52:49 PAGE 2   
+
+  55   1              PWM24CON=PWM24CON_INIT;
+  56   1              PWM25CON=PWM25CON_INIT;
+  57   1      }
+  58          void Deal_Data_Go3(void)
+  59          {       
+  60   1              PWM20DUTY2H =   (U8)((Image[1][0+Temp_Time1])>>8);
+  61   1              PWM20DUTY2L=    (U8) Image[1][0+Temp_Time1];
+  62   1              
+  63   1              PWM21DUTY2H =(U8)((Image[0][0+Temp_Time1])>>8);
+  64   1              PWM21DUTY2L=    (U8) Image[0][0+Temp_Time1];
+  65   1              
+  66   1              PWM22DUTY2H =   (U8)((Image[2][0+Temp_Time1])>>8);
+  67   1              PWM22DUTY2L=     (U8)Image[2][0+Temp_Time1];
+  68   1      //-----------------------------1-------------------------------------------
+  69   1              PWM23DUTY2H =   (U8) ((Image[1][21+Temp_Time1])>>8);    //41    
+  70   1              PWM23DUTY2L=    (U8)Image[1][21+Temp_Time1];
+  71   1              
+  72   1              PWM24DUTY2H =(U8) ((Image[0][21+Temp_Time1])>>8);               //42
+  73   1              PWM24DUTY2L=    (U8)Image[0][21+Temp_Time1];
+  74   1              
+  75   1              PWM25DUTY2H =(U8)((Image[2][21+Temp_Time1])>>8);                //43
+  76   1              PWM25DUTY2L=    (U8)Image[2][21+Temp_Time1];
+  77   1              
+  78   1              
+  79   1      //-----------------------------2-------------------------------------------
+  80   1              PWM10DUTY2H =(U8)((Image[1][42+Temp_Time1])>>8);
+  81   1              PWM10DUTY2L=    (U8)Image[1][42+Temp_Time1];
+  82   1              
+  83   1              PWM11DUTY2H =(U8) ((Image[0][42+Temp_Time1])>>8);
+  84   1              PWM11DUTY2L=    (U8)Image[0][42+Temp_Time1];
+  85   1              
+  86   1              PWM12DUTY2H =(U8) ((Image[2][42+Temp_Time1])>>8);
+  87   1              PWM12DUTY2L=    (U8)Image[2][42+Temp_Time1];
+  88   1      //-------------------------------3-------------------------------------------
+  89   1              PWM13DUTY2H =(U8)((Image[1][63+Temp_Time1])>>8);
+  90   1              PWM13DUTY2L=    (U8)Image[1][63+Temp_Time1];
+  91   1              
+  92   1              PWM14DUTY2H = (U8)((Image[0][63+Temp_Time1])>>8);
+  93   1              PWM14DUTY2L=    (U8)Image[0][63+Temp_Time1];
+  94   1              
+  95   1              PWM15DUTY2H = (U8) ((Image[2][63+Temp_Time1])>>8);
+  96   1              PWM15DUTY2L=    (U8)Image[2][63+Temp_Time1];
+  97   1      //-------------------------------4-------------------------------------------
+  98   1              PWM03DUTY2H =(U8) ((Image[1][84+Temp_Time1])>>8);
+  99   1              PWM03DUTY2L=    (U8)Image[1][84+Temp_Time1];
+ 100   1              
+ 101   1              PWM04DUTY2H =(U8) ((Image[0][84+Temp_Time1])>>8);
+ 102   1              PWM04DUTY2L=    (U8)Image[0][84+Temp_Time1];
+ 103   1              
+ 104   1              PWM05DUTY2H =(U8) ((Image[2][84+Temp_Time1])>>8);
+ 105   1              PWM05DUTY2L=    (U8)Image[2][84+Temp_Time1];
+ 106   1      //--------------------------------5------------------------------------------
+ 107   1              PWM00DUTY2H =(U8)  ((Image[1][105+Temp_Time1])>>8);
+ 108   1              PWM00DUTY2L=    (U8)Image[1][105+Temp_Time1];
+ 109   1              
+ 110   1              PWM01DUTY2H =(U8)   ((Image[0][105+Temp_Time1])>>8);
+ 111   1              PWM01DUTY2L=    (U8)Image[0][105+Temp_Time1];
+ 112   1              
+ 113   1              PWM02DUTY2H =(U8) ((Image[2][105+Temp_Time1])>>8);
+ 114   1              PWM02DUTY2L=    (U8)Image[2][105+Temp_Time1];
+ 115   1              
+ 116   1              
+C51 COMPILER V9.60.0.0   DISPLAY                                                           09/23/2022 11:52:49 PAGE 3   
+
+ 117   1      }
+ 118          void Deal_Data_Go2(void)
+ 119          {       
+ 120   1              
+ 121   1              PWM20DUTY2H =   (U8)((Image2[1][0+Temp_Time1])>>8);                     //38
+ 122   1              PWM20DUTY2L=    (U8) Image2[1][0+Temp_Time1];
+ 123   1              
+ 124   1              PWM21DUTY2H =(U8)((Image2[0][0+Temp_Time1])>>8);                        //39
+ 125   1              PWM21DUTY2L=    (U8) Image2[0][0+Temp_Time1];
+ 126   1              
+ 127   1              PWM22DUTY2H =   (U8)((Image2[2][0+Temp_Time1])>>8);                     //40
+ 128   1              PWM22DUTY2L=     (U8)Image2[2][0+Temp_Time1];
+ 129   1      //-----------------------------1-------------------------------------------
+ 130   1              PWM23DUTY2H =   (U8)((Image2[0][21+Temp_Time1])>>8);            //41    
+ 131   1              PWM23DUTY2L=    (U8)Image2[0][21+Temp_Time1];           
+ 132   1              
+ 133   1              PWM24DUTY2H =(U8) ((Image2[2][21+Temp_Time1])>>8);              //42
+ 134   1              PWM24DUTY2L=    (U8)Image2[2][21+Temp_Time1];
+ 135   1              
+ 136   1              PWM25DUTY2H =   (U8) ((Image2[1][21+Temp_Time1])>>8);           //43
+ 137   1              PWM25DUTY2L=    (U8)Image2[1][21+Temp_Time1];
+ 138   1              
+ 139   1              
+ 140   1      //-----------------------------2-------------------------------------------
+ 141   1              PWM10DUTY2H =(U8)((Image2[1][42+Temp_Time1])>>8);
+ 142   1              PWM10DUTY2L=    (U8)Image2[1][42+Temp_Time1];
+ 143   1              
+ 144   1              PWM11DUTY2H =(U8) ((Image2[0][42+Temp_Time1])>>8);
+ 145   1              PWM11DUTY2L=    (U8)Image2[0][42+Temp_Time1];
+ 146   1              
+ 147   1              PWM12DUTY2H =(U8) ((Image2[2][42+Temp_Time1])>>8);
+ 148   1              PWM12DUTY2L=    (U8)Image2[2][42+Temp_Time1];
+ 149   1      //-------------------------------3-------------------------------------------
+ 150   1              PWM13DUTY2H =(U8)((Image2[1][63+Temp_Time1])>>8);
+ 151   1              PWM13DUTY2L=    (U8)Image2[1][63+Temp_Time1];
+ 152   1              
+ 153   1              PWM14DUTY2H = (U8)((Image2[0][63+Temp_Time1])>>8);
+ 154   1              PWM14DUTY2L=    (U8)Image2[0][63+Temp_Time1];
+ 155   1              
+ 156   1              PWM15DUTY2H = (U8) ((Image2[2][63+Temp_Time1])>>8);
+ 157   1              PWM15DUTY2L=    (U8)Image2[2][63+Temp_Time1];
+ 158   1      //-------------------------------4-------------------------------------------
+ 159   1              PWM03DUTY2H =(U8) ((Image2[1][84+Temp_Time1])>>8);
+ 160   1              PWM03DUTY2L=    (U8)Image2[1][84+Temp_Time1];
+ 161   1              
+ 162   1              PWM04DUTY2H =(U8) ((Image2[0][84+Temp_Time1])>>8);
+ 163   1              PWM04DUTY2L=    (U8)Image2[0][84+Temp_Time1];
+ 164   1              
+ 165   1              PWM05DUTY2H =(U8) ((Image2[2][84+Temp_Time1])>>8);
+ 166   1              PWM05DUTY2L=    (U8)Image2[2][84+Temp_Time1];
+ 167   1      //--------------------------------5------------------------------------------
+ 168   1              PWM00DUTY2H =(U8)  ((Image2[1][105+Temp_Time1])>>8);
+ 169   1              PWM00DUTY2L=    (U8)Image2[1][105+Temp_Time1];
+ 170   1              
+ 171   1              PWM01DUTY2H =(U8)   ((Image2[0][105+Temp_Time1])>>8);
+ 172   1              PWM01DUTY2L=    (U8)Image2[0][105+Temp_Time1];
+ 173   1              
+ 174   1              PWM02DUTY2H =(U8) ((Image2[2][105+Temp_Time1])>>8);
+ 175   1              PWM02DUTY2L=    (U8)Image2[2][105+Temp_Time1];
+ 176   1              
+ 177   1      }
+ 178          void Deal_Data_Go1(void)
+C51 COMPILER V9.60.0.0   DISPLAY                                                           09/23/2022 11:52:49 PAGE 4   
+
+ 179          {       
+ 180   1              PWM20DUTY2H =   0;
+ 181   1              PWM20DUTY2L=    38;
+ 182   1              
+ 183   1              PWM21DUTY2H =0;
+ 184   1              PWM21DUTY2L=    39;
+ 185   1              
+ 186   1              PWM22DUTY2H =   0;
+ 187   1              PWM22DUTY2L=      40;
+ 188   1      //-----------------------------1-------------------------------------------
+ 189   1              PWM23DUTY2H = 0;
+ 190   1              PWM23DUTY2L=    41;
+ 191   1              
+ 192   1              PWM24DUTY2H =0;
+ 193   1              PWM24DUTY2L=    42;
+ 194   1              
+ 195   1              PWM25DUTY2H =0;
+ 196   1              PWM25DUTY2L=    43;
+ 197   1              
+ 198   1              
+ 199   1      //-----------------------------2-------------------------------------------
+ 200   1              PWM10DUTY2H =0;
+ 201   1              PWM10DUTY2L=    44;
+ 202   1              
+ 203   1              PWM11DUTY2H =0;
+ 204   1              PWM11DUTY2L=    45;
+ 205   1              
+ 206   1              PWM12DUTY2H =0;
+ 207   1              PWM12DUTY2L=    46;
+ 208   1      //-------------------------------3-------------------------------------------
+ 209   1              PWM13DUTY2H =0;
+ 210   1              PWM13DUTY2L=    47;
+ 211   1              
+ 212   1              PWM14DUTY2H =0;
+ 213   1              PWM14DUTY2L=    48;
+ 214   1              
+ 215   1              PWM15DUTY2H =0;
+ 216   1              PWM15DUTY2L=    49;
+ 217   1      //-------------------------------4-------------------------------------------
+ 218   1              PWM03DUTY2H =0;
+ 219   1              PWM03DUTY2L=    50;
+ 220   1              
+ 221   1              PWM04DUTY2H =0;
+ 222   1              PWM04DUTY2L=    51;
+ 223   1              
+ 224   1              PWM05DUTY2H =0;
+ 225   1              PWM05DUTY2L=    52;
+ 226   1      //--------------------------------5------------------------------------------
+ 227   1              PWM00DUTY2H =0;
+ 228   1              PWM00DUTY2L=    53;
+ 229   1              
+ 230   1              PWM01DUTY2H =0;
+ 231   1              PWM01DUTY2L=    54;
+ 232   1              
+ 233   1              PWM02DUTY2H =0;
+ 234   1              PWM02DUTY2L=    55;
+ 235   1              
+ 236   1      }
+ 237          void Display_Mode(void)
+ 238          {
+ 239   1              U8 i;
+ 240   1              U8 RtnPort,RtnPort1;
+C51 COMPILER V9.60.0.0   DISPLAY                                                           09/23/2022 11:52:49 PAGE 5   
+
+ 241   1      //      LDO_D=0;
+ 242   1              Disenable_Pwm();//pwm失能       
+ 243   1              P6 |= 0xff;//P6=0XC0   0XFF 
+ 244   1              P5 |= 0x87;//P5=0X88   0X8F
+ 245   1              P4 |= 0x6d;//P4=0XB0   0XFD
+ 246   1              P7 |= 0x10;//P7=0XF8   0XF8
+ 247   1              P0 |= 0xE0;//P0=0X80   0XE0  为什么要或上这些值？
+ 248   1              switch(Temp_Time1)
+ 249   1              {
+ 250   2                              case 0:         
+ 251   2                                              C0=0;   //C20=1;//      P3_0 = 0;
+ 252   2                              break;
+ 253   2                              case 1:
+ 254   2                                              C1 = 0; //C0=1;         
+ 255   2                              break;  
+ 256   2                              case 2:
+ 257   2                                              C2 = 0; //C1 = 1;                               
+ 258   2                              break;          
+ 259   2                              case 3:
+ 260   2                                              C3 = 0; //C2 = 1;                               
+ 261   2                              break;          
+ 262   2                              case 4:
+ 263   2                                              C4 = 0; //C3 = 1;                       
+ 264   2                              break;          
+ 265   2                              case 5:
+ 266   2                                              C5 = 0; //C4 = 1;                               
+ 267   2                              break;  
+ 268   2                              case 6:
+ 269   2                                              C6 = 0; //C5 = 1;       
+ 270   2                              break;
+ 271   2                              case 7:
+ 272   2                                              C7 = 0; //C6 = 1;                       
+ 273   2                              break;  
+ 274   2                              case 8:
+ 275   2                                              C8 = 0; //C7 = 1;                               
+ 276   2                              break;          
+ 277   2                              case 9:
+ 278   2                                              C9 = 0; //C8 = 1;                               
+ 279   2                              break;          
+ 280   2                              case 10:
+ 281   2                                              C10 = 0;        //C9 = 1;                               
+ 282   2                              break;          
+ 283   2                              case 11:
+ 284   2                                              C11 = 0;        //C10 = 1;                      
+ 285   2                              break;          
+ 286   2                              case 12:
+ 287   2                                              C12 = 0;        //C11 = 1;                      
+ 288   2                              break;  
+ 289   2                              case 13:
+ 290   2                                              C13 = 0;        //C12 = 1;                      
+ 291   2                              break;          
+ 292   2                              case 14:
+ 293   2                                              C14 = 0;        //C13 = 1;                      
+ 294   2                              break;          
+ 295   2                              case 15:
+ 296   2                                              C15 = 0;        //C14 = 1;                              
+ 297   2                              break;          
+ 298   2                              case 16:
+ 299   2                                              C16 = 0;        //C15 = 1;                      
+ 300   2                              break;  
+ 301   2                              case 17:
+ 302   2                                              C17 = 0;        //C16 = 1;
+C51 COMPILER V9.60.0.0   DISPLAY                                                           09/23/2022 11:52:49 PAGE 6   
+
+ 303   2                              break;
+ 304   2                              case 18:
+ 305   2                                              C18 = 0;        //C17 = 1;                      
+ 306   2                              break;  
+ 307   2                              case 19:
+ 308   2                                              C19 = 0;        //C18 = 1;                      
+ 309   2                              break;          
+ 310   2                              case 20:
+ 311   2                                              C20 = 0;        //C19 = 1;                      
+ 312   2                              break;          
+ 313   2              }
+ 314   1              RtnPort = ((P7&0x0f) |((P5<<1)&0x30))|0xc0;//R0用于仿真先屏蔽R0         
+ 315   1              PWM00CON &= 0xdf;          //clr flag   
+ 316   1              if(b_PowerLow)
+ 317   1                      Deal_Data_Go1();                
+ 318   1              else if(b_Image2_Ok)
+ 319   1                      Deal_Data_Go2();                
+ 320   1              else    
+ 321   1                      Deal_Data_Go3();                
+ 322   1              RtnPort1 = ((P7&0x0f) |((P5<<1)&0x30))|0xc0;//R0用于仿真先屏蔽R0        
+ 323   1              if(RtnPort==RtnPort1)
+ 324   1              {
+ 325   2                      V_Data[Temp_Time1]=~RtnPort;//Temp_Time1：这个值的范围：0~20，刚好21个按键
+ 326   2              //      V_Data[Temp_Time1]&=~1;
+ 327   2              }
+ 328   1              Temp_Time1++;
+ 329   1              if(Temp_Time1>21)
+ 330   1              {       
+ 331   2                      Temp_Time1=0;   
+ 332   2                      fhas_change=1;  
+ 333   2              }
+ 334   1              
+ 335   1              Enable_all_pwm();//使能所有pwm
+ 336   1      }
+ 337          
+ 338          
+ 339          
+ 340          
+ 341          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   2004    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =    756       1
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,157 @@
+C51 COMPILER V9.60.0.0   DISPLAY_PAOMA1                                                    09/23/2022 11:52:49 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DISPLAY_PAOMA1
+OBJECT MODULE PLACED IN .\output\Display_PaoMa1.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\Display_PaoMa1.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBU
+                    -G OBJECTEXTEND PRINT(.\Listings\Display_PaoMa1.lst) OBJECT(.\output\Display_PaoMa1.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\mcu_def.h"
+   4          #include "..\include\pwm_control.h"
+   5          #include ".\include\Auser.h"
+   6          #include "..\include\CFG.h"
+   7          #include <intrins.h>
+   8          #include <string.h>
+   9          //U8 xdata Temp_Time;
+  10          //U8 xdata Temp_Time2;
+  11          
+  12          //****************************************************
+  13          code const U8 Deal_PaoMa_1_Tab1 [55]=
+  14          {
+  15                  21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41, //21
+  16                  62,                                                                                                                                             //1
+  17                  104,103,102,101,100,99,98,97,96,95,94,93,92,91,90,89,88,87,86,85,84,    //21
+  18                  42,43,43,44,45,46,47,48,49,50,51,52,            //12
+  19                  
+  20          };
+  21          code const U8 Deal_PaoMa_1_Tab2 [55]=
+  22          {
+  23                  125,125,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,                     //22
+  24                  40,                                                                                                                                     //1
+  25                  83,82,81,80,79,78,77,76,75,74,73,72,71,70,69,68,67,66,65,64,63, //21
+  26                  21,22,23,24,25,26,27,28,29,30,                                          //10
+  27                  31,                                                                                                             //1     
+  28          };
+  29          code const U8 Deal_PaoMa_1_Tab3 [55]=
+  30          {
+  31                  125,125,125,    42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62, //21+3
+  32                  125,124,123,122,121,120,119,118,117,116,115,114,113,112,111,110,109,108,107,106,105,//21
+  33                  63,64,65,66,67,68,69,70,71,71,                          //10
+  34          };
+  35          //****************************************
+  36          code const U8 Deal_PaoMa_2_Tab1 [30]=
+  37          {
+  38                  29,30,51,71,70,49,
+  39                  29,30,51,71,70,49,
+  40                  29,30,51,71,70,49,
+  41                  29,30,51,71,70,49,
+  42                  50,125,125,125,125,125,
+  43                  /*
+  44                  30,31,52,72,71,50,      //6
+  45                  30,31,52,72,71,50,      //6
+  46                  30,31,52,72,71,50,      //6
+  47                  30,31,52,72,71,50,      //6
+  48                  51,125,125,125,125,125,
+  49                  */
+  50                  
+  51          };
+  52          //****************************************
+  53          code const U8 Deal_PaoMa_3_Tab1 [6]=
+  54          {
+C51 COMPILER V9.60.0.0   DISPLAY_PAOMA1                                                    09/23/2022 11:52:49 PAGE 2   
+
+  55                  8,29,49,70,91,113,
+  56          };
+  57          code const U8 Deal_PaoMa_3_Tab2 [6]=
+  58          {
+  59                  10,32,53,73,93,114,
+  60          };
+  61          //****************************************
+  62          void Deal_PaoMa_1(void)
+  63          {
+  64   1              U8 i,i1,j;
+  65   1              U8 j1,j2,j3,n;
+  66   1              if(!b_PaoMa1_Mode)
+  67   1                      return;
+  68   1                              j=Speed_Data;   
+  69   1              if(b_PaoMa2)
+  70   1                      j=j*3;
+  71   1              Temp_Speed++;
+  72   1              if(Temp_Speed>j)
+  73   1              {
+  74   2                      Temp_Speed=0;
+  75   2                      if(b_PaoMa1)            //ÅÜÂí
+  76   2                      {       
+  77   3                              i=Deal_PaoMa_1_Tab1[Run_Time];
+  78   3                              Change_AColor_Time(i);  //Give_NUM_Image(i,Color_Times,50*Brightness_Wheels);
+  79   3                              i=Deal_PaoMa_1_Tab2[Run_Time];
+  80   3                              Change_AColor_Time(i);  //Give_NUM_Image(i,Color_Times,50*Brightness_Wheels);
+  81   3                              i=Deal_PaoMa_1_Tab3[Run_Time];
+  82   3                              Change_AColor_Time(i);  //Give_NUM_Image(i,Color_Times,50*Brightness_Wheels);
+  83   3                              
+  84   3                              Deal_K45_Image();
+  85   3                              Run_Time++;     
+  86   3                              if(Run_Time>55)
+  87   3                              {       
+  88   4                                      Run_Time=0;     
+  89   4                                      b_PaoMa2=1;
+  90   4                                      b_PaoMa1=0;
+  91   4                              }
+  92   3                      }
+  93   2                      else if(b_PaoMa2)
+  94   2                      {
+  95   3                              i=Deal_PaoMa_2_Tab1[Run_Time];
+  96   3                              Change_AColor_Time(i);  //Give_NUM_Image(i,Color_Times,50*Brightness_Wheels);
+  97   3                              Run_Time++;     
+  98   3                              if(Run_Time>30)
+  99   3                              {       
+ 100   4                                      Run_Time=0;     
+ 101   4                                      b_PaoMa2=0;
+ 102   4                                      b_PaoMa1=0;
+ 103   4                                      b_PaoMa3=1;     
+ 104   4                                      PaoHeng_Image_Num[9]=50;
+ 105   4                                      Image_Num_Times[9]=0;
+ 106   4                              }
+ 107   3                              
+ 108   3                      }
+ 109   2                      else if(b_PaoMa3)
+ 110   2                      {
+ 111   3                              Image_Num_Times[9]++;
+ 112   3                              if(Image_Num_Times[9]>27)
+ 113   3                              {
+ 114   4                                      Image_Num_Times[9]=0;
+ 115   4                                      PaoHeng_Image_Num[9]=0;
+ 116   4                                      Run_Time=0;     
+C51 COMPILER V9.60.0.0   DISPLAY_PAOMA1                                                    09/23/2022 11:52:49 PAGE 3   
+
+ 117   4                                      b_PaoMa2=0;
+ 118   4                                      b_PaoMa1=1;
+ 119   4                                      b_PaoMa3=0;     
+ 120   4                              }
+ 121   3                              else
+ 122   3                              {
+ 123   4                                      Heng_Temp_NUM=PaoHeng_Image_Num[9];
+ 124   4                                      Temp_Image_Time=Image_Num_Times[9];
+ 125   4                                      Deal_Pao_Heng_Data();
+ 126   4                              }
+ 127   3                      }
+ 128   2              }
+ 129   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    294    ----
+   CONSTANT SIZE    =    207    ----
+   XDATA SIZE       =   ----       6
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -32,7 +32,7 @@
  *  #define USB_CFG_PMSC_USE : Peripheral Mass Storage Class
  *  #define USB_CFG_PVND_USE : Peripheral VENDER Class
  * */
-#define USB_CFG_PMSC_USE /* USB_CFG_DEVICE_CLASS */
+#define USB_CFG_PHID_USE /* USB_CFG_DEVICE_CLASS */
 
 
 // Todo

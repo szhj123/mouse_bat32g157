@@ -1,0 +1,313 @@
+C51 COMPILER V9.60.0.0   SYS_INIT                                                          09/23/2022 11:52:49 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE SYS_INIT
+OBJECT MODULE PLACED IN .\output\sys_init.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\sys_init.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG OBJE
+                    -CTEXTEND PRINT(.\Listings\sys_init.lst) OBJECT(.\output\sys_init.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\mcu_def.h"
+   4          #include "..\include\pwm_control.h"
+   5          #include ".\include\Auser.h"
+   6          #include "..\include\CFG.h"
+   7          #include <intrins.h>
+   8          #include <string.h>
+   9          void clock_init(void);
+  10          void timer2_init(void);
+  11          void gpio_init(void);
+  12          void interrupt_init(void);
+  13          void pwm_init(void);
+  14          void spi_init(void);
+  15          void uart_init(void);
+  16          void lpd_init(void);
+  17          void ldo_init(void);
+  18          void usb_init(void);
+  19          ////////////////////////
+  20          extern void delay_us(U16 cnt);
+  21          extern U16 xdata Suspend_Counter;
+  22          //////////////////////////////////////////////////////////////////////
+  23          void sys_init(void)
+  24          {
+  25   1              ldo_init();
+  26   1              clock_init();
+  27   1              CLR_WDT();
+  28   1              delay_us(250);
+  29   1              CLR_WDT();
+  30   1              gpio_init();
+  31   1              timer2_init();
+  32   1              spi_init();
+  33   1              uart_init();
+  34   1              lpd_init();     
+  35   1              usb_init();
+  36   1              interrupt_init();
+  37   1      }
+  38          ///////////////////////////clock/////////////////////////////////////////
+  39          void clock_init(void)
+  40          {
+  41   1              CLR_WDT();
+  42   1              CLKCON = (CLKCON_INIT & 0x08);  //open high clock  ´ò¿ª¸ßËÙÊ±ÖÓ
+  43   1              delay_us(350);
+  44   1              PLLCON = (PLLCON_INIT & 0x02);//pllËøÏà»·Ê±ÖÓÅäÖÃ
+  45   1              delay_us(533);
+  46   1              CLR_WDT();
+  47   1              PLLCON = PLLCON_INIT;
+  48   1              CLKCON = CLKCON_INIT; //sys clock = high clock  ÏµÍ³Ê±ÖÓ=¸ßËÙÊ±ÖÓ
+  49   1      }
+  50          ///////////////////////////timer2/////////////////////////////////////////
+  51          ///////////////////////////gpio////////////////////////////////////////
+  52          void gpio_init(void)
+  53          {               //CR=0ÎªÊäÈëÄ£Ê½£¬CR=1ÎªÊä³öÄ£Ê½£¬PCR=1ÊÇÔÊÐíÄÚ²¿ÉÏÀ­£¬PCR=0ÊÇ²»ÔÊÐíÄÚ²¿ÉÏÀ­
+  54   1              P0CR = P0CR_INIT;//1111 0100   p0_0 p0_1 p0_3ÉèÖÃÎªÊäÈë
+C51 COMPILER V9.60.0.0   SYS_INIT                                                          09/23/2022 11:52:49 PAGE 2   
+
+  55   1              P1CR = P1CR_INIT;//11 1111     P1_0~P1~5È«²¿ÉèÖÃÎªÊä³ö
+  56   1              P2CR = P2CR_INIT;//11 1111
+  57   1              P3CR = P3CR_INIT;//11 1111
+  58   1              P4CR = P4CR_INIT;//1110 1101   p4_1 p4_4 ÉèÖÃÎªÊäÈë
+  59   1              P5CR = P5CR_INIT;//1000 0111   p5_3 p5_4 p5_5 p5_6ÉèÖÃÎªÊäÈë
+  60   1              P6CR = P6CR_INIT;//1111 1111
+  61   1              P7CR = P7CR_INIT;//0111 0000   p7_0 p7_1 p7_2 p7_3  p7_7ÉèÖÃÎªÊäÈë
+  62   1      
+  63   1              P0PCR = P0PCR_INIT;//1110 0000  P0_5 P0_6 P0_7ÉèÖÃÎªÔÊÐíÄÚ²¿ÉÏÀ­
+  64   1              P1PCR = P1PCR_INIT;//11 1111
+  65   1              P2PCR = P2PCR_INIT;//11 1111
+  66   1              P3PCR = P3PCR_INIT;//11 1111
+  67   1              P4PCR = P4PCR_INIT;//0110 1101
+  68   1              P5PCR = P5PCR_INIT;//1111 1111
+  69   1              P6PCR = P6PCR_INIT;//1111 1111
+  70   1              P7PCR = P7PCR_INIT;//0101 1111
+  71   1      
+  72   1              P0 = P0_OUTPUT_LEVEL;//1110 0100  ÉèÖÃp0_0¡¢1¡¢3¡¢4ÎªµÍµçÆ½£¬p0_2¡¢5¡¢6¡¢7Îª¸ßµçÆ½
+  73   1              P1 = P1_OUTPUT_LEVEL;//00 0000
+  74   1              P2 = P2_OUTPUT_LEVEL;//00 0000
+  75   1              P3 = P3_OUTPUT_LEVEL;//00 0000
+  76   1              P4 = P4_OUTPUT_LEVEL;//1110 1101  ÉèÖÃp4_1¡¢4ÎªµÍµçÆ½£¬p4_0¡¢2¡¢3¡¢5¡¢6¡¢7Îª¸ßµçÆ½
+  77   1              P5 = P5_OUTPUT_LEVEL;//1000 0111  ÉèÖÃp5_3¡¢4¡¢5¡¢6ÎªµÍµçÆ½£¬p5_0¡¢1¡¢2¡¢7Îª¸ßµçÆ½
+  78   1              P6 = P6_OUTPUT_LEVEL;//1111 1111  ÉèÖÃp6_0¡¢1¡¢2¡¢3¡¢4¡¢5¡¢6¡¢7Îª¸ßµçÆ½
+  79   1              P7 = P7_OUTPUT_LEVEL;//0001 0000  ÉèÖÃp7_0¡¢1¡¢2¡¢3¡¢4¡¢5¡¢7ÎªµÍµçÆ½£¬p7_4Îª¸ßµçÆ½
+  80   1      
+  81   1              DRVCON = 0X05;//Ö»ÓÐµ±DRVCON[3£º0] = 0x5£¬²ÅÄÜÔÊÐí¼Ä´æÆ÷ÐÞ¸ÄÏàÓ¦port¿ÚÇý¶¯´óÐ¡  0000 0101£¬¿´µÚÁùµÚÆßbit£
+             -¬ 00£ºÔÊÐíport1¿Ú¸Ä±äÇý¶¯ÄÜÁ¦
+  82   1              P1DRV = P1DRV_INIT;//Ö»ÓÐÅäÖÃºÃ¼Ä´æÆ÷DRVCONºó£¬½ô½Ó×ÅÐ´Çý¶¯Ñ¡Ôñ¼Ä´æÆ÷£¬Çý¶¯¸Ä±ä²ÅÓÐÐ§  PxDRV:Çý¶¯Ñ¡Ôñ¼Ä´æ
+             -Æ÷
+  83   1      
+  84   1              DRVCON = 0X45;//0100 0101£¬¿´µÚÁùµÚÆßbit£¬ 01£ºÔÊÐíport2¿Ú¸Ä±äÇý¶¯ÄÜÁ¦  
+  85   1              P2DRV = P2DRV_INIT;
+  86   1      
+  87   1              DRVCON = 0X85;//1000 0101£¬¿´µÚÁùµÚÆßbit£¬ 10£ºÔÊÐíport3¿Ú¸Ä±äÇý¶¯ÄÜÁ¦
+  88   1              P3DRV = P3DRV_INIT;
+  89   1      
+  90   1              DRVCON = 0Xc5;//1100 0101£¬¿´µÚÁùµÚÆßbit£¬ 11£ºÔÊÐíport5¿Ú¸Ä±äÇý¶¯ÄÜÁ¦
+  91   1              P5DRV = P5DRV_INIT;
+  92   1      }
+  93          ///////////////////////////interrupt/////////////////////////////////////////
+  94          void interrupt_init(void)
+  95          {
+  96   1              IEN0 |= IEN0_INIT;
+  97   1              IEN1 = IEN1_INIT;
+  98   1              IENC = IENC_INIT;
+  99   1              EXF0 = EXF0_INIT;
+ 100   1              IPH0 = IPH0_INIT;
+ 101   1              IPL0 = IPL0_INIT;
+ 102   1              IPH1 = 0x02;//IPH1_INIT;
+ 103   1              IPL1 = 0x02;//IPL1_INIT;
+ 104   1      }
+ 105          ///////////////////////////pwm/////////////////////////////////////////
+ 106          void pwm_init(void)
+ 107          {
+ 108   1              /*
+ 109   1              PWM0_MODE_ENABLE_BIT:=0£º½ûÖ¹PWMxyÄ£¿é£» =1£ºÔÊÐíPWMxyÄ£¿é
+ 110   1              PWM0_INT_ENABLE_BIT:=0£º½ûÖ¹PWMxyÒç³öÖÐ¶Ï £»=1£ºÔÊÐíPWMxyÒç³öÖÐ¶Ï
+ 111   1              PWM00MOD_BIT: =0:ÖÜÆÚÄÚÊä³öµÍµçÆ½£» =1£ºÖÜÆÚÄÚÊä³ö¸ßµçÆ½
+ 112   1              PWM00SS:=0£ºPWMxyÒý½ÅÊä³ö½ûÖ¹£»=1£ºPWMxyÒý½ÅÊä³öÔÊÐí
+ 113   1              PWM0CLK_DIV:0£ºÏµÍ³Ê±ÖÓ/1£» 1£ºÏµÍ³Ê±ÖÓ/2£»  2£ºÏµÍ³Ê±ÖÓ/4
+ 114   1      
+C51 COMPILER V9.60.0.0   SYS_INIT                                                          09/23/2022 11:52:49 PAGE 3   
+
+ 115   1              //T£¨ÖÜÆÚ£©=1/f£¨ÆµÂÊ£©--->ÆµÂÊ=1/ÖÜÆÚ£¨PERD£©£¬ÏÖÔÚÒ»¸öÖÜÆÚÊÇ60ms ÄÇÃ´Ò»ÃëÖÓ¾ÍÓÐ16.6´ÎPWMÖÜÆÚ
+ 116   1              */
+ 117   1      //PWM0
+ 118   1              PWM00CON = PWM00CON_INIT;//10011
+ 119   1              PWM01CON = PWM01CON_INIT;
+ 120   1              PWM02CON = PWM02CON_INIT;
+ 121   1              PWM03CON = PWM03CON_INIT;
+ 122   1              PWM04CON = PWM04CON_INIT;
+ 123   1              PWM05CON = PWM05CON_INIT;
+ 124   1              PWM0PERDH = PWM0PERDH_INIT;//PWMÖÜÆÚ¼ÆÊý¸ß×Ö½Ú  ÖÜÆÚµÈÓÚ¸ß×Ö½Ú+µÍ×Ö½Ú£¨unsigned charÀàÐÍµÄ£©
+ 125   1              PWM0PERDL = PWM0PERDL_INIT;//PWMÖÜÆÚ¼ÆÊýµÍ×Ö½Ú  0x38+0x04=0x3c=60
+ 126   1      
+ 127   1              PWM00DUTY1H = PWM00DUTY1H_INIT;//Õ¼¿Õ±È=¸ß×Ö½Ú+µÍ×Ö½Ú  53
+ 128   1              PWM00DUTY1L = PWM00DUTY1L_INIT;
+ 129   1              PWM00DUTY2H = PWM00DUTY2H_INIT;//53
+ 130   1              PWM00DUTY2L = PWM00DUTY2L_INIT;
+ 131   1      
+ 132   1              PWM01DUTY1H = PWM01DUTY1H_INIT;
+ 133   1              PWM01DUTY1L = PWM01DUTY1L_INIT;//54
+ 134   1              PWM01DUTY2H = PWM01DUTY2H_INIT;
+ 135   1              PWM01DUTY2L = PWM01DUTY2L_INIT;//54
+ 136   1      
+ 137   1              PWM02DUTY1H = PWM02DUTY1H_INIT;
+ 138   1              PWM02DUTY1L = PWM02DUTY1L_INIT;//55
+ 139   1              PWM02DUTY2H = PWM02DUTY2H_INIT;
+ 140   1              PWM02DUTY2L = PWM02DUTY2L_INIT;//55
+ 141   1      
+ 142   1              PWM03DUTY1H = PWM03DUTY1H_INIT;
+ 143   1              PWM03DUTY1L = PWM03DUTY1L_INIT;//50
+ 144   1              PWM03DUTY2H = PWM03DUTY2H_INIT;
+ 145   1              PWM03DUTY2L = PWM03DUTY2L_INIT;//50
+ 146   1      
+ 147   1              PWM04DUTY1H = PWM04DUTY1H_INIT;
+ 148   1              PWM04DUTY1L = PWM04DUTY1L_INIT;//51
+ 149   1              PWM04DUTY2H = PWM04DUTY2H_INIT;
+ 150   1              PWM04DUTY2L = PWM04DUTY2L_INIT;//51
+ 151   1      
+ 152   1              PWM05DUTY1H = PWM05DUTY1H_INIT;
+ 153   1              PWM05DUTY1L = PWM05DUTY1L_INIT;//52
+ 154   1              PWM05DUTY2H = PWM05DUTY2H_INIT;
+ 155   1              PWM05DUTY2L = PWM05DUTY2L_INIT;//52
+ 156   1      
+ 157   1              //PWM1
+ 158   1              PWM10CON = PWM10CON_INIT;
+ 159   1              PWM11CON = PWM11CON_INIT;
+ 160   1              PWM12CON = PWM12CON_INIT;
+ 161   1              PWM13CON = PWM13CON_INIT;
+ 162   1              PWM14CON = PWM14CON_INIT;
+ 163   1              PWM15CON = PWM15CON_INIT;
+ 164   1              PWM1PERDH = PWM1PERDH_INIT;//×î´óÕ¼¿Õ±ÈÖµ60
+ 165   1              PWM1PERDL = PWM1PERDL_INIT;
+ 166   1      
+ 167   1              PWM10DUTY1H = PWM10DUTY1H_INIT;
+ 168   1              PWM10DUTY1L = PWM10DUTY1L_INIT;//44
+ 169   1              PWM10DUTY2H = PWM10DUTY2H_INIT;
+ 170   1              PWM10DUTY2L = PWM10DUTY2L_INIT;//44
+ 171   1      
+ 172   1              PWM11DUTY1H = PWM11DUTY1H_INIT;
+ 173   1              PWM11DUTY1L = PWM11DUTY1L_INIT;//45
+ 174   1              PWM11DUTY2H = PWM11DUTY2H_INIT;
+ 175   1              PWM11DUTY2L = PWM11DUTY2L_INIT;//45
+ 176   1      
+C51 COMPILER V9.60.0.0   SYS_INIT                                                          09/23/2022 11:52:49 PAGE 4   
+
+ 177   1              PWM12DUTY1H = PWM12DUTY1H_INIT;
+ 178   1              PWM12DUTY1L = PWM12DUTY1L_INIT;//46
+ 179   1              PWM12DUTY2H = PWM12DUTY2H_INIT;
+ 180   1              PWM12DUTY2L = PWM12DUTY2L_INIT;//46
+ 181   1      
+ 182   1              PWM13DUTY1H = PWM13DUTY1H_INIT;
+ 183   1              PWM13DUTY1L = PWM13DUTY1L_INIT;//47
+ 184   1              PWM13DUTY2H = PWM13DUTY2H_INIT;
+ 185   1              PWM13DUTY2L = PWM13DUTY2L_INIT;//47
+ 186   1      
+ 187   1              PWM14DUTY1H = PWM14DUTY1H_INIT;
+ 188   1              PWM14DUTY1L = PWM14DUTY1L_INIT;//48
+ 189   1              PWM14DUTY2H = PWM14DUTY2H_INIT;
+ 190   1              PWM14DUTY2L = PWM14DUTY2L_INIT;//48
+ 191   1      
+ 192   1              PWM15DUTY1H = PWM15DUTY1H_INIT;
+ 193   1              PWM15DUTY1L = PWM15DUTY1L_INIT;//49
+ 194   1              PWM15DUTY2H = PWM15DUTY2H_INIT;
+ 195   1              PWM15DUTY2L = PWM15DUTY2L_INIT;//49
+ 196   1      
+ 197   1                      //PWM2
+ 198   1              PWM20CON = PWM20CON_INIT;
+ 199   1              PWM21CON = PWM21CON_INIT;
+ 200   1              PWM22CON = PWM22CON_INIT;
+ 201   1              PWM23CON = PWM23CON_INIT;
+ 202   1              PWM24CON = PWM24CON_INIT;
+ 203   1              PWM25CON = PWM25CON_INIT;
+ 204   1              PWM2PERDH = PWM2PERDH_INIT;//×î´óÕ¼¿Õ±ÈÖµ60
+ 205   1              PWM2PERDL = PWM2PERDL_INIT;
+ 206   1      
+ 207   1              PWM20DUTY1H = PWM20DUTY1H_INIT;
+ 208   1              PWM20DUTY1L = PWM20DUTY1L_INIT;//38
+ 209   1              PWM20DUTY2H = PWM20DUTY2H_INIT;
+ 210   1              PWM20DUTY2L = PWM20DUTY2L_INIT;//38
+ 211   1      
+ 212   1              PWM21DUTY1H = PWM21DUTY1H_INIT;
+ 213   1              PWM21DUTY1L = PWM21DUTY1L_INIT;//39
+ 214   1              PWM21DUTY2H = PWM21DUTY2H_INIT;
+ 215   1              PWM21DUTY2L = PWM21DUTY2L_INIT;//39
+ 216   1      
+ 217   1              PWM22DUTY1H = PWM22DUTY1H_INIT;
+ 218   1              PWM22DUTY1L = PWM22DUTY1L_INIT;//40
+ 219   1              PWM22DUTY2H = PWM22DUTY2H_INIT;
+ 220   1              PWM22DUTY2L = PWM22DUTY2L_INIT;//40
+ 221   1      
+ 222   1              PWM23DUTY1H = PWM23DUTY1H_INIT;
+ 223   1              PWM23DUTY1L = PWM23DUTY1L_INIT;//41
+ 224   1              PWM23DUTY2H = PWM23DUTY2H_INIT;
+ 225   1              PWM23DUTY2L = PWM23DUTY2L_INIT;//41
+ 226   1      
+ 227   1              PWM24DUTY1H = PWM24DUTY1H_INIT;
+ 228   1              PWM24DUTY1L = PWM24DUTY1L_INIT;//42
+ 229   1              PWM24DUTY2H = PWM24DUTY2H_INIT;
+ 230   1              PWM24DUTY2L = PWM24DUTY2L_INIT;//42
+ 231   1      
+ 232   1              PWM25DUTY1H = PWM25DUTY1H_INIT;//43
+ 233   1              PWM25DUTY1L = PWM25DUTY1L_INIT;
+ 234   1              PWM25DUTY2H = PWM25DUTY2H_INIT;//43
+ 235   1              PWM25DUTY2L = PWM25DUTY2L_INIT;
+ 236   1              
+ 237   1                      
+ 238   1      }
+C51 COMPILER V9.60.0.0   SYS_INIT                                                          09/23/2022 11:52:49 PAGE 5   
+
+ 239          ///////////////////////////spi/////////////////////////////////////////
+ 240          
+ 241          void spi_init(void)
+ 242          {
+ 243   1              SPCON = SPCON_INIT;
+ 244   1              SPSTA = SPSTA_INIT;
+ 245   1      }
+ 246          ///////////////////////////uart/////////////////////////////////////////
+ 247          void uart_init(void)
+ 248          {
+ 249   1              PCON = PCON_INIT;
+ 250   1              SCON = SCON_INIT;
+ 251   1              SBRTH = (U8)(SBRT_INIT>>8);
+ 252   1              SBRTL = (U8)(SBRT_INIT);
+ 253   1              SFINE = SFINE_INIT;
+ 254   1              SADDR = SADDR_INIT;
+ 255   1              SADEN = SADEN_INIT;
+ 256   1      }
+ 257          ///////////////////////////lpd/////////////////////////////////////////
+ 258          void lpd_init(void)
+ 259          {
+ 260   1              LPDCON =        0;      //µÍµçÑ¹¼ì²â¿ØÖÆ¼Ä´æÆ÷
+ 261   1              LPDSEL =        0;
+ 262   1      }
+ 263          ///////////////////////////3.3V LDO/////////////////////////////////////////
+ 264          void ldo_init(void)
+ 265          {
+ 266   1                      REGCON = REGCON_INIT;//0:¹Ø±ÕµçÔ´ÎÈÑ¹Æ÷  1£º¿ªÆôµçÔ´ÎÈÑ¹Æ÷
+ 267   1      }
+ 268          ///////////////////////////USB init/////////////////////////////////////////
+ 269          void usb_init(void)
+ 270          {
+ 271   1              USBADDR =USBADDR_INIT;
+ 272   1              USBIE1 = USBIE1_INIT;
+ 273   1              USBIE2 = USBIE2_INIT;
+ 274   1              USBCON = USBCON_INIT;
+ 275   1              Suspend_Counter = 0x00;
+ 276   1      }
+ 277          
+ 278          
+ 279          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    723    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -11,11 +11,7 @@
 #include "usb_phid_apl.h"
 #include "usb_phid_apl_config.h"
 
-#include "usb_pmsc_mini_if.h"
-#include "usb_pmsc_apl_config.h"
-#include "usb_media_driver_mini_if.h"
-#include "ext_flash_disk.h"
-
+#include "drv_task.h"
 
 #if OPERATION_MODE == USB_ECHO
 /*******************************************************************************
@@ -34,6 +30,10 @@
 /*******************************************************************************
  Private global variables and functions
  ******************************************************************************/
+static void Usb_Event_Handler(void *arg );
+
+static usb_ctrl_t  ctrl;
+static usb_cfg_t   cfg;
 
 static uint8_t gs_data[DATA_LEN];
 
@@ -56,15 +56,17 @@ const static usb_descriptor_t gs_usb_descriptor =
  ******************************************************************************/
 void Usb_Init (void)
 {
-    usb_ctrl_t  ctrl;
-    usb_cfg_t   cfg;
-
     ctrl.type       = USB_PHID;
     cfg.usb_mode    = USB_PERI;
     /* Descriptor registration */
     cfg.p_usb_reg   = (usb_descriptor_t *)&gs_usb_descriptor;
     USB_Open(&ctrl, &cfg);    /* Initializes the USB module */
 
+    Drv_Task_Regist_Period(0, 1, Usb_Event_Handler, NULL);
+}
+
+static void Usb_Event_Handler(void *arg )
+{
     /* Loop back between PC(TerminalSoft) and USB MCU */
     while (1)
     {
@@ -78,8 +80,8 @@ void Usb_Init (void)
                 break;
 
             case USB_STS_READ_COMPLETE :
-                //ctrl.type = USB_PHID;
-                //USB_Write(&ctrl, gs_data, ctrl.size);
+                ctrl.type = USB_PHID;
+                USB_Write(&ctrl, gs_data, ctrl.size);
                 break;
 
             case USB_STS_REQUEST : /* Receive Class Request */
@@ -122,22 +124,12 @@ void Usb_Init (void)
                 break;
 
             case USB_STS_REQUEST_COMPLETE : /* Complete Class Request */
-                if (USB_REQUEST_TYPE_CLASS == (ctrl.setup.type & USB_REQUEST_TYPE_CLASS))
+                if (((uint8_t )ctrl.setup.type & 0x60) == 0x20)
                 {
-                    if (USB_SET_IDLE == (ctrl.setup.type & USB_BREQUEST))
+                    if((uint8_t )(ctrl.setup.type >> 8) == 0x09)
                     {
-                        ctrl.status = USB_ACK;
-                        ctrl.type = USB_REQUEST;
-                        USB_Write(&ctrl, (uint8_t*)USB_NULL, (uint32_t)USB_NULL);
-                        /* Do Nothing */
-                    }
-                    else if (USB_SET_PROTOCOL == (ctrl.setup.type & USB_BREQUEST))
-                    {
-                        /* Do Nothing */
-                    }
-                    else
-                    {
-                        /* Do Nothing */
+                        ctrl.type = USB_PHID;
+                        USB_Write(&ctrl, gs_data, ctrl.size);
                     }
                 }
                 break;

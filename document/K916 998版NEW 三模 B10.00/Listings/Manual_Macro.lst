@@ -1,0 +1,272 @@
+C51 COMPILER V9.60.0.0   MANUAL_MACRO                                                      09/23/2022 11:52:51 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MANUAL_MACRO
+OBJECT MODULE PLACED IN .\output\Manual_Macro.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\Manual_Macro.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG 
+                    -OBJECTEXTEND PRINT(.\Listings\Manual_Macro.lst) OBJECT(.\output\Manual_Macro.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\CFG.h"
+   4          #include "..\include\Auser.h"
+   5          /*
+   6          U8 xdata        Manual_Record;
+   7          U8 xdata Manual_Record_UNM;
+   8          U8 xdata Last_Manual_data[7];
+   9          U8 xdata Manual_Time_Macro;
+  10          U8 xdata Macro2[65];
+  11          bit     b_REC_Up;       
+  12          bit     REC_Mode;
+  13          U8 xdata Delay_Fn2_Times;
+  14          U8 xdata Delay_Fn3_Times;
+  15          U8 xdata G_Led[4];
+  16          void Clear_Macro_Data(void)
+  17          {
+  18                  U8 i;
+  19                  for(i=0; i<65; i++)
+  20                  {
+  21                          Macro2[i]=0;
+  22                  }
+  23                  Manual_Time_Macro=0;
+  24          }
+  25          void Clear_Manual_Record(void)
+  26          {
+  27                  Manual_Record=0;
+  28          }
+  29          void JiLu_Macro_NUM(U8 ManualData)              //第几组宏  那个按键
+  30          {
+  31                  bSpeed_End=1;
+  32                  Clear_Macro_Data();                     //Clr 该组宏Data
+  33                  Clear_Manual_Record();
+  34                  //Macro2[ManualData][128]=ManualData2;//记录宏在那个按键
+  35                  //Manual_Record=0;                                              //清记录第几组宏的标记
+  36                  Manual_Record=ManualData;               //记录在几组宏的标记
+  37                  Manual_Record_UNM=1;                            //Set 宏录制开始        
+  38          }
+  39          //*****************************************
+  40          //处理启动录制和结束存储
+  41          //*****************************************
+  42          void Manual_Macro_Data(void)
+  43          {
+  44                  U8 i;
+  45                  //********************************
+  46                  if(bFn)
+  47                  {
+  48                          if((V_Data[14]&0x08)|(V_Data[16]&0x08)|(V_Data[14]&0x10)|(V_Data[16]&0x10))//进入手动录制模式
+  49                          {
+  50                                  if(b_REC_Up)
+  51                                  {
+  52                                          b_REC_Up=0;
+  53                                          if(!Manual_Record_UNM)
+  54                                          {       
+C51 COMPILER V9.60.0.0   MANUAL_MACRO                                                      09/23/2022 11:52:51 PAGE 2   
+
+  55                                                          if(V_Data[14]&0x08)
+  56                                                                  JiLu_Macro_NUM(1);
+  57                                                          else if(V_Data[16]&0x08)
+  58                                                                  JiLu_Macro_NUM(2);
+  59                                                          else if(V_Data[14]&0x10)
+  60                                                                  JiLu_Macro_NUM(3);      
+  61                                                          else if(V_Data[16]&0x10)
+  62                                                                  JiLu_Macro_NUM(4);      
+  63                                                          Delay_Fn2_Times=Delay_Fn3_Times=0;
+  64                                                                  
+  65                                          }
+  66                                          else
+  67                                          {       
+  68                                                          if(Macro2[0]|Macro2[1]|Macro2[2]|Macro2[3])
+  69                                                                  Macro2[64]=Manual_Record;
+  70                                                          else
+  71                                                                  Macro2[64]=0;
+  72                                                          Manual_Record_UNM=0x00;
+  73                                                          Save_Macro2_Data(Manual_Record);        
+  74                                                          //Manual_Record=0;
+  75                                                          REC_Mode=1;
+  76                                                          Delay_Fn2_Times=Delay_Fn3_Times=0;
+  77                                          }
+  78                                  }
+  79                          }
+  80                          else
+  81                          b_REC_Up=1;
+  82                  }
+  83                  //***********************************
+  84                  if(Manual_Record_UNM)
+  85                  {
+  86                                  Delay_Fn3_Times++;
+  87                          if(Delay_Fn3_Times<40)
+  88                                  return;
+  89                          Delay_Fn3_Times=0;
+  90                          
+  91                          if(Manual_Record==1)
+  92                                  i=0;
+  93                          else if(Manual_Record==2)
+  94                                  i=1;
+  95                          else if(Manual_Record==3)
+  96                                  i=2;    
+  97                          else if(Manual_Record==4)
+  98                                  i=3;    
+  99                          
+ 100                          Delay_Fn2_Times++;
+ 101                          if(Delay_Fn2_Times&0x01)
+ 102                                  G_Led[0]=G_Led[1]=G_Led[2]=G_Led[3]=255;
+ 103                          else    
+ 104                                  G_Led[i]=0;
+ 105                  }       
+ 106                  else if(REC_Mode)
+ 107                  {
+ 108                          Delay_Fn3_Times++;
+ 109                          if(Delay_Fn3_Times<10)
+ 110                                  return;
+ 111                          Delay_Fn3_Times=0;
+ 112                          
+ 113                          if(Manual_Record==1)
+ 114                                  i=0;
+ 115                          else if(Manual_Record==2)
+ 116                                  i=1;
+C51 COMPILER V9.60.0.0   MANUAL_MACRO                                                      09/23/2022 11:52:51 PAGE 3   
+
+ 117                          else if(Manual_Record==3)
+ 118                                  i=2;    
+ 119                          else if(Manual_Record==4)
+ 120                                  i=3;    
+ 121                          
+ 122                          Delay_Fn2_Times++;
+ 123                          if(Delay_Fn2_Times&0x01)
+ 124                                  G_Led[0]=G_Led[1]=G_Led[2]=G_Led[3]=255;
+ 125                          else    
+ 126                                  G_Led[i]=0;
+ 127                                  
+ 128                          if(Delay_Fn2_Times>8)
+ 129                                  {
+ 130                                          REC_Mode=0;
+ 131                                          Manual_Record=0;
+ 132                                  }       
+ 133                  }
+ 134                  else
+ 135                  {
+ 136                          G_Led[0]=G_Led[1]=G_Led[2]=G_Led[3]=255;
+ 137                  }               
+ 138          }
+ 139          //*****************************************
+ 140          //记录MACRO DATA 
+ 141          void Record_Macro_Data(void)
+ 142          {
+ 143                  U8 i,Manual_Data;
+ 144                  if((bFn)|(V_Data[14]&0x10)|(V_Data[16]&0x10)|(V_Data[14]&0x08)|(V_Data[16]&0x08))
+ 145                          return;
+ 146                  //Manual_Data=Manual_Record;    
+ 147                  if(Send_data[0]!=Last_Manual_data[0])//判断特殊键值
+ 148                  {
+ 149                          if(Send_data[0])                                        //判断特殊键值 1时
+ 150                          {
+ 151                                  if(Manual_Time_Macro<32)
+ 152                                  {       
+ 153                                          if(!Macro2[Manual_Time_Macro*2+1])
+ 154                                          {       
+ 155                                                  Macro2[Manual_Time_Macro*2+0]|=0x40;
+ 156                                                  Macro2[Manual_Time_Macro*2+1]=Send_data[0];
+ 157                                          }       
+ 158                                  }
+ 159                          }
+ 160                          else                                                            //判断特殊键值 0时
+ 161                          {
+ 162                                  if(Manual_Time_Macro<32)
+ 163                                  {
+ 164                                          if(!Macro2[Manual_Time_Macro*2+1])
+ 165                                          {       
+ 166                                                  Macro2[Manual_Time_Macro*2+0]|=0x80;
+ 167                                                  Macro2[Manual_Time_Macro*2+1]=Last_Manual_data[0];      
+ 168                                                  Macro2[Manual_Time_Macro*2+0]|=0x40;
+ 169                                          }
+ 170                                  }
+ 171                          }
+ 172                          Manual_Time_Macro++;    
+ 173                  }       
+ 174                  for(i=1;i<7;i++)
+ 175                  {
+ 176                          if((Last_Manual_data[i]!=0)||(Send_data[i]!=0))
+ 177                          {
+ 178                                  if(Send_data[i]!=Last_Manual_data[i])
+C51 COMPILER V9.60.0.0   MANUAL_MACRO                                                      09/23/2022 11:52:51 PAGE 4   
+
+ 179                                  {
+ 180                                          if(Send_data[i])
+ 181                                          {
+ 182                                                  if(Manual_Time_Macro<32)
+ 183                                                  {                                       
+ 184                                                          if(!Macro2[Manual_Time_Macro*2+1])
+ 185                                                          {       
+ 186                                                                  Macro2[Manual_Time_Macro*2+0]&=~0x40;
+ 187                                                                  Macro2[Manual_Time_Macro*2+1]=Send_data[i];
+ 188                                                          }
+ 189                                                  }
+ 190                                          }
+ 191                                          else
+ 192                                          {
+ 193                                                  if(Manual_Time_Macro<32)
+ 194                                                  {
+ 195                                                  if(!Macro2[Manual_Time_Macro*2+1])
+ 196                                                          {       
+ 197                                                                  Macro2[Manual_Time_Macro*2+0]&=~0x40;
+ 198                                                                  Macro2[Manual_Time_Macro*2+1]=Last_Manual_data[i];      
+ 199                                                                  Macro2[Manual_Time_Macro*2+0]|=0x80;
+ 200                                                          }
+ 201                                                  }
+ 202                                                  
+ 203                                          }
+ 204                                          Manual_Time_Macro++;    
+ 205                                  }
+ 206                          }
+ 207                  }
+ 208                  for(i=0;i<7;i++)
+ 209                  {
+ 210                          Last_Manual_data[i]=Send_data[i];
+ 211                  }
+ 212                  if((Macro2[62]|Macro2[63])|(Manual_Time_Macro>=63))
+ 213                  {
+ 214                                  Macro2[62]=0x80;
+ 215                                  Macro2[63]=0x00;
+ 216                                  Macro2[64]=Manual_Record;
+ 217                                  Manual_Record_UNM=0x00;
+ 218                                  Save_Macro2_Data(Manual_Record);        
+ 219                                  //Manual_Record=0;
+ 220                                  REC_Mode=1;
+ 221                                  Delay_Fn2_Times=Delay_Fn3_Times=0;
+ 222                  }
+ 223          }
+ 224          //*****************************************
+ 225          void Manual_Mian_Macro(void)
+ 226          {
+ 227                          Manual_Macro_Data();//处理启动录制和结束存储
+ 228                  if(Manual_Record_UNM)
+ 229                  {       
+ 230                          if(bSend_IN2|b_04)
+ 231                                  Record_Macro_Data();//记录MACRO DATA TIME
+ 232                  }
+ 233          }
+ 234          */
+ 235          
+ 236          
+ 237          
+ 238          
+ 239          
+ 240          
+C51 COMPILER V9.60.0.0   MANUAL_MACRO                                                      09/23/2022 11:52:51 PAGE 5   
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

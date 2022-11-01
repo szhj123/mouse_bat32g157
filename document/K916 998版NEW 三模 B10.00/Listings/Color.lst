@@ -1,0 +1,168 @@
+C51 COMPILER V9.60.0.0   COLOR                                                             09/23/2022 11:52:51 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE COLOR
+OBJECT MODULE PLACED IN .\output\Color.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\Color.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTE
+                    -XTEND PRINT(.\Listings\Color.lst) OBJECT(.\output\Color.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\CFG.h"
+   4          #include "..\include\Auser.h"
+   5          U8 data R_Color;
+   6          U8 data G_Color;
+   7          U8 data B_Color;
+   8          
+   9          void Change_AColor_Time(U8 TempNUM)
+  10          {
+  11   1              U8 i;
+  12   1              U16 tmp;
+  13   1              U16 tmp2;       
+  14   1              if(Brack_b(TempNUM))
+  15   1              {       
+  16   2                      if(Color_Times==0)      
+  17   2                      {
+  18   3                              Image[0][TempNUM]=R_Color*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,TempNUM);
+  19   3                              Image[1][TempNUM]=G_Color*Brightness_Wheels/Limit_Power*4+PWM_AddData(1,TempNUM);
+  20   3                              Image[2][TempNUM]=B_Color*Brightness_Wheels/Limit_Power*4+PWM_AddData(2,TempNUM);       
+  21   3                      }
+  22   2                      else if(Color_Times==8)//»ìÉ«Ä£Ê½
+  23   2                      {
+  24   3                              if(b_SuiLiang_Mode)
+  25   3                              {
+  26   4                                      if(break_Data[Port_Data(Key_Index)]&Pin_Data(Key_Index))
+  27   4                                      {
+  28   5                                                              Run_Time++;
+  29   5                                                      if(Run_Time>5)
+  30   5                                                              Run_Time=0;
+  31   5                                              Image[0][TempNUM]=PWM_AddData(0,TempNUM);       
+  32   5                                              Image[1][TempNUM]=PWM_AddData(1,TempNUM);       
+  33   5                                              Image[2][TempNUM]=PWM_AddData(2,TempNUM);       
+  34   5                                              if(Run_Time==0)
+  35   5                                                              Image[0][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,TempNUM);
+  36   5                                              else if(Run_Time==1)
+  37   5                                                              Image[1][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(1,TempNUM);
+  38   5                                              else if(Run_Time==2)
+  39   5                                                              Image[2][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(2,TempNUM);   
+  40   5                                              else if(Run_Time==3)
+  41   5                                              {       
+  42   6                                                              Image[0][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,TempNUM);           
+  43   6                                                              Image[1][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(1,TempNUM);           
+  44   6                                              }
+  45   5                                              else if(Run_Time==4)
+  46   5                                              {       
+  47   6                                                              Image[2][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(2,TempNUM);
+  48   6                                                              Image[1][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(1,TempNUM);   
+  49   6                                              }
+  50   5                                              else if(Run_Time==5)
+  51   5                                              {       
+  52   6                                                              Image[2][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(2,TempNUM);
+  53   6                                                              Image[0][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,TempNUM);   
+  54   6                                              }               
+C51 COMPILER V9.60.0.0   COLOR                                                             09/23/2022 11:52:51 PAGE 2   
+
+  55   5                                              
+  56   5                                      }
+  57   4                              }       
+  58   3                              else if(b_ChangLiang_Mode)
+  59   3                              {
+  60   4                                      Image[0][TempNUM]=PWM_AddData(0,TempNUM);       
+  61   4                                      Image[1][TempNUM]=PWM_AddData(1,TempNUM);       
+  62   4                                      Image[2][TempNUM]=PWM_AddData(2,TempNUM);       
+  63   4                                      tmp=TempNUM%5;
+  64   4                                      if(tmp==0)
+  65   4                                                      Image[0][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,TempNUM);
+  66   4                                      else if(tmp==1)
+  67   4                                                      Image[1][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(1,TempNUM);
+  68   4                                      else if(tmp==2)
+  69   4                                                      Image[2][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(2,TempNUM);   
+  70   4                                      else if(tmp==3)
+  71   4                                      {       
+  72   5                                                      Image[0][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,TempNUM);           
+  73   5                                                      Image[1][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(1,TempNUM);           
+  74   5                                      }
+  75   4                                      else if(tmp==4)
+  76   4                                      {       
+  77   5                                                      Image[2][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(2,TempNUM);
+  78   5                                                      Image[1][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(1,TempNUM);   
+  79   5                                      }
+  80   4                                      else if(tmp==5)
+  81   4                                      {       
+  82   5                                                      Image[2][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(2,TempNUM);
+  83   5                                                      Image[0][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,TempNUM);   
+  84   5                                      }                       
+  85   4                              }       
+  86   3                              else
+  87   3                              {
+  88   4                                      tmp=TL2;
+  89   4                                      tmp=(tmp<<8)|TH2;
+  90   4                                      tmp=tmp+TempNUM;
+  91   4                                      tmp=tmp%5;
+  92   4                                      
+  93   4                                      Image[0][TempNUM]=PWM_AddData(0,TempNUM);       
+  94   4                                      Image[1][TempNUM]=PWM_AddData(1,TempNUM);       
+  95   4                                      Image[2][TempNUM]=PWM_AddData(2,TempNUM);       
+  96   4                                      
+  97   4                                      if(tmp==0)
+  98   4                                                      Image[0][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,TempNUM);
+  99   4                                      else if(tmp==1)
+ 100   4                                                      Image[1][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(1,TempNUM);
+ 101   4                                      else if(tmp==2)
+ 102   4                                                      Image[2][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(2,TempNUM);   
+ 103   4                                      else if(tmp==3)
+ 104   4                                      {       
+ 105   5                                                      Image[0][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,TempNUM);           
+ 106   5                                                      Image[1][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(1,TempNUM);           
+ 107   5                                      }
+ 108   4                                      else if(tmp==4)
+ 109   4                                      {       
+ 110   5                                                      Image[2][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(2,TempNUM);
+ 111   5                                                      Image[1][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(1,TempNUM);   
+ 112   5                                      }
+ 113   4                                      else if(tmp==5)
+ 114   4                                      {       
+ 115   5                                                      Image[2][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(2,TempNUM);
+ 116   5                                                      Image[0][TempNUM]=255*Brightness_Wheels/Limit_Power*4+PWM_AddData(0,TempNUM);   
+C51 COMPILER V9.60.0.0   COLOR                                                             09/23/2022 11:52:51 PAGE 3   
+
+ 117   5                                      }               
+ 118   4                              }       
+ 119   3                      }
+ 120   2                      else
+ 121   2                      {
+ 122   3                              Give_NUM_Image(TempNUM,Color_Times,255);
+ 123   3                      }
+ 124   2              }
+ 125   1      }
+ 126          
+ 127          
+ 128          
+ 129          
+ 130          
+ 131          
+ 132          
+ 133          
+ 134          
+ 135          
+ 136          
+ 137          
+ 138          
+ 139          
+ 140          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1377    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----       6
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

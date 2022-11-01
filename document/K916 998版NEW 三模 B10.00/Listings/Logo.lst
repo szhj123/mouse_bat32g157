@@ -1,0 +1,328 @@
+C51 COMPILER V9.60.0.0   LOGO                                                              09/23/2022 11:52:51 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE LOGO
+OBJECT MODULE PLACED IN .\output\Logo.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE src\Logo.c LARGE WARNINGLEVEL(0) OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEX
+                    -TEND PRINT(.\Listings\Logo.lst) OBJECT(.\output\Logo.obj)
+
+line level    source
+
+   1          #include "..\include\SH68F90.h"
+   2          #include "..\include\stdtype.h"
+   3          #include "..\include\mcu_def.h"
+   4          #include "..\include\pwm_control.h"
+   5          #include ".\include\Auser.h"
+   6          
+   7          //bit b_PRINT_Up;       在流光模式文件下
+   8          //bit b_PRINT_Up2;
+   9          //U8 xdata      Logo_Mode_Times;
+  10          /*
+  11          U8 xdata        Logo_Temp_R;
+  12          U8 xdata        Logo_Temp_G;
+  13          U8 xdata        Logo_Temp_B;
+  14          U8 xdata        Logo_Temp_Times;
+  15          U8 xdata        Logo_Brightness;
+  16          code const U8 breathe_mode_tab[128+20]=
+  17          {
+  18                  0,      0,      0,      0,      0,      0,      0,      0,      0,      0,
+  19                  0,              1,              2,              3,              4,              5,              6,              7,
+  20                  8,              9,              10,             12,             14,             16,             18,             20,
+  21                  22,             24,             27,             30,             33,             36,             39,             42,
+  22                  45,             49,             53,             57,             61,             65,             69,             73,
+  23                  77,             81,             85,             89,             94,             99,             104,    109,
+  24                  114,    119,    124,    129,    134,    140,    146,    152,
+  25                  158,    164,    170,    176,    182,    188,    194,    200,
+  26                  206,    213,    220,    227,    234,    241,    248,    255,
+  27                  
+  28                  255,    248,    241,    234,    227,    220,    213,    206,
+  29                  200,    194,    188,    182,    176,    170,    164,    158,
+  30                  152,    146,    140,    134,    129,    124,    119,    114,
+  31                  109,    104,    99,             94,             89,             85,             81,             77,
+  32                  73,             69,             65,             61,             57,             53,             49,             45,
+  33                  42,             39,             36,             33,             30,             27,             24,             22,
+  34                  20,             18,             16,             14,             12,             10,             9,              8,
+  35                  7,              6,              5,              4,              3,              2,              1,              0,      
+  36                  0,      0,      0,      0,      0,      0,      0,      0,      0,      0,
+  37          };
+  38          void Give_Logo_Data(U8 Temp_Color,Temp_Logo2)
+  39          {
+  40                  U16 Temp_Logo;
+  41                          Temp_Logo=Temp_Logo2*5;
+  42                  switch(Temp_Color)
+  43                  {
+  44                          case 0: 
+  45                                  PWM30_ENABLE;   
+  46                                  PWM30DUTY1H = PWM30DUTY1L  = 0x00;
+  47                                  PWM30DUTY2H =   (U8)((Temp_Logo)>>8);
+  48                                  PWM30DUTY2L=     (U8)(Temp_Logo);
+  49                          break;
+  50                          case 2: 
+  51                                  PWM32_ENABLE;   
+  52                                  PWM32DUTY1H = PWM32DUTY1L  = 0x00;
+  53                                  PWM32DUTY2H =   (U8)((Temp_Logo)>>8);
+  54                                  PWM32DUTY2L=    (U8)(Temp_Logo);
+C51 COMPILER V9.60.0.0   LOGO                                                              09/23/2022 11:52:51 PAGE 2   
+
+  55                          break;
+  56                          case 1: 
+  57                                  PWM31_ENABLE;   
+  58                                  PWM31DUTY1H = PWM31DUTY1L  = 0x00;
+  59                                  PWM31DUTY2H =   (U8)((Temp_Logo)>>8);
+  60                                  PWM31DUTY2L=    (U8)(Temp_Logo);
+  61                          break;
+  62                  }
+  63          }
+  64          U8 JianbianSub32(U8 LedStage2)
+  65          {
+  66                  switch(LedStage2)
+  67                          {
+  68                                  case 0: 
+  69                                          Logo_Temp_R=0;
+  70                                          Logo_Temp_G++;
+  71                                          Logo_Temp_B = 0;
+  72                                          if(Logo_Temp_G >= 250)
+  73                                                  LedStage2++;
+  74                                  break;
+  75                                  //--------------------------------
+  76                                  case 1:
+  77                                          Logo_Temp_R++;
+  78                                          Logo_Temp_G--;
+  79                                          Logo_Temp_B=0;  
+  80                                          if(Logo_Temp_G==0)
+  81                                                  LedStage2++;
+  82                                  break;
+  83                                  //--------------------------------
+  84                                  case 2:
+  85                                          Logo_Temp_R--;
+  86                                          Logo_Temp_G=0;
+  87                                          Logo_Temp_B++;
+  88                                          if(Logo_Temp_R == 0)
+  89                                                  LedStage2++;
+  90                                  break;          
+  91                                  //--------------------------------
+  92                                  case 3:
+  93                                          Logo_Temp_R=0;
+  94                                          Logo_Temp_G++;
+  95                                          Logo_Temp_B--;
+  96                                          if(Logo_Temp_B ==0)
+  97                                                  LedStage2++;
+  98                                  break;  
+  99                                  //--------------------------------
+ 100                                  case 4:
+ 101                                          Logo_Temp_R++;
+ 102                                          Logo_Temp_G--;
+ 103                                          Logo_Temp_B=0;
+ 104                                          if(Logo_Temp_G == 0)
+ 105                                                  LedStage2++;
+ 106                                  break;          
+ 107                                          //--------------------------------
+ 108                                  case 5:
+ 109                                          Logo_Temp_R--;
+ 110                                          Logo_Temp_G=0;
+ 111                                          Logo_Temp_B++;
+ 112                                          if(Logo_Temp_R == 0)
+ 113                                                  LedStage2++;
+ 114                                  break;  
+ 115                                          //--------------------------------
+ 116                                  case 6:
+C51 COMPILER V9.60.0.0   LOGO                                                              09/23/2022 11:52:51 PAGE 3   
+
+ 117                                          Logo_Temp_R=0;
+ 118                                          Logo_Temp_G++;
+ 119                                          Logo_Temp_B--;
+ 120                                          if(Logo_Temp_B == 0)
+ 121                                                  LedStage2=1;
+ 122                                  break;  
+ 123                                          //--------------------------------
+ 124                          } 
+ 125                  return  LedStage2;
+ 126          }
+ 127          void Int_Logo_Data(void)
+ 128          {
+ 129                  Logo_Temp_Times=0;      
+ 130                  Logo_Temp_R=0;  
+ 131                  Logo_Temp_G=0;  
+ 132                  Logo_Temp_B=0;  
+ 133                  Give_Logo_Data(0,0);
+ 134                  Give_Logo_Data(1,0);
+ 135                  Give_Logo_Data(2,0);
+ 136          }
+ 137          void Deal_Logo_key(void)
+ 138          {
+ 139                  
+ 140                  if(bFn)
+ 141                  {
+ 142                          if(V_Data[14]&0x01)
+ 143                          {
+ 144                                  if(b_PRINT_Up)
+ 145                                  {
+ 146                                          b_PRINT_Up=0;
+ 147                                          Logo_Mode_Times++;
+ 148                                          if(Logo_Mode_Times>9)
+ 149                                                  Logo_Mode_Times=0;
+ 150                                          Int_Logo_Data();
+ 151                                          Save_Mode_Time();
+ 152                                  }
+ 153                          }
+ 154                          else
+ 155                                  b_PRINT_Up=1;   
+ 156          //              //---------------------------------------       
+ 157          //              if((V_Data[15]&0x02)|(V_Data[15]&0x04))
+ 158          //              {
+ 159          //                      if(b_PRINT_Up2)
+ 160          //                      {
+ 161          //                              b_PRINT_Up2=0;
+ 162          //                              if(Logo_Mode_Times>1)
+ 163          //                              {       
+ 164          //                                      if(V_Data[15]&0x02)
+ 165          //                                      {
+ 166          //                                              if(Logo_Brightness<3)
+ 167          //                                                      Logo_Brightness++;
+ 168          //                                      }       
+ 169          //                                      else if(V_Data[15]&0x04)
+ 170          //                                      {
+ 171          //                                              if(Logo_Brightness>1)
+ 172          //                                                      Logo_Brightness--;
+ 173          //                                      }       
+ 174          //                              }
+ 175          //                      }
+ 176          //              }
+ 177          //              else
+ 178          //                      b_PRINT_Up2=1;  
+C51 COMPILER V9.60.0.0   LOGO                                                              09/23/2022 11:52:51 PAGE 4   
+
+ 179                  }
+ 180                  //----------------------------------------------
+ 181          }
+ 182          void Display_Logo_Data(void)
+ 183          {
+ 184                  U8 i;
+ 185                          if(Logo_Brightness>=3)
+ 186                                  i=255;
+ 187                          if(Logo_Brightness==2)
+ 188                                  i=50;
+ 189                          if(Logo_Brightness==1)
+ 190                                  i=15;
+ 191                                  
+ 192                          i=255;  
+ 193                  //-------------------------------------------------
+ 194                  if(Logo_Mode_Times==0)//呼吸 霓虹
+ 195                  {
+ 196                          Logo_Temp_Times=JianbianSub32(Logo_Temp_Times);
+ 197                          Give_Logo_Data(0,Logo_Temp_R);
+ 198                          Give_Logo_Data(1,Logo_Temp_G);
+ 199                          Give_Logo_Data(2,Logo_Temp_B);
+ 200                  }
+ 201                  else if(Logo_Mode_Times==1)     //呼吸
+ 202                  {
+ 203                                  Logo_Temp_Times++;
+ 204                                  if(Logo_Temp_Times<5)
+ 205                                          return;
+ 206                                          Logo_Temp_Times=0;
+ 207                                  Logo_Temp_B=breathe_mode_tab[Logo_Temp_R];
+ 208                                  Logo_Temp_R++;
+ 209                                  if(Logo_Temp_R>147)
+ 210                                  {       
+ 211                                          Logo_Temp_R=0;
+ 212                                          Logo_Temp_G++;
+ 213                                          if(Logo_Temp_G>5)
+ 214                                                  Logo_Temp_G=0;
+ 215                                  }
+ 216                          
+ 217                          if(Logo_Temp_G==0)
+ 218                          {       
+ 219                                  Give_Logo_Data(0,Logo_Temp_B);
+ 220                          }
+ 221                          else if(Logo_Temp_G==1)
+ 222                          {       
+ 223                                  Give_Logo_Data(0,Logo_Temp_B);  
+ 224                                  Give_Logo_Data(1,Logo_Temp_B);  
+ 225                          }
+ 226                          else if(Logo_Temp_G==2)
+ 227                          {       
+ 228                                  Give_Logo_Data(1,Logo_Temp_B);  
+ 229                          }       
+ 230                          else if(Logo_Temp_G==3)
+ 231                          {       
+ 232                                  Give_Logo_Data(1,Logo_Temp_B);  
+ 233                                  Give_Logo_Data(2,Logo_Temp_B);  
+ 234                          }
+ 235                          else if(Logo_Temp_G==4)
+ 236                          {       
+ 237                                  Give_Logo_Data(2,Logo_Temp_B);  
+ 238                          }
+ 239                          else if(Logo_Temp_G==5)
+ 240                          {       
+C51 COMPILER V9.60.0.0   LOGO                                                              09/23/2022 11:52:51 PAGE 5   
+
+ 241                                  Give_Logo_Data(0,Logo_Temp_B);  
+ 242                                  Give_Logo_Data(2,Logo_Temp_B);  
+ 243                          }
+ 244                  }
+ 245                  else if(Logo_Mode_Times==2)     
+ 246                  {
+ 247                          Give_Logo_Data(0,i);
+ 248                          Give_Logo_Data(1,0);
+ 249                          Give_Logo_Data(2,0);
+ 250                  }
+ 251                  else if(Logo_Mode_Times==3)     
+ 252                  {
+ 253                          Give_Logo_Data(0,i);
+ 254                          Give_Logo_Data(1,i);
+ 255                          Give_Logo_Data(2,0);
+ 256                  }
+ 257                  else if(Logo_Mode_Times==4)     
+ 258                  {
+ 259                          Give_Logo_Data(0,0);
+ 260                          Give_Logo_Data(1,i);
+ 261                          Give_Logo_Data(2,0);
+ 262                  }
+ 263                  else if(Logo_Mode_Times==5)     
+ 264                  {
+ 265                          Give_Logo_Data(0,0);
+ 266                          Give_Logo_Data(1,i);
+ 267                          Give_Logo_Data(2,i);
+ 268                  }
+ 269                  else if(Logo_Mode_Times==6)     
+ 270                  {
+ 271                          Give_Logo_Data(0,0);
+ 272                          Give_Logo_Data(1,0);
+ 273                          Give_Logo_Data(2,i);
+ 274                  }
+ 275                  else if(Logo_Mode_Times==7)     
+ 276                  {
+ 277                          Give_Logo_Data(0,i);
+ 278                          Give_Logo_Data(1,0);
+ 279                          Give_Logo_Data(2,i);
+ 280                  }
+ 281                  else if(Logo_Mode_Times==8)     
+ 282                  {
+ 283                          Give_Logo_Data(0,i);
+ 284                          Give_Logo_Data(1,i);
+ 285                          Give_Logo_Data(2,i);
+ 286                  }
+ 287                  else if(Logo_Mode_Times==9)     
+ 288                  {
+ 289                          Give_Logo_Data(0,0);
+ 290                          Give_Logo_Data(1,0);
+ 291                          Give_Logo_Data(2,0);
+ 292                  }
+ 293          }
+ 294           */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+C51 COMPILER V9.60.0.0   LOGO                                                              09/23/2022 11:52:51 PAGE 6   
+
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
