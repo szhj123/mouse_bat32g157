@@ -37,6 +37,16 @@
 /*******************************************************************************
  Typedef definitions
  ******************************************************************************/
+#define RID_MOUSE                             0x01
+#define RID_KEYBOARD                          0x02
+#define RID_CONSUMER                          0x03
+#define RID_KEY_REUSE                         0x60
+#define RID_LDR                               0x61
+#define RID_KEY_MODE                          0x62
+#define RID_LGT_EFECT                         0x63
+#define RID_MACRO                             0x64
+#define RPT_PIC                               0x65
+#define RID_DPI                               0x66
 
 /*******************************************************************************
  Exported global variables
@@ -45,7 +55,12 @@
 extern  const   uint8_t g_apl_device[];
 extern  const   uint8_t g_apl_configuration[];
 extern  const   uint8_t *gp_apl_string_table[];
-extern  const   uint8_t g_apl_report[];
+
+extern  const   uint8_t g_apl_mouse_report[];
+extern  const   uint8_t g_apl_keyboard_report[];
+
+extern  const   uint32_t REPORT_MOUSE_SIZE;
+extern  const   uint32_t REPORT_KEYBOARD_SIZE;
 
 extern uint8_t g_remote_wakeup_enable;
 
@@ -53,7 +68,7 @@ extern uint8_t g_remote_wakeup_enable;
  Exported global functions (to be accessed by other files)
  ******************************************************************************/
 
-void usb_main (void);
+void Usb_Init (void);
 
 #endif /* USB_PHID_APL_H */
 /******************************************************************************

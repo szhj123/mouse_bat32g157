@@ -31,7 +31,7 @@
 #define USB_ECHO                (0)             /* Loop back(Echo) mode */
 #define USB_UART                (1)             /* USB Serial(VCOM) converter mode */
 
-#define DATA_LEN                (64)
+#define DATA_LEN                (8)
 
 /* LINE_CODING request wLength */
 #define LINE_CODING_LENGTH      (0x07u)
@@ -48,6 +48,8 @@
 extern uint8_t g_apl_device[];
 extern uint8_t g_apl_configuration[];
 extern uint8_t *gp_apl_string_table[];
+extern const uint8_t g_apl_report[];
+//extern const uint8_t g_apl_hid_report[];
 
 /*******************************************************************************
  Exported global functions (to be accessed by other files)

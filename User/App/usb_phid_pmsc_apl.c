@@ -48,20 +48,16 @@ const static usb_descriptor_t gs_usb_descriptor =
     NUM_STRING_DESCRIPTOR
 };
 
-static void     media_driver_init(void);
-
 /******************************************************************************
-  * Function Name: usb_main
+  * Function Name: Usb_Init
   * Description  : Peripheral CDC application main process
   * Arguments    : none
   * Return Value : none
  ******************************************************************************/
-void usb_main (void)
+void Usb_Init (void)
 {
     usb_ctrl_t  ctrl;
     usb_cfg_t   cfg;
-	
-		media_driver_init ();
 
     ctrl.type       = USB_PHID;
     cfg.usb_mode    = USB_PERI;
@@ -77,13 +73,13 @@ void usb_main (void)
         {
             case USB_STS_CONFIGURED :
             case USB_STS_WRITE_COMPLETE :
-                ctrl.type = USB_PHID;
-                USB_Read(&ctrl, gs_data, DATA_LEN);
+                //ctrl.type = USB_PHID;
+                //USB_Read(&ctrl, gs_data, DATA_LEN);
                 break;
 
             case USB_STS_READ_COMPLETE :
-                ctrl.type = USB_PHID;
-                USB_Write(&ctrl, gs_data, ctrl.size);
+                //ctrl.type = USB_PHID;
+                //USB_Write(&ctrl, gs_data, ctrl.size);
                 break;
 
             case USB_STS_REQUEST : /* Receive Class Request */
@@ -93,13 +89,21 @@ void usb_main (void)
                     {
                         /* Send ReportDescriptor */
                         ctrl.type = USB_REQUEST;
-                        USB_Write(&ctrl, (uint8_t *)g_apl_report, 34);
+
+                        if((uint8_t )ctrl.setup.index == 0x00)
+                        {
+                            USB_Write(&ctrl, (uint8_t *)g_apl_mouse_report, REPORT_MOUSE_SIZE);
+                        }
+                        else if((uint8_t )ctrl.setup.index == 0x01)
+                        {
+                            USB_Write(&ctrl, (uint8_t *)g_apl_keyboard_report, REPORT_KEYBOARD_SIZE);
+                        }
                     }
                     else if (USB_GET_HID_DESCRIPTOR == ctrl.setup.value)
                     {
                         /* Configuration Discriptor address set. */
                         ctrl.type = USB_REQUEST;
-                        USB_Write(&ctrl, (uint8_t *) &g_apl_configuration[56], 9);	//18, laidi HID Descriptor offset in config Descriptor
+                        USB_Write(&ctrl, (uint8_t *) &g_apl_configuration[18], 9);	//18, laidi HID Descriptor offset in config Descriptor
                     }
                     else
                     {
@@ -118,6 +122,24 @@ void usb_main (void)
                 break;
 
             case USB_STS_REQUEST_COMPLETE : /* Complete Class Request */
+                if (USB_REQUEST_TYPE_CLASS == (ctrl.setup.type & USB_REQUEST_TYPE_CLASS))
+                {
+                    if (USB_SET_IDLE == (ctrl.setup.type & USB_BREQUEST))
+                    {
+                        ctrl.status = USB_ACK;
+                        ctrl.type = USB_REQUEST;
+                        USB_Write(&ctrl, (uint8_t*)USB_NULL, (uint32_t)USB_NULL);
+                        /* Do Nothing */
+                    }
+                    else if (USB_SET_PROTOCOL == (ctrl.setup.type & USB_BREQUEST))
+                    {
+                        /* Do Nothing */
+                    }
+                    else
+                    {
+                        /* Do Nothing */
+                    }
+                }
                 break;
 
             case USB_STS_SUSPEND :
@@ -131,24 +153,9 @@ void usb_main (void)
                 break;
         }
     }
-} /* End of function usb_main */
+} /* End of function Usb_Init */
 
 #endif  /* OPERATION_MODE == USB_ECHO */
-
-
-/******************************************************************************
-  * Function Name: media_driver_init
-  * Description  : Initializeation Media driver
-  * Arguments    : none
-  * Return Value : none
- ******************************************************************************/
-static void media_driver_init (void)
-{
-    USB_media_initialize(&g_ext_flash_mediadriver); /* Register the media device driver. */
-    USB_media_open();                         /* Start up the  media device hardware. */
-
-} /* End of function media_driver_init */
-
 
 /******************************************************************************
  End  Of File

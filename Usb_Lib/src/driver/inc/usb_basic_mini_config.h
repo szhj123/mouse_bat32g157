@@ -33,7 +33,7 @@
  *  #define USB_CFG_PVND_USE : Peripheral VENDER Class
  * */
 #define USB_CFG_PVND_USE	/*Host Mass Storage Class*/
-#define	USB_CFG_PMSC_USE
+//#define	USB_CFG_PMSC_USE
 #define	USB_CFG_PHID_USE
 
 

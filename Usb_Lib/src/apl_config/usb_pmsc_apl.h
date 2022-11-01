@@ -40,8 +40,6 @@
  Macro definitions
  ******************************************************************************/
 
-#define NUM_STRING_DESCRIPTOR (7u)
-
 /*******************************************************************************
  Typedef definitions
  ******************************************************************************/
@@ -50,15 +48,15 @@
  Exported global variables
  ******************************************************************************/
 
-extern uint8_t g_apl_device[];
-extern uint8_t g_apl_configuration[];
-extern uint8_t *gp_apl_string_table[];
+extern const uint8_t g_apl_device[];
+extern const uint8_t g_apl_configuration[];
+extern const uint8_t *gp_apl_string_table[];
 
 /*******************************************************************************
  Exported global functions (to be accessed by other files)
  ******************************************************************************/
 
-extern void usb_main (void);
+extern void Usb_Init (void);
 extern void USB_PinSet_USB0_PERI (void);
 
 #endif /* USB_PMSC_APL_H */
