@@ -16,8 +16,5 @@
 #include "usb_basic_mini_if.h"
 #include "usb_phid_mini_if.h"
 
-#define OPERATION_MODE      (USB_KEYBOARD)
-
-
 #endif  /* USB_PHID_PMSC_APL_CONFIG_H */
 

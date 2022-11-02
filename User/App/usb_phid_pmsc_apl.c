@@ -13,7 +13,6 @@
 
 #include "drv_task.h"
 
-#if OPERATION_MODE == USB_ECHO
 /*******************************************************************************
  Macro definitions
  ******************************************************************************/
@@ -36,6 +35,8 @@ static usb_ctrl_t  ctrl;
 static usb_cfg_t   cfg;
 
 static uint8_t gs_data[DATA_LEN];
+
+static uint8_t usbEp0Buf[64];
 
 const static usb_descriptor_t gs_usb_descriptor =
 {
@@ -68,51 +69,56 @@ void Usb_Init (void)
 static void Usb_Event_Handler(void *arg )
 {
     /* Loop back between PC(TerminalSoft) and USB MCU */
-    while (1)
+    switch (USB_GetEvent(&ctrl))
+        /* Check application state */
     {
-        switch (USB_GetEvent(&ctrl))
-            /* Check application state */
-        {
-            case USB_STS_CONFIGURED :
-            case USB_STS_WRITE_COMPLETE :
-                //ctrl.type = USB_PHID;
-                //USB_Read(&ctrl, gs_data, DATA_LEN);
-                break;
+        case USB_STS_CONFIGURED :
+        case USB_STS_WRITE_COMPLETE :
+            ctrl.type = USB_PHID;
+            //USB_Read(&ctrl, gs_data, DATA_LEN);
+            break;
 
-            case USB_STS_READ_COMPLETE :
-                ctrl.type = USB_PHID;
-                USB_Write(&ctrl, gs_data, ctrl.size);
-                break;
+        case USB_STS_READ_COMPLETE :
+            ctrl.type = USB_PHID;
+            //USB_Write(&ctrl, gs_data, ctrl.size);
+            break;
 
-            case USB_STS_REQUEST : /* Receive Class Request */
-                if (USB_GET_DESCRIPTOR == (ctrl.setup.type & USB_BREQUEST))
+        case USB_STS_REQUEST : /* Receive Class Request */
+            if (USB_GET_DESCRIPTOR == (ctrl.setup.type & USB_BREQUEST))
+            {
+                if (USB_GET_REPORT_DESCRIPTOR == ctrl.setup.value)
                 {
-                    if (USB_GET_REPORT_DESCRIPTOR == ctrl.setup.value)
-                    {
-                        /* Send ReportDescriptor */
-                        ctrl.type = USB_REQUEST;
+                    /* Send ReportDescriptor */
+                    ctrl.type = USB_REQUEST;
 
-                        if((uint8_t )ctrl.setup.index == 0x00)
-                        {
-                            USB_Write(&ctrl, (uint8_t *)g_apl_mouse_report, REPORT_MOUSE_SIZE);
-                        }
-                        else if((uint8_t )ctrl.setup.index == 0x01)
-                        {
-                            USB_Write(&ctrl, (uint8_t *)g_apl_keyboard_report, REPORT_KEYBOARD_SIZE);
-                        }
-                    }
-                    else if (USB_GET_HID_DESCRIPTOR == ctrl.setup.value)
+                    if((uint8_t )ctrl.setup.index == 0x00)
                     {
-                        /* Configuration Discriptor address set. */
-                        ctrl.type = USB_REQUEST;
-                        USB_Write(&ctrl, (uint8_t *) &g_apl_configuration[18], 9);	//18, laidi HID Descriptor offset in config Descriptor
+                        USB_Write(&ctrl, (uint8_t *)g_apl_mouse_report, REPORT_MOUSE_SIZE);
                     }
-                    else
+                    else if((uint8_t )ctrl.setup.index == 0x01)
                     {
-                        ctrl.status = USB_STALL;
-                        ctrl.type = USB_REQUEST;
-                        USB_Write(&ctrl, (uint8_t*)USB_NULL, (uint32_t)USB_NULL);
+                        USB_Write(&ctrl, (uint8_t *)g_apl_keyboard_report, REPORT_KEYBOARD_SIZE);
                     }
+                }
+                else if (USB_GET_HID_DESCRIPTOR == ctrl.setup.value)
+                {
+                    /* Configuration Discriptor address set. */
+                    ctrl.type = USB_REQUEST;
+                    USB_Write(&ctrl, (uint8_t *) &g_apl_configuration[18], 9);	//18, laidi HID Descriptor offset in config Descriptor
+                }
+                else
+                {
+                    ctrl.status = USB_STALL;
+                    ctrl.type = USB_REQUEST;
+                    USB_Write(&ctrl, (uint8_t*)USB_NULL, (uint32_t)USB_NULL);
+                }
+            }
+            else
+            {
+                if((uint8_t )(ctrl.setup.type >> 8) == 0x09)
+                {
+                    ctrl.type = USB_REQUEST;
+                    USB_Read(&ctrl, usbEp0Buf, 64);
                 }
                 else
                 {
@@ -120,34 +126,28 @@ static void Usb_Event_Handler(void *arg )
                     ctrl.type = USB_REQUEST;
                     USB_Write(&ctrl, (uint8_t*)USB_NULL, (uint32_t)USB_NULL);
                 }
+            }
 
-                break;
+            break;
 
-            case USB_STS_REQUEST_COMPLETE : /* Complete Class Request */
-                if (((uint8_t )ctrl.setup.type & 0x60) == 0x20)
-                {
-                    if((uint8_t )(ctrl.setup.type >> 8) == 0x09)
-                    {
-                        ctrl.type = USB_PHID;
-                        USB_Write(&ctrl, gs_data, ctrl.size);
-                    }
-                }
-                break;
+        case USB_STS_REQUEST_COMPLETE : /* Complete Class Request */
+            if((uint8_t )(ctrl.setup.type >> 8) == 0x09)
+            {
+                
+            }
+            break;
 
-            case USB_STS_SUSPEND :
-            case USB_STS_DETACH :
-                #if defined(USE_LPW)
-                    /* Do Nothing */
-                #endif /* defined(USE_LPW) */
-                break;
+        case USB_STS_SUSPEND :
+        case USB_STS_DETACH :
+            #if defined(USE_LPW)
+                /* Do Nothing */
+            #endif /* defined(USE_LPW) */
+            break;
 
-            default :
-                break;
-        }
+        default :
+            break;
     }
 } /* End of function Usb_Init */
-
-#endif  /* OPERATION_MODE == USB_ECHO */
 
 /******************************************************************************
  End  Of File
