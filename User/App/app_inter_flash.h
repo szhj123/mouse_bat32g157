@@ -1,0 +1,39 @@
+#ifndef _APP_INTER_FLASH_H
+#define _APP_INTER_FLASH_H
+
+#include "drv_inter_flash.h"
+
+#define FLASH_MOUSE_START_ADDR                0x08500200
+#define FLASH_KEY_MODE_START_ADDR             FLASH_MOUSE_START_ADDR
+#define FLASH_KEY_MODE_SIZE                   1
+#define FLASH_KEY_MODE_1_START_ADDR           (FLASH_KEY_MODE_START_ADDR + FLASH_KEY_MODE_SIZE)
+#define FLASH_KEY_MODE_1_SIZE                 0x3c
+#define FLASH_KEY_MODE_2_START_ADDR           (FLASH_KEY_MODE_1_START_ADDR + FLASH_KEY_MODE_1_SIZE)
+#define FLASH_KEY_MODE_2_SIZE                 0x3c
+#define FLASH_KEY_MODE_3_START_ADDR           (FLASH_KEY_MODE_2_START_ADDR + FLASH_KEY_MODE_2_SIZE)
+#define FLASH_KEY_MODE_3_SIZE                 0x3c
+#define FLASH_RATE_START_ADDR                 (FLASH_KEY_MODE_3_START_ADDR + FLASH_KEY_MODE_3_SIZE)
+#define FLASH_RATE_SIZE                       1
+#define FLASH_SENSOR_ID_START_ADDR            (FLASH_RATE_START_ADDR + FLASH_RATE_SIZE)         
+#define FLASH_SENSOR_ID_SIZE                  1
+#define FLASH_LIGHT_INDEX_START_ADDR          (FLASH_SENSOR_ID_START_ADDR + FLASH_SENSOR_ID_SIZE)
+#define FLASH_LIGHT_INDEX_SIZE                1
+#define FLASH_DPI_INDEX_START_ADDR            (FLASH_LIGHT_INDEX_START_ADDR + FLASH_LIGHT_INDEX_SIZE)
+#define FLASH_DPI_INDEX_SIZE                  1
+#define FLASH_DPI_NUM_START_ADDR              (FLASH_DPI_INDEX_START_ADDR + FLASH_DPI_INDEX_SIZE)
+#define FLASH_DPI_NUM_SIZE                    1
+#define FLASH_DPI_X_START_ADDR                (FLASH_DPI_NUM_START_ADDR + FLASH_DPI_NUM_SIZE)
+#define FLASH_DPI_X_SIZE                      16
+#define FLASH_DPI_COLOR_START_ADDR            (FLASH_DPI_X_START_ADDR + FLASH_DPI_X_SIZE)
+#define FLASH_DPI_COLOR_SIZE                  24
+#define FLASH_DPI_Y_START_ADDR                (FLASH_DPI_COLOR_START_ADDR + FLASH_DPI_COLOR_SIZE)
+#define FLASH_DPI_Y_SIZE                      8
+#define FLASH_PIC_MASK_START_ADDR             (FLASH_DPI_Y_START_ADDR + FLASH_DPI_Y_SIZE)
+#define FLASH_PIC_MASK_SIZE                   2
+#define FLASH_PIC_INDEX_START_ADDR            (FLASH_PIC_MASK_START_ADDR + FLASH_PIC_MASK_SIZE)
+#define FLASH_PIC_INDEX_SIZE                  1
+#define FLASH_LIGHT_EFFECT_START_ADDR         (FLASH_PIC_INDEX_START_ADDR + FLASH_PIC_INDEX_SIZE)
+#define FLASH_LIGHT_EFFECT_SIZE               1
+
+#endif 
+

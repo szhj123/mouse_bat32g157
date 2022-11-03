@@ -1,0 +1,11 @@
+#ifndef _DRV_INTER_FLASH_H
+#define _DRV_INTER_FLASH_H
+
+#include "hal_inter_flash.h"
+
+int Drv_Inter_Flash_Read (uint32_t adr, uint32_t sz, uint8_t *buf);
+
+
+
+#endif 
+
