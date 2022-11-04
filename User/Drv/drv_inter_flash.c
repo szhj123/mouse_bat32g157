@@ -17,7 +17,7 @@
 /* Private function -------------------------------------*/
 /* Private variables ------------------------------------*/
 
-int Drv_Inter_Flash_Read (uint32_t adr, uint32_t sz, uint8_t *buf)
+void Drv_Inter_Flash_Read (uint32_t adr, uint32_t sz, uint8_t *buf)
 {
     uint32_t i;
     
@@ -28,4 +28,16 @@ int Drv_Inter_Flash_Read (uint32_t adr, uint32_t sz, uint8_t *buf)
         buf[i] = *u8DataPtr++
     }
 }
+
+void Drv_Inter_Flash_Write(uint32_t adr, uint32_t sz, uint8_t *buf )
+{
+    Hal_Inter_Flash_Program_Page(adr, sz, buf);
+}
+
+
+void Drv_Inter_Flash_Erase_Sector(uint32_t adr )
+{
+    Hal_Inter_Flash_Erase_Sector(adr);
+}
+
 
