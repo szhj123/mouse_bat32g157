@@ -138,7 +138,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -428,6 +428,21 @@
               <FileType>1</FileType>
               <FilePath>..\Driver\src\dma.c</FilePath>
             </File>
+            <File>
+              <FileName>flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\src\flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>flash_user.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\src\flash_user.c</FilePath>
+            </File>
+            <File>
+              <FileName>retarget.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Driver\src\retarget.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -643,6 +658,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\App\app_rgb.c</FilePath>
             </File>
+            <File>
+              <FileName>app_mouse_protocol.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\App\app_mouse_protocol.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -688,6 +708,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\Drv\drv_spi_flash.c</FilePath>
             </File>
+            <File>
+              <FileName>drv_inter_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drv\drv_inter_flash.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -732,6 +757,11 @@
               <FileName>hal_spi_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Hal\hal_spi_flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_inter_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Hal\hal_inter_flash.c</FilePath>
             </File>
           </Files>
         </Group>

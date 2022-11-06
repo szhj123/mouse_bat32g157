@@ -36,10 +36,10 @@ void Drv_Event_Put(uint8_t msgType, uint8_t *buf, uint8_t length )
 
     for(i=0;i<length;i++)
     {
-        msgQueue.buf[msgQueue.rear].msgBuf[i] = buf[i];
+        msgQueue.buf[msgQueue.rear].buf[i] = buf[i];
     }
 
-    msgQueue.buf[msgQueue.rear].msgLength = length;
+    msgQueue.buf[msgQueue.rear].length = length;
 
     msgQueue.rear = (msgQueue.rear + 1) % MSG_QUEUE_MAX_LENGTH;
 }

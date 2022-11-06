@@ -843,7 +843,6 @@ void usb_pstd_bemp_pipe_process(uint16_t bitsts)
     }
 } /* End of function usb_pstd_bemp_pipe_process() */
 
-
 /******************************************************************************
 Function Name   : usb_pstd_set_pipe_table
 Description     : Set pipe table.
@@ -852,6 +851,7 @@ Return value    : Pipe no (USB_PIPE1->USB_PIPE9:OK, USB_NULL:Error)
 ******************************************************************************/
 uint8_t usb_pstd_set_pipe_table (uint8_t *p_descriptor)
 {
+    #if 0
     uint8_t     pipe_no;
     uint16_t    pipe_cfg;
     uint16_t    pipe_maxp;
@@ -927,8 +927,28 @@ uint8_t usb_pstd_set_pipe_table (uint8_t *p_descriptor)
     {
         pipe_no = USB_NULL;    /* Error */
     }
-
+    
     return (pipe_no);
+    #else
+    /* Set Pipe table block */
+    g_usb_cstd_pipe_tbl[USB_PIPE6].use_flag  = USB_TRUE;
+    g_usb_cstd_pipe_tbl[USB_PIPE6].pipe_cfg  = (uint16_t )(0x80 | 0x01) | (uint16_t)(USB_TYPFIELD_INT | USB_DIR_P_IN);
+    g_usb_cstd_pipe_tbl[USB_PIPE6].pipe_maxp = 8;
+    g_usb_cstd_pipe_tbl[USB_PIPE6].pipe_peri = USB_NULL;    
+
+    g_usb_cstd_pipe_tbl[USB_PIPE7].use_flag  = USB_TRUE;
+    g_usb_cstd_pipe_tbl[USB_PIPE7].pipe_cfg  = (uint16_t )(0x80 | 0x02) | (uint16_t)(USB_TYPFIELD_INT | USB_DIR_P_IN);
+    g_usb_cstd_pipe_tbl[USB_PIPE7].pipe_maxp = 8;
+    g_usb_cstd_pipe_tbl[USB_PIPE7].pipe_peri = USB_NULL;
+
+    g_usb_cstd_pipe_tbl[USB_PIPE8].use_flag  = USB_TRUE;
+    g_usb_cstd_pipe_tbl[USB_PIPE8].pipe_cfg  = (uint16_t )(0x00 | 0x03) | (uint16_t)(USB_TYPFIELD_INT | USB_DIR_P_OUT);
+    g_usb_cstd_pipe_tbl[USB_PIPE8].pipe_maxp = 64;
+    g_usb_cstd_pipe_tbl[USB_PIPE8].pipe_peri = USB_NULL;
+
+    return USB_OK;
+    
+    #endif 
 } /* End of function usb_pstd_set_pipe_table() */
 
 

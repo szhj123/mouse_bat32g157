@@ -1,0 +1,13 @@
+.\objects\usb_pcdc_driver.o: ..\Source\src\apl_config\pcdc\usb_pcdc_driver.c
+.\objects\usb_pcdc_driver.o: ..\Source\src\inc\usb_basic_mini_if.h
+.\objects\usb_pcdc_driver.o: ..\Source\src\inc\usb_basic_define.h
+.\objects\usb_pcdc_driver.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\usb_pcdc_driver.o: ..\Source\src\inc\usb_basic_mini_config.h
+.\objects\usb_pcdc_driver.o: ..\Source\src\apl_config\usb_pcdc_mini_if.h
+.\objects\usb_pcdc_driver.o: ..\Source\src\apl_config\usb_pcdc_mini_config.h
+.\objects\usb_pcdc_driver.o: ..\Source\src\driver\inc\usb_typedef.h
+.\objects\usb_pcdc_driver.o: ..\Source\src\inc\usb_basic_mini_if.h
+.\objects\usb_pcdc_driver.o: ..\Source\src\inc\usb_basic_define.h
+.\objects\usb_pcdc_driver.o: ..\Source\src\driver\inc\usb_extern.h
+.\objects\usb_pcdc_driver.o: ..\Source\src\apl_config\usb_pcdc.h
+.\objects\usb_pcdc_driver.o: ..\Source\src\hw\inc\usb_bitdefine.h

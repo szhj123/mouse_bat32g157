@@ -12,8 +12,8 @@
 typedef struct _msg_t
 {
     uint8_t msgType;
-    uint8_t msgBuf[MSG_MAX_LENGTH];
-    uint8_t msgLength;
+    uint8_t buf[MSG_MAX_LENGTH];
+    uint8_t length;
 }msg_t;
 
 typedef struct _msg_queue_t

@@ -37,16 +37,16 @@
 /*******************************************************************************
  Typedef definitions
  ******************************************************************************/
-#define RID_MOUSE                             0x01
-#define RID_KEYBOARD                          0x02
-#define RID_CONSUMER                          0x03
-#define RID_KEY_REUSE                         0x60
-#define RID_LDR                               0x61
-#define RID_KEY_MODE                          0x62
-#define RID_LGT_EFECT                         0x63
-#define RID_MACRO                             0x64
-#define RPT_PIC                               0x65
-#define RID_DPI                               0x66
+#define REPORT_ID_MOUSE                             0x01
+#define REPORT_ID_KEYBOARD                          0x02
+#define REPORT_ID_CONSUMER                          0x03
+#define REPORT_ID_KEY_VALUE                         0x60
+#define REPORT_ID_LIGHT_DPI_RATE                    0x61
+#define REPORT_ID_KEY_MODE                          0x62
+#define REPORT_ID_LIGHT_EFFECT                      0x63
+#define REPORT_ID_MACRO                             0x64
+#define REPORT_ID_PIC                               0x65
+#define REPORT_ID_DPI                               0x66
 
 /*******************************************************************************
  Exported global variables
@@ -69,6 +69,8 @@ extern uint8_t g_remote_wakeup_enable;
  ******************************************************************************/
 
 void Usb_Init (void);
+void Usb_Ctrl_Send(uint8_t *buf, uint8_t length );
+void Usb_Interupt_Send(void );
 
 #endif /* USB_PHID_APL_H */
 /******************************************************************************

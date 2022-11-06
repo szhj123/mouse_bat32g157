@@ -25,7 +25,7 @@ void Drv_Inter_Flash_Read (uint32_t adr, uint32_t sz, uint8_t *buf)
 
     for(i=0;i<sz;i++)
     {
-        buf[i] = *u8DataPtr++
+        buf[i] = *u8DataPtr++;
     }
 }
 

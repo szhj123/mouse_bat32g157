@@ -16,6 +16,8 @@
  */
 #define USB_CFG_PHID_INT_IN               (USB_PIPE6)
 #define USB_CFG_PHID_INT_OUT              (USB_PIPE7)
+#define USB_CFG_PHID_KEYBOARD_IN          (USB_PIPE8)
+#define USB_CFG_PHID_KEYBOARD_OUT         (USB_PIPE9)
 
 #endif  /* USB_PHID_MINI_CONFIG_H */
 /******************************************************************************

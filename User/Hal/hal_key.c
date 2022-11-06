@@ -20,7 +20,8 @@
 void Hal_Key_Init(void )
 {
     //pd14, input, key1
-    PORT_Init(PORTD, PIN14, PULLUP_INPUT);
+    //PORT_Init(PORTD, PIN14, PULLUP_INPUT);
+    PORT_Init(PORTC, PIN6, PULLUP_INPUT);
     //pd15, input, key2
     PORT_Init(PORTD, PIN15, PULLUP_INPUT);
     //pd02, input, key3

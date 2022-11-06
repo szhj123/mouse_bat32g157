@@ -37,7 +37,7 @@ const uint8_t g_apl_mouse_report[] =
     0x05, 0x01,			// Usage Page (Generic Desktop Control)
 	0x09, 0x02,			// Usage (Mouse)
 	0xA1, 0x01,			// Collection (Application)
-	0x85, RID_MOUSE,    // Report ID
+	0x85, REPORT_ID_MOUSE,    // Report ID
 
     0x09, 0x01,			// Usage (Pointer)
 	0xA1, 0x00,			// Collection (Physical)
@@ -79,7 +79,7 @@ const uint8_t g_apl_keyboard_report[] =
     0x05,0x01,          /* Usage Page(Generic Desktop Controls) */
     0x09,0x06,          /* Usage(Keyboard) */
     0xa1,0x01,          /* Collection(Application) */
-    0x85,RID_KEYBOARD,  /* REPORT ID 0x02 */
+    0x85,REPORT_ID_KEYBOARD,  /* REPORT ID 0x02 */
     0x05,0x07,          /* Usage Page(Keyboard/Keypad) */
     0x19,0xe0,          /* Usage Minimum(0xE0) */
     0x29,0xe7,          /* Usage Maximum(0xE7) */
@@ -102,7 +102,7 @@ const uint8_t g_apl_keyboard_report[] =
     0x05,0x0c,          /* Usage page (Consumer) */
     0x09,0x01,          /* Consumer Control */
     0xa1,0x01,          /* Collection(Application) */
-    0x85,RID_CONSUMER,  /* REPORT ID 0x03 */
+    0x85,REPORT_ID_CONSUMER,  /* REPORT ID 0x03 */
     0x0A,0x21,0x02,     // USAGE WWW SEARCH
     0x0A,0x23,0x02,     // USAGE WWW HOME
     0x0A,0x24,0x02,     // USAGE WWW BACKWARD
@@ -149,7 +149,7 @@ const uint8_t g_apl_keyboard_report[] =
     0x06, 0x02, 0xFF, 	// usage page(�Զ���)
 	0x09, 0x01,			// usage(1)
 	0xA1, 0x01,			// Collection(Application)
-	0x85, RID_KEY_REUSE,// REPORT_ID (0x60)
+	0x85, REPORT_ID_KEY_VALUE,// REPORT_ID (0x60)
 	0x15, 0x00,			// Logical Minimum (0)
 	0x26, 0xFF, 0x00,	// Logical Maximum (255)
 	0x09, 0x00,
@@ -161,7 +161,7 @@ const uint8_t g_apl_keyboard_report[] =
     0x06, 0x03, 0xFF, 	// usage page(�Զ���)
 	0x09, 0x01,			// usage(1)
 	0xA1, 0x01,			// Collection(Application)
-	0x85, RID_LDR,      // REPORT_ID (0x61)
+	0x85, REPORT_ID_LIGHT_DPI_RATE,      // REPORT_ID (0x61)
 	0x15, 0x00,			// Logical Minimum (0)
 	0x26, 0xFF, 0x00,	// Logical Maximum (255)
 	0x09, 0x00,
@@ -173,7 +173,7 @@ const uint8_t g_apl_keyboard_report[] =
     0x06, 0x04, 0xFF, 	// usage page(�Զ���)
 	0x09, 0x01,			// usage(1)
 	0xA1, 0x01,			// Collection(Application)
-	0x85, RID_KEY_MODE, // REPORT_ID (0x62)
+	0x85, REPORT_ID_KEY_MODE, // REPORT_ID (0x62)
 	0x15, 0x00,			// Logical Minimum (0)
 	0x26, 0xFF, 0x00,	// Logical Maximum (255)
 	0x09, 0x00,
@@ -185,7 +185,7 @@ const uint8_t g_apl_keyboard_report[] =
     0x06, 0x05, 0xFF, 	// usage page(�Զ���)
 	0x09, 0x01,			// usage(1)
 	0xA1, 0x01,			// Collection(Application)
-	0x85, RID_LGT_EFECT, // REPORT_ID (0x63)
+	0x85, REPORT_ID_LIGHT_EFFECT, // REPORT_ID (0x63)
 	0x15, 0x00,			// Logical Minimum (0)
 	0x26, 0xFF, 0x00,	// Logical Maximum (255)
 	0x09, 0x00,
@@ -197,7 +197,7 @@ const uint8_t g_apl_keyboard_report[] =
     0x06,0x06,0xff,     // usage page(�Զ���)
     0x09,0x01,          // usage(1)
     0xa1,0x01,          // Collection(Application)
-    0x85,RID_MACRO,     // REPORT_ID (5)
+    0x85,REPORT_ID_MACRO,     // REPORT_ID (5)
     0x15,0x00,          // Logical Minimum (0)
     0x26,0xff,0x00,     // Logical Maximum (255)
     0x09,0x00,
@@ -209,7 +209,7 @@ const uint8_t g_apl_keyboard_report[] =
     0x06,0x01,0xff,     /* Usage page(vendor custom define) */
     0x09,0x01,          /* Consumer Control */
     0xa1,0x01,          /* Collection(Application) */
-    0x85,RPT_PIC,/* REPORT ID 0x08 */
+    0x85,REPORT_ID_PIC,/* REPORT ID 0x08 */
     0x15,0x00,          /* Logical Minimum(0x0) */
     0x26,0xff,0x00,     /* Logical Maximum(0xff) */
     0x09,0x20,
@@ -221,7 +221,7 @@ const uint8_t g_apl_keyboard_report[] =
     0x06, 0x07, 0xFF, 	// usage page(�Զ���)
 	0x09, 0x01,			// usage(1)
 	0xA1, 0x01,			// Collection(Application)
-	0x85, RID_DPI,		// REPORT_ID (6)
+	0x85, REPORT_ID_DPI,		// REPORT_ID (6)
 	0x15, 0x00,			// Logical Minimum (0)
 	0x26, 0xFF, 0x00,	// Logical Maximum (255)
 	0x09, 0x00,

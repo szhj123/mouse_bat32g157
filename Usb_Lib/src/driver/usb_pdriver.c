@@ -975,13 +975,14 @@ void usb_pstd_devdefault (usb_putr_t *p_utr, uint16_t mode, uint16_t data2)
  ******************************************************************************/
 uint16_t usb_pstd_pipe_info (uint8_t *p_table, uint16_t length)
 {
+    #if 0
     uint16_t ofdsc;
     uint16_t retval = USB_ERROR;
     uint8_t         pipe_no;
-
+    
     /* Check Endpoint Descriptor */
     ofdsc = p_table[0];
-
+    
     /* WAIT_LOOP */
     while (ofdsc < length)
     {
@@ -1001,6 +1002,12 @@ uint16_t usb_pstd_pipe_info (uint8_t *p_table, uint16_t length)
     }
 
     return retval;
+    #else
+    usb_pstd_set_pipe_table(p_table);
+
+    return USB_OK;
+    
+    #endif 
 } /* End of function usb_pstd_pipe_info() */
 
 /******************************************************************************

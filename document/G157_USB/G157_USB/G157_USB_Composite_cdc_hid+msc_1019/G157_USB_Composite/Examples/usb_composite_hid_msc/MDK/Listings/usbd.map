@@ -19,16 +19,15 @@ Section Cross References
     usb_phid_pmsc_apl.o(i.media_driver_init) refers to ext_flash_disk.o(.data) for g_ext_flash_mediadriver
     usb_phid_pmsc_apl.o(i.usb_main) refers to usb_phid_pmsc_apl.o(i.media_driver_init) for media_driver_init
     usb_phid_pmsc_apl.o(i.usb_main) refers to usb_usbif_api.o(i.USB_Open) for USB_Open
+    usb_phid_pmsc_apl.o(i.usb_main) refers to usb_usbif_api.o(i.USB_Read) for USB_Read
     usb_phid_pmsc_apl.o(i.usb_main) refers to usb_usbif_api.o(i.USB_GetEvent) for USB_GetEvent
     usb_phid_pmsc_apl.o(i.usb_main) refers to usb_phid_pmsc_apl.o(i.__ARM_common_switch8) for __ARM_common_switch8
-    usb_phid_pmsc_apl.o(i.usb_main) refers to usb_usbif_api.o(i.USB_Read) for USB_Read
     usb_phid_pmsc_apl.o(i.usb_main) refers to usb_usbif_api.o(i.USB_Write) for USB_Write
     usb_phid_pmsc_apl.o(i.usb_main) refers to usb_phid_pmsc_apl.o(.constdata) for gs_usb_descriptor
     usb_phid_pmsc_apl.o(i.usb_main) refers to usb_phid_pmsc_apl.o(.bss) for gs_data
-    usb_phid_pmsc_apl.o(i.usb_main) refers to usb_phid_pmsc_descriptor.o(.data) for REPORT_MOUSE_SIZE
-    usb_phid_pmsc_apl.o(i.usb_main) refers to usb_phid_pmsc_descriptor.o(.constdata) for g_apl_mouse_report
+    usb_phid_pmsc_apl.o(i.usb_main) refers to usb_phid_pmsc_descriptor.o(.constdata) for g_apl_report
+    usb_phid_pmsc_apl.o(i.usb_main) refers to usb_phid_pmsc_descriptor.o(.data) for g_apl_configuration
     usb_phid_pmsc_apl.o(.constdata) refers to usb_phid_pmsc_descriptor.o(.data) for g_apl_device
-    usb_phid_pmsc_apl.o(.constdata) refers to usb_phid_pmsc_descriptor.o(.constdata) for g_apl_configuration
     sci.o(i.IIC01_MasterReceive) refers to sci.o(i.IIC01_StartCondition) for IIC01_StartCondition
     sci.o(i.IIC01_MasterReceive) refers to sci.o(i.INTC_ClearPendingIRQ) for INTC_ClearPendingIRQ
     sci.o(i.IIC01_MasterReceive) refers to sci.o(i.__NVIC_ClearPendingIRQ) for __NVIC_ClearPendingIRQ
@@ -1770,219 +1769,219 @@ Image Symbol Table
     i.usb_cstd_set_transaction               0x08002b9c   Section        0  usb_creg_abs.o(i.usb_cstd_set_transaction)
     i.usb_cstd_usb_task                      0x08002bb8   Section        0  usb_cdataio.o(i.usb_cstd_usb_task)
     i.usb_main                               0x08002bd0   Section        0  usb_phid_pmsc_apl.o(i.usb_main)
-    i.usb_module_start                       0x08002d10   Section        0  usb_157_mcu.o(i.usb_module_start)
-    i.usb_phid_read_complete                 0x08002d40   Section        0  usb_phid_driver.o(i.usb_phid_read_complete)
-    i.usb_phid_write_complete                0x08002da8   Section        0  usb_phid_driver.o(i.usb_phid_write_complete)
-    i.usb_pmsc_check_case13                  0x08002ddc   Section        0  usb_pmsc_driver.o(i.usb_pmsc_check_case13)
-    usb_pmsc_check_case13                    0x08002ddd   Thumb Code   186  usb_pmsc_driver.o(i.usb_pmsc_check_case13)
-    i.usb_pmsc_check_cbw                     0x08002ea0   Section        0  usb_pmsc_driver.o(i.usb_pmsc_check_cbw)
-    usb_pmsc_check_cbw                       0x08002ea1   Thumb Code   478  usb_pmsc_driver.o(i.usb_pmsc_check_cbw)
-    i.usb_pmsc_csw_transfer                  0x080030a4   Section        0  usb_pmsc_driver.o(i.usb_pmsc_csw_transfer)
-    usb_pmsc_csw_transfer                    0x080030a5   Thumb Code    28  usb_pmsc_driver.o(i.usb_pmsc_csw_transfer)
-    i.usb_pmsc_data_transfer                 0x080030c8   Section        0  usb_pmsc_driver.o(i.usb_pmsc_data_transfer)
-    usb_pmsc_data_transfer                   0x080030c9   Thumb Code   124  usb_pmsc_driver.o(i.usb_pmsc_data_transfer)
-    i.usb_pmsc_err_csw_ng                    0x08003154   Section        0  usb_pmsc_driver.o(i.usb_pmsc_err_csw_ng)
-    usb_pmsc_err_csw_ng                      0x08003155   Thumb Code    16  usb_pmsc_driver.o(i.usb_pmsc_err_csw_ng)
-    i.usb_pmsc_err_csw_ok                    0x08003164   Section        0  usb_pmsc_driver.o(i.usb_pmsc_err_csw_ok)
-    usb_pmsc_err_csw_ok                      0x08003165   Thumb Code    16  usb_pmsc_driver.o(i.usb_pmsc_err_csw_ok)
-    i.usb_pmsc_err_phase_err                 0x08003174   Section        0  usb_pmsc_driver.o(i.usb_pmsc_err_phase_err)
-    usb_pmsc_err_phase_err                   0x08003175   Thumb Code    16  usb_pmsc_driver.o(i.usb_pmsc_err_phase_err)
-    i.usb_pmsc_get_max_lun                   0x08003184   Section        0  usb_pmsc_driver.o(i.usb_pmsc_get_max_lun)
-    i.usb_pmsc_init                          0x080031b4   Section        0  usb_pmsc_driver.o(i.usb_pmsc_init)
-    i.usb_pmsc_mass_strage_reset             0x08003210   Section        0  usb_pmsc_driver.o(i.usb_pmsc_mass_strage_reset)
-    i.usb_pmsc_receive_cbw                   0x08003238   Section        0  usb_pmsc_driver.o(i.usb_pmsc_receive_cbw)
-    i.usb_pmsc_setcsw                        0x08003260   Section        0  usb_pmsc_driver.o(i.usb_pmsc_setcsw)
-    usb_pmsc_setcsw                          0x08003261   Thumb Code    52  usb_pmsc_driver.o(i.usb_pmsc_setcsw)
-    i.usb_pmsc_task                          0x080032a4   Section        0  usb_pmsc_driver.o(i.usb_pmsc_task)
-    i.usb_pmsc_trans_result                  0x0800339c   Section        0  usb_pmsc_driver.o(i.usb_pmsc_trans_result)
-    usb_pmsc_trans_result                    0x0800339d   Thumb Code    16  usb_pmsc_driver.o(i.usb_pmsc_trans_result)
-    i.usb_pmsc_transfer_matrix               0x080033b4   Section        0  usb_pmsc_driver.o(i.usb_pmsc_transfer_matrix)
-    usb_pmsc_transfer_matrix                 0x080033b5   Thumb Code    80  usb_pmsc_driver.o(i.usb_pmsc_transfer_matrix)
-    i.usb_pmsc_transfer_start                0x08003408   Section        0  usb_pmsc_driver.o(i.usb_pmsc_transfer_start)
-    usb_pmsc_transfer_start                  0x08003409   Thumb Code    36  usb_pmsc_driver.o(i.usb_pmsc_transfer_start)
-    i.usb_pstd_attach_process                0x08003438   Section        0  usb_psignal.o(i.usb_pstd_attach_process)
-    i.usb_pstd_bc_data_contact_detect        0x0800344a   Section        0  usb_pbc.o(i.usb_pstd_bc_data_contact_detect)
-    usb_pstd_bc_data_contact_detect          0x0800344b   Thumb Code   108  usb_pbc.o(i.usb_pstd_bc_data_contact_detect)
-    i.usb_pstd_bc_detect_process             0x080034b8   Section        0  usb_pbc.o(i.usb_pstd_bc_detect_process)
-    i.usb_pstd_bc_primary_detection          0x080034fc   Section        0  usb_pbc.o(i.usb_pstd_bc_primary_detection)
-    usb_pstd_bc_primary_detection            0x080034fd   Thumb Code    50  usb_pbc.o(i.usb_pstd_bc_primary_detection)
-    i.usb_pstd_bc_secondary_detection        0x0800352e   Section        0  usb_pbc.o(i.usb_pstd_bc_secondary_detection)
-    usb_pstd_bc_secondary_detection          0x0800352f   Thumb Code    44  usb_pbc.o(i.usb_pstd_bc_secondary_detection)
-    i.usb_pstd_bemp_pipe                     0x0800355a   Section        0  usb_pintfifo.o(i.usb_pstd_bemp_pipe)
-    i.usb_pstd_bemp_pipe_process             0x080035a8   Section        0  usb_plibusbip.o(i.usb_pstd_bemp_pipe_process)
-    i.usb_pstd_brdy_pipe                     0x08003664   Section        0  usb_pintfifo.o(i.usb_pstd_brdy_pipe)
-    i.usb_pstd_brdy_pipe_process             0x080036c8   Section        0  usb_plibusbip.o(i.usb_pstd_brdy_pipe_process)
-    i.usb_pstd_buf_to_fifo                   0x08003720   Section        0  usb_pdriver.o(i.usb_pstd_buf_to_fifo)
-    i.usb_pstd_bus_reset                     0x08003788   Section        0  usb_psignal.o(i.usb_pstd_bus_reset)
-    i.usb_pstd_busreset_function             0x080037c8   Section        0  usb_pstdfunction.o(i.usb_pstd_busreset_function)
-    i.usb_pstd_change_device_state           0x080037cc   Section        0  usb_pdriver.o(i.usb_pstd_change_device_state)
-    i.usb_pstd_chk_configured                0x08003820   Section        0  usb_preg_abs.o(i.usb_pstd_chk_configured)
-    i.usb_pstd_chk_remote                    0x08003838   Section        0  usb_pdriver.o(i.usb_pstd_chk_remote)
-    i.usb_pstd_chk_vbsts                     0x08003860   Section        0  usb_pstdfunction.o(i.usb_pstd_chk_vbsts)
-    i.usb_pstd_class_request                 0x080038ac   Section        0  usb_pstdrequest.o(i.usb_pstd_class_request)
-    i.usb_pstd_class_request_ioss            0x08003930   Section        0  usb_pstdrequest.o(i.usb_pstd_class_request_ioss)
-    i.usb_pstd_class_request_rss             0x08003934   Section        0  usb_pstdrequest.o(i.usb_pstd_class_request_rss)
-    i.usb_pstd_class_request_rwds            0x08003988   Section        0  usb_pstdrequest.o(i.usb_pstd_class_request_rwds)
-    i.usb_pstd_class_request_wnss            0x080039e0   Section        0  usb_pstdrequest.o(i.usb_pstd_class_request_wnss)
-    i.usb_pstd_class_request_wss             0x08003a5c   Section        0  usb_pstdrequest.o(i.usb_pstd_class_request_wss)
-    i.usb_pstd_clr_alt                       0x08003aa4   Section        0  usb_pdriver.o(i.usb_pstd_clr_alt)
-    i.usb_pstd_clr_feature0                  0x08003ac0   Section        0  usb_pstdrequest.o(i.usb_pstd_clr_feature0)
-    usb_pstd_clr_feature0                    0x08003ac1   Thumb Code     2  usb_pstdrequest.o(i.usb_pstd_clr_feature0)
-    i.usb_pstd_clr_feature3                  0x08003ac4   Section        0  usb_pstdrequest.o(i.usb_pstd_clr_feature3)
-    usb_pstd_clr_feature3                    0x08003ac5   Thumb Code   250  usb_pstdrequest.o(i.usb_pstd_clr_feature3)
-    i.usb_pstd_clr_mem                       0x08003bdc   Section        0  usb_pdriver.o(i.usb_pstd_clr_mem)
-    i.usb_pstd_configured                    0x08003bf8   Section        0  usb_pdriver.o(i.usb_pstd_configured)
-    i.usb_pstd_ctrl_end                      0x08003c18   Section        0  usb_pcontrolrw.o(i.usb_pstd_ctrl_end)
-    i.usb_pstd_ctrl_read                     0x08003c68   Section        0  usb_pcontrolrw.o(i.usb_pstd_ctrl_read)
-    i.usb_pstd_ctrl_write                    0x08003ce8   Section        0  usb_pcontrolrw.o(i.usb_pstd_ctrl_write)
-    i.usb_pstd_data_end                      0x08003d2c   Section        0  usb_plibusbip.o(i.usb_pstd_data_end)
-    i.usb_pstd_detach                        0x08003e30   Section        0  usb_pdriver.o(i.usb_pstd_detach)
-    i.usb_pstd_detach_process                0x08003e54   Section        0  usb_psignal.o(i.usb_pstd_detach_process)
-    i.usb_pstd_devdefault                    0x08003eb0   Section        0  usb_pdriver.o(i.usb_pstd_devdefault)
-    i.usb_pstd_driver_init                   0x08003eec   Section        0  usb_pstdfunction.o(i.usb_pstd_driver_init)
-    i.usb_pstd_driver_registration           0x08003fd8   Section        0  usb_pdriver.o(i.usb_pstd_driver_registration)
-    i.usb_pstd_epadr_to_pipe                 0x08004010   Section        0  usb_plibusbip.o(i.usb_pstd_epadr_to_pipe)
-    i.usb_pstd_fifo_to_buf                   0x08004054   Section        0  usb_pdriver.o(i.usb_pstd_fifo_to_buf)
-    i.usb_pstd_forced_termination            0x080040c0   Section        0  usb_preg_abs.o(i.usb_pstd_forced_termination)
-    i.usb_pstd_get_alternate_no              0x08004160   Section        0  usb_pdriver.o(i.usb_pstd_get_alternate_no)
-    i.usb_pstd_get_configuration1            0x080041c8   Section        0  usb_pstdrequest.o(i.usb_pstd_get_configuration1)
-    usb_pstd_get_configuration1              0x080041c9   Thumb Code    60  usb_pstdrequest.o(i.usb_pstd_get_configuration1)
-    i.usb_pstd_get_current_power             0x0800421c   Section        0  usb_pdriver.o(i.usb_pstd_get_current_power)
-    i.usb_pstd_get_descriptor1               0x08004238   Section        0  usb_pstdrequest.o(i.usb_pstd_get_descriptor1)
-    usb_pstd_get_descriptor1                 0x08004239   Thumb Code   322  usb_pstdrequest.o(i.usb_pstd_get_descriptor1)
-    i.usb_pstd_get_interface1                0x08004394   Section        0  usb_pstdrequest.o(i.usb_pstd_get_interface1)
-    usb_pstd_get_interface1                  0x08004395   Thumb Code    72  usb_pstdrequest.o(i.usb_pstd_get_interface1)
-    i.usb_pstd_get_interface_no              0x080043f4   Section        0  usb_pdriver.o(i.usb_pstd_get_interface_no)
-    i.usb_pstd_get_open_class                0x08004404   Section        0  usb_pstdfunction.o(i.usb_pstd_get_open_class)
-    i.usb_pstd_get_pipe_no                   0x08004450   Section        0  usb_plibusbip.o(i.usb_pstd_get_pipe_no)
-    i.usb_pstd_get_status1                   0x080044dc   Section        0  usb_pstdrequest.o(i.usb_pstd_get_status1)
-    usb_pstd_get_status1                     0x080044dd   Thumb Code   276  usb_pstdrequest.o(i.usb_pstd_get_status1)
-    i.usb_pstd_interface                     0x08004608   Section        0  usb_pdriver.o(i.usb_pstd_interface)
-    i.usb_pstd_interrupt_handler             0x08004618   Section        0  usb_preg_abs.o(i.usb_pstd_interrupt_handler)
-    i.usb_pstd_interrupt_process             0x08004824   Section        0  usb_pdriver.o(i.usb_pstd_interrupt_process)
-    usb_pstd_interrupt_process               0x08004825   Thumb Code   354  usb_pdriver.o(i.usb_pstd_interrupt_process)
-    i.usb_pstd_nrdy_pipe                     0x080049a8   Section        0  usb_pintfifo.o(i.usb_pstd_nrdy_pipe)
-    i.usb_pstd_nrdy_pipe_process             0x080049bc   Section        0  usb_plibusbip.o(i.usb_pstd_nrdy_pipe_process)
-    i.usb_pstd_other_request                 0x08004a1c   Section        0  usb_pstdrequest.o(i.usb_pstd_other_request)
-    i.usb_pstd_pcd_task                      0x08004a44   Section        0  usb_pdriver.o(i.usb_pstd_pcd_task)
-    i.usb_pstd_pipe_info                     0x08004a80   Section        0  usb_pdriver.o(i.usb_pstd_pipe_info)
-    i.usb_pstd_read_data                     0x08004ab4   Section        0  usb_plibusbip.o(i.usb_pstd_read_data)
-    i.usb_pstd_read_fifo                     0x08004b90   Section        0  usb_preg_abs.o(i.usb_pstd_read_fifo)
-    i.usb_pstd_receive_start                 0x08004bc4   Section        0  usb_plibusbip.o(i.usb_pstd_receive_start)
-    i.usb_pstd_registration                  0x08004c74   Section        0  usb_pdriver.o(i.usb_pstd_registration)
-    i.usb_pstd_remote_wakeup                 0x08004cd8   Section        0  usb_preg_abs.o(i.usb_pstd_remote_wakeup)
-    i.usb_pstd_resume                        0x08004d24   Section        0  usb_pdriver.o(i.usb_pstd_resume)
-    i.usb_pstd_resume_process                0x08004d36   Section        0  usb_preg_abs.o(i.usb_pstd_resume_process)
-    i.usb_pstd_save_request                  0x08004d44   Section        0  usb_preg_abs.o(i.usb_pstd_save_request)
-    i.usb_pstd_send_start                    0x08004d7c   Section        0  usb_plibusbip.o(i.usb_pstd_send_start)
-    i.usb_pstd_set_address0                  0x08004de8   Section        0  usb_pstdrequest.o(i.usb_pstd_set_address0)
-    usb_pstd_set_address0                    0x08004de9   Thumb Code     2  usb_pstdrequest.o(i.usb_pstd_set_address0)
-    i.usb_pstd_set_address3                  0x08004dec   Section        0  usb_pstdrequest.o(i.usb_pstd_set_address3)
-    usb_pstd_set_address3                    0x08004ded   Thumb Code    64  usb_pstdrequest.o(i.usb_pstd_set_address3)
-    i.usb_pstd_set_config_no                 0x08004e3c   Section        0  usb_pdriver.o(i.usb_pstd_set_config_no)
-    i.usb_pstd_set_configuration0            0x08004e50   Section        0  usb_pstdrequest.o(i.usb_pstd_set_configuration0)
-    usb_pstd_set_configuration0              0x08004e51   Thumb Code    46  usb_pstdrequest.o(i.usb_pstd_set_configuration0)
-    i.usb_pstd_set_configuration3            0x08004e8c   Section        0  usb_pstdrequest.o(i.usb_pstd_set_configuration3)
-    usb_pstd_set_configuration3              0x08004e8d   Thumb Code   130  usb_pstdrequest.o(i.usb_pstd_set_configuration3)
-    i.usb_pstd_set_descriptor2               0x08004f28   Section        0  usb_pstdrequest.o(i.usb_pstd_set_descriptor2)
-    usb_pstd_set_descriptor2                 0x08004f29   Thumb Code     8  usb_pstdrequest.o(i.usb_pstd_set_descriptor2)
-    i.usb_pstd_set_eptbl_index               0x08004f30   Section        0  usb_pdriver.o(i.usb_pstd_set_eptbl_index)
-    i.usb_pstd_set_feature0                  0x08004fcc   Section        0  usb_pstdrequest.o(i.usb_pstd_set_feature0)
-    usb_pstd_set_feature0                    0x08004fcd   Thumb Code     2  usb_pstdrequest.o(i.usb_pstd_set_feature0)
-    i.usb_pstd_set_feature3                  0x08004fd0   Section        0  usb_pstdrequest.o(i.usb_pstd_set_feature3)
-    usb_pstd_set_feature3                    0x08004fd1   Thumb Code   198  usb_pstdrequest.o(i.usb_pstd_set_feature3)
-    i.usb_pstd_set_feature_function          0x080050ac   Section        0  usb_pstdfunction.o(i.usb_pstd_set_feature_function)
-    i.usb_pstd_set_interface0                0x080050b4   Section        0  usb_pstdrequest.o(i.usb_pstd_set_interface0)
-    usb_pstd_set_interface0                  0x080050b5   Thumb Code    32  usb_pstdrequest.o(i.usb_pstd_set_interface0)
-    i.usb_pstd_set_interface3                0x080050e0   Section        0  usb_pstdrequest.o(i.usb_pstd_set_interface3)
-    usb_pstd_set_interface3                  0x080050e1   Thumb Code   120  usb_pstdrequest.o(i.usb_pstd_set_interface3)
-    i.usb_pstd_set_pipe_reg                  0x0800516c   Section        0  usb_plibusbip.o(i.usb_pstd_set_pipe_reg)
-    i.usb_pstd_set_pipe_table                0x080051e0   Section        0  usb_plibusbip.o(i.usb_pstd_set_pipe_table)
-    i.usb_pstd_set_stall                     0x080052a4   Section        0  usb_preg_abs.o(i.usb_pstd_set_stall)
-    i.usb_pstd_set_stall_pipe0               0x080052b2   Section        0  usb_preg_abs.o(i.usb_pstd_set_stall_pipe0)
-    i.usb_pstd_set_submitutr                 0x080052c0   Section        0  usb_pdriver.o(i.usb_pstd_set_submitutr)
-    i.usb_pstd_stand_req0                    0x08005300   Section        0  usb_pstdrequest.o(i.usb_pstd_stand_req0)
-    i.usb_pstd_stand_req1                    0x08005374   Section        0  usb_pstdrequest.o(i.usb_pstd_stand_req1)
-    i.usb_pstd_stand_req2                    0x080053dc   Section        0  usb_pstdrequest.o(i.usb_pstd_stand_req2)
-    i.usb_pstd_stand_req3                    0x08005400   Section        0  usb_pstdrequest.o(i.usb_pstd_stand_req3)
-    i.usb_pstd_stand_req4                    0x080054c8   Section        0  usb_pstdrequest.o(i.usb_pstd_stand_req4)
-    i.usb_pstd_stand_req5                    0x08005594   Section        0  usb_pstdrequest.o(i.usb_pstd_stand_req5)
-    i.usb_pstd_suspend_function              0x08005614   Section        0  usb_pstdfunction.o(i.usb_pstd_suspend_function)
-    i.usb_pstd_suspend_process               0x08005618   Section        0  usb_psignal.o(i.usb_pstd_suspend_process)
-    i.usb_pstd_suspended                     0x08005668   Section        0  usb_pdriver.o(i.usb_pstd_suspended)
-    i.usb_pstd_synch_rame1                   0x0800567a   Section        0  usb_pstdrequest.o(i.usb_pstd_synch_rame1)
-    usb_pstd_synch_rame1                     0x0800567b   Thumb Code     8  usb_pstdrequest.o(i.usb_pstd_synch_rame1)
-    i.usb_pstd_transfer_start                0x08005684   Section        0  usb_pdriver.o(i.usb_pstd_transfer_start)
-    i.usb_pstd_usb_handler                   0x080056cc   Section        0  usb_pinthandler_usbip0.o(i.usb_pstd_usb_handler)
-    i.usb_pstd_write_data                    0x08005700   Section        0  usb_plibusbip.o(i.usb_pstd_write_data)
-    i.usb_pstd_write_fifo                    0x080057e4   Section        0  usb_preg_abs.o(i.usb_pstd_write_fifo)
-    .constdata                               0x0800582c   Section      226  usb_phid_pmsc_descriptor.o(.constdata)
-    .constdata                               0x08005910   Section       16  usb_phid_pmsc_apl.o(.constdata)
-    gs_usb_descriptor                        0x08005910   Data          16  usb_phid_pmsc_apl.o(.constdata)
-    .constdata                               0x08005920   Section       32  sci.o(.constdata)
-    .constdata                               0x08005940   Section        6  usb_cdataio.o(.constdata)
-    .constdata                               0x08005946   Section      162  usb_atapi_driver.o(.constdata)
-    gs_usb_atapi_rs_tbl                      0x08005946   Data          18  usb_atapi_driver.o(.constdata)
-    gs_usb_atapi_ms_mp_tbl                   0x08005958   Data           8  usb_atapi_driver.o(.constdata)
-    gs_usb_atapi_ms_rcvr_tbl                 0x08005960   Data          20  usb_atapi_driver.o(.constdata)
-    gs_usb_atapi_ms_cash_tbl                 0x08005974   Data          20  usb_atapi_driver.o(.constdata)
-    gs_usb_atapi_ms_capa_tbl                 0x08005988   Data          20  usb_atapi_driver.o(.constdata)
-    gs_usb_atapi_ms_op_cmd_tbl               0x0800599c   Data          16  usb_atapi_driver.o(.constdata)
-    gs_usb_atapi_ms_all_tbl                  0x080059ac   Data          44  usb_atapi_driver.o(.constdata)
-    gs_usb_atapi_ms_err_tbl                  0x080059d8   Data           8  usb_atapi_driver.o(.constdata)
-    gs_usb_atapi_dummy_tbl                   0x080059e0   Data           8  usb_atapi_driver.o(.constdata)
+    i.usb_module_start                       0x08002cd0   Section        0  usb_157_mcu.o(i.usb_module_start)
+    i.usb_phid_read_complete                 0x08002d00   Section        0  usb_phid_driver.o(i.usb_phid_read_complete)
+    i.usb_phid_write_complete                0x08002d68   Section        0  usb_phid_driver.o(i.usb_phid_write_complete)
+    i.usb_pmsc_check_case13                  0x08002d9c   Section        0  usb_pmsc_driver.o(i.usb_pmsc_check_case13)
+    usb_pmsc_check_case13                    0x08002d9d   Thumb Code   186  usb_pmsc_driver.o(i.usb_pmsc_check_case13)
+    i.usb_pmsc_check_cbw                     0x08002e60   Section        0  usb_pmsc_driver.o(i.usb_pmsc_check_cbw)
+    usb_pmsc_check_cbw                       0x08002e61   Thumb Code   478  usb_pmsc_driver.o(i.usb_pmsc_check_cbw)
+    i.usb_pmsc_csw_transfer                  0x08003064   Section        0  usb_pmsc_driver.o(i.usb_pmsc_csw_transfer)
+    usb_pmsc_csw_transfer                    0x08003065   Thumb Code    28  usb_pmsc_driver.o(i.usb_pmsc_csw_transfer)
+    i.usb_pmsc_data_transfer                 0x08003088   Section        0  usb_pmsc_driver.o(i.usb_pmsc_data_transfer)
+    usb_pmsc_data_transfer                   0x08003089   Thumb Code   124  usb_pmsc_driver.o(i.usb_pmsc_data_transfer)
+    i.usb_pmsc_err_csw_ng                    0x08003114   Section        0  usb_pmsc_driver.o(i.usb_pmsc_err_csw_ng)
+    usb_pmsc_err_csw_ng                      0x08003115   Thumb Code    16  usb_pmsc_driver.o(i.usb_pmsc_err_csw_ng)
+    i.usb_pmsc_err_csw_ok                    0x08003124   Section        0  usb_pmsc_driver.o(i.usb_pmsc_err_csw_ok)
+    usb_pmsc_err_csw_ok                      0x08003125   Thumb Code    16  usb_pmsc_driver.o(i.usb_pmsc_err_csw_ok)
+    i.usb_pmsc_err_phase_err                 0x08003134   Section        0  usb_pmsc_driver.o(i.usb_pmsc_err_phase_err)
+    usb_pmsc_err_phase_err                   0x08003135   Thumb Code    16  usb_pmsc_driver.o(i.usb_pmsc_err_phase_err)
+    i.usb_pmsc_get_max_lun                   0x08003144   Section        0  usb_pmsc_driver.o(i.usb_pmsc_get_max_lun)
+    i.usb_pmsc_init                          0x08003174   Section        0  usb_pmsc_driver.o(i.usb_pmsc_init)
+    i.usb_pmsc_mass_strage_reset             0x080031d0   Section        0  usb_pmsc_driver.o(i.usb_pmsc_mass_strage_reset)
+    i.usb_pmsc_receive_cbw                   0x080031f8   Section        0  usb_pmsc_driver.o(i.usb_pmsc_receive_cbw)
+    i.usb_pmsc_setcsw                        0x08003220   Section        0  usb_pmsc_driver.o(i.usb_pmsc_setcsw)
+    usb_pmsc_setcsw                          0x08003221   Thumb Code    52  usb_pmsc_driver.o(i.usb_pmsc_setcsw)
+    i.usb_pmsc_task                          0x08003264   Section        0  usb_pmsc_driver.o(i.usb_pmsc_task)
+    i.usb_pmsc_trans_result                  0x0800335c   Section        0  usb_pmsc_driver.o(i.usb_pmsc_trans_result)
+    usb_pmsc_trans_result                    0x0800335d   Thumb Code    16  usb_pmsc_driver.o(i.usb_pmsc_trans_result)
+    i.usb_pmsc_transfer_matrix               0x08003374   Section        0  usb_pmsc_driver.o(i.usb_pmsc_transfer_matrix)
+    usb_pmsc_transfer_matrix                 0x08003375   Thumb Code    80  usb_pmsc_driver.o(i.usb_pmsc_transfer_matrix)
+    i.usb_pmsc_transfer_start                0x080033c8   Section        0  usb_pmsc_driver.o(i.usb_pmsc_transfer_start)
+    usb_pmsc_transfer_start                  0x080033c9   Thumb Code    36  usb_pmsc_driver.o(i.usb_pmsc_transfer_start)
+    i.usb_pstd_attach_process                0x080033f8   Section        0  usb_psignal.o(i.usb_pstd_attach_process)
+    i.usb_pstd_bc_data_contact_detect        0x0800340a   Section        0  usb_pbc.o(i.usb_pstd_bc_data_contact_detect)
+    usb_pstd_bc_data_contact_detect          0x0800340b   Thumb Code   108  usb_pbc.o(i.usb_pstd_bc_data_contact_detect)
+    i.usb_pstd_bc_detect_process             0x08003478   Section        0  usb_pbc.o(i.usb_pstd_bc_detect_process)
+    i.usb_pstd_bc_primary_detection          0x080034bc   Section        0  usb_pbc.o(i.usb_pstd_bc_primary_detection)
+    usb_pstd_bc_primary_detection            0x080034bd   Thumb Code    50  usb_pbc.o(i.usb_pstd_bc_primary_detection)
+    i.usb_pstd_bc_secondary_detection        0x080034ee   Section        0  usb_pbc.o(i.usb_pstd_bc_secondary_detection)
+    usb_pstd_bc_secondary_detection          0x080034ef   Thumb Code    44  usb_pbc.o(i.usb_pstd_bc_secondary_detection)
+    i.usb_pstd_bemp_pipe                     0x0800351a   Section        0  usb_pintfifo.o(i.usb_pstd_bemp_pipe)
+    i.usb_pstd_bemp_pipe_process             0x08003568   Section        0  usb_plibusbip.o(i.usb_pstd_bemp_pipe_process)
+    i.usb_pstd_brdy_pipe                     0x08003624   Section        0  usb_pintfifo.o(i.usb_pstd_brdy_pipe)
+    i.usb_pstd_brdy_pipe_process             0x08003688   Section        0  usb_plibusbip.o(i.usb_pstd_brdy_pipe_process)
+    i.usb_pstd_buf_to_fifo                   0x080036e0   Section        0  usb_pdriver.o(i.usb_pstd_buf_to_fifo)
+    i.usb_pstd_bus_reset                     0x08003748   Section        0  usb_psignal.o(i.usb_pstd_bus_reset)
+    i.usb_pstd_busreset_function             0x08003788   Section        0  usb_pstdfunction.o(i.usb_pstd_busreset_function)
+    i.usb_pstd_change_device_state           0x0800378c   Section        0  usb_pdriver.o(i.usb_pstd_change_device_state)
+    i.usb_pstd_chk_configured                0x080037e0   Section        0  usb_preg_abs.o(i.usb_pstd_chk_configured)
+    i.usb_pstd_chk_remote                    0x080037f8   Section        0  usb_pdriver.o(i.usb_pstd_chk_remote)
+    i.usb_pstd_chk_vbsts                     0x08003820   Section        0  usb_pstdfunction.o(i.usb_pstd_chk_vbsts)
+    i.usb_pstd_class_request                 0x0800386c   Section        0  usb_pstdrequest.o(i.usb_pstd_class_request)
+    i.usb_pstd_class_request_ioss            0x080038f0   Section        0  usb_pstdrequest.o(i.usb_pstd_class_request_ioss)
+    i.usb_pstd_class_request_rss             0x080038f4   Section        0  usb_pstdrequest.o(i.usb_pstd_class_request_rss)
+    i.usb_pstd_class_request_rwds            0x08003948   Section        0  usb_pstdrequest.o(i.usb_pstd_class_request_rwds)
+    i.usb_pstd_class_request_wnss            0x080039a0   Section        0  usb_pstdrequest.o(i.usb_pstd_class_request_wnss)
+    i.usb_pstd_class_request_wss             0x08003a1c   Section        0  usb_pstdrequest.o(i.usb_pstd_class_request_wss)
+    i.usb_pstd_clr_alt                       0x08003a64   Section        0  usb_pdriver.o(i.usb_pstd_clr_alt)
+    i.usb_pstd_clr_feature0                  0x08003a80   Section        0  usb_pstdrequest.o(i.usb_pstd_clr_feature0)
+    usb_pstd_clr_feature0                    0x08003a81   Thumb Code     2  usb_pstdrequest.o(i.usb_pstd_clr_feature0)
+    i.usb_pstd_clr_feature3                  0x08003a84   Section        0  usb_pstdrequest.o(i.usb_pstd_clr_feature3)
+    usb_pstd_clr_feature3                    0x08003a85   Thumb Code   250  usb_pstdrequest.o(i.usb_pstd_clr_feature3)
+    i.usb_pstd_clr_mem                       0x08003b9c   Section        0  usb_pdriver.o(i.usb_pstd_clr_mem)
+    i.usb_pstd_configured                    0x08003bb8   Section        0  usb_pdriver.o(i.usb_pstd_configured)
+    i.usb_pstd_ctrl_end                      0x08003bd8   Section        0  usb_pcontrolrw.o(i.usb_pstd_ctrl_end)
+    i.usb_pstd_ctrl_read                     0x08003c28   Section        0  usb_pcontrolrw.o(i.usb_pstd_ctrl_read)
+    i.usb_pstd_ctrl_write                    0x08003ca8   Section        0  usb_pcontrolrw.o(i.usb_pstd_ctrl_write)
+    i.usb_pstd_data_end                      0x08003cec   Section        0  usb_plibusbip.o(i.usb_pstd_data_end)
+    i.usb_pstd_detach                        0x08003df0   Section        0  usb_pdriver.o(i.usb_pstd_detach)
+    i.usb_pstd_detach_process                0x08003e14   Section        0  usb_psignal.o(i.usb_pstd_detach_process)
+    i.usb_pstd_devdefault                    0x08003e70   Section        0  usb_pdriver.o(i.usb_pstd_devdefault)
+    i.usb_pstd_driver_init                   0x08003eac   Section        0  usb_pstdfunction.o(i.usb_pstd_driver_init)
+    i.usb_pstd_driver_registration           0x08003f98   Section        0  usb_pdriver.o(i.usb_pstd_driver_registration)
+    i.usb_pstd_epadr_to_pipe                 0x08003fd0   Section        0  usb_plibusbip.o(i.usb_pstd_epadr_to_pipe)
+    i.usb_pstd_fifo_to_buf                   0x08004014   Section        0  usb_pdriver.o(i.usb_pstd_fifo_to_buf)
+    i.usb_pstd_forced_termination            0x08004080   Section        0  usb_preg_abs.o(i.usb_pstd_forced_termination)
+    i.usb_pstd_get_alternate_no              0x08004120   Section        0  usb_pdriver.o(i.usb_pstd_get_alternate_no)
+    i.usb_pstd_get_configuration1            0x08004188   Section        0  usb_pstdrequest.o(i.usb_pstd_get_configuration1)
+    usb_pstd_get_configuration1              0x08004189   Thumb Code    60  usb_pstdrequest.o(i.usb_pstd_get_configuration1)
+    i.usb_pstd_get_current_power             0x080041dc   Section        0  usb_pdriver.o(i.usb_pstd_get_current_power)
+    i.usb_pstd_get_descriptor1               0x080041f8   Section        0  usb_pstdrequest.o(i.usb_pstd_get_descriptor1)
+    usb_pstd_get_descriptor1                 0x080041f9   Thumb Code   322  usb_pstdrequest.o(i.usb_pstd_get_descriptor1)
+    i.usb_pstd_get_interface1                0x08004354   Section        0  usb_pstdrequest.o(i.usb_pstd_get_interface1)
+    usb_pstd_get_interface1                  0x08004355   Thumb Code    72  usb_pstdrequest.o(i.usb_pstd_get_interface1)
+    i.usb_pstd_get_interface_no              0x080043b4   Section        0  usb_pdriver.o(i.usb_pstd_get_interface_no)
+    i.usb_pstd_get_open_class                0x080043c4   Section        0  usb_pstdfunction.o(i.usb_pstd_get_open_class)
+    i.usb_pstd_get_pipe_no                   0x08004410   Section        0  usb_plibusbip.o(i.usb_pstd_get_pipe_no)
+    i.usb_pstd_get_status1                   0x0800449c   Section        0  usb_pstdrequest.o(i.usb_pstd_get_status1)
+    usb_pstd_get_status1                     0x0800449d   Thumb Code   276  usb_pstdrequest.o(i.usb_pstd_get_status1)
+    i.usb_pstd_interface                     0x080045c8   Section        0  usb_pdriver.o(i.usb_pstd_interface)
+    i.usb_pstd_interrupt_handler             0x080045d8   Section        0  usb_preg_abs.o(i.usb_pstd_interrupt_handler)
+    i.usb_pstd_interrupt_process             0x080047e4   Section        0  usb_pdriver.o(i.usb_pstd_interrupt_process)
+    usb_pstd_interrupt_process               0x080047e5   Thumb Code   354  usb_pdriver.o(i.usb_pstd_interrupt_process)
+    i.usb_pstd_nrdy_pipe                     0x08004968   Section        0  usb_pintfifo.o(i.usb_pstd_nrdy_pipe)
+    i.usb_pstd_nrdy_pipe_process             0x0800497c   Section        0  usb_plibusbip.o(i.usb_pstd_nrdy_pipe_process)
+    i.usb_pstd_other_request                 0x080049dc   Section        0  usb_pstdrequest.o(i.usb_pstd_other_request)
+    i.usb_pstd_pcd_task                      0x08004a04   Section        0  usb_pdriver.o(i.usb_pstd_pcd_task)
+    i.usb_pstd_pipe_info                     0x08004a40   Section        0  usb_pdriver.o(i.usb_pstd_pipe_info)
+    i.usb_pstd_read_data                     0x08004a74   Section        0  usb_plibusbip.o(i.usb_pstd_read_data)
+    i.usb_pstd_read_fifo                     0x08004b50   Section        0  usb_preg_abs.o(i.usb_pstd_read_fifo)
+    i.usb_pstd_receive_start                 0x08004b84   Section        0  usb_plibusbip.o(i.usb_pstd_receive_start)
+    i.usb_pstd_registration                  0x08004c34   Section        0  usb_pdriver.o(i.usb_pstd_registration)
+    i.usb_pstd_remote_wakeup                 0x08004c98   Section        0  usb_preg_abs.o(i.usb_pstd_remote_wakeup)
+    i.usb_pstd_resume                        0x08004ce4   Section        0  usb_pdriver.o(i.usb_pstd_resume)
+    i.usb_pstd_resume_process                0x08004cf6   Section        0  usb_preg_abs.o(i.usb_pstd_resume_process)
+    i.usb_pstd_save_request                  0x08004d04   Section        0  usb_preg_abs.o(i.usb_pstd_save_request)
+    i.usb_pstd_send_start                    0x08004d3c   Section        0  usb_plibusbip.o(i.usb_pstd_send_start)
+    i.usb_pstd_set_address0                  0x08004da8   Section        0  usb_pstdrequest.o(i.usb_pstd_set_address0)
+    usb_pstd_set_address0                    0x08004da9   Thumb Code     2  usb_pstdrequest.o(i.usb_pstd_set_address0)
+    i.usb_pstd_set_address3                  0x08004dac   Section        0  usb_pstdrequest.o(i.usb_pstd_set_address3)
+    usb_pstd_set_address3                    0x08004dad   Thumb Code    64  usb_pstdrequest.o(i.usb_pstd_set_address3)
+    i.usb_pstd_set_config_no                 0x08004dfc   Section        0  usb_pdriver.o(i.usb_pstd_set_config_no)
+    i.usb_pstd_set_configuration0            0x08004e10   Section        0  usb_pstdrequest.o(i.usb_pstd_set_configuration0)
+    usb_pstd_set_configuration0              0x08004e11   Thumb Code    46  usb_pstdrequest.o(i.usb_pstd_set_configuration0)
+    i.usb_pstd_set_configuration3            0x08004e4c   Section        0  usb_pstdrequest.o(i.usb_pstd_set_configuration3)
+    usb_pstd_set_configuration3              0x08004e4d   Thumb Code   130  usb_pstdrequest.o(i.usb_pstd_set_configuration3)
+    i.usb_pstd_set_descriptor2               0x08004ee8   Section        0  usb_pstdrequest.o(i.usb_pstd_set_descriptor2)
+    usb_pstd_set_descriptor2                 0x08004ee9   Thumb Code     8  usb_pstdrequest.o(i.usb_pstd_set_descriptor2)
+    i.usb_pstd_set_eptbl_index               0x08004ef0   Section        0  usb_pdriver.o(i.usb_pstd_set_eptbl_index)
+    i.usb_pstd_set_feature0                  0x08004f8c   Section        0  usb_pstdrequest.o(i.usb_pstd_set_feature0)
+    usb_pstd_set_feature0                    0x08004f8d   Thumb Code     2  usb_pstdrequest.o(i.usb_pstd_set_feature0)
+    i.usb_pstd_set_feature3                  0x08004f90   Section        0  usb_pstdrequest.o(i.usb_pstd_set_feature3)
+    usb_pstd_set_feature3                    0x08004f91   Thumb Code   198  usb_pstdrequest.o(i.usb_pstd_set_feature3)
+    i.usb_pstd_set_feature_function          0x0800506c   Section        0  usb_pstdfunction.o(i.usb_pstd_set_feature_function)
+    i.usb_pstd_set_interface0                0x08005074   Section        0  usb_pstdrequest.o(i.usb_pstd_set_interface0)
+    usb_pstd_set_interface0                  0x08005075   Thumb Code    32  usb_pstdrequest.o(i.usb_pstd_set_interface0)
+    i.usb_pstd_set_interface3                0x080050a0   Section        0  usb_pstdrequest.o(i.usb_pstd_set_interface3)
+    usb_pstd_set_interface3                  0x080050a1   Thumb Code   120  usb_pstdrequest.o(i.usb_pstd_set_interface3)
+    i.usb_pstd_set_pipe_reg                  0x0800512c   Section        0  usb_plibusbip.o(i.usb_pstd_set_pipe_reg)
+    i.usb_pstd_set_pipe_table                0x080051a0   Section        0  usb_plibusbip.o(i.usb_pstd_set_pipe_table)
+    i.usb_pstd_set_stall                     0x08005264   Section        0  usb_preg_abs.o(i.usb_pstd_set_stall)
+    i.usb_pstd_set_stall_pipe0               0x08005272   Section        0  usb_preg_abs.o(i.usb_pstd_set_stall_pipe0)
+    i.usb_pstd_set_submitutr                 0x08005280   Section        0  usb_pdriver.o(i.usb_pstd_set_submitutr)
+    i.usb_pstd_stand_req0                    0x080052c0   Section        0  usb_pstdrequest.o(i.usb_pstd_stand_req0)
+    i.usb_pstd_stand_req1                    0x08005334   Section        0  usb_pstdrequest.o(i.usb_pstd_stand_req1)
+    i.usb_pstd_stand_req2                    0x0800539c   Section        0  usb_pstdrequest.o(i.usb_pstd_stand_req2)
+    i.usb_pstd_stand_req3                    0x080053c0   Section        0  usb_pstdrequest.o(i.usb_pstd_stand_req3)
+    i.usb_pstd_stand_req4                    0x08005488   Section        0  usb_pstdrequest.o(i.usb_pstd_stand_req4)
+    i.usb_pstd_stand_req5                    0x08005554   Section        0  usb_pstdrequest.o(i.usb_pstd_stand_req5)
+    i.usb_pstd_suspend_function              0x080055d4   Section        0  usb_pstdfunction.o(i.usb_pstd_suspend_function)
+    i.usb_pstd_suspend_process               0x080055d8   Section        0  usb_psignal.o(i.usb_pstd_suspend_process)
+    i.usb_pstd_suspended                     0x08005628   Section        0  usb_pdriver.o(i.usb_pstd_suspended)
+    i.usb_pstd_synch_rame1                   0x0800563a   Section        0  usb_pstdrequest.o(i.usb_pstd_synch_rame1)
+    usb_pstd_synch_rame1                     0x0800563b   Thumb Code     8  usb_pstdrequest.o(i.usb_pstd_synch_rame1)
+    i.usb_pstd_transfer_start                0x08005644   Section        0  usb_pdriver.o(i.usb_pstd_transfer_start)
+    i.usb_pstd_usb_handler                   0x0800568c   Section        0  usb_pinthandler_usbip0.o(i.usb_pstd_usb_handler)
+    i.usb_pstd_write_data                    0x080056c0   Section        0  usb_plibusbip.o(i.usb_pstd_write_data)
+    i.usb_pstd_write_fifo                    0x080057a4   Section        0  usb_preg_abs.o(i.usb_pstd_write_fifo)
+    .constdata                               0x080057ec   Section       50  usb_phid_pmsc_descriptor.o(.constdata)
+    .constdata                               0x08005820   Section       16  usb_phid_pmsc_apl.o(.constdata)
+    gs_usb_descriptor                        0x08005820   Data          16  usb_phid_pmsc_apl.o(.constdata)
+    .constdata                               0x08005830   Section       32  sci.o(.constdata)
+    .constdata                               0x08005850   Section        6  usb_cdataio.o(.constdata)
+    .constdata                               0x08005856   Section      162  usb_atapi_driver.o(.constdata)
+    gs_usb_atapi_rs_tbl                      0x08005856   Data          18  usb_atapi_driver.o(.constdata)
+    gs_usb_atapi_ms_mp_tbl                   0x08005868   Data           8  usb_atapi_driver.o(.constdata)
+    gs_usb_atapi_ms_rcvr_tbl                 0x08005870   Data          20  usb_atapi_driver.o(.constdata)
+    gs_usb_atapi_ms_cash_tbl                 0x08005884   Data          20  usb_atapi_driver.o(.constdata)
+    gs_usb_atapi_ms_capa_tbl                 0x08005898   Data          20  usb_atapi_driver.o(.constdata)
+    gs_usb_atapi_ms_op_cmd_tbl               0x080058ac   Data          16  usb_atapi_driver.o(.constdata)
+    gs_usb_atapi_ms_all_tbl                  0x080058bc   Data          44  usb_atapi_driver.o(.constdata)
+    gs_usb_atapi_ms_err_tbl                  0x080058e8   Data           8  usb_atapi_driver.o(.constdata)
+    gs_usb_atapi_dummy_tbl                   0x080058f0   Data           8  usb_atapi_driver.o(.constdata)
     .data                                    0x20000000   Section        4  main.o(.data)
-    .data                                    0x20000004   Section      220  usb_phid_pmsc_descriptor.o(.data)
-    .data                                    0x200000e0   Section      270  sci.o(.data)
-    dummy_sio01                              0x200001e8   Data           1  sci.o(.data)
-    dummy_sio01                              0x200001e9   Data           1  sci.o(.data)
-    dummy_sio11                              0x200001ea   Data           1  sci.o(.data)
-    dummy_sio11                              0x200001eb   Data           1  sci.o(.data)
-    dummy_sio21                              0x200001ec   Data           1  sci.o(.data)
-    dummy_sio21                              0x200001ed   Data           1  sci.o(.data)
-    .data                                    0x200001f0   Section       80  usb_cdataio.o(.data)
-    .data                                    0x20000240   Section        2  usb_pbc.o(.data)
-    .data                                    0x20000244   Section       32  usb_pdriver.o(.data)
-    .data                                    0x20000264   Section        6  usb_pstdrequest.o(.data)
-    s_tbl                                    0x20000264   Data           2  usb_pstdrequest.o(.data)
-    tbl                                      0x20000266   Data           2  usb_pstdrequest.o(.data)
-    tbl                                      0x20000268   Data           2  usb_pstdrequest.o(.data)
-    .data                                    0x2000026a   Section        7  usb_usbif_api.o(.data)
-    is_init                                  0x20000270   Data           1  usb_usbif_api.o(.data)
-    .data                                    0x20000274   Section       20  ext_flash_disk.o(.data)
-    .data                                    0x20000288   Section        4  media_driver_api.o(.data)
-    gsp_usb_pmsc_media_driver_list           0x20000288   Data           4  media_driver_api.o(.data)
-    .data                                    0x2000028c   Section       88  usb_atapi_driver.o(.data)
-    gs_usb_atapi_is_data_stage               0x2000028c   Data           1  usb_atapi_driver.o(.data)
-    gsp_usb_atapi_cbwcb                      0x20000290   Data           4  usb_atapi_driver.o(.data)
-    gs_usb_atapi_cur_lba                     0x20000294   Data           4  usb_atapi_driver.o(.data)
-    gs_usb_atapi_inquiry_tbl                 0x20000298   Data          36  usb_atapi_driver.o(.data)
-    gs_usb_atapi_read_f_capa_tbl             0x200002bc   Data          20  usb_atapi_driver.o(.data)
-    gs_usb_atapi_read_capa_tbl               0x200002d0   Data           8  usb_atapi_driver.o(.data)
-    p_atapi_rw_buff                          0x200002d8   Data           4  usb_atapi_driver.o(.data)
-    real_data_count                          0x200002dc   Data           4  usb_atapi_driver.o(.data)
-    this_transfer_size                       0x200002e0   Data           4  usb_atapi_driver.o(.data)
-    .data                                    0x200002e4   Section       17  usb_pmsc_driver.o(.data)
-    gs_usb_pmsc_seq                          0x200002f0   Data           1  usb_pmsc_driver.o(.data)
-    gs_usb_pmsc_trans_complete_flag          0x200002f1   Data           1  usb_pmsc_driver.o(.data)
-    gs_usb_pmscstatus                        0x200002f2   Data           2  usb_pmsc_driver.o(.data)
-    is_init                                  0x200002f4   Data           1  usb_pmsc_driver.o(.data)
-    .data                                    0x200002f8   Section        4  system_bat32g157.o(.data)
-    .data                                    0x200002fc   Section        4  stdout.o(.data)
-    .bss                                     0x20000300   Section       64  usb_phid_pmsc_apl.o(.bss)
-    gs_data                                  0x20000300   Data          64  usb_phid_pmsc_apl.o(.bss)
-    .bss                                     0x20000340   Section      220  usb_cdataio.o(.bss)
-    .bss                                     0x2000041c   Section      576  usb_pdriver.o(.bss)
-    .bss                                     0x2000065c   Section       62  usb_pinthandler_usbip0.o(.bss)
-    .bss                                     0x2000069c   Section      580  usb_usbif_api.o(.bss)
-    .bss                                     0x200008e0   Section     8220  usb_atapi_driver.o(.bss)
-    gs_usb_pmsc_media_buffer                 0x200008e0   Data        8192  usb_atapi_driver.o(.bss)
-    atapi_mess                               0x200028e0   Data          28  usb_atapi_driver.o(.bss)
-    .bss                                     0x200028fc   Section       76  usb_pmsc_driver.o(.bss)
-    gs_usb_pmsc_cbw                          0x200028fc   Data          32  usb_pmsc_driver.o(.bss)
-    gs_usb_pmsc_csw                          0x2000291c   Data          16  usb_pmsc_driver.o(.bss)
-    gs_usb_pmsc_utr                          0x2000292c   Data          28  usb_pmsc_driver.o(.bss)
-    STACK                                    0x20002948   Section     8192  startup_bat32g157.o(STACK)
+    .data                                    0x20000004   Section      292  usb_phid_pmsc_descriptor.o(.data)
+    .data                                    0x20000128   Section      270  sci.o(.data)
+    dummy_sio01                              0x20000230   Data           1  sci.o(.data)
+    dummy_sio01                              0x20000231   Data           1  sci.o(.data)
+    dummy_sio11                              0x20000232   Data           1  sci.o(.data)
+    dummy_sio11                              0x20000233   Data           1  sci.o(.data)
+    dummy_sio21                              0x20000234   Data           1  sci.o(.data)
+    dummy_sio21                              0x20000235   Data           1  sci.o(.data)
+    .data                                    0x20000238   Section       80  usb_cdataio.o(.data)
+    .data                                    0x20000288   Section        2  usb_pbc.o(.data)
+    .data                                    0x2000028c   Section       32  usb_pdriver.o(.data)
+    .data                                    0x200002ac   Section        6  usb_pstdrequest.o(.data)
+    s_tbl                                    0x200002ac   Data           2  usb_pstdrequest.o(.data)
+    tbl                                      0x200002ae   Data           2  usb_pstdrequest.o(.data)
+    tbl                                      0x200002b0   Data           2  usb_pstdrequest.o(.data)
+    .data                                    0x200002b2   Section        7  usb_usbif_api.o(.data)
+    is_init                                  0x200002b8   Data           1  usb_usbif_api.o(.data)
+    .data                                    0x200002bc   Section       20  ext_flash_disk.o(.data)
+    .data                                    0x200002d0   Section        4  media_driver_api.o(.data)
+    gsp_usb_pmsc_media_driver_list           0x200002d0   Data           4  media_driver_api.o(.data)
+    .data                                    0x200002d4   Section       88  usb_atapi_driver.o(.data)
+    gs_usb_atapi_is_data_stage               0x200002d4   Data           1  usb_atapi_driver.o(.data)
+    gsp_usb_atapi_cbwcb                      0x200002d8   Data           4  usb_atapi_driver.o(.data)
+    gs_usb_atapi_cur_lba                     0x200002dc   Data           4  usb_atapi_driver.o(.data)
+    gs_usb_atapi_inquiry_tbl                 0x200002e0   Data          36  usb_atapi_driver.o(.data)
+    gs_usb_atapi_read_f_capa_tbl             0x20000304   Data          20  usb_atapi_driver.o(.data)
+    gs_usb_atapi_read_capa_tbl               0x20000318   Data           8  usb_atapi_driver.o(.data)
+    p_atapi_rw_buff                          0x20000320   Data           4  usb_atapi_driver.o(.data)
+    real_data_count                          0x20000324   Data           4  usb_atapi_driver.o(.data)
+    this_transfer_size                       0x20000328   Data           4  usb_atapi_driver.o(.data)
+    .data                                    0x2000032c   Section       17  usb_pmsc_driver.o(.data)
+    gs_usb_pmsc_seq                          0x20000338   Data           1  usb_pmsc_driver.o(.data)
+    gs_usb_pmsc_trans_complete_flag          0x20000339   Data           1  usb_pmsc_driver.o(.data)
+    gs_usb_pmscstatus                        0x2000033a   Data           2  usb_pmsc_driver.o(.data)
+    is_init                                  0x2000033c   Data           1  usb_pmsc_driver.o(.data)
+    .data                                    0x20000340   Section        4  system_bat32g157.o(.data)
+    .data                                    0x20000344   Section        4  stdout.o(.data)
+    .bss                                     0x20000348   Section       64  usb_phid_pmsc_apl.o(.bss)
+    gs_data                                  0x20000348   Data          64  usb_phid_pmsc_apl.o(.bss)
+    .bss                                     0x20000388   Section      220  usb_cdataio.o(.bss)
+    .bss                                     0x20000464   Section      576  usb_pdriver.o(.bss)
+    .bss                                     0x200006a4   Section       62  usb_pinthandler_usbip0.o(.bss)
+    .bss                                     0x200006e4   Section      580  usb_usbif_api.o(.bss)
+    .bss                                     0x20000928   Section     8220  usb_atapi_driver.o(.bss)
+    gs_usb_pmsc_media_buffer                 0x20000928   Data        8192  usb_atapi_driver.o(.bss)
+    atapi_mess                               0x20002928   Data          28  usb_atapi_driver.o(.bss)
+    .bss                                     0x20002944   Section       76  usb_pmsc_driver.o(.bss)
+    gs_usb_pmsc_cbw                          0x20002944   Data          32  usb_pmsc_driver.o(.bss)
+    gs_usb_pmsc_csw                          0x20002964   Data          16  usb_pmsc_driver.o(.bss)
+    gs_usb_pmsc_utr                          0x20002974   Data          28  usb_pmsc_driver.o(.bss)
+    STACK                                    0x20002990   Section     8192  startup_bat32g157.o(STACK)
 
     Global Symbols
 
@@ -2243,234 +2242,230 @@ Image Symbol Table
     usb_cstd_set_pipe_config                 0x08002b2d   Thumb Code   104  usb_creg_abs.o(i.usb_cstd_set_pipe_config)
     usb_cstd_set_transaction                 0x08002b9d   Thumb Code    28  usb_creg_abs.o(i.usb_cstd_set_transaction)
     usb_cstd_usb_task                        0x08002bb9   Thumb Code    20  usb_cdataio.o(i.usb_cstd_usb_task)
-    usb_main                                 0x08002bd1   Thumb Code   286  usb_phid_pmsc_apl.o(i.usb_main)
-    usb_module_start                         0x08002d11   Thumb Code    42  usb_157_mcu.o(i.usb_module_start)
-    usb_phid_read_complete                   0x08002d41   Thumb Code    98  usb_phid_driver.o(i.usb_phid_read_complete)
-    usb_phid_write_complete                  0x08002da9   Thumb Code    50  usb_phid_driver.o(i.usb_phid_write_complete)
-    usb_pmsc_get_max_lun                     0x08003185   Thumb Code    48  usb_pmsc_driver.o(i.usb_pmsc_get_max_lun)
-    usb_pmsc_init                            0x080031b5   Thumb Code    60  usb_pmsc_driver.o(i.usb_pmsc_init)
-    usb_pmsc_mass_strage_reset               0x08003211   Thumb Code    38  usb_pmsc_driver.o(i.usb_pmsc_mass_strage_reset)
-    usb_pmsc_receive_cbw                     0x08003239   Thumb Code    26  usb_pmsc_driver.o(i.usb_pmsc_receive_cbw)
-    usb_pmsc_task                            0x080032a5   Thumb Code   222  usb_pmsc_driver.o(i.usb_pmsc_task)
-    usb_pstd_attach_process                  0x08003439   Thumb Code    18  usb_psignal.o(i.usb_pstd_attach_process)
-    usb_pstd_bc_detect_process               0x080034b9   Thumb Code    62  usb_pbc.o(i.usb_pstd_bc_detect_process)
-    usb_pstd_bemp_pipe                       0x0800355b   Thumb Code    76  usb_pintfifo.o(i.usb_pstd_bemp_pipe)
-    usb_pstd_bemp_pipe_process               0x080035a9   Thumb Code   180  usb_plibusbip.o(i.usb_pstd_bemp_pipe_process)
-    usb_pstd_brdy_pipe                       0x08003665   Thumb Code    98  usb_pintfifo.o(i.usb_pstd_brdy_pipe)
-    usb_pstd_brdy_pipe_process               0x080036c9   Thumb Code    84  usb_plibusbip.o(i.usb_pstd_brdy_pipe_process)
-    usb_pstd_buf_to_fifo                     0x08003721   Thumb Code   102  usb_pdriver.o(i.usb_pstd_buf_to_fifo)
-    usb_pstd_bus_reset                       0x08003789   Thumb Code    56  usb_psignal.o(i.usb_pstd_bus_reset)
-    usb_pstd_busreset_function               0x080037c9   Thumb Code     2  usb_pstdfunction.o(i.usb_pstd_busreset_function)
-    usb_pstd_change_device_state             0x080037cd   Thumb Code    76  usb_pdriver.o(i.usb_pstd_change_device_state)
-    usb_pstd_chk_configured                  0x08003821   Thumb Code    24  usb_preg_abs.o(i.usb_pstd_chk_configured)
-    usb_pstd_chk_remote                      0x08003839   Thumb Code    32  usb_pdriver.o(i.usb_pstd_chk_remote)
-    usb_pstd_chk_vbsts                       0x08003861   Thumb Code    76  usb_pstdfunction.o(i.usb_pstd_chk_vbsts)
-    usb_pstd_class_request                   0x080038ad   Thumb Code   124  usb_pstdrequest.o(i.usb_pstd_class_request)
-    usb_pstd_class_request_ioss              0x08003931   Thumb Code     2  usb_pstdrequest.o(i.usb_pstd_class_request_ioss)
-    usb_pstd_class_request_rss               0x08003935   Thumb Code    80  usb_pstdrequest.o(i.usb_pstd_class_request_rss)
-    usb_pstd_class_request_rwds              0x08003989   Thumb Code    88  usb_pstdrequest.o(i.usb_pstd_class_request_rwds)
-    usb_pstd_class_request_wnss              0x080039e1   Thumb Code   124  usb_pstdrequest.o(i.usb_pstd_class_request_wnss)
-    usb_pstd_class_request_wss               0x08003a5d   Thumb Code    62  usb_pstdrequest.o(i.usb_pstd_class_request_wss)
-    usb_pstd_clr_alt                         0x08003aa5   Thumb Code    22  usb_pdriver.o(i.usb_pstd_clr_alt)
-    usb_pstd_clr_mem                         0x08003bdd   Thumb Code    18  usb_pdriver.o(i.usb_pstd_clr_mem)
-    usb_pstd_configured                      0x08003bf9   Thumb Code    28  usb_pdriver.o(i.usb_pstd_configured)
-    usb_pstd_ctrl_end                        0x08003c19   Thumb Code    72  usb_pcontrolrw.o(i.usb_pstd_ctrl_end)
-    usb_pstd_ctrl_read                       0x08003c69   Thumb Code   116  usb_pcontrolrw.o(i.usb_pstd_ctrl_read)
-    usb_pstd_ctrl_write                      0x08003ce9   Thumb Code    56  usb_pcontrolrw.o(i.usb_pstd_ctrl_write)
-    usb_pstd_data_end                        0x08003d2d   Thumb Code   250  usb_plibusbip.o(i.usb_pstd_data_end)
-    usb_pstd_detach                          0x08003e31   Thumb Code    32  usb_pdriver.o(i.usb_pstd_detach)
-    usb_pstd_detach_process                  0x08003e55   Thumb Code    74  usb_psignal.o(i.usb_pstd_detach_process)
-    usb_pstd_devdefault                      0x08003eb1   Thumb Code    56  usb_pdriver.o(i.usb_pstd_devdefault)
-    usb_pstd_driver_init                     0x08003eed   Thumb Code   164  usb_pstdfunction.o(i.usb_pstd_driver_init)
-    usb_pstd_driver_registration             0x08003fd9   Thumb Code    50  usb_pdriver.o(i.usb_pstd_driver_registration)
-    usb_pstd_epadr_to_pipe                   0x08004011   Thumb Code    62  usb_plibusbip.o(i.usb_pstd_epadr_to_pipe)
-    usb_pstd_fifo_to_buf                     0x08004055   Thumb Code   108  usb_pdriver.o(i.usb_pstd_fifo_to_buf)
-    usb_pstd_forced_termination              0x080040c1   Thumb Code   152  usb_preg_abs.o(i.usb_pstd_forced_termination)
-    usb_pstd_get_alternate_no                0x08004161   Thumb Code    98  usb_pdriver.o(i.usb_pstd_get_alternate_no)
-    usb_pstd_get_current_power               0x0800421d   Thumb Code    22  usb_pdriver.o(i.usb_pstd_get_current_power)
-    usb_pstd_get_interface_no                0x080043f5   Thumb Code    10  usb_pdriver.o(i.usb_pstd_get_interface_no)
-    usb_pstd_get_open_class                  0x08004405   Thumb Code    70  usb_pstdfunction.o(i.usb_pstd_get_open_class)
-    usb_pstd_get_pipe_no                     0x08004451   Thumb Code   134  usb_plibusbip.o(i.usb_pstd_get_pipe_no)
-    usb_pstd_interface                       0x08004609   Thumb Code    14  usb_pdriver.o(i.usb_pstd_interface)
-    usb_pstd_interrupt_handler               0x08004619   Thumb Code   498  usb_preg_abs.o(i.usb_pstd_interrupt_handler)
-    usb_pstd_nrdy_pipe                       0x080049a9   Thumb Code    20  usb_pintfifo.o(i.usb_pstd_nrdy_pipe)
-    usb_pstd_nrdy_pipe_process               0x080049bd   Thumb Code    90  usb_plibusbip.o(i.usb_pstd_nrdy_pipe_process)
-    usb_pstd_other_request                   0x08004a1d   Thumb Code    40  usb_pstdrequest.o(i.usb_pstd_other_request)
-    usb_pstd_pcd_task                        0x08004a45   Thumb Code    56  usb_pdriver.o(i.usb_pstd_pcd_task)
-    usb_pstd_pipe_info                       0x08004a81   Thumb Code    52  usb_pdriver.o(i.usb_pstd_pipe_info)
-    usb_pstd_read_data                       0x08004ab5   Thumb Code   210  usb_plibusbip.o(i.usb_pstd_read_data)
-    usb_pstd_read_fifo                       0x08004b91   Thumb Code    52  usb_preg_abs.o(i.usb_pstd_read_fifo)
-    usb_pstd_receive_start                   0x08004bc5   Thumb Code   164  usb_plibusbip.o(i.usb_pstd_receive_start)
-    usb_pstd_registration                    0x08004c75   Thumb Code    70  usb_pdriver.o(i.usb_pstd_registration)
-    usb_pstd_remote_wakeup                   0x08004cd9   Thumb Code    68  usb_preg_abs.o(i.usb_pstd_remote_wakeup)
-    usb_pstd_resume                          0x08004d25   Thumb Code    18  usb_pdriver.o(i.usb_pstd_resume)
-    usb_pstd_resume_process                  0x08004d37   Thumb Code    12  usb_preg_abs.o(i.usb_pstd_resume_process)
-    usb_pstd_save_request                    0x08004d45   Thumb Code    40  usb_preg_abs.o(i.usb_pstd_save_request)
-    usb_pstd_send_start                      0x08004d7d   Thumb Code    94  usb_plibusbip.o(i.usb_pstd_send_start)
-    usb_pstd_set_config_no                   0x08004e3d   Thumb Code    14  usb_pdriver.o(i.usb_pstd_set_config_no)
-    usb_pstd_set_eptbl_index                 0x08004f31   Thumb Code   152  usb_pdriver.o(i.usb_pstd_set_eptbl_index)
-    usb_pstd_set_feature_function            0x080050ad   Thumb Code     8  usb_pstdfunction.o(i.usb_pstd_set_feature_function)
-    usb_pstd_set_pipe_reg                    0x0800516d   Thumb Code   110  usb_plibusbip.o(i.usb_pstd_set_pipe_reg)
-    usb_pstd_set_pipe_table                  0x080051e1   Thumb Code   184  usb_plibusbip.o(i.usb_pstd_set_pipe_table)
-    usb_pstd_set_stall                       0x080052a5   Thumb Code    14  usb_preg_abs.o(i.usb_pstd_set_stall)
-    usb_pstd_set_stall_pipe0                 0x080052b3   Thumb Code    12  usb_preg_abs.o(i.usb_pstd_set_stall_pipe0)
-    usb_pstd_set_submitutr                   0x080052c1   Thumb Code    58  usb_pdriver.o(i.usb_pstd_set_submitutr)
-    usb_pstd_stand_req0                      0x08005301   Thumb Code   106  usb_pstdrequest.o(i.usb_pstd_stand_req0)
-    usb_pstd_stand_req1                      0x08005375   Thumb Code   100  usb_pstdrequest.o(i.usb_pstd_stand_req1)
-    usb_pstd_stand_req2                      0x080053dd   Thumb Code    32  usb_pstdrequest.o(i.usb_pstd_stand_req2)
-    usb_pstd_stand_req3                      0x08005401   Thumb Code   178  usb_pstdrequest.o(i.usb_pstd_stand_req3)
-    usb_pstd_stand_req4                      0x080054c9   Thumb Code   184  usb_pstdrequest.o(i.usb_pstd_stand_req4)
-    usb_pstd_stand_req5                      0x08005595   Thumb Code   108  usb_pstdrequest.o(i.usb_pstd_stand_req5)
-    usb_pstd_suspend_function                0x08005615   Thumb Code     2  usb_pstdfunction.o(i.usb_pstd_suspend_function)
-    usb_pstd_suspend_process                 0x08005619   Thumb Code    72  usb_psignal.o(i.usb_pstd_suspend_process)
-    usb_pstd_suspended                       0x08005669   Thumb Code    18  usb_pdriver.o(i.usb_pstd_suspended)
-    usb_pstd_transfer_start                  0x08005685   Thumb Code    66  usb_pdriver.o(i.usb_pstd_transfer_start)
-    usb_pstd_usb_handler                     0x080056cd   Thumb Code    46  usb_pinthandler_usbip0.o(i.usb_pstd_usb_handler)
-    usb_pstd_write_data                      0x08005701   Thumb Code   220  usb_plibusbip.o(i.usb_pstd_write_data)
-    usb_pstd_write_fifo                      0x080057e5   Thumb Code    70  usb_preg_abs.o(i.usb_pstd_write_fifo)
-    g_apl_mouse_report                       0x0800582c   Data          52  usb_phid_pmsc_descriptor.o(.constdata)
-    g_apl_keyboard_report                    0x08005860   Data          64  usb_phid_pmsc_descriptor.o(.constdata)
-    g_apl_configuration                      0x080058a0   Data          60  usb_phid_pmsc_descriptor.o(.constdata)
-    g_usb_descriptor                         0x080058dc   Data          16  usb_phid_pmsc_descriptor.o(.constdata)
-    g_apl_report                             0x080058ec   Data          34  usb_phid_pmsc_descriptor.o(.constdata)
-    sps_tbl                                  0x08005920   Data          32  sci.o(.constdata)
-    g_usb_pstd_pipe_no_tbl                   0x08005940   Data           6  usb_cdataio.o(.constdata)
-    Region$$Table$$Base                      0x080059e8   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08005a08   Number         0  anon$$obj.o(Region$$Table)
+    usb_main                                 0x08002bd1   Thumb Code   240  usb_phid_pmsc_apl.o(i.usb_main)
+    usb_module_start                         0x08002cd1   Thumb Code    42  usb_157_mcu.o(i.usb_module_start)
+    usb_phid_read_complete                   0x08002d01   Thumb Code    98  usb_phid_driver.o(i.usb_phid_read_complete)
+    usb_phid_write_complete                  0x08002d69   Thumb Code    50  usb_phid_driver.o(i.usb_phid_write_complete)
+    usb_pmsc_get_max_lun                     0x08003145   Thumb Code    48  usb_pmsc_driver.o(i.usb_pmsc_get_max_lun)
+    usb_pmsc_init                            0x08003175   Thumb Code    60  usb_pmsc_driver.o(i.usb_pmsc_init)
+    usb_pmsc_mass_strage_reset               0x080031d1   Thumb Code    38  usb_pmsc_driver.o(i.usb_pmsc_mass_strage_reset)
+    usb_pmsc_receive_cbw                     0x080031f9   Thumb Code    26  usb_pmsc_driver.o(i.usb_pmsc_receive_cbw)
+    usb_pmsc_task                            0x08003265   Thumb Code   222  usb_pmsc_driver.o(i.usb_pmsc_task)
+    usb_pstd_attach_process                  0x080033f9   Thumb Code    18  usb_psignal.o(i.usb_pstd_attach_process)
+    usb_pstd_bc_detect_process               0x08003479   Thumb Code    62  usb_pbc.o(i.usb_pstd_bc_detect_process)
+    usb_pstd_bemp_pipe                       0x0800351b   Thumb Code    76  usb_pintfifo.o(i.usb_pstd_bemp_pipe)
+    usb_pstd_bemp_pipe_process               0x08003569   Thumb Code   180  usb_plibusbip.o(i.usb_pstd_bemp_pipe_process)
+    usb_pstd_brdy_pipe                       0x08003625   Thumb Code    98  usb_pintfifo.o(i.usb_pstd_brdy_pipe)
+    usb_pstd_brdy_pipe_process               0x08003689   Thumb Code    84  usb_plibusbip.o(i.usb_pstd_brdy_pipe_process)
+    usb_pstd_buf_to_fifo                     0x080036e1   Thumb Code   102  usb_pdriver.o(i.usb_pstd_buf_to_fifo)
+    usb_pstd_bus_reset                       0x08003749   Thumb Code    56  usb_psignal.o(i.usb_pstd_bus_reset)
+    usb_pstd_busreset_function               0x08003789   Thumb Code     2  usb_pstdfunction.o(i.usb_pstd_busreset_function)
+    usb_pstd_change_device_state             0x0800378d   Thumb Code    76  usb_pdriver.o(i.usb_pstd_change_device_state)
+    usb_pstd_chk_configured                  0x080037e1   Thumb Code    24  usb_preg_abs.o(i.usb_pstd_chk_configured)
+    usb_pstd_chk_remote                      0x080037f9   Thumb Code    32  usb_pdriver.o(i.usb_pstd_chk_remote)
+    usb_pstd_chk_vbsts                       0x08003821   Thumb Code    76  usb_pstdfunction.o(i.usb_pstd_chk_vbsts)
+    usb_pstd_class_request                   0x0800386d   Thumb Code   124  usb_pstdrequest.o(i.usb_pstd_class_request)
+    usb_pstd_class_request_ioss              0x080038f1   Thumb Code     2  usb_pstdrequest.o(i.usb_pstd_class_request_ioss)
+    usb_pstd_class_request_rss               0x080038f5   Thumb Code    80  usb_pstdrequest.o(i.usb_pstd_class_request_rss)
+    usb_pstd_class_request_rwds              0x08003949   Thumb Code    88  usb_pstdrequest.o(i.usb_pstd_class_request_rwds)
+    usb_pstd_class_request_wnss              0x080039a1   Thumb Code   124  usb_pstdrequest.o(i.usb_pstd_class_request_wnss)
+    usb_pstd_class_request_wss               0x08003a1d   Thumb Code    62  usb_pstdrequest.o(i.usb_pstd_class_request_wss)
+    usb_pstd_clr_alt                         0x08003a65   Thumb Code    22  usb_pdriver.o(i.usb_pstd_clr_alt)
+    usb_pstd_clr_mem                         0x08003b9d   Thumb Code    18  usb_pdriver.o(i.usb_pstd_clr_mem)
+    usb_pstd_configured                      0x08003bb9   Thumb Code    28  usb_pdriver.o(i.usb_pstd_configured)
+    usb_pstd_ctrl_end                        0x08003bd9   Thumb Code    72  usb_pcontrolrw.o(i.usb_pstd_ctrl_end)
+    usb_pstd_ctrl_read                       0x08003c29   Thumb Code   116  usb_pcontrolrw.o(i.usb_pstd_ctrl_read)
+    usb_pstd_ctrl_write                      0x08003ca9   Thumb Code    56  usb_pcontrolrw.o(i.usb_pstd_ctrl_write)
+    usb_pstd_data_end                        0x08003ced   Thumb Code   250  usb_plibusbip.o(i.usb_pstd_data_end)
+    usb_pstd_detach                          0x08003df1   Thumb Code    32  usb_pdriver.o(i.usb_pstd_detach)
+    usb_pstd_detach_process                  0x08003e15   Thumb Code    74  usb_psignal.o(i.usb_pstd_detach_process)
+    usb_pstd_devdefault                      0x08003e71   Thumb Code    56  usb_pdriver.o(i.usb_pstd_devdefault)
+    usb_pstd_driver_init                     0x08003ead   Thumb Code   164  usb_pstdfunction.o(i.usb_pstd_driver_init)
+    usb_pstd_driver_registration             0x08003f99   Thumb Code    50  usb_pdriver.o(i.usb_pstd_driver_registration)
+    usb_pstd_epadr_to_pipe                   0x08003fd1   Thumb Code    62  usb_plibusbip.o(i.usb_pstd_epadr_to_pipe)
+    usb_pstd_fifo_to_buf                     0x08004015   Thumb Code   108  usb_pdriver.o(i.usb_pstd_fifo_to_buf)
+    usb_pstd_forced_termination              0x08004081   Thumb Code   152  usb_preg_abs.o(i.usb_pstd_forced_termination)
+    usb_pstd_get_alternate_no                0x08004121   Thumb Code    98  usb_pdriver.o(i.usb_pstd_get_alternate_no)
+    usb_pstd_get_current_power               0x080041dd   Thumb Code    22  usb_pdriver.o(i.usb_pstd_get_current_power)
+    usb_pstd_get_interface_no                0x080043b5   Thumb Code    10  usb_pdriver.o(i.usb_pstd_get_interface_no)
+    usb_pstd_get_open_class                  0x080043c5   Thumb Code    70  usb_pstdfunction.o(i.usb_pstd_get_open_class)
+    usb_pstd_get_pipe_no                     0x08004411   Thumb Code   134  usb_plibusbip.o(i.usb_pstd_get_pipe_no)
+    usb_pstd_interface                       0x080045c9   Thumb Code    14  usb_pdriver.o(i.usb_pstd_interface)
+    usb_pstd_interrupt_handler               0x080045d9   Thumb Code   498  usb_preg_abs.o(i.usb_pstd_interrupt_handler)
+    usb_pstd_nrdy_pipe                       0x08004969   Thumb Code    20  usb_pintfifo.o(i.usb_pstd_nrdy_pipe)
+    usb_pstd_nrdy_pipe_process               0x0800497d   Thumb Code    90  usb_plibusbip.o(i.usb_pstd_nrdy_pipe_process)
+    usb_pstd_other_request                   0x080049dd   Thumb Code    40  usb_pstdrequest.o(i.usb_pstd_other_request)
+    usb_pstd_pcd_task                        0x08004a05   Thumb Code    56  usb_pdriver.o(i.usb_pstd_pcd_task)
+    usb_pstd_pipe_info                       0x08004a41   Thumb Code    52  usb_pdriver.o(i.usb_pstd_pipe_info)
+    usb_pstd_read_data                       0x08004a75   Thumb Code   210  usb_plibusbip.o(i.usb_pstd_read_data)
+    usb_pstd_read_fifo                       0x08004b51   Thumb Code    52  usb_preg_abs.o(i.usb_pstd_read_fifo)
+    usb_pstd_receive_start                   0x08004b85   Thumb Code   164  usb_plibusbip.o(i.usb_pstd_receive_start)
+    usb_pstd_registration                    0x08004c35   Thumb Code    70  usb_pdriver.o(i.usb_pstd_registration)
+    usb_pstd_remote_wakeup                   0x08004c99   Thumb Code    68  usb_preg_abs.o(i.usb_pstd_remote_wakeup)
+    usb_pstd_resume                          0x08004ce5   Thumb Code    18  usb_pdriver.o(i.usb_pstd_resume)
+    usb_pstd_resume_process                  0x08004cf7   Thumb Code    12  usb_preg_abs.o(i.usb_pstd_resume_process)
+    usb_pstd_save_request                    0x08004d05   Thumb Code    40  usb_preg_abs.o(i.usb_pstd_save_request)
+    usb_pstd_send_start                      0x08004d3d   Thumb Code    94  usb_plibusbip.o(i.usb_pstd_send_start)
+    usb_pstd_set_config_no                   0x08004dfd   Thumb Code    14  usb_pdriver.o(i.usb_pstd_set_config_no)
+    usb_pstd_set_eptbl_index                 0x08004ef1   Thumb Code   152  usb_pdriver.o(i.usb_pstd_set_eptbl_index)
+    usb_pstd_set_feature_function            0x0800506d   Thumb Code     8  usb_pstdfunction.o(i.usb_pstd_set_feature_function)
+    usb_pstd_set_pipe_reg                    0x0800512d   Thumb Code   110  usb_plibusbip.o(i.usb_pstd_set_pipe_reg)
+    usb_pstd_set_pipe_table                  0x080051a1   Thumb Code   184  usb_plibusbip.o(i.usb_pstd_set_pipe_table)
+    usb_pstd_set_stall                       0x08005265   Thumb Code    14  usb_preg_abs.o(i.usb_pstd_set_stall)
+    usb_pstd_set_stall_pipe0                 0x08005273   Thumb Code    12  usb_preg_abs.o(i.usb_pstd_set_stall_pipe0)
+    usb_pstd_set_submitutr                   0x08005281   Thumb Code    58  usb_pdriver.o(i.usb_pstd_set_submitutr)
+    usb_pstd_stand_req0                      0x080052c1   Thumb Code   106  usb_pstdrequest.o(i.usb_pstd_stand_req0)
+    usb_pstd_stand_req1                      0x08005335   Thumb Code   100  usb_pstdrequest.o(i.usb_pstd_stand_req1)
+    usb_pstd_stand_req2                      0x0800539d   Thumb Code    32  usb_pstdrequest.o(i.usb_pstd_stand_req2)
+    usb_pstd_stand_req3                      0x080053c1   Thumb Code   178  usb_pstdrequest.o(i.usb_pstd_stand_req3)
+    usb_pstd_stand_req4                      0x08005489   Thumb Code   184  usb_pstdrequest.o(i.usb_pstd_stand_req4)
+    usb_pstd_stand_req5                      0x08005555   Thumb Code   108  usb_pstdrequest.o(i.usb_pstd_stand_req5)
+    usb_pstd_suspend_function                0x080055d5   Thumb Code     2  usb_pstdfunction.o(i.usb_pstd_suspend_function)
+    usb_pstd_suspend_process                 0x080055d9   Thumb Code    72  usb_psignal.o(i.usb_pstd_suspend_process)
+    usb_pstd_suspended                       0x08005629   Thumb Code    18  usb_pdriver.o(i.usb_pstd_suspended)
+    usb_pstd_transfer_start                  0x08005645   Thumb Code    66  usb_pdriver.o(i.usb_pstd_transfer_start)
+    usb_pstd_usb_handler                     0x0800568d   Thumb Code    46  usb_pinthandler_usbip0.o(i.usb_pstd_usb_handler)
+    usb_pstd_write_data                      0x080056c1   Thumb Code   220  usb_plibusbip.o(i.usb_pstd_write_data)
+    usb_pstd_write_fifo                      0x080057a5   Thumb Code    70  usb_preg_abs.o(i.usb_pstd_write_fifo)
+    g_usb_descriptor                         0x080057ec   Data          16  usb_phid_pmsc_descriptor.o(.constdata)
+    g_apl_report                             0x080057fc   Data          34  usb_phid_pmsc_descriptor.o(.constdata)
+    sps_tbl                                  0x08005830   Data          32  sci.o(.constdata)
+    g_usb_pstd_pipe_no_tbl                   0x08005850   Data           6  usb_cdataio.o(.constdata)
+    Region$$Table$$Base                      0x080058f8   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08005918   Number         0  anon$$obj.o(Region$$Table)
     g_ticks                                  0x20000000   Data           4  main.o(.data)
-    REPORT_MOUSE_SIZE                        0x20000004   Data           4  usb_phid_pmsc_descriptor.o(.data)
-    REPORT_KEYBOARD_SIZE                     0x20000008   Data           4  usb_phid_pmsc_descriptor.o(.data)
-    g_apl_device                             0x2000000c   Data          18  usb_phid_pmsc_descriptor.o(.data)
-    g_apl_string_descriptor0                 0x2000001e   Data           4  usb_phid_pmsc_descriptor.o(.data)
-    g_apl_string_descriptor1                 0x20000022   Data          20  usb_phid_pmsc_descriptor.o(.data)
-    g_apl_string_descriptor2                 0x20000036   Data          36  usb_phid_pmsc_descriptor.o(.data)
-    g_apl_string_descriptor3                 0x2000005a   Data          36  usb_phid_pmsc_descriptor.o(.data)
-    g_apl_string_descriptor4                 0x2000007e   Data          22  usb_phid_pmsc_descriptor.o(.data)
-    g_apl_string_descriptor5                 0x20000094   Data          18  usb_phid_pmsc_descriptor.o(.data)
-    g_apl_string_descriptor6                 0x200000a6   Data          28  usb_phid_pmsc_descriptor.o(.data)
-    gp_apl_string_table                      0x200000c4   Data          28  usb_phid_pmsc_descriptor.o(.data)
-    gp_uart0_tx_address                      0x200000e0   Data           4  sci.o(.data)
-    g_uart0_tx_count                         0x200000e4   Data           2  sci.o(.data)
-    gp_uart0_rx_address                      0x200000e8   Data           4  sci.o(.data)
-    g_uart0_rx_count                         0x200000ec   Data           2  sci.o(.data)
-    g_uart0_rx_length                        0x200000ee   Data           2  sci.o(.data)
-    gp_spi00_rx_address                      0x200000f0   Data           4  sci.o(.data)
-    g_spi00_rx_length                        0x200000f4   Data           2  sci.o(.data)
-    g_spi00_rx_count                         0x200000f6   Data           2  sci.o(.data)
-    gp_spi00_tx_address                      0x200000f8   Data           4  sci.o(.data)
-    g_spi00_tx_length                        0x200000fc   Data           2  sci.o(.data)
-    g_spi00_tx_count                         0x200000fe   Data           2  sci.o(.data)
-    gp_spi01_rx_address                      0x20000100   Data           4  sci.o(.data)
-    g_spi01_rx_length                        0x20000104   Data           2  sci.o(.data)
-    g_spi01_rx_count                         0x20000106   Data           2  sci.o(.data)
-    gp_spi01_tx_address                      0x20000108   Data           4  sci.o(.data)
-    g_spi01_tx_length                        0x2000010c   Data           2  sci.o(.data)
-    g_spi01_tx_count                         0x2000010e   Data           2  sci.o(.data)
-    g_iic00_master_status_flag               0x20000110   Data           1  sci.o(.data)
-    gp_iic00_tx_address                      0x20000114   Data           4  sci.o(.data)
-    g_iic00_tx_count                         0x20000118   Data           2  sci.o(.data)
-    gp_iic00_rx_address                      0x2000011c   Data           4  sci.o(.data)
-    g_iic00_rx_count                         0x20000120   Data           2  sci.o(.data)
-    g_iic00_rx_length                        0x20000122   Data           2  sci.o(.data)
-    g_iic01_master_status_flag               0x20000124   Data           1  sci.o(.data)
-    gp_iic01_tx_address                      0x20000128   Data           4  sci.o(.data)
-    g_iic01_tx_count                         0x2000012c   Data           2  sci.o(.data)
-    gp_iic01_rx_address                      0x20000130   Data           4  sci.o(.data)
-    g_iic01_rx_count                         0x20000134   Data           2  sci.o(.data)
-    g_iic01_rx_length                        0x20000136   Data           2  sci.o(.data)
-    gp_uart1_tx_address                      0x20000138   Data           4  sci.o(.data)
-    g_uart1_tx_count                         0x2000013c   Data           2  sci.o(.data)
-    gp_uart1_rx_address                      0x20000140   Data           4  sci.o(.data)
-    g_uart1_rx_count                         0x20000144   Data           2  sci.o(.data)
-    g_uart1_rx_length                        0x20000146   Data           2  sci.o(.data)
-    gp_spi10_rx_address                      0x20000148   Data           4  sci.o(.data)
-    g_spi10_rx_length                        0x2000014c   Data           2  sci.o(.data)
-    g_spi10_rx_count                         0x2000014e   Data           2  sci.o(.data)
-    gp_spi10_tx_address                      0x20000150   Data           4  sci.o(.data)
-    g_spi10_tx_length                        0x20000154   Data           2  sci.o(.data)
-    g_spi10_tx_count                         0x20000156   Data           2  sci.o(.data)
-    gp_spi11_rx_address                      0x20000158   Data           4  sci.o(.data)
-    g_spi11_rx_length                        0x2000015c   Data           2  sci.o(.data)
-    g_spi11_rx_count                         0x2000015e   Data           2  sci.o(.data)
-    gp_spi11_tx_address                      0x20000160   Data           4  sci.o(.data)
-    g_spi11_tx_length                        0x20000164   Data           2  sci.o(.data)
-    g_spi11_tx_count                         0x20000166   Data           2  sci.o(.data)
-    g_iic10_master_status_flag               0x20000168   Data           1  sci.o(.data)
-    gp_iic10_tx_address                      0x2000016c   Data           4  sci.o(.data)
-    g_iic10_tx_count                         0x20000170   Data           2  sci.o(.data)
-    gp_iic10_rx_address                      0x20000174   Data           4  sci.o(.data)
-    g_iic10_rx_count                         0x20000178   Data           2  sci.o(.data)
-    g_iic10_rx_length                        0x2000017a   Data           2  sci.o(.data)
-    g_iic11_master_status_flag               0x2000017c   Data           1  sci.o(.data)
-    gp_iic11_tx_address                      0x20000180   Data           4  sci.o(.data)
-    g_iic11_tx_count                         0x20000184   Data           2  sci.o(.data)
-    gp_iic11_rx_address                      0x20000188   Data           4  sci.o(.data)
-    g_iic11_rx_count                         0x2000018c   Data           2  sci.o(.data)
-    g_iic11_rx_length                        0x2000018e   Data           2  sci.o(.data)
-    gp_uart2_tx_address                      0x20000190   Data           4  sci.o(.data)
-    g_uart2_tx_count                         0x20000194   Data           2  sci.o(.data)
-    gp_uart2_rx_address                      0x20000198   Data           4  sci.o(.data)
-    g_uart2_rx_count                         0x2000019c   Data           2  sci.o(.data)
-    g_uart2_rx_length                        0x2000019e   Data           2  sci.o(.data)
-    gp_spi20_rx_address                      0x200001a0   Data           4  sci.o(.data)
-    g_spi20_rx_length                        0x200001a4   Data           2  sci.o(.data)
-    g_spi20_rx_count                         0x200001a6   Data           2  sci.o(.data)
-    gp_spi20_tx_address                      0x200001a8   Data           4  sci.o(.data)
-    g_spi20_tx_length                        0x200001ac   Data           2  sci.o(.data)
-    g_spi20_tx_count                         0x200001ae   Data           2  sci.o(.data)
-    gp_spi21_rx_address                      0x200001b0   Data           4  sci.o(.data)
-    g_spi21_rx_length                        0x200001b4   Data           2  sci.o(.data)
-    g_spi21_rx_count                         0x200001b6   Data           2  sci.o(.data)
-    gp_spi21_tx_address                      0x200001b8   Data           4  sci.o(.data)
-    g_spi21_tx_length                        0x200001bc   Data           2  sci.o(.data)
-    g_spi21_tx_count                         0x200001be   Data           2  sci.o(.data)
-    g_iic20_master_status_flag               0x200001c0   Data           1  sci.o(.data)
-    gp_iic20_tx_address                      0x200001c4   Data           4  sci.o(.data)
-    g_iic20_tx_count                         0x200001c8   Data           2  sci.o(.data)
-    gp_iic20_rx_address                      0x200001cc   Data           4  sci.o(.data)
-    g_iic20_rx_count                         0x200001d0   Data           2  sci.o(.data)
-    g_iic20_rx_length                        0x200001d2   Data           2  sci.o(.data)
-    g_iic21_master_status_flag               0x200001d4   Data           1  sci.o(.data)
-    gp_iic21_tx_address                      0x200001d8   Data           4  sci.o(.data)
-    g_iic21_tx_count                         0x200001dc   Data           2  sci.o(.data)
-    gp_iic21_rx_address                      0x200001e0   Data           4  sci.o(.data)
-    g_iic21_rx_count                         0x200001e4   Data           2  sci.o(.data)
-    g_iic21_rx_length                        0x200001e6   Data           2  sci.o(.data)
-    gp_usb_pstd_callback                     0x200001f0   Data          80  usb_cdataio.o(.data)
-    g_usb_pstd_bc_detect                     0x20000240   Data           2  usb_pbc.o(.data)
-    g_usb_pstd_stall_cb                      0x20000244   Data           4  usb_pdriver.o(.data)
-    g_usb_pstd_config_no                     0x20000248   Data           2  usb_pdriver.o(.data)
-    g_usb_pstd_remote_wakeup                 0x2000024a   Data           2  usb_pdriver.o(.data)
-    g_usb_pstd_remote_wakeup_state           0x2000024c   Data           2  usb_pdriver.o(.data)
-    g_usb_pstd_req_type                      0x2000024e   Data           2  usb_pdriver.o(.data)
-    g_usb_pstd_req_value                     0x20000250   Data           2  usb_pdriver.o(.data)
-    g_usb_pstd_req_index                     0x20000252   Data           2  usb_pdriver.o(.data)
-    g_usb_pstd_req_length                    0x20000254   Data           2  usb_pdriver.o(.data)
-    g_usb_pstd_pipe0_request                 0x20000256   Data           2  usb_pdriver.o(.data)
-    g_usb_pstd_std_request                   0x20000258   Data           2  usb_pdriver.o(.data)
-    g_usb_pstd_is_connected                  0x2000025a   Data           2  usb_pdriver.o(.data)
-    g_usb_pstd_req_reg                       0x2000025c   Data           8  usb_pdriver.o(.data)
-    g_usb_cstd_usb_mode                      0x2000026a   Data           2  usb_usbif_api.o(.data)
-    g_usb_cstd_open_class                    0x2000026c   Data           2  usb_usbif_api.o(.data)
-    g_usb_hstd_is_susp_resm                  0x2000026e   Data           2  usb_usbif_api.o(.data)
-    g_ext_flash_mediadriver                  0x20000274   Data          20  ext_flash_disk.o(.data)
-    g_usb_pmsc_dtl                           0x200002e4   Data           4  usb_pmsc_driver.o(.data)
-    g_usb_pmsc_message                       0x200002e8   Data           8  usb_pmsc_driver.o(.data)
-    SystemCoreClock                          0x200002f8   Data           4  system_bat32g157.o(.data)
-    __stdout                                 0x200002fc   Data           4  stdout.o(.data)
-    g_usb_pstd_data_cnt                      0x20000340   Data          40  usb_cdataio.o(.bss)
-    gp_usb_pstd_data                         0x20000368   Data          40  usb_cdataio.o(.bss)
-    gp_usb_pstd_pipe                         0x20000390   Data          40  usb_cdataio.o(.bss)
-    g_usb_cstd_pipe_tbl                      0x200003b8   Data          80  usb_cdataio.o(.bss)
-    g_usb_cstd_bemp_skip                     0x20000408   Data          20  usb_cdataio.o(.bss)
-    g_usb_pstd_is_stall_pipe                 0x2000041c   Data          20  usb_pdriver.o(.bss)
-    g_usb_pstd_alt_no                        0x20000430   Data         510  usb_pdriver.o(.bss)
-    g_usb_pstd_driver                        0x20000630   Data          44  usb_pdriver.o(.bss)
-    g_usb_pstd_usb_int                       0x2000065c   Data          62  usb_pinthandler_usbip0.o(.bss)
-    g_usb_read_request_size                  0x2000069c   Data          40  usb_usbif_api.o(.bss)
-    g_usb_cstd_event                         0x200006c4   Data         260  usb_usbif_api.o(.bss)
-    g_usb_pstd_data                          0x200007c8   Data         280  usb_usbif_api.o(.bss)
-    __initial_sp                             0x20004948   Data           0  startup_bat32g157.o(STACK)
+    g_apl_device                             0x20000004   Data          18  usb_phid_pmsc_descriptor.o(.data)
+    g_apl_configuration                      0x20000016   Data          80  usb_phid_pmsc_descriptor.o(.data)
+    g_apl_string_descriptor0                 0x20000066   Data           4  usb_phid_pmsc_descriptor.o(.data)
+    g_apl_string_descriptor1                 0x2000006a   Data          20  usb_phid_pmsc_descriptor.o(.data)
+    g_apl_string_descriptor2                 0x2000007e   Data          36  usb_phid_pmsc_descriptor.o(.data)
+    g_apl_string_descriptor3                 0x200000a2   Data          36  usb_phid_pmsc_descriptor.o(.data)
+    g_apl_string_descriptor4                 0x200000c6   Data          22  usb_phid_pmsc_descriptor.o(.data)
+    g_apl_string_descriptor5                 0x200000dc   Data          18  usb_phid_pmsc_descriptor.o(.data)
+    g_apl_string_descriptor6                 0x200000ee   Data          28  usb_phid_pmsc_descriptor.o(.data)
+    gp_apl_string_table                      0x2000010c   Data          28  usb_phid_pmsc_descriptor.o(.data)
+    gp_uart0_tx_address                      0x20000128   Data           4  sci.o(.data)
+    g_uart0_tx_count                         0x2000012c   Data           2  sci.o(.data)
+    gp_uart0_rx_address                      0x20000130   Data           4  sci.o(.data)
+    g_uart0_rx_count                         0x20000134   Data           2  sci.o(.data)
+    g_uart0_rx_length                        0x20000136   Data           2  sci.o(.data)
+    gp_spi00_rx_address                      0x20000138   Data           4  sci.o(.data)
+    g_spi00_rx_length                        0x2000013c   Data           2  sci.o(.data)
+    g_spi00_rx_count                         0x2000013e   Data           2  sci.o(.data)
+    gp_spi00_tx_address                      0x20000140   Data           4  sci.o(.data)
+    g_spi00_tx_length                        0x20000144   Data           2  sci.o(.data)
+    g_spi00_tx_count                         0x20000146   Data           2  sci.o(.data)
+    gp_spi01_rx_address                      0x20000148   Data           4  sci.o(.data)
+    g_spi01_rx_length                        0x2000014c   Data           2  sci.o(.data)
+    g_spi01_rx_count                         0x2000014e   Data           2  sci.o(.data)
+    gp_spi01_tx_address                      0x20000150   Data           4  sci.o(.data)
+    g_spi01_tx_length                        0x20000154   Data           2  sci.o(.data)
+    g_spi01_tx_count                         0x20000156   Data           2  sci.o(.data)
+    g_iic00_master_status_flag               0x20000158   Data           1  sci.o(.data)
+    gp_iic00_tx_address                      0x2000015c   Data           4  sci.o(.data)
+    g_iic00_tx_count                         0x20000160   Data           2  sci.o(.data)
+    gp_iic00_rx_address                      0x20000164   Data           4  sci.o(.data)
+    g_iic00_rx_count                         0x20000168   Data           2  sci.o(.data)
+    g_iic00_rx_length                        0x2000016a   Data           2  sci.o(.data)
+    g_iic01_master_status_flag               0x2000016c   Data           1  sci.o(.data)
+    gp_iic01_tx_address                      0x20000170   Data           4  sci.o(.data)
+    g_iic01_tx_count                         0x20000174   Data           2  sci.o(.data)
+    gp_iic01_rx_address                      0x20000178   Data           4  sci.o(.data)
+    g_iic01_rx_count                         0x2000017c   Data           2  sci.o(.data)
+    g_iic01_rx_length                        0x2000017e   Data           2  sci.o(.data)
+    gp_uart1_tx_address                      0x20000180   Data           4  sci.o(.data)
+    g_uart1_tx_count                         0x20000184   Data           2  sci.o(.data)
+    gp_uart1_rx_address                      0x20000188   Data           4  sci.o(.data)
+    g_uart1_rx_count                         0x2000018c   Data           2  sci.o(.data)
+    g_uart1_rx_length                        0x2000018e   Data           2  sci.o(.data)
+    gp_spi10_rx_address                      0x20000190   Data           4  sci.o(.data)
+    g_spi10_rx_length                        0x20000194   Data           2  sci.o(.data)
+    g_spi10_rx_count                         0x20000196   Data           2  sci.o(.data)
+    gp_spi10_tx_address                      0x20000198   Data           4  sci.o(.data)
+    g_spi10_tx_length                        0x2000019c   Data           2  sci.o(.data)
+    g_spi10_tx_count                         0x2000019e   Data           2  sci.o(.data)
+    gp_spi11_rx_address                      0x200001a0   Data           4  sci.o(.data)
+    g_spi11_rx_length                        0x200001a4   Data           2  sci.o(.data)
+    g_spi11_rx_count                         0x200001a6   Data           2  sci.o(.data)
+    gp_spi11_tx_address                      0x200001a8   Data           4  sci.o(.data)
+    g_spi11_tx_length                        0x200001ac   Data           2  sci.o(.data)
+    g_spi11_tx_count                         0x200001ae   Data           2  sci.o(.data)
+    g_iic10_master_status_flag               0x200001b0   Data           1  sci.o(.data)
+    gp_iic10_tx_address                      0x200001b4   Data           4  sci.o(.data)
+    g_iic10_tx_count                         0x200001b8   Data           2  sci.o(.data)
+    gp_iic10_rx_address                      0x200001bc   Data           4  sci.o(.data)
+    g_iic10_rx_count                         0x200001c0   Data           2  sci.o(.data)
+    g_iic10_rx_length                        0x200001c2   Data           2  sci.o(.data)
+    g_iic11_master_status_flag               0x200001c4   Data           1  sci.o(.data)
+    gp_iic11_tx_address                      0x200001c8   Data           4  sci.o(.data)
+    g_iic11_tx_count                         0x200001cc   Data           2  sci.o(.data)
+    gp_iic11_rx_address                      0x200001d0   Data           4  sci.o(.data)
+    g_iic11_rx_count                         0x200001d4   Data           2  sci.o(.data)
+    g_iic11_rx_length                        0x200001d6   Data           2  sci.o(.data)
+    gp_uart2_tx_address                      0x200001d8   Data           4  sci.o(.data)
+    g_uart2_tx_count                         0x200001dc   Data           2  sci.o(.data)
+    gp_uart2_rx_address                      0x200001e0   Data           4  sci.o(.data)
+    g_uart2_rx_count                         0x200001e4   Data           2  sci.o(.data)
+    g_uart2_rx_length                        0x200001e6   Data           2  sci.o(.data)
+    gp_spi20_rx_address                      0x200001e8   Data           4  sci.o(.data)
+    g_spi20_rx_length                        0x200001ec   Data           2  sci.o(.data)
+    g_spi20_rx_count                         0x200001ee   Data           2  sci.o(.data)
+    gp_spi20_tx_address                      0x200001f0   Data           4  sci.o(.data)
+    g_spi20_tx_length                        0x200001f4   Data           2  sci.o(.data)
+    g_spi20_tx_count                         0x200001f6   Data           2  sci.o(.data)
+    gp_spi21_rx_address                      0x200001f8   Data           4  sci.o(.data)
+    g_spi21_rx_length                        0x200001fc   Data           2  sci.o(.data)
+    g_spi21_rx_count                         0x200001fe   Data           2  sci.o(.data)
+    gp_spi21_tx_address                      0x20000200   Data           4  sci.o(.data)
+    g_spi21_tx_length                        0x20000204   Data           2  sci.o(.data)
+    g_spi21_tx_count                         0x20000206   Data           2  sci.o(.data)
+    g_iic20_master_status_flag               0x20000208   Data           1  sci.o(.data)
+    gp_iic20_tx_address                      0x2000020c   Data           4  sci.o(.data)
+    g_iic20_tx_count                         0x20000210   Data           2  sci.o(.data)
+    gp_iic20_rx_address                      0x20000214   Data           4  sci.o(.data)
+    g_iic20_rx_count                         0x20000218   Data           2  sci.o(.data)
+    g_iic20_rx_length                        0x2000021a   Data           2  sci.o(.data)
+    g_iic21_master_status_flag               0x2000021c   Data           1  sci.o(.data)
+    gp_iic21_tx_address                      0x20000220   Data           4  sci.o(.data)
+    g_iic21_tx_count                         0x20000224   Data           2  sci.o(.data)
+    gp_iic21_rx_address                      0x20000228   Data           4  sci.o(.data)
+    g_iic21_rx_count                         0x2000022c   Data           2  sci.o(.data)
+    g_iic21_rx_length                        0x2000022e   Data           2  sci.o(.data)
+    gp_usb_pstd_callback                     0x20000238   Data          80  usb_cdataio.o(.data)
+    g_usb_pstd_bc_detect                     0x20000288   Data           2  usb_pbc.o(.data)
+    g_usb_pstd_stall_cb                      0x2000028c   Data           4  usb_pdriver.o(.data)
+    g_usb_pstd_config_no                     0x20000290   Data           2  usb_pdriver.o(.data)
+    g_usb_pstd_remote_wakeup                 0x20000292   Data           2  usb_pdriver.o(.data)
+    g_usb_pstd_remote_wakeup_state           0x20000294   Data           2  usb_pdriver.o(.data)
+    g_usb_pstd_req_type                      0x20000296   Data           2  usb_pdriver.o(.data)
+    g_usb_pstd_req_value                     0x20000298   Data           2  usb_pdriver.o(.data)
+    g_usb_pstd_req_index                     0x2000029a   Data           2  usb_pdriver.o(.data)
+    g_usb_pstd_req_length                    0x2000029c   Data           2  usb_pdriver.o(.data)
+    g_usb_pstd_pipe0_request                 0x2000029e   Data           2  usb_pdriver.o(.data)
+    g_usb_pstd_std_request                   0x200002a0   Data           2  usb_pdriver.o(.data)
+    g_usb_pstd_is_connected                  0x200002a2   Data           2  usb_pdriver.o(.data)
+    g_usb_pstd_req_reg                       0x200002a4   Data           8  usb_pdriver.o(.data)
+    g_usb_cstd_usb_mode                      0x200002b2   Data           2  usb_usbif_api.o(.data)
+    g_usb_cstd_open_class                    0x200002b4   Data           2  usb_usbif_api.o(.data)
+    g_usb_hstd_is_susp_resm                  0x200002b6   Data           2  usb_usbif_api.o(.data)
+    g_ext_flash_mediadriver                  0x200002bc   Data          20  ext_flash_disk.o(.data)
+    g_usb_pmsc_dtl                           0x2000032c   Data           4  usb_pmsc_driver.o(.data)
+    g_usb_pmsc_message                       0x20000330   Data           8  usb_pmsc_driver.o(.data)
+    SystemCoreClock                          0x20000340   Data           4  system_bat32g157.o(.data)
+    __stdout                                 0x20000344   Data           4  stdout.o(.data)
+    g_usb_pstd_data_cnt                      0x20000388   Data          40  usb_cdataio.o(.bss)
+    gp_usb_pstd_data                         0x200003b0   Data          40  usb_cdataio.o(.bss)
+    gp_usb_pstd_pipe                         0x200003d8   Data          40  usb_cdataio.o(.bss)
+    g_usb_cstd_pipe_tbl                      0x20000400   Data          80  usb_cdataio.o(.bss)
+    g_usb_cstd_bemp_skip                     0x20000450   Data          20  usb_cdataio.o(.bss)
+    g_usb_pstd_is_stall_pipe                 0x20000464   Data          20  usb_pdriver.o(.bss)
+    g_usb_pstd_alt_no                        0x20000478   Data         510  usb_pdriver.o(.bss)
+    g_usb_pstd_driver                        0x20000678   Data          44  usb_pdriver.o(.bss)
+    g_usb_pstd_usb_int                       0x200006a4   Data          62  usb_pinthandler_usbip0.o(.bss)
+    g_usb_read_request_size                  0x200006e4   Data          40  usb_usbif_api.o(.bss)
+    g_usb_cstd_event                         0x2000070c   Data         260  usb_usbif_api.o(.bss)
+    g_usb_pstd_data                          0x20000810   Data         280  usb_usbif_api.o(.bss)
+    __initial_sp                             0x20004990   Data           0  startup_bat32g157.o(STACK)
 
 
 
@@ -2480,9 +2475,9 @@ Memory Map of the image
 
   Image Entry point : 0x080000c9
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00005d08, Max: 0x00040000, ABSOLUTE, COMPRESSED[0x00005ad4])
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00005c60, Max: 0x00040000, ABSOLUTE, COMPRESSED[0x00005a24])
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00005a08, Max: 0x00040000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00005918, Max: 0x00040000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -2685,179 +2680,179 @@ Memory Map of the image
     0x08002b2c   0x08002b2c   0x00000070   Code   RO         2084    i.usb_cstd_set_pipe_config  usb_creg_abs.o
     0x08002b9c   0x08002b9c   0x0000001c   Code   RO         2085    i.usb_cstd_set_transaction  usb_creg_abs.o
     0x08002bb8   0x08002bb8   0x00000018   Code   RO         1044    i.usb_cstd_usb_task  usb_cdataio.o
-    0x08002bd0   0x08002bd0   0x00000140   Code   RO          177    i.usb_main          usb_phid_pmsc_apl.o
-    0x08002d10   0x08002d10   0x00000030   Code   RO         2012    i.usb_module_start  usb_157_mcu.o
-    0x08002d40   0x08002d40   0x00000068   Code   RO         3083    i.usb_phid_read_complete  usb_phid_driver.o
-    0x08002da8   0x08002da8   0x00000032   Code   RO         3084    i.usb_phid_write_complete  usb_phid_driver.o
-    0x08002dda   0x08002dda   0x00000002   PAD
-    0x08002ddc   0x08002ddc   0x000000c4   Code   RO         2979    i.usb_pmsc_check_case13  usb_pmsc_driver.o
-    0x08002ea0   0x08002ea0   0x00000204   Code   RO         2980    i.usb_pmsc_check_cbw  usb_pmsc_driver.o
-    0x080030a4   0x080030a4   0x00000024   Code   RO         2981    i.usb_pmsc_csw_transfer  usb_pmsc_driver.o
-    0x080030c8   0x080030c8   0x0000008c   Code   RO         2982    i.usb_pmsc_data_transfer  usb_pmsc_driver.o
-    0x08003154   0x08003154   0x00000010   Code   RO         2983    i.usb_pmsc_err_csw_ng  usb_pmsc_driver.o
-    0x08003164   0x08003164   0x00000010   Code   RO         2984    i.usb_pmsc_err_csw_ok  usb_pmsc_driver.o
-    0x08003174   0x08003174   0x00000010   Code   RO         2985    i.usb_pmsc_err_phase_err  usb_pmsc_driver.o
-    0x08003184   0x08003184   0x00000030   Code   RO         2986    i.usb_pmsc_get_max_lun  usb_pmsc_driver.o
-    0x080031b4   0x080031b4   0x0000005c   Code   RO         2987    i.usb_pmsc_init     usb_pmsc_driver.o
-    0x08003210   0x08003210   0x00000026   Code   RO         2988    i.usb_pmsc_mass_strage_reset  usb_pmsc_driver.o
-    0x08003236   0x08003236   0x00000002   PAD
-    0x08003238   0x08003238   0x00000028   Code   RO         2989    i.usb_pmsc_receive_cbw  usb_pmsc_driver.o
-    0x08003260   0x08003260   0x00000044   Code   RO         2990    i.usb_pmsc_setcsw   usb_pmsc_driver.o
-    0x080032a4   0x080032a4   0x000000f8   Code   RO         2991    i.usb_pmsc_task     usb_pmsc_driver.o
-    0x0800339c   0x0800339c   0x00000018   Code   RO         2992    i.usb_pmsc_trans_result  usb_pmsc_driver.o
-    0x080033b4   0x080033b4   0x00000054   Code   RO         2993    i.usb_pmsc_transfer_matrix  usb_pmsc_driver.o
-    0x08003408   0x08003408   0x00000030   Code   RO         2994    i.usb_pmsc_transfer_start  usb_pmsc_driver.o
-    0x08003438   0x08003438   0x00000012   Code   RO         1633    i.usb_pstd_attach_process  usb_psignal.o
-    0x0800344a   0x0800344a   0x0000006c   Code   RO         1261    i.usb_pstd_bc_data_contact_detect  usb_pbc.o
-    0x080034b6   0x080034b6   0x00000002   PAD
-    0x080034b8   0x080034b8   0x00000044   Code   RO         1262    i.usb_pstd_bc_detect_process  usb_pbc.o
-    0x080034fc   0x080034fc   0x00000032   Code   RO         1263    i.usb_pstd_bc_primary_detection  usb_pbc.o
-    0x0800352e   0x0800352e   0x0000002c   Code   RO         1264    i.usb_pstd_bc_secondary_detection  usb_pbc.o
-    0x0800355a   0x0800355a   0x0000004c   Code   RO         1512    i.usb_pstd_bemp_pipe  usb_pintfifo.o
-    0x080035a6   0x080035a6   0x00000002   PAD
-    0x080035a8   0x080035a8   0x000000bc   Code   RO         1555    i.usb_pstd_bemp_pipe_process  usb_plibusbip.o
-    0x08003664   0x08003664   0x00000062   Code   RO         1513    i.usb_pstd_brdy_pipe  usb_pintfifo.o
-    0x080036c6   0x080036c6   0x00000002   PAD
-    0x080036c8   0x080036c8   0x00000058   Code   RO         1556    i.usb_pstd_brdy_pipe_process  usb_plibusbip.o
-    0x08003720   0x08003720   0x00000066   Code   RO         1319    i.usb_pstd_buf_to_fifo  usb_pdriver.o
-    0x08003786   0x08003786   0x00000002   PAD
-    0x08003788   0x08003788   0x00000040   Code   RO         1634    i.usb_pstd_bus_reset  usb_psignal.o
-    0x080037c8   0x080037c8   0x00000002   Code   RO         1663    i.usb_pstd_busreset_function  usb_pstdfunction.o
-    0x080037ca   0x080037ca   0x00000002   PAD
-    0x080037cc   0x080037cc   0x00000054   Code   RO         1320    i.usb_pstd_change_device_state  usb_pdriver.o
-    0x08003820   0x08003820   0x00000018   Code   RO         2627    i.usb_pstd_chk_configured  usb_preg_abs.o
-    0x08003838   0x08003838   0x00000028   Code   RO         1321    i.usb_pstd_chk_remote  usb_pdriver.o
-    0x08003860   0x08003860   0x0000004c   Code   RO         1664    i.usb_pstd_chk_vbsts  usb_pstdfunction.o
-    0x080038ac   0x080038ac   0x00000084   Code   RO         1715    i.usb_pstd_class_request  usb_pstdrequest.o
-    0x08003930   0x08003930   0x00000002   Code   RO         1716    i.usb_pstd_class_request_ioss  usb_pstdrequest.o
-    0x08003932   0x08003932   0x00000002   PAD
-    0x08003934   0x08003934   0x00000054   Code   RO         1717    i.usb_pstd_class_request_rss  usb_pstdrequest.o
-    0x08003988   0x08003988   0x00000058   Code   RO         1718    i.usb_pstd_class_request_rwds  usb_pstdrequest.o
-    0x080039e0   0x080039e0   0x0000007c   Code   RO         1720    i.usb_pstd_class_request_wnss  usb_pstdrequest.o
-    0x08003a5c   0x08003a5c   0x00000048   Code   RO         1721    i.usb_pstd_class_request_wss  usb_pstdrequest.o
-    0x08003aa4   0x08003aa4   0x0000001c   Code   RO         1322    i.usb_pstd_clr_alt  usb_pdriver.o
-    0x08003ac0   0x08003ac0   0x00000002   Code   RO         1722    i.usb_pstd_clr_feature0  usb_pstdrequest.o
-    0x08003ac2   0x08003ac2   0x00000002   PAD
-    0x08003ac4   0x08003ac4   0x00000118   Code   RO         1723    i.usb_pstd_clr_feature3  usb_pstdrequest.o
-    0x08003bdc   0x08003bdc   0x0000001c   Code   RO         1323    i.usb_pstd_clr_mem  usb_pdriver.o
-    0x08003bf8   0x08003bf8   0x00000020   Code   RO         1324    i.usb_pstd_configured  usb_pdriver.o
-    0x08003c18   0x08003c18   0x00000050   Code   RO         1295    i.usb_pstd_ctrl_end  usb_pcontrolrw.o
-    0x08003c68   0x08003c68   0x00000080   Code   RO         1296    i.usb_pstd_ctrl_read  usb_pcontrolrw.o
-    0x08003ce8   0x08003ce8   0x00000044   Code   RO         1297    i.usb_pstd_ctrl_write  usb_pcontrolrw.o
-    0x08003d2c   0x08003d2c   0x00000104   Code   RO         1557    i.usb_pstd_data_end  usb_plibusbip.o
-    0x08003e30   0x08003e30   0x00000024   Code   RO         1325    i.usb_pstd_detach   usb_pdriver.o
-    0x08003e54   0x08003e54   0x0000005c   Code   RO         1635    i.usb_pstd_detach_process  usb_psignal.o
-    0x08003eb0   0x08003eb0   0x0000003c   Code   RO         1326    i.usb_pstd_devdefault  usb_pdriver.o
-    0x08003eec   0x08003eec   0x000000ec   Code   RO         1665    i.usb_pstd_driver_init  usb_pstdfunction.o
-    0x08003fd8   0x08003fd8   0x00000038   Code   RO         1327    i.usb_pstd_driver_registration  usb_pdriver.o
-    0x08004010   0x08004010   0x00000044   Code   RO         1558    i.usb_pstd_epadr_to_pipe  usb_plibusbip.o
-    0x08004054   0x08004054   0x0000006c   Code   RO         1331    i.usb_pstd_fifo_to_buf  usb_pdriver.o
-    0x080040c0   0x080040c0   0x000000a0   Code   RO         2628    i.usb_pstd_forced_termination  usb_preg_abs.o
-    0x08004160   0x08004160   0x00000068   Code   RO         1332    i.usb_pstd_get_alternate_no  usb_pdriver.o
-    0x080041c8   0x080041c8   0x00000054   Code   RO         1724    i.usb_pstd_get_configuration1  usb_pstdrequest.o
-    0x0800421c   0x0800421c   0x0000001c   Code   RO         1333    i.usb_pstd_get_current_power  usb_pdriver.o
-    0x08004238   0x08004238   0x0000015c   Code   RO         1725    i.usb_pstd_get_descriptor1  usb_pstdrequest.o
-    0x08004394   0x08004394   0x00000060   Code   RO         1726    i.usb_pstd_get_interface1  usb_pstdrequest.o
-    0x080043f4   0x080043f4   0x00000010   Code   RO         1334    i.usb_pstd_get_interface_no  usb_pdriver.o
-    0x08004404   0x08004404   0x0000004c   Code   RO         1666    i.usb_pstd_get_open_class  usb_pstdfunction.o
-    0x08004450   0x08004450   0x0000008c   Code   RO         1559    i.usb_pstd_get_pipe_no  usb_plibusbip.o
-    0x080044dc   0x080044dc   0x0000012c   Code   RO         1727    i.usb_pstd_get_status1  usb_pstdrequest.o
-    0x08004608   0x08004608   0x0000000e   Code   RO         1335    i.usb_pstd_interface  usb_pdriver.o
-    0x08004616   0x08004616   0x00000002   PAD
-    0x08004618   0x08004618   0x0000020c   Code   RO         2629    i.usb_pstd_interrupt_handler  usb_preg_abs.o
-    0x08004824   0x08004824   0x00000184   Code   RO         1336    i.usb_pstd_interrupt_process  usb_pdriver.o
-    0x080049a8   0x080049a8   0x00000014   Code   RO         1514    i.usb_pstd_nrdy_pipe  usb_pintfifo.o
-    0x080049bc   0x080049bc   0x00000060   Code   RO         1560    i.usb_pstd_nrdy_pipe_process  usb_plibusbip.o
-    0x08004a1c   0x08004a1c   0x00000028   Code   RO         1728    i.usb_pstd_other_request  usb_pstdrequest.o
-    0x08004a44   0x08004a44   0x0000003c   Code   RO         1337    i.usb_pstd_pcd_task  usb_pdriver.o
-    0x08004a80   0x08004a80   0x00000034   Code   RO         1338    i.usb_pstd_pipe_info  usb_pdriver.o
-    0x08004ab4   0x08004ab4   0x000000dc   Code   RO         1561    i.usb_pstd_read_data  usb_plibusbip.o
-    0x08004b90   0x08004b90   0x00000034   Code   RO         2630    i.usb_pstd_read_fifo  usb_preg_abs.o
-    0x08004bc4   0x08004bc4   0x000000b0   Code   RO         1562    i.usb_pstd_receive_start  usb_plibusbip.o
-    0x08004c74   0x08004c74   0x00000064   Code   RO         1340    i.usb_pstd_registration  usb_pdriver.o
-    0x08004cd8   0x08004cd8   0x0000004c   Code   RO         2631    i.usb_pstd_remote_wakeup  usb_preg_abs.o
-    0x08004d24   0x08004d24   0x00000012   Code   RO         1341    i.usb_pstd_resume   usb_pdriver.o
-    0x08004d36   0x08004d36   0x0000000c   Code   RO         2632    i.usb_pstd_resume_process  usb_preg_abs.o
-    0x08004d42   0x08004d42   0x00000002   PAD
-    0x08004d44   0x08004d44   0x00000038   Code   RO         2633    i.usb_pstd_save_request  usb_preg_abs.o
-    0x08004d7c   0x08004d7c   0x0000006c   Code   RO         1563    i.usb_pstd_send_start  usb_plibusbip.o
-    0x08004de8   0x08004de8   0x00000002   Code   RO         1729    i.usb_pstd_set_address0  usb_pstdrequest.o
-    0x08004dea   0x08004dea   0x00000002   PAD
-    0x08004dec   0x08004dec   0x00000050   Code   RO         1730    i.usb_pstd_set_address3  usb_pstdrequest.o
-    0x08004e3c   0x08004e3c   0x00000014   Code   RO         1342    i.usb_pstd_set_config_no  usb_pdriver.o
-    0x08004e50   0x08004e50   0x0000003c   Code   RO         1731    i.usb_pstd_set_configuration0  usb_pstdrequest.o
-    0x08004e8c   0x08004e8c   0x0000009c   Code   RO         1732    i.usb_pstd_set_configuration3  usb_pstdrequest.o
-    0x08004f28   0x08004f28   0x00000008   Code   RO         1733    i.usb_pstd_set_descriptor2  usb_pstdrequest.o
-    0x08004f30   0x08004f30   0x0000009c   Code   RO         1343    i.usb_pstd_set_eptbl_index  usb_pdriver.o
-    0x08004fcc   0x08004fcc   0x00000002   Code   RO         1734    i.usb_pstd_set_feature0  usb_pstdrequest.o
-    0x08004fce   0x08004fce   0x00000002   PAD
-    0x08004fd0   0x08004fd0   0x000000dc   Code   RO         1735    i.usb_pstd_set_feature3  usb_pstdrequest.o
-    0x080050ac   0x080050ac   0x00000008   Code   RO         1667    i.usb_pstd_set_feature_function  usb_pstdfunction.o
-    0x080050b4   0x080050b4   0x0000002c   Code   RO         1736    i.usb_pstd_set_interface0  usb_pstdrequest.o
-    0x080050e0   0x080050e0   0x0000008c   Code   RO         1737    i.usb_pstd_set_interface3  usb_pstdrequest.o
-    0x0800516c   0x0800516c   0x00000074   Code   RO         1564    i.usb_pstd_set_pipe_reg  usb_plibusbip.o
-    0x080051e0   0x080051e0   0x000000c4   Code   RO         1565    i.usb_pstd_set_pipe_table  usb_plibusbip.o
-    0x080052a4   0x080052a4   0x0000000e   Code   RO         2634    i.usb_pstd_set_stall  usb_preg_abs.o
-    0x080052b2   0x080052b2   0x0000000c   Code   RO         2635    i.usb_pstd_set_stall_pipe0  usb_preg_abs.o
-    0x080052be   0x080052be   0x00000002   PAD
-    0x080052c0   0x080052c0   0x00000040   Code   RO         1344    i.usb_pstd_set_submitutr  usb_pdriver.o
-    0x08005300   0x08005300   0x00000074   Code   RO         1738    i.usb_pstd_stand_req0  usb_pstdrequest.o
-    0x08005374   0x08005374   0x00000068   Code   RO         1739    i.usb_pstd_stand_req1  usb_pstdrequest.o
-    0x080053dc   0x080053dc   0x00000024   Code   RO         1740    i.usb_pstd_stand_req2  usb_pstdrequest.o
-    0x08005400   0x08005400   0x000000c8   Code   RO         1741    i.usb_pstd_stand_req3  usb_pstdrequest.o
-    0x080054c8   0x080054c8   0x000000cc   Code   RO         1742    i.usb_pstd_stand_req4  usb_pstdrequest.o
-    0x08005594   0x08005594   0x00000080   Code   RO         1743    i.usb_pstd_stand_req5  usb_pstdrequest.o
-    0x08005614   0x08005614   0x00000002   Code   RO         1668    i.usb_pstd_suspend_function  usb_pstdfunction.o
-    0x08005616   0x08005616   0x00000002   PAD
-    0x08005618   0x08005618   0x00000050   Code   RO         1636    i.usb_pstd_suspend_process  usb_psignal.o
-    0x08005668   0x08005668   0x00000012   Code   RO         1345    i.usb_pstd_suspended  usb_pdriver.o
-    0x0800567a   0x0800567a   0x00000008   Code   RO         1744    i.usb_pstd_synch_rame1  usb_pstdrequest.o
-    0x08005682   0x08005682   0x00000002   PAD
-    0x08005684   0x08005684   0x00000048   Code   RO         1347    i.usb_pstd_transfer_start  usb_pdriver.o
-    0x080056cc   0x080056cc   0x00000034   Code   RO         1536    i.usb_pstd_usb_handler  usb_pinthandler_usbip0.o
-    0x08005700   0x08005700   0x000000e4   Code   RO         1566    i.usb_pstd_write_data  usb_plibusbip.o
-    0x080057e4   0x080057e4   0x00000046   Code   RO         2636    i.usb_pstd_write_fifo  usb_preg_abs.o
-    0x0800582a   0x0800582a   0x00000002   PAD
-    0x0800582c   0x0800582c   0x000000e2   Data   RO          142    .constdata          usb_phid_pmsc_descriptor.o
-    0x0800590e   0x0800590e   0x00000002   PAD
-    0x08005910   0x08005910   0x00000010   Data   RO          179    .constdata          usb_phid_pmsc_apl.o
-    0x08005920   0x08005920   0x00000020   Data   RO          398    .constdata          sci.o
-    0x08005940   0x08005940   0x00000006   Data   RO         1046    .constdata          usb_cdataio.o
-    0x08005946   0x08005946   0x000000a2   Data   RO         2932    .constdata          usb_atapi_driver.o
-    0x080059e8   0x080059e8   0x00000020   Data   RO         3466    Region$$Table       anon$$obj.o
+    0x08002bd0   0x08002bd0   0x00000100   Code   RO          177    i.usb_main          usb_phid_pmsc_apl.o
+    0x08002cd0   0x08002cd0   0x00000030   Code   RO         2012    i.usb_module_start  usb_157_mcu.o
+    0x08002d00   0x08002d00   0x00000068   Code   RO         3083    i.usb_phid_read_complete  usb_phid_driver.o
+    0x08002d68   0x08002d68   0x00000032   Code   RO         3084    i.usb_phid_write_complete  usb_phid_driver.o
+    0x08002d9a   0x08002d9a   0x00000002   PAD
+    0x08002d9c   0x08002d9c   0x000000c4   Code   RO         2979    i.usb_pmsc_check_case13  usb_pmsc_driver.o
+    0x08002e60   0x08002e60   0x00000204   Code   RO         2980    i.usb_pmsc_check_cbw  usb_pmsc_driver.o
+    0x08003064   0x08003064   0x00000024   Code   RO         2981    i.usb_pmsc_csw_transfer  usb_pmsc_driver.o
+    0x08003088   0x08003088   0x0000008c   Code   RO         2982    i.usb_pmsc_data_transfer  usb_pmsc_driver.o
+    0x08003114   0x08003114   0x00000010   Code   RO         2983    i.usb_pmsc_err_csw_ng  usb_pmsc_driver.o
+    0x08003124   0x08003124   0x00000010   Code   RO         2984    i.usb_pmsc_err_csw_ok  usb_pmsc_driver.o
+    0x08003134   0x08003134   0x00000010   Code   RO         2985    i.usb_pmsc_err_phase_err  usb_pmsc_driver.o
+    0x08003144   0x08003144   0x00000030   Code   RO         2986    i.usb_pmsc_get_max_lun  usb_pmsc_driver.o
+    0x08003174   0x08003174   0x0000005c   Code   RO         2987    i.usb_pmsc_init     usb_pmsc_driver.o
+    0x080031d0   0x080031d0   0x00000026   Code   RO         2988    i.usb_pmsc_mass_strage_reset  usb_pmsc_driver.o
+    0x080031f6   0x080031f6   0x00000002   PAD
+    0x080031f8   0x080031f8   0x00000028   Code   RO         2989    i.usb_pmsc_receive_cbw  usb_pmsc_driver.o
+    0x08003220   0x08003220   0x00000044   Code   RO         2990    i.usb_pmsc_setcsw   usb_pmsc_driver.o
+    0x08003264   0x08003264   0x000000f8   Code   RO         2991    i.usb_pmsc_task     usb_pmsc_driver.o
+    0x0800335c   0x0800335c   0x00000018   Code   RO         2992    i.usb_pmsc_trans_result  usb_pmsc_driver.o
+    0x08003374   0x08003374   0x00000054   Code   RO         2993    i.usb_pmsc_transfer_matrix  usb_pmsc_driver.o
+    0x080033c8   0x080033c8   0x00000030   Code   RO         2994    i.usb_pmsc_transfer_start  usb_pmsc_driver.o
+    0x080033f8   0x080033f8   0x00000012   Code   RO         1633    i.usb_pstd_attach_process  usb_psignal.o
+    0x0800340a   0x0800340a   0x0000006c   Code   RO         1261    i.usb_pstd_bc_data_contact_detect  usb_pbc.o
+    0x08003476   0x08003476   0x00000002   PAD
+    0x08003478   0x08003478   0x00000044   Code   RO         1262    i.usb_pstd_bc_detect_process  usb_pbc.o
+    0x080034bc   0x080034bc   0x00000032   Code   RO         1263    i.usb_pstd_bc_primary_detection  usb_pbc.o
+    0x080034ee   0x080034ee   0x0000002c   Code   RO         1264    i.usb_pstd_bc_secondary_detection  usb_pbc.o
+    0x0800351a   0x0800351a   0x0000004c   Code   RO         1512    i.usb_pstd_bemp_pipe  usb_pintfifo.o
+    0x08003566   0x08003566   0x00000002   PAD
+    0x08003568   0x08003568   0x000000bc   Code   RO         1555    i.usb_pstd_bemp_pipe_process  usb_plibusbip.o
+    0x08003624   0x08003624   0x00000062   Code   RO         1513    i.usb_pstd_brdy_pipe  usb_pintfifo.o
+    0x08003686   0x08003686   0x00000002   PAD
+    0x08003688   0x08003688   0x00000058   Code   RO         1556    i.usb_pstd_brdy_pipe_process  usb_plibusbip.o
+    0x080036e0   0x080036e0   0x00000066   Code   RO         1319    i.usb_pstd_buf_to_fifo  usb_pdriver.o
+    0x08003746   0x08003746   0x00000002   PAD
+    0x08003748   0x08003748   0x00000040   Code   RO         1634    i.usb_pstd_bus_reset  usb_psignal.o
+    0x08003788   0x08003788   0x00000002   Code   RO         1663    i.usb_pstd_busreset_function  usb_pstdfunction.o
+    0x0800378a   0x0800378a   0x00000002   PAD
+    0x0800378c   0x0800378c   0x00000054   Code   RO         1320    i.usb_pstd_change_device_state  usb_pdriver.o
+    0x080037e0   0x080037e0   0x00000018   Code   RO         2627    i.usb_pstd_chk_configured  usb_preg_abs.o
+    0x080037f8   0x080037f8   0x00000028   Code   RO         1321    i.usb_pstd_chk_remote  usb_pdriver.o
+    0x08003820   0x08003820   0x0000004c   Code   RO         1664    i.usb_pstd_chk_vbsts  usb_pstdfunction.o
+    0x0800386c   0x0800386c   0x00000084   Code   RO         1715    i.usb_pstd_class_request  usb_pstdrequest.o
+    0x080038f0   0x080038f0   0x00000002   Code   RO         1716    i.usb_pstd_class_request_ioss  usb_pstdrequest.o
+    0x080038f2   0x080038f2   0x00000002   PAD
+    0x080038f4   0x080038f4   0x00000054   Code   RO         1717    i.usb_pstd_class_request_rss  usb_pstdrequest.o
+    0x08003948   0x08003948   0x00000058   Code   RO         1718    i.usb_pstd_class_request_rwds  usb_pstdrequest.o
+    0x080039a0   0x080039a0   0x0000007c   Code   RO         1720    i.usb_pstd_class_request_wnss  usb_pstdrequest.o
+    0x08003a1c   0x08003a1c   0x00000048   Code   RO         1721    i.usb_pstd_class_request_wss  usb_pstdrequest.o
+    0x08003a64   0x08003a64   0x0000001c   Code   RO         1322    i.usb_pstd_clr_alt  usb_pdriver.o
+    0x08003a80   0x08003a80   0x00000002   Code   RO         1722    i.usb_pstd_clr_feature0  usb_pstdrequest.o
+    0x08003a82   0x08003a82   0x00000002   PAD
+    0x08003a84   0x08003a84   0x00000118   Code   RO         1723    i.usb_pstd_clr_feature3  usb_pstdrequest.o
+    0x08003b9c   0x08003b9c   0x0000001c   Code   RO         1323    i.usb_pstd_clr_mem  usb_pdriver.o
+    0x08003bb8   0x08003bb8   0x00000020   Code   RO         1324    i.usb_pstd_configured  usb_pdriver.o
+    0x08003bd8   0x08003bd8   0x00000050   Code   RO         1295    i.usb_pstd_ctrl_end  usb_pcontrolrw.o
+    0x08003c28   0x08003c28   0x00000080   Code   RO         1296    i.usb_pstd_ctrl_read  usb_pcontrolrw.o
+    0x08003ca8   0x08003ca8   0x00000044   Code   RO         1297    i.usb_pstd_ctrl_write  usb_pcontrolrw.o
+    0x08003cec   0x08003cec   0x00000104   Code   RO         1557    i.usb_pstd_data_end  usb_plibusbip.o
+    0x08003df0   0x08003df0   0x00000024   Code   RO         1325    i.usb_pstd_detach   usb_pdriver.o
+    0x08003e14   0x08003e14   0x0000005c   Code   RO         1635    i.usb_pstd_detach_process  usb_psignal.o
+    0x08003e70   0x08003e70   0x0000003c   Code   RO         1326    i.usb_pstd_devdefault  usb_pdriver.o
+    0x08003eac   0x08003eac   0x000000ec   Code   RO         1665    i.usb_pstd_driver_init  usb_pstdfunction.o
+    0x08003f98   0x08003f98   0x00000038   Code   RO         1327    i.usb_pstd_driver_registration  usb_pdriver.o
+    0x08003fd0   0x08003fd0   0x00000044   Code   RO         1558    i.usb_pstd_epadr_to_pipe  usb_plibusbip.o
+    0x08004014   0x08004014   0x0000006c   Code   RO         1331    i.usb_pstd_fifo_to_buf  usb_pdriver.o
+    0x08004080   0x08004080   0x000000a0   Code   RO         2628    i.usb_pstd_forced_termination  usb_preg_abs.o
+    0x08004120   0x08004120   0x00000068   Code   RO         1332    i.usb_pstd_get_alternate_no  usb_pdriver.o
+    0x08004188   0x08004188   0x00000054   Code   RO         1724    i.usb_pstd_get_configuration1  usb_pstdrequest.o
+    0x080041dc   0x080041dc   0x0000001c   Code   RO         1333    i.usb_pstd_get_current_power  usb_pdriver.o
+    0x080041f8   0x080041f8   0x0000015c   Code   RO         1725    i.usb_pstd_get_descriptor1  usb_pstdrequest.o
+    0x08004354   0x08004354   0x00000060   Code   RO         1726    i.usb_pstd_get_interface1  usb_pstdrequest.o
+    0x080043b4   0x080043b4   0x00000010   Code   RO         1334    i.usb_pstd_get_interface_no  usb_pdriver.o
+    0x080043c4   0x080043c4   0x0000004c   Code   RO         1666    i.usb_pstd_get_open_class  usb_pstdfunction.o
+    0x08004410   0x08004410   0x0000008c   Code   RO         1559    i.usb_pstd_get_pipe_no  usb_plibusbip.o
+    0x0800449c   0x0800449c   0x0000012c   Code   RO         1727    i.usb_pstd_get_status1  usb_pstdrequest.o
+    0x080045c8   0x080045c8   0x0000000e   Code   RO         1335    i.usb_pstd_interface  usb_pdriver.o
+    0x080045d6   0x080045d6   0x00000002   PAD
+    0x080045d8   0x080045d8   0x0000020c   Code   RO         2629    i.usb_pstd_interrupt_handler  usb_preg_abs.o
+    0x080047e4   0x080047e4   0x00000184   Code   RO         1336    i.usb_pstd_interrupt_process  usb_pdriver.o
+    0x08004968   0x08004968   0x00000014   Code   RO         1514    i.usb_pstd_nrdy_pipe  usb_pintfifo.o
+    0x0800497c   0x0800497c   0x00000060   Code   RO         1560    i.usb_pstd_nrdy_pipe_process  usb_plibusbip.o
+    0x080049dc   0x080049dc   0x00000028   Code   RO         1728    i.usb_pstd_other_request  usb_pstdrequest.o
+    0x08004a04   0x08004a04   0x0000003c   Code   RO         1337    i.usb_pstd_pcd_task  usb_pdriver.o
+    0x08004a40   0x08004a40   0x00000034   Code   RO         1338    i.usb_pstd_pipe_info  usb_pdriver.o
+    0x08004a74   0x08004a74   0x000000dc   Code   RO         1561    i.usb_pstd_read_data  usb_plibusbip.o
+    0x08004b50   0x08004b50   0x00000034   Code   RO         2630    i.usb_pstd_read_fifo  usb_preg_abs.o
+    0x08004b84   0x08004b84   0x000000b0   Code   RO         1562    i.usb_pstd_receive_start  usb_plibusbip.o
+    0x08004c34   0x08004c34   0x00000064   Code   RO         1340    i.usb_pstd_registration  usb_pdriver.o
+    0x08004c98   0x08004c98   0x0000004c   Code   RO         2631    i.usb_pstd_remote_wakeup  usb_preg_abs.o
+    0x08004ce4   0x08004ce4   0x00000012   Code   RO         1341    i.usb_pstd_resume   usb_pdriver.o
+    0x08004cf6   0x08004cf6   0x0000000c   Code   RO         2632    i.usb_pstd_resume_process  usb_preg_abs.o
+    0x08004d02   0x08004d02   0x00000002   PAD
+    0x08004d04   0x08004d04   0x00000038   Code   RO         2633    i.usb_pstd_save_request  usb_preg_abs.o
+    0x08004d3c   0x08004d3c   0x0000006c   Code   RO         1563    i.usb_pstd_send_start  usb_plibusbip.o
+    0x08004da8   0x08004da8   0x00000002   Code   RO         1729    i.usb_pstd_set_address0  usb_pstdrequest.o
+    0x08004daa   0x08004daa   0x00000002   PAD
+    0x08004dac   0x08004dac   0x00000050   Code   RO         1730    i.usb_pstd_set_address3  usb_pstdrequest.o
+    0x08004dfc   0x08004dfc   0x00000014   Code   RO         1342    i.usb_pstd_set_config_no  usb_pdriver.o
+    0x08004e10   0x08004e10   0x0000003c   Code   RO         1731    i.usb_pstd_set_configuration0  usb_pstdrequest.o
+    0x08004e4c   0x08004e4c   0x0000009c   Code   RO         1732    i.usb_pstd_set_configuration3  usb_pstdrequest.o
+    0x08004ee8   0x08004ee8   0x00000008   Code   RO         1733    i.usb_pstd_set_descriptor2  usb_pstdrequest.o
+    0x08004ef0   0x08004ef0   0x0000009c   Code   RO         1343    i.usb_pstd_set_eptbl_index  usb_pdriver.o
+    0x08004f8c   0x08004f8c   0x00000002   Code   RO         1734    i.usb_pstd_set_feature0  usb_pstdrequest.o
+    0x08004f8e   0x08004f8e   0x00000002   PAD
+    0x08004f90   0x08004f90   0x000000dc   Code   RO         1735    i.usb_pstd_set_feature3  usb_pstdrequest.o
+    0x0800506c   0x0800506c   0x00000008   Code   RO         1667    i.usb_pstd_set_feature_function  usb_pstdfunction.o
+    0x08005074   0x08005074   0x0000002c   Code   RO         1736    i.usb_pstd_set_interface0  usb_pstdrequest.o
+    0x080050a0   0x080050a0   0x0000008c   Code   RO         1737    i.usb_pstd_set_interface3  usb_pstdrequest.o
+    0x0800512c   0x0800512c   0x00000074   Code   RO         1564    i.usb_pstd_set_pipe_reg  usb_plibusbip.o
+    0x080051a0   0x080051a0   0x000000c4   Code   RO         1565    i.usb_pstd_set_pipe_table  usb_plibusbip.o
+    0x08005264   0x08005264   0x0000000e   Code   RO         2634    i.usb_pstd_set_stall  usb_preg_abs.o
+    0x08005272   0x08005272   0x0000000c   Code   RO         2635    i.usb_pstd_set_stall_pipe0  usb_preg_abs.o
+    0x0800527e   0x0800527e   0x00000002   PAD
+    0x08005280   0x08005280   0x00000040   Code   RO         1344    i.usb_pstd_set_submitutr  usb_pdriver.o
+    0x080052c0   0x080052c0   0x00000074   Code   RO         1738    i.usb_pstd_stand_req0  usb_pstdrequest.o
+    0x08005334   0x08005334   0x00000068   Code   RO         1739    i.usb_pstd_stand_req1  usb_pstdrequest.o
+    0x0800539c   0x0800539c   0x00000024   Code   RO         1740    i.usb_pstd_stand_req2  usb_pstdrequest.o
+    0x080053c0   0x080053c0   0x000000c8   Code   RO         1741    i.usb_pstd_stand_req3  usb_pstdrequest.o
+    0x08005488   0x08005488   0x000000cc   Code   RO         1742    i.usb_pstd_stand_req4  usb_pstdrequest.o
+    0x08005554   0x08005554   0x00000080   Code   RO         1743    i.usb_pstd_stand_req5  usb_pstdrequest.o
+    0x080055d4   0x080055d4   0x00000002   Code   RO         1668    i.usb_pstd_suspend_function  usb_pstdfunction.o
+    0x080055d6   0x080055d6   0x00000002   PAD
+    0x080055d8   0x080055d8   0x00000050   Code   RO         1636    i.usb_pstd_suspend_process  usb_psignal.o
+    0x08005628   0x08005628   0x00000012   Code   RO         1345    i.usb_pstd_suspended  usb_pdriver.o
+    0x0800563a   0x0800563a   0x00000008   Code   RO         1744    i.usb_pstd_synch_rame1  usb_pstdrequest.o
+    0x08005642   0x08005642   0x00000002   PAD
+    0x08005644   0x08005644   0x00000048   Code   RO         1347    i.usb_pstd_transfer_start  usb_pdriver.o
+    0x0800568c   0x0800568c   0x00000034   Code   RO         1536    i.usb_pstd_usb_handler  usb_pinthandler_usbip0.o
+    0x080056c0   0x080056c0   0x000000e4   Code   RO         1566    i.usb_pstd_write_data  usb_plibusbip.o
+    0x080057a4   0x080057a4   0x00000046   Code   RO         2636    i.usb_pstd_write_fifo  usb_preg_abs.o
+    0x080057ea   0x080057ea   0x00000002   PAD
+    0x080057ec   0x080057ec   0x00000032   Data   RO          142    .constdata          usb_phid_pmsc_descriptor.o
+    0x0800581e   0x0800581e   0x00000002   PAD
+    0x08005820   0x08005820   0x00000010   Data   RO          179    .constdata          usb_phid_pmsc_apl.o
+    0x08005830   0x08005830   0x00000020   Data   RO          398    .constdata          sci.o
+    0x08005850   0x08005850   0x00000006   Data   RO         1046    .constdata          usb_cdataio.o
+    0x08005856   0x08005856   0x000000a2   Data   RO         2932    .constdata          usb_atapi_driver.o
+    0x080058f8   0x080058f8   0x00000020   Data   RO         3466    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08005a08, Size: 0x00004948, Max: 0x00008000, ABSOLUTE, COMPRESSED[0x000000cc])
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08005918, Size: 0x00004990, Max: 0x00008000, ABSOLUTE, COMPRESSED[0x0000010c])
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x20000000   COMPRESSED   0x00000004   Data   RW            9    .data               main.o
-    0x20000004   COMPRESSED   0x000000dc   Data   RW          143    .data               usb_phid_pmsc_descriptor.o
-    0x200000e0   COMPRESSED   0x0000010e   Data   RW          399    .data               sci.o
-    0x200001ee   COMPRESSED   0x00000002   PAD
-    0x200001f0   COMPRESSED   0x00000050   Data   RW         1047    .data               usb_cdataio.o
-    0x20000240   COMPRESSED   0x00000002   Data   RW         1265    .data               usb_pbc.o
-    0x20000242   COMPRESSED   0x00000002   PAD
-    0x20000244   COMPRESSED   0x00000020   Data   RW         1350    .data               usb_pdriver.o
-    0x20000264   COMPRESSED   0x00000006   Data   RW         1745    .data               usb_pstdrequest.o
-    0x2000026a   COMPRESSED   0x00000007   Data   RW         1904    .data               usb_usbif_api.o
-    0x20000271   COMPRESSED   0x00000003   PAD
-    0x20000274   COMPRESSED   0x00000014   Data   RW         2782    .data               ext_flash_disk.o
-    0x20000288   COMPRESSED   0x00000004   Data   RW         2871    .data               media_driver_api.o
-    0x2000028c   COMPRESSED   0x00000058   Data   RW         2933    .data               usb_atapi_driver.o
-    0x200002e4   COMPRESSED   0x00000011   Data   RW         2996    .data               usb_pmsc_driver.o
-    0x200002f5   COMPRESSED   0x00000003   PAD
-    0x200002f8   COMPRESSED   0x00000004   Data   RW         3117    .data               system_bat32g157.o
-    0x200002fc   COMPRESSED   0x00000004   Data   RW         3440    .data               mc_p.l(stdout.o)
-    0x20000300        -       0x00000040   Zero   RW          178    .bss                usb_phid_pmsc_apl.o
-    0x20000340        -       0x000000dc   Zero   RW         1045    .bss                usb_cdataio.o
-    0x2000041c        -       0x00000240   Zero   RW         1349    .bss                usb_pdriver.o
-    0x2000065c        -       0x0000003e   Zero   RW         1537    .bss                usb_pinthandler_usbip0.o
-    0x2000069a   COMPRESSED   0x00000002   PAD
-    0x2000069c        -       0x00000244   Zero   RW         1903    .bss                usb_usbif_api.o
-    0x200008e0        -       0x0000201c   Zero   RW         2931    .bss                usb_atapi_driver.o
-    0x200028fc        -       0x0000004c   Zero   RW         2995    .bss                usb_pmsc_driver.o
-    0x20002948        -       0x00002000   Zero   RW         3104    STACK               startup_bat32g157.o
+    0x20000004   COMPRESSED   0x00000124   Data   RW          143    .data               usb_phid_pmsc_descriptor.o
+    0x20000128   COMPRESSED   0x0000010e   Data   RW          399    .data               sci.o
+    0x20000236   COMPRESSED   0x00000002   PAD
+    0x20000238   COMPRESSED   0x00000050   Data   RW         1047    .data               usb_cdataio.o
+    0x20000288   COMPRESSED   0x00000002   Data   RW         1265    .data               usb_pbc.o
+    0x2000028a   COMPRESSED   0x00000002   PAD
+    0x2000028c   COMPRESSED   0x00000020   Data   RW         1350    .data               usb_pdriver.o
+    0x200002ac   COMPRESSED   0x00000006   Data   RW         1745    .data               usb_pstdrequest.o
+    0x200002b2   COMPRESSED   0x00000007   Data   RW         1904    .data               usb_usbif_api.o
+    0x200002b9   COMPRESSED   0x00000003   PAD
+    0x200002bc   COMPRESSED   0x00000014   Data   RW         2782    .data               ext_flash_disk.o
+    0x200002d0   COMPRESSED   0x00000004   Data   RW         2871    .data               media_driver_api.o
+    0x200002d4   COMPRESSED   0x00000058   Data   RW         2933    .data               usb_atapi_driver.o
+    0x2000032c   COMPRESSED   0x00000011   Data   RW         2996    .data               usb_pmsc_driver.o
+    0x2000033d   COMPRESSED   0x00000003   PAD
+    0x20000340   COMPRESSED   0x00000004   Data   RW         3117    .data               system_bat32g157.o
+    0x20000344   COMPRESSED   0x00000004   Data   RW         3440    .data               mc_p.l(stdout.o)
+    0x20000348        -       0x00000040   Zero   RW          178    .bss                usb_phid_pmsc_apl.o
+    0x20000388        -       0x000000dc   Zero   RW         1045    .bss                usb_cdataio.o
+    0x20000464        -       0x00000240   Zero   RW         1349    .bss                usb_pdriver.o
+    0x200006a4        -       0x0000003e   Zero   RW         1537    .bss                usb_pinthandler_usbip0.o
+    0x200006e2   COMPRESSED   0x00000002   PAD
+    0x200006e4        -       0x00000244   Zero   RW         1903    .bss                usb_usbif_api.o
+    0x20000928        -       0x0000201c   Zero   RW         2931    .bss                usb_atapi_driver.o
+    0x20002944        -       0x0000004c   Zero   RW         2995    .bss                usb_pmsc_driver.o
+    0x20002990        -       0x00002000   Zero   RW         3104    STACK               startup_bat32g157.o
 
 
 ==============================================================================
@@ -2886,8 +2881,8 @@ Image component sizes
        276         32          0          0          0       2791   usb_pcontrolrw.o
       1684        194          0         32        576      18970   usb_pdriver.o
        154          6          0          0          0       2283   usb_phid_driver.o
-       368         50         16          0         64       2435   usb_phid_pmsc_apl.o
-         0          0        226        220          0       8460   usb_phid_pmsc_descriptor.o
+       304         32         16          0         64       2415   usb_phid_pmsc_apl.o
+         0          0         50        292          0       8148   usb_phid_pmsc_descriptor.o
        194          0          0          0          0       1935   usb_pintfifo.o
         52          6          0          0         62        940   usb_pinthandler_usbip0.o
       1884        102          0          0          0      11019   usb_plibusbip.o
@@ -2900,7 +2895,7 @@ Image component sizes
        880         80          0          7        580       5767   usb_usbif_api.o
 
     ----------------------------------------------------------------------
-     20704       2446        676        764      17992     380948   Object Totals
+     20640       2428        500        836      17992     380616   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         56          0          2         10          2          0   (incl. Padding)
 
@@ -2950,15 +2945,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     22372       2514        676        768      17992     369812   Grand Totals
-     22372       2514        676        204      17992     369812   ELF Image Totals (compressed)
-     22372       2514        676        204          0          0   ROM Totals
+     22308       2496        500        840      17992     369480   Grand Totals
+     22308       2496        500        268      17992     369480   ELF Image Totals (compressed)
+     22308       2496        500        268          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                23048 (  22.51kB)
-    Total RW  Size (RW Data + ZI Data)             18760 (  18.32kB)
-    Total ROM Size (Code + RO Data + RW Data)      23252 (  22.71kB)
+    Total RO  Size (Code + RO Data)                22808 (  22.27kB)
+    Total RW  Size (RW Data + ZI Data)             18832 (  18.39kB)
+    Total ROM Size (Code + RO Data + RW Data)      23076 (  22.54kB)
 
 ==============================================================================
 

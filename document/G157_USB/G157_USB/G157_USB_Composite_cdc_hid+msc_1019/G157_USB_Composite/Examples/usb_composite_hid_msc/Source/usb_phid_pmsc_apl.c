@@ -68,6 +68,9 @@ void usb_main (void)
     /* Descriptor registration */
     cfg.p_usb_reg   = (usb_descriptor_t *)&gs_usb_descriptor;
     USB_Open(&ctrl, &cfg);    /* Initializes the USB module */
+	
+	 ctrl.type = USB_PHID;
+                USB_Read(&ctrl, gs_data, DATA_LEN);
 
     /* Loop back between PC(TerminalSoft) and USB MCU */
     while (1)
@@ -89,20 +92,7 @@ void usb_main (void)
             case USB_STS_REQUEST : /* Receive Class Request */
                 if (USB_GET_DESCRIPTOR == (ctrl.setup.type & USB_BREQUEST))
                 {
-									  if (USB_GET_REPORT_DESCRIPTOR == ctrl.setup.value)
-                    {
-                        /* Send Report descriptor */
-                        ctrl.type = USB_REQUEST;
-                        if((uint8_t)ctrl.setup.index == 0)
-                        {
-                            USB_Write (&ctrl, (uint8_t *)g_apl_mouse_report, REPORT_MOUSE_SIZE);
-                        }
-                        else if((uint8_t)ctrl.setup.index == 1)
-                        {
-                            USB_Write (&ctrl, (uint8_t *)g_apl_keyboard_report, REPORT_KEYBOARD_SIZE);
-                        }
-                    }
-                    else if (USB_GET_REPORT_DESCRIPTOR == ctrl.setup.value)
+                    if (USB_GET_REPORT_DESCRIPTOR == ctrl.setup.value)
                     {
                         /* Send ReportDescriptor */
                         ctrl.type = USB_REQUEST;

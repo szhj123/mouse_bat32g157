@@ -20,8 +20,8 @@ static void App_Key_Handler(void *arg );
 /* Private variables ------------------------------------*/
 key_mouse_ctrl_block_t keyMouseLeft = 
 {
-    .port = PORTD,
-    .pin  = PIN14,
+    .port = PORTC,//PORTD,
+    .pin  = PIN6,//PIN14,
     .name = KEY_MOUSE_LEFT,
     .state = KEY_MOUSE_INIT,
     .shortPressTime = KEY_SHORT_PRESS_TIME,

@@ -17,6 +17,7 @@
 #include "drv_spi_flash.h"
 #include "drv_mouse_sensor.h"
 
+#include "app_mouse_protocol.h"
 #include "app_key.h"
 #include "app_rgb.h"
 #include "app_lcd.h"
@@ -28,13 +29,20 @@
 void Clk_Init(void );
 /* Private variables ------------------------------------*/
 
+uint32_t buf[128];
+
+
 int main (void)
 {
-    Clk_Init();
+    //Clk_Init();
+
+    SystemCoreClockUpdate();
 
     Drv_Task_Init();
 
     Drv_Timer_Init();
+
+    App_Mouse_Init();
 
     //Drv_Mouse_Sensor_Init();
 

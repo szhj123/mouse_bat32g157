@@ -11,7 +11,7 @@
 #include "usb_typedef.h"
 #include "usb_reg_access.h"            /* Definition of the USB register access macro */
 #include "usb_extern.h"
-
+#include "usb_phid_apl.h"
 #if defined(USB_CFG_HCDC_USE)
     #include "usb_hcdc.h"
 #endif /* defined(USB_CFG_HCDC_USE) */
@@ -355,7 +355,10 @@ usb_er_t usb_cstd_data_read (usb_ctrl_t *p_ctrl, uint8_t *p_buf, uint32_t size)
     uint8_t  pipe;
     usb_er_t err;
 
-    pipe = usb_cstd_get_usepipe(p_ctrl, USB_READ);
+    //pipe = usb_cstd_get_usepipe(p_ctrl, USB_READ);
+    
+    pipe = USB_PIPE8;
+    
 
     if (USB_HOST == g_usb_cstd_usb_mode)
     {
@@ -396,8 +399,17 @@ usb_er_t usb_cstd_data_write (usb_ctrl_t *p_ctrl, uint8_t *p_buf, uint32_t size)
     uint8_t  pipe;
     usb_er_t err;
 
-    pipe = usb_cstd_get_usepipe(p_ctrl, USB_WRITE);
+    //pipe = usb_cstd_get_usepipe(p_ctrl, USB_WRITE);
 
+    if(p_buf[0] == REPORT_ID_MOUSE)
+    {
+        pipe = USB_PIPE6;
+    }
+    else if(p_buf[0] == REPORT_ID_KEYBOARD)
+    {
+        pipe = USB_PIPE7;
+    }
+    
     if (USB_HOST == g_usb_cstd_usb_mode)
     {
         #if ((USB_CFG_MODE & USB_CFG_HOST) == USB_CFG_HOST)

@@ -10,7 +10,9 @@
 **********************************************************/
 
 /* Includes ---------------------------------------------*/
+#include "usb_phid_apl.h"
 #include "app_event.h"
+#include "app_mouse_protocol.h"
 #include "app_key.h"
 /* Private typedef --------------------------------------*/
 /* Private define ---------------------------------------*/
@@ -18,6 +20,8 @@
 /* Private function -------------------------------------*/
 static void Drv_Event_Handler(void *arg );
 static void App_Event_Key_Handler(key_event_t keyEvent );
+static void App_Event_Usb_Set_Report(uint8_t *buf, uint8_t length );
+static void App_Event_Usb_Get_Report(uint8_t *buf, uint8_t length );
 /* Private variables ------------------------------------*/
 
 void App_Event_Init(void )
@@ -37,7 +41,20 @@ static void Drv_Event_Handler(void *arg )
         {
             case APP_EVENT_KEY:
             {
-                App_Event_Key_Handler((key_event_t )msg.msgBuf[0]);
+                App_Event_Key_Handler((key_event_t )msg.buf[0]);
+                
+                break;
+            }            
+            case APP_EVENT_USB_SET_REPORT:
+            {
+                App_Event_Usb_Set_Report(msg.buf, msg.length);
+                
+                break;
+            }
+            case APP_EVENT_USB_GET_REPORT:
+            {
+                App_Event_Usb_Get_Report(msg.buf, msg.length);
+                break;
             }
             default: break;
         }
@@ -50,6 +67,7 @@ static void App_Event_Key_Handler(key_event_t keyEvent )
     {
         case KEY_EVENT_MOUSE_LEFT_DOWN:
         {
+            Usb_Interupt_Send();
             break;
         }
         case KEY_EVENT_MOUSE_RIGHT_DOWN:
@@ -63,4 +81,33 @@ static void App_Event_Key_Handler(key_event_t keyEvent )
         default: break;
     }
 }
+
+static void App_Event_Usb_Set_Report(uint8_t *buf, uint8_t length )
+{
+    switch(buf[0])
+    {
+        case REPORT_ID_KEY_MODE:
+        {
+            App_Mouse_Set_Key_Mode(buf, length);
+            
+            break;
+        }
+        default: break;
+    }
+}
+
+static void App_Event_Usb_Get_Report(uint8_t *buf, uint8_t length )
+{
+    switch(buf[2])
+    {
+        case REPORT_ID_KEY_MODE:
+        {
+            App_Mouse_Get_Key_Mode(buf, length);
+            
+            break;
+        }
+        default: break;
+    }
+}
+
 

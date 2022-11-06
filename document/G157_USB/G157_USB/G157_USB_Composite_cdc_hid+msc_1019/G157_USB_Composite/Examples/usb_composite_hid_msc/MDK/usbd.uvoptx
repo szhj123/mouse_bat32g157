@@ -130,7 +130,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>CMSIS_AGDI</Key>
-          <Name>-X"BAT CMSIS-DAP" -U0B001A000000 -O206 -S9 -C0 -P00 -N00("ARM CoreSight SW-DP") -D00(0BC11477) -L00(0) -TO65554 -TC10000000 -TP20 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO15 -FD20000000 -FC1000 -FN2 -FF0BAT32G157GK.FLM -FS08000000 -FL040000 -FP0($$Device:BAT32G157GK48FA$Flash\BAT32G157GK.FLM) -FF1BAT32G157_DataFlash.FLM -FS18500200 -FL1A00 -FP1($$Device:BAT32G157GK48FA$Flash\BAT32G157_DataFlash.FLM)</Name>
+          <Name>-X"BAT CMSIS-DAP" -U0B001A000000 -O206 -S9 -C0 -P00000000 -N00("ARM CoreSight SW-DP") -D00(0BC11477) -L00(0) -TO65554 -TC10000000 -TT10000000 -TP20 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO15 -FD20000000 -FC1000 -FN2 -FF0BAT32G157GK.FLM -FS08000000 -FL040000 -FP0($$Device:BAT32G157GK48FA$Flash\BAT32G157GK.FLM) -FF1BAT32G157_DataFlash.FLM -FS18500200 -FL1A00 -FP1($$Device:BAT32G157GK48FA$Flash\BAT32G157_DataFlash.FLM)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -153,7 +153,40 @@
           <Name></Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>89</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134229038</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Source\usb_phid_pmsc_apl.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\usbd\../Source/usb_phid_pmsc_apl.c\89</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>83</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134229014</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\Source\usb_phid_pmsc_apl.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\usbd\../Source/usb_phid_pmsc_apl.c\83</Expression>
+        </Bp>
+      </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
@@ -336,7 +369,7 @@
 
   <Group>
     <GroupName>USBDriver</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

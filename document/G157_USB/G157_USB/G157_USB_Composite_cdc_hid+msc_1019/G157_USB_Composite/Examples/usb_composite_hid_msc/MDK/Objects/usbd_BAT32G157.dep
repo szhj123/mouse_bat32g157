@@ -28,7 +28,7 @@ I (..\Source\src\apl_config\usb_pmsc_apl_config.h)(0x5FB47BAC)
 I (..\Source\spiflash.h)(0x60AC9D09)
 I (..\..\..\Driver\inc\spi.h)(0x60740EBE)
 I (..\..\..\Driver\inc\dma.h)(0x60740EBE)
-F (..\Source\usb_phid_pmsc_descriptor.c)(0x635E9338)(--c99 --gnu -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\apl_config\pmsc\ram_disk -I ..\Source\src\apl_config\hmsc\inc -I ..\Source\src\apl_config\pmsc\ext_flash_disk -I ..\Source-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_phid_pmsc_descriptor.o --omf_browse .\objects\usb_phid_pmsc_descriptor.crf --depend .\objects\usb_phid_pmsc_descriptor.d)
+F (..\Source\usb_phid_pmsc_descriptor.c)(0x63674194)(--c99 --gnu -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\apl_config\pmsc\ram_disk -I ..\Source\src\apl_config\hmsc\inc -I ..\Source\src\apl_config\pmsc\ext_flash_disk -I ..\Source-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_phid_pmsc_descriptor.o --omf_browse .\objects\usb_phid_pmsc_descriptor.crf --depend .\objects\usb_phid_pmsc_descriptor.d)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
@@ -39,7 +39,7 @@ I (..\Source\src\driver\inc\usb_basic_define.h)(0x61668393)
 I (..\Source\src\driver\inc\usb_basic_mini_config.h)(0x616E6844)
 I (..\Source\src\apl_config\usb_phid_mini_if.h)(0x60742104)
 I (..\Source\src\apl_config\usb_phid_mini_config.h)(0x5F9A78D3)
-F (..\Source\usb_phid_pmsc_apl.c)(0x635E904F)(--c99 --gnu -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\apl_config\pmsc\ram_disk -I ..\Source\src\apl_config\hmsc\inc -I ..\Source\src\apl_config\pmsc\ext_flash_disk -I ..\Source-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_phid_pmsc_apl.o --omf_browse .\objects\usb_phid_pmsc_apl.crf --depend .\objects\usb_phid_pmsc_apl.d)
+F (..\Source\usb_phid_pmsc_apl.c)(0x63674124)(--c99 --gnu -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\apl_config\pmsc\ram_disk -I ..\Source\src\apl_config\hmsc\inc -I ..\Source\src\apl_config\pmsc\ext_flash_disk -I ..\Source-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_phid_pmsc_apl.o --omf_browse .\objects\usb_phid_pmsc_apl.crf --depend .\objects\usb_phid_pmsc_apl.d)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\..\..\Driver\inc\usb.h)(0x60740EBE)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
@@ -50,7 +50,7 @@ I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x6
 I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D3E8E2)
 I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\system_BAT32G157.h)(0x5FF56F92)
 I (..\..\..\Driver\inc\userdefine.h)(0x6124B690)
-I (..\Source\src\apl_config\usb_phid_apl.h)(0x635E903C)
+I (..\Source\src\apl_config\usb_phid_apl.h)(0x5FB47BAE)
 I (..\Source\src\apl_config\usb_phid_mini_if.h)(0x60742104)
 I (..\Source\src\apl_config\usb_phid_mini_config.h)(0x5F9A78D3)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)

@@ -11,8 +11,9 @@
 #include "usb_phid_apl.h"
 #include "usb_phid_apl_config.h"
 
-#include "drv_task.h"
+#include "app_event.h"
 
+#include "drv_task.h"
 /*******************************************************************************
  Macro definitions
  ******************************************************************************/
@@ -73,14 +74,17 @@ static void Usb_Event_Handler(void *arg )
         /* Check application state */
     {
         case USB_STS_CONFIGURED :
+        {
+            break;
+        }
         case USB_STS_WRITE_COMPLETE :
             ctrl.type = USB_PHID;
-            //USB_Read(&ctrl, gs_data, DATA_LEN);
+            USB_Read(&ctrl, gs_data, 64);
             break;
 
         case USB_STS_READ_COMPLETE :
             ctrl.type = USB_PHID;
-            //USB_Write(&ctrl, gs_data, ctrl.size);
+            USB_Write(&ctrl, gs_data, ctrl.size);
             break;
 
         case USB_STS_REQUEST : /* Receive Class Request */
@@ -120,6 +124,10 @@ static void Usb_Event_Handler(void *arg )
                     ctrl.type = USB_REQUEST;
                     USB_Read(&ctrl, usbEp0Buf, 64);
                 }
+                else if((uint8_t )(ctrl.setup.type >> 8) == 0x01)
+                {
+                    Drv_Event_Put(APP_EVENT_USB_GET_REPORT, (uint8_t *)&ctrl.setup, sizeof(usb_setup_t));
+                }
                 else
                 {
                     ctrl.status = USB_ACK;
@@ -133,7 +141,7 @@ static void Usb_Event_Handler(void *arg )
         case USB_STS_REQUEST_COMPLETE : /* Complete Class Request */
             if((uint8_t )(ctrl.setup.type >> 8) == 0x09)
             {
-                
+                Drv_Event_Put(APP_EVENT_USB_SET_REPORT, usbEp0Buf, 64);
             }
             break;
 
@@ -148,6 +156,33 @@ static void Usb_Event_Handler(void *arg )
             break;
     }
 } /* End of function Usb_Init */
+
+void Usb_Ctrl_Send(uint8_t *buf, uint8_t length )
+{
+    uint8_t i;
+
+    for(i=0;i<length;i++)
+    {
+        usbEp0Buf[i] = buf[i];
+    }
+
+    ctrl.type = USB_REQUEST;
+    
+    USB_Write(&ctrl, usbEp0Buf, length);	
+}
+
+void Usb_Interupt_Send(void )
+{
+    static uint8_t sendBuf[64] = {0};
+    
+    for(int i=0;i<8;i++)
+    {
+        sendBuf[i] = 0;
+    }
+    sendBuf[0] = REPORT_ID_MOUSE;
+    ctrl.type = USB_PHID;
+    USB_Write(&ctrl, sendBuf, 7);
+}
 
 /******************************************************************************
  End  Of File
