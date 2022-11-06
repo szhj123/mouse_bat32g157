@@ -1,400 +1,0 @@
-Dependencies for Project 'usbd', Target 'BAT32G157': (DO NOT MODIFY !)
-CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
-F (..\Source\main.c)(0x616E2EC5)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
-I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
-I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\BAT32G157.h)(0x5FF56F92)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D3E8E2)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\system_BAT32G157.h)(0x5FF56F92)
-I (..\..\..\Driver\inc\userdefine.h)(0x6124B690)
-I (..\..\..\Driver\inc\clk.h)(0x60740EBE)
-I (..\..\..\Driver\inc\usb.h)(0x60740EBE)
-I (..\Source\src\apl_config\usb_pcdc_apl.h)(0x616D1932)
-I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\apl_config\usb_pcdc_mini_if.h)(0x5F9A9C9F)
-I (..\Source\src\apl_config\usb_pcdc_mini_config.h)(0x5F9A2F94)
-I (..\Source\src\apl_config\usb_pcdc_apl_config.h)(0x5FB47BAC)
-I (..\Source\fmc_user.h)(0x60F783E7)
-F (..\Source\fmc_user.c)(0x609A50E7)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\fmc_user.o --omf_browse .\objects\fmc_user.crf --depend .\objects\fmc_user.d)
-I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
-I (..\Source\fmc_user.h)(0x60F783E7)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\BAT32G157.h)(0x5FF56F92)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D3E8E2)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\system_BAT32G157.h)(0x5FF56F92)
-F (..\Source\usb_pcdc_descriptor.c)(0x5FB47BAC)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_pcdc_descriptor.o --omf_browse .\objects\usb_pcdc_descriptor.crf --depend .\objects\usb_pcdc_descriptor.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\apl_config\usb_pcdc_apl_config.h)(0x5FB47BAC)
-F (..\Source\usb_pcdc_iap_apl.c)(0x616E2E67)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_pcdc_iap_apl.o --omf_browse .\objects\usb_pcdc_iap_apl.crf --depend .\objects\usb_pcdc_iap_apl.d)
-I (..\..\..\Driver\inc\usb.h)(0x60740EBE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\BAT32G157.h)(0x5FF56F92)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\system_BAT32G157.h)(0x5FF56F92)
-I (..\..\..\Driver\inc\userdefine.h)(0x6124B690)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\apl_config\usb_pcdc_apl.h)(0x616D1932)
-I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
-I (..\Source\src\apl_config\usb_pcdc_mini_if.h)(0x5F9A9C9F)
-I (..\Source\src\apl_config\usb_pcdc_mini_config.h)(0x5F9A2F94)
-I (..\Source\src\apl_config\usb_pcdc_apl_config.h)(0x5FB47BAC)
-I (..\Source\src\apl_config\usb_iap_apl.h)(0x616E2D1A)
-I (..\Source\src\apl_config\usb_phid_mini_if.h)(0x609A1A74)
-I (..\Source\src\apl_config\usb_phid_mini_config.h)(0x609A37F9)
-I (..\Source\fmc_user.h)(0x60F783E7)
-F (..\..\..\Driver\src\clk.c)(0x60740EBE)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\clk.o --omf_browse .\objects\clk.crf --depend .\objects\clk.d)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\BAT32G157.h)(0x5FF56F92)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D3E8E2)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\system_BAT32G157.h)(0x5FF56F92)
-I (..\..\..\Driver\inc\clk.h)(0x60740EBE)
-F (..\Source\src\apl_config\pcdc\usb_pcdc_driver.c)(0x5FB47BAC)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_pcdc_driver.o --omf_browse .\objects\usb_pcdc_driver.crf --depend .\objects\usb_pcdc_driver.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\apl_config\usb_pcdc_mini_if.h)(0x5F9A9C9F)
-I (..\Source\src\apl_config\usb_pcdc_mini_config.h)(0x5F9A2F94)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\Source\src\apl_config\usb_pcdc.h)(0x5FB47BAC)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-F (..\Source\src\driver\usb_cdataio.c)(0x5FA0C1CD)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_cdataio.o --omf_browse .\objects\usb_cdataio.crf --depend .\objects\usb_cdataio.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\Source\src\apl_config\usb_pcdc_mini_if.h)(0x5F9A9C9F)
-I (..\Source\src\apl_config\usb_pcdc_mini_config.h)(0x5F9A2F94)
-F (..\Source\src\driver\usb_clibusbip.c)(0x5FA0C1CD)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_clibusbip.o --omf_browse .\objects\usb_clibusbip.crf --depend .\objects\usb_clibusbip.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-F (..\Source\src\driver\usb_hbc.c)(0x5FA0C1CD)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_hbc.o --omf_browse .\objects\usb_hbc.crf --depend .\objects\usb_hbc.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-F (..\Source\src\driver\usb_hdriver.c)(0x5FA0C1CD)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_hdriver.o --omf_browse .\objects\usb_hdriver.crf --depend .\objects\usb_hdriver.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-F (..\Source\src\driver\usb_hdriverapi.c)(0x5FA0C1CD)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_hdriverapi.o --omf_browse .\objects\usb_hdriverapi.crf --depend .\objects\usb_hdriverapi.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-F (..\Source\src\driver\usb_hlibusbip.c)(0x5FA0C1CD)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_hlibusbip.o --omf_browse .\objects\usb_hlibusbip.crf --depend .\objects\usb_hlibusbip.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-F (..\Source\src\driver\usb_hscheduler.c)(0x5FA0C1CD)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_hscheduler.o --omf_browse .\objects\usb_hscheduler.crf --depend .\objects\usb_hscheduler.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-F (..\Source\src\driver\usb_hsignal.c)(0x5FA0C1CD)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_hsignal.o --omf_browse .\objects\usb_hsignal.crf --depend .\objects\usb_hsignal.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-F (..\Source\src\driver\usb_hstdfunction.c)(0x5FA0C1CD)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_hstdfunction.o --omf_browse .\objects\usb_hstdfunction.crf --depend .\objects\usb_hstdfunction.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-F (..\Source\src\driver\usb_pbc.c)(0x5FA0C1CE)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_pbc.o --omf_browse .\objects\usb_pbc.crf --depend .\objects\usb_pbc.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-F (..\Source\src\driver\usb_pcontrolrw.c)(0x5FA0C1CE)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_pcontrolrw.o --omf_browse .\objects\usb_pcontrolrw.crf --depend .\objects\usb_pcontrolrw.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-F (..\Source\src\driver\usb_pdriver.c)(0x5FA0C1CE)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_pdriver.o --omf_browse .\objects\usb_pdriver.crf --depend .\objects\usb_pdriver.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-F (..\Source\src\driver\usb_pintfifo.c)(0x5FA0C1CE)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_pintfifo.o --omf_browse .\objects\usb_pintfifo.crf --depend .\objects\usb_pintfifo.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-F (..\Source\src\driver\usb_pinthandler_usbip0.c)(0x5FA0C1CE)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_pinthandler_usbip0.o --omf_browse .\objects\usb_pinthandler_usbip0.crf --depend .\objects\usb_pinthandler_usbip0.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-F (..\Source\src\driver\usb_plibusbip.c)(0x5FA0C1CE)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_plibusbip.o --omf_browse .\objects\usb_plibusbip.crf --depend .\objects\usb_plibusbip.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\Source\src\apl_config\usb_pcdc_mini_config.h)(0x5F9A2F94)
-F (..\Source\src\driver\usb_psignal.c)(0x5FA0C1CE)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_psignal.o --omf_browse .\objects\usb_psignal.crf --depend .\objects\usb_psignal.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-F (..\Source\src\driver\usb_pstdfunction.c)(0x5FA0C1CE)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_pstdfunction.o --omf_browse .\objects\usb_pstdfunction.crf --depend .\objects\usb_pstdfunction.d)
-I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-F (..\Source\src\driver\usb_pstdrequest.c)(0x5FA0C1CE)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_pstdrequest.o --omf_browse .\objects\usb_pstdrequest.crf --depend .\objects\usb_pstdrequest.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-F (..\Source\src\driver\usb_usbif_api.c)(0x5FC6EB8E)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_usbif_api.o --omf_browse .\objects\usb_usbif_api.crf --depend .\objects\usb_usbif_api.d)
-I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\Source\src\apl_config\usb_pcdc_mini_if.h)(0x5F9A9C9F)
-I (..\Source\src\apl_config\usb_pcdc_mini_config.h)(0x5F9A2F94)
-F (..\Source\src\hw\usb_157_mcu.c)(0x5FB227C2)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_157_mcu.o --omf_browse .\objects\usb_157_mcu.crf --depend .\objects\usb_157_mcu.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\..\..\Driver\inc\usb.h)(0x60740EBE)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\BAT32G157.h)(0x5FF56F92)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\system_BAT32G157.h)(0x5FF56F92)
-I (..\..\..\Driver\inc\userdefine.h)(0x6124B690)
-F (..\Source\src\hw\usb_creg_abs.c)(0x5F9A3500)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_creg_abs.o --omf_browse .\objects\usb_creg_abs.crf --depend .\objects\usb_creg_abs.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\..\..\Driver\inc\usb.h)(0x60740EBE)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\BAT32G157.h)(0x5FF56F92)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\system_BAT32G157.h)(0x5FF56F92)
-I (..\..\..\Driver\inc\userdefine.h)(0x6124B690)
-F (..\Source\src\hw\usb_creg_access.c)(0x5F9A3500)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_creg_access.o --omf_browse .\objects\usb_creg_access.crf --depend .\objects\usb_creg_access.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\..\..\Driver\inc\usb.h)(0x60740EBE)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\BAT32G157.h)(0x5FF56F92)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\system_BAT32G157.h)(0x5FF56F92)
-I (..\..\..\Driver\inc\userdefine.h)(0x6124B690)
-F (..\Source\src\hw\usb_dma.c)(0x5F9A3500)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_dma.o --omf_browse .\objects\usb_dma.crf --depend .\objects\usb_dma.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\..\..\Driver\inc\usb.h)(0x60740EBE)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\BAT32G157.h)(0x5FF56F92)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\system_BAT32G157.h)(0x5FF56F92)
-I (..\..\..\Driver\inc\userdefine.h)(0x6124B690)
-F (..\Source\src\hw\usb_hreg_abs.c)(0x5F9A3500)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_hreg_abs.o --omf_browse .\objects\usb_hreg_abs.crf --depend .\objects\usb_hreg_abs.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\..\..\Driver\inc\usb.h)(0x60740EBE)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\BAT32G157.h)(0x5FF56F92)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\system_BAT32G157.h)(0x5FF56F92)
-I (..\..\..\Driver\inc\userdefine.h)(0x6124B690)
-F (..\Source\src\hw\usb_hreg_access.c)(0x5F9A3500)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_hreg_access.o --omf_browse .\objects\usb_hreg_access.crf --depend .\objects\usb_hreg_access.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\..\..\Driver\inc\usb.h)(0x60740EBE)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\BAT32G157.h)(0x5FF56F92)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\system_BAT32G157.h)(0x5FF56F92)
-I (..\..\..\Driver\inc\userdefine.h)(0x6124B690)
-F (..\Source\src\hw\usb_preg_abs.c)(0x609A4501)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_preg_abs.o --omf_browse .\objects\usb_preg_abs.crf --depend .\objects\usb_preg_abs.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\..\..\Driver\inc\usb.h)(0x60740EBE)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\BAT32G157.h)(0x5FF56F92)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\system_BAT32G157.h)(0x5FF56F92)
-I (..\..\..\Driver\inc\userdefine.h)(0x6124B690)
-F (..\Source\src\hw\usb_preg_access.c)(0x5F9A3500)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\usb_preg_access.o --omf_browse .\objects\usb_preg_access.crf --depend .\objects\usb_preg_access.d)
-I (..\Source\src\inc\usb_basic_mini_if.h)(0x5FB47BAE)
-I (..\Source\src\inc\usb_basic_define.h)(0x5FB47BAE)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (..\Source\src\inc\usb_basic_mini_config.h)(0x616D194F)
-I (..\Source\src\driver\inc\usb_typedef.h)(0x5FA0C1CE)
-I (..\Source\src\hw\inc\usb_reg_access.h)(0x5F9A3500)
-I (..\Source\src\hw\inc\usb_bitdefine.h)(0x5F9A3500)
-I (..\Source\src\driver\inc\usb_extern.h)(0x5FA0C1CE)
-I (..\..\..\Driver\inc\usb.h)(0x60740EBE)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\BAT32G157.h)(0x5FF56F92)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\system_BAT32G157.h)(0x5FF56F92)
-I (..\..\..\Driver\inc\userdefine.h)(0x6124B690)
-F (RTE\Device\BAT32G157GK48FA\startup_BAT32G157.s)(0x5FB47BAE)(--cpu Cortex-M0+ -g --apcs=interwork -I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include--pd "__UVISION_VERSION SETA 535" --pd "_RTE_ SETA 1" --pd "_RTE_ SETA 1"--list .\listings\startup_bat32g157.lst --xref -o .\objects\startup_bat32g157.o --depend .\objects\startup_bat32g157.d)
-F (RTE\Device\BAT32G157GK48FA\system_BAT32G157.c)(0x5FB47BAE)(--c99 --gnu -c --cpu Cortex-M0+ -g -O0 --apcs=interwork --split_sections -I ..\Source\usb_driver\inc -I ..\Source\src\driver\inc -I ..\Source\src\hw\inc -I ..\Source\src\byteq -I ..\Source\src\inc -I ..\..\..\Driver\inc -I ..\Source\src\apl_config -I ..\Source\src\fmc-I.\RTE\_BAT32G157-Id:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-Id:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include-D__UVISION_VERSION="535" -D_RTE_ -D_RTE_-o .\objects\system_bat32g157.o --omf_browse .\objects\system_bat32g157.crf --depend .\objects\system_bat32g157.d)
-I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\BAT32G157.h)(0x5FF56F92)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D3E8E2)
-I (d:\Keil_v5\Arm\Packs\Cmsemicon\BAT32G157\0.12.0\Device\Include\system_BAT32G157.h)(0x5FF56F92)
