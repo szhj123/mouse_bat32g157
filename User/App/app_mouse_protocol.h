@@ -43,7 +43,7 @@ typedef struct _light_dpi_rate_t
     uint8_t reportId;
     uint8_t rate;
     uint8_t sensorId;
-    uint8_t lightMode;
+    uint8_t rgbMode;
     uint8_t reserve0;
     uint8_t dpiIndex;
     uint8_t dpiNum;
@@ -76,7 +76,7 @@ typedef struct _key_mode_t
     date_t  date;
 }key_mode_t;
 
-typedef struct _light_para_t
+typedef struct _rgb_para_t
 {
     uint8_t brightness;
     uint8_t speed;
@@ -84,13 +84,13 @@ typedef struct _light_para_t
     uint8_t colorRandom;
     uint8_t colorNum;
     light_color_t colorBuf[7];
-}light_para_t;
+}rgb_para_t;
 
 typedef struct _light_effect_t
 {
     uint8_t reportId;
-    uint8_t lightMode;
-    light_para_t lightPara;
+    uint8_t rgbMode;
+    rgb_para_t rgbPara;
     uint8_t reserve[36];
 }light_effect_t;
 
@@ -116,8 +116,8 @@ typedef struct _mouse_para_t
     uint8_t       reportRate;
     uint8_t       sensorID;
     
-    uint8_t       lightModeIndex;
-    light_para_t  lightPara[10];
+    uint8_t       rgbMode;
+    rgb_para_t    rgbParaBuf[10];
     
     uint8_t       dpiIndex;
     uint8_t       dpiNum;
@@ -138,6 +138,9 @@ void App_Mouse_Para_Read(void );
 void App_Mouse_Para_Save(void );
 
 void App_Mouse_Set_Key_Mode(uint8_t *buf, uint8_t length );
+void App_Mouse_Set_Light_Effect(uint8_t *buf, uint8_t length );
+
+void App_Mouse_Get_Light_Dpi_Rate(uint8_t *buf, uint8_t length );
 void App_Mouse_Get_Key_Mode(uint8_t *buf, uint8_t length );
 
 

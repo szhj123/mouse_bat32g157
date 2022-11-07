@@ -20,13 +20,17 @@
 static mouse_para_t mousePara;
 static key_val_t    mouseKeyModeBuf[15] = {0};
 
+static usb_ctrl_setup_t usbCtrlSetup;
+static uint8_t      usbCtrlSendBuf[64] = {0};
+static uint8_t      usbCtrlSendLen; 
+
 void App_Mouse_Init(void )
 {        
     App_Mouse_Para_Read();
     
-    if(mousePara.keyMode > 3)
+    if(mousePara.keyMode > 3 || mousePara.keyMode <= 0)
     {   
-        mousePara.keyMode = 0;
+        mousePara.keyMode = 1;
 
         mousePara.reportRate = 4;
 
@@ -224,27 +228,27 @@ void App_Mouse_Light_Init(void )
 {
     uint8_t i,j;
     
-    mousePara.lightModeIndex = 1;
+    mousePara.rgbMode = 1;
 
     for(i=0;i<10;i++)
     {
-        mousePara.lightPara[i].brightness = 2;
-        mousePara.lightPara[i].speed = 1;
-        mousePara.lightPara[i].direction = 1;
-        mousePara.lightPara[i].colorNum = 7;
+        mousePara.rgbParaBuf[i].brightness = 2;
+        mousePara.rgbParaBuf[i].speed = 1;
+        mousePara.rgbParaBuf[i].direction = 1;
+        mousePara.rgbParaBuf[i].colorNum = 7;
         
         for(j=0;j<7;j++)
         {
             switch(j)
             {
-                case 0: mousePara.lightPara[i].colorBuf[j].rVal = 0xff;mousePara.lightPara[i].colorBuf[j].gVal = 0x00;mousePara.lightPara[i].colorBuf[j].bVal = 0x00;break;
-                case 1: mousePara.lightPara[i].colorBuf[j].rVal = 0x00;mousePara.lightPara[i].colorBuf[j].gVal = 0x00;mousePara.lightPara[i].colorBuf[j].bVal = 0xff;break;
-                case 2: mousePara.lightPara[i].colorBuf[j].rVal = 0x00;mousePara.lightPara[i].colorBuf[j].gVal = 0xff;mousePara.lightPara[i].colorBuf[j].bVal = 0x00;break;
-                case 3: mousePara.lightPara[i].colorBuf[j].rVal = 0x80;mousePara.lightPara[i].colorBuf[j].gVal = 0x00;mousePara.lightPara[i].colorBuf[j].bVal = 0xff;break;
-                case 4: mousePara.lightPara[i].colorBuf[j].rVal = 0x00;mousePara.lightPara[i].colorBuf[j].gVal = 0xff;mousePara.lightPara[i].colorBuf[j].bVal = 0xff;break;
-                case 5: mousePara.lightPara[i].colorBuf[j].rVal = 0xff;mousePara.lightPara[i].colorBuf[j].gVal = 0xff;mousePara.lightPara[i].colorBuf[j].bVal = 0x00;break;
-                case 6: mousePara.lightPara[i].colorBuf[j].rVal = 0xff;mousePara.lightPara[i].colorBuf[j].gVal = 0xff;mousePara.lightPara[i].colorBuf[j].bVal = 0xff;break;
-                case 7: mousePara.lightPara[i].colorBuf[j].rVal = 0xff;mousePara.lightPara[i].colorBuf[j].gVal = 0x80;mousePara.lightPara[i].colorBuf[j].bVal = 0x00;break;
+                case 0: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0x00;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0x00;break;
+                case 1: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0x00;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0x00;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0xff;break;
+                case 2: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0x00;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0x00;break;
+                case 3: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0x80;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0x00;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0xff;break;
+                case 4: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0x00;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0xff;break;
+                case 5: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0x00;break;
+                case 6: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0xff;break;
+                case 7: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0x80;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0x00;break;
                 default: break;
             }
         }
@@ -296,18 +300,53 @@ void App_Mouse_Set_Key_Mode(uint8_t *buf, uint8_t length )
     App_Mouse_Para_Save();
 }
 
+void App_Mouse_Set_Light_Effect(uint8_t *buf, uint8_t length )
+{
+    light_effect_t lightEffect = *(light_effect_t *)buf;
+    
+    mousePara.rgbMode = lightEffect.rgbMode;
+
+    mousePara.rgbParaBuf[mousePara.rgbMode] = lightEffect.rgbPara;    
+}
+
+void App_Mouse_Get_Light_Dpi_Rate(uint8_t *buf, uint8_t length )
+{
+    uint8_t i;
+    
+    usbCtrlSetup = *(usb_ctrl_setup_t *)buf;
+
+    usbCtrlSendLen = usbCtrlSetup.wLength_l; //usb request length
+    
+    usbCtrlSendBuf[0] = usbCtrlSetup.wValue_l; //report ID
+    usbCtrlSendBuf[1] = mousePara.reportRate;
+    usbCtrlSendBuf[2] = mousePara.sensorID;
+    usbCtrlSendBuf[3] = mousePara.rgbMode;
+    usbCtrlSendBuf[4] = 0;
+    usbCtrlSendBuf[5] = mousePara.dpiIndex;
+    usbCtrlSendBuf[6] = mousePara.dpiNum;
+
+    for(i=0;i<16;i++)
+    {
+        usbCtrlSendBuf[7+i] = mousePara.dpiXbuf[i];
+    }
+
+    for(i=0;i<24;i++)
+    {
+        usbCtrlSendBuf[23+i] = *((uint8_t *)&mousePara.dpiColorBuf[0] + i);
+    }
+
+    Usb_Ctrl_Send(usbCtrlSendBuf, usbCtrlSendLen);
+}
+
 void App_Mouse_Get_Key_Mode(uint8_t *buf, uint8_t length )
 {
-    uint8_t  tmpEp0Buf[64] = {0};
-
-    usb_ctrl_setup_t usbCtrlSetup = *(usb_ctrl_setup_t *)buf;
+    usbCtrlSetup = *(usb_ctrl_setup_t *)buf;
     
-    uint8_t tmpEp0Length = usbCtrlSetup.wLength_l; //usb request length
-
-    tmpEp0Buf[0] = usbCtrlSetup.wValue_l; //report ID
-    tmpEp0Buf[1] = mousePara.keyMode;
+    usbCtrlSendLen = usbCtrlSetup.wLength_l; //usb request length
+    usbCtrlSendBuf[0] = usbCtrlSetup.wValue_l; //report ID
+    usbCtrlSendBuf[1] = mousePara.keyMode;
     
-    Usb_Ctrl_Send(tmpEp0Buf, tmpEp0Length);
+    Usb_Ctrl_Send(usbCtrlSendBuf, usbCtrlSendLen);
 }
 
 void App_Mouse_Para_Read(void )

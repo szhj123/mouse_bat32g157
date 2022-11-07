@@ -89,7 +89,11 @@ static void App_Event_Usb_Set_Report(uint8_t *buf, uint8_t length )
         case REPORT_ID_KEY_MODE:
         {
             App_Mouse_Set_Key_Mode(buf, length);
-            
+            break;
+        }
+        case REPORT_ID_LIGHT_EFFECT:
+        {
+            App_Mouse_Set_Light_Effect(buf, length);
             break;
         }
         default: break;
@@ -100,10 +104,14 @@ static void App_Event_Usb_Get_Report(uint8_t *buf, uint8_t length )
 {
     switch(buf[2])
     {
+        case REPORT_ID_LIGHT_DPI_RATE:
+        {
+            App_Mouse_Get_Light_Dpi_Rate(buf, length);
+            break;
+        }
         case REPORT_ID_KEY_MODE:
         {
             App_Mouse_Get_Key_Mode(buf, length);
-            
             break;
         }
         default: break;
