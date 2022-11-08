@@ -654,14 +654,14 @@
               <FilePath>..\User\App\app_lcd.c</FilePath>
             </File>
             <File>
-              <FileName>app_rgb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\App\app_rgb.c</FilePath>
-            </File>
-            <File>
               <FileName>app_mouse_protocol.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\App\app_mouse_protocol.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_light.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\App\app_light.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -699,11 +699,6 @@
               <FilePath>..\User\Drv\drv_mouse_sensor.c</FilePath>
             </File>
             <File>
-              <FileName>drv_rgb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\Drv\drv_rgb.c</FilePath>
-            </File>
-            <File>
               <FileName>drv_spi_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Drv\drv_spi_flash.c</FilePath>
@@ -712,6 +707,11 @@
               <FileName>drv_inter_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Drv\drv_inter_flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_light.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Drv\drv_light.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -749,11 +749,6 @@
               <FilePath>..\User\Hal\hal_mouse_sensor.c</FilePath>
             </File>
             <File>
-              <FileName>hal_rgb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\Hal\hal_rgb.c</FilePath>
-            </File>
-            <File>
               <FileName>hal_spi_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Hal\hal_spi_flash.c</FilePath>
@@ -762,6 +757,11 @@
               <FileName>hal_inter_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\Hal\hal_inter_flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_light.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Hal\hal_light.c</FilePath>
             </File>
           </Files>
         </Group>

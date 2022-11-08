@@ -19,7 +19,7 @@
 
 #include "app_mouse_protocol.h"
 #include "app_key.h"
-#include "app_rgb.h"
+#include "app_light.h"
 #include "app_lcd.h"
 #include "app_event.h"
 /* Private typedef --------------------------------------*/
@@ -50,7 +50,7 @@ int main (void)
 
     ///App_Lcd_Init();
 
-    App_Rgb_Init();
+    App_Light_Init();
 
     App_Key_Init();
 

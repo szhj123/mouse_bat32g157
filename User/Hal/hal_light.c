@@ -1,5 +1,5 @@
 /********************************************************
-* @file       hal_rgb.c
+* @file       hal_light.c
 * @author     szhj13
 * @version    V1.0
 * @date       2022-05-18
@@ -10,14 +10,14 @@
 **********************************************************/
 
 /* Includes ---------------------------------------------*/
-#include "hal_rgb.h"
+#include "hal_light.h"
 /* Private typedef --------------------------------------*/
 /* Private define ---------------------------------------*/
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 /* Private variables ------------------------------------*/
 
-void Hal_Rgb_Gpio_Init(void )
+void Hal_Light_Gpio_Init(void )
 {
     //pa00, rgb1 enable, output
     PORT_Init(PORTA, PIN0, OUTPUT);
@@ -41,7 +41,7 @@ void Hal_Rgb_Gpio_Init(void )
     
 }
 
-void Hal_Rgb_Pwm_Init(void )
+void Hal_Light_Pwm_Init(void )
 {
     CGC->PER0 |= CGC_PER0_TM40EN_Msk;    /* enables input clock supply */
     TM40->TPS0 = _0000_TM4_CKM3_fCLK_8 | _0000_TM4_CKM2_fCLK_1 | _0000_TM4_CKM1_fCLK_0 | _0005_TM4_CKM0_fCLK_5; 
@@ -76,32 +76,32 @@ void Hal_Rgb_Pwm_Init(void )
     TM40->TOE0 |=  _0008_TM4_CH3_OUTPUT_ENABLE;      /* Enable TOmp output by counting operation */
     TO03_PORT_SETTING();
 
-    Hal_Rgb_Pwm_Start();
+    Hal_Light_Pwm_Start();
 }
 
-void Hal_Rgb_Pwm_Start(void )
+void Hal_Light_Pwm_Start(void )
 {
     TM40->TS0 |= TM4_CHANNEL_0 | TM4_CHANNEL_1 | TM4_CHANNEL_2 | TM4_CHANNEL_3;
 }
 
-void Hal_Rgb_Pwm_Stop(void )
+void Hal_Light_Pwm_Stop(void )
 {
     TM40->TT0 |= TM4_CHANNEL_0 | TM4_CHANNEL_1 | TM4_CHANNEL_2 | TM4_CHANNEL_3;
 }
 
-void Hal_Rgb_Pwm_Set_Duty(uint8_t rDuty, uint8_t gDuty, uint8_t bDuty )
+void Hal_Light_Pwm_Set_Duty(uint8_t rDuty, uint8_t gDuty, uint8_t bDuty )
 {    
     TM40->TDR03 = rDuty;
     TM40->TDR02 = gDuty;
     TM40->TDR01 = bDuty;
 }
 
-void Hal_Rgb_Gpio_Set(PORT_TypeDef port, PIN_TypeDef pin )
+void Hal_Light_Gpio_Set(PORT_TypeDef port, PIN_TypeDef pin )
 {
     PORT_SetBit(port, pin);
 }
 
-void Hal_Rgb_Gpio_Clr(PORT_TypeDef port, PIN_TypeDef pin )
+void Hal_Light_Gpio_Clr(PORT_TypeDef port, PIN_TypeDef pin )
 {
     PORT_ClrBit(port, pin);
 }

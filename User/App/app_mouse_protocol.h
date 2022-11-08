@@ -43,17 +43,17 @@ typedef struct _light_dpi_rate_t
     uint8_t reportId;
     uint8_t rate;
     uint8_t sensorId;
-    uint8_t rgbMode;
+    uint8_t lightMode;
     uint8_t reserve0;
     uint8_t dpiIndex;
     uint8_t dpiNum;
     uint8_t dpiXBuf[16];
     uint8_t dpiColorBuf[24];
     uint8_t dipYBuf[8];
-    uint8_t reserv1;
     uint8_t picShowMask_l;
     uint8_t picShowMask_h;
     uint8_t picIndex;
+    uint8_t reserve[6];
 }light_dpi_rate_t;
 
 typedef struct _date_t
@@ -76,7 +76,7 @@ typedef struct _key_mode_t
     date_t  date;
 }key_mode_t;
 
-typedef struct _rgb_para_t
+typedef struct _light_para_t
 {
     uint8_t brightness;
     uint8_t speed;
@@ -84,13 +84,13 @@ typedef struct _rgb_para_t
     uint8_t colorRandom;
     uint8_t colorNum;
     light_color_t colorBuf[7];
-}rgb_para_t;
+}light_para_t;
 
 typedef struct _light_effect_t
 {
     uint8_t reportId;
-    uint8_t rgbMode;
-    rgb_para_t rgbPara;
+    uint8_t lightMode;
+    light_para_t lightPara;
     uint8_t reserve[36];
 }light_effect_t;
 
@@ -112,18 +112,21 @@ typedef struct _mouse_para_t
     key_val_t     keyMode_2_Buf[15];
     key_val_t     keyMode_3_Buf[15];
 
-    uint8_t       picIndex;
     uint8_t       reportRate;
     uint8_t       sensorID;
     
-    uint8_t       rgbMode;
-    rgb_para_t    rgbParaBuf[10];
+    uint8_t       lightMode;
+    light_para_t    lightParaBuf[10];
     
     uint8_t       dpiIndex;
     uint8_t       dpiNum;
     uint8_t       dpiXbuf[16];
     
     light_color_t dpiColorBuf[8];
+
+    uint8_t       picShowMask_l;
+    uint8_t       picShowMask_h;
+    uint8_t       picIndex;
 
     date_t        date;
 }mouse_para_t;
@@ -134,15 +137,20 @@ void App_Mouse_Key_Mode_2_Init(void );
 void App_Mouse_Key_Mode_3_Init(void );
 void App_Mouse_Dpi_Init(void );
 void App_Mouse_Light_Init(void );
+void App_Mouse_Pic_Show_Init(void );
+
 void App_Mouse_Para_Read(void );
 void App_Mouse_Para_Save(void );
 
+void App_Mouse_Set_Light_Dpi_Rate(uint8_t *buf, uint8_t length );
 void App_Mouse_Set_Key_Mode(uint8_t *buf, uint8_t length );
 void App_Mouse_Set_Light_Effect(uint8_t *buf, uint8_t length );
 
 void App_Mouse_Get_Light_Dpi_Rate(uint8_t *buf, uint8_t length );
 void App_Mouse_Get_Key_Mode(uint8_t *buf, uint8_t length );
 
+uint8_t App_Mouse_Get_Solid_On_Brightness(void );
+light_color_t App_Mouse_Get_Solid_On_Color(void );
 
 #endif 
 

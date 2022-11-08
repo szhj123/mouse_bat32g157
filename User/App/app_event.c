@@ -14,6 +14,7 @@
 #include "app_event.h"
 #include "app_mouse_protocol.h"
 #include "app_key.h"
+#include "app_light.h"
 /* Private typedef --------------------------------------*/
 /* Private define ---------------------------------------*/
 /* Private macro ----------------------------------------*/
@@ -86,6 +87,16 @@ static void App_Event_Usb_Set_Report(uint8_t *buf, uint8_t length )
 {
     switch(buf[0])
     {
+        case REPORT_ID_LIGHT_DPI_RATE:
+        {
+            light_dpi_rate_t lightDpiRate = *(light_dpi_rate_t *)buf;
+            
+            App_Mouse_Set_Light_Dpi_Rate(buf, length);
+
+            App_Light_Switch(lightDpiRate.lightMode);;
+            
+            break;
+        }
         case REPORT_ID_KEY_MODE:
         {
             App_Mouse_Set_Key_Mode(buf, length);

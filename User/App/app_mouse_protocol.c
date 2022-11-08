@@ -12,6 +12,7 @@
 /* Includes ---------------------------------------------*/
 #include "app_mouse_protocol.h"
 #include "usb_phid_apl.h"
+
 /* Private typedef --------------------------------------*/
 /* Private define ---------------------------------------*/
 /* Private macro ----------------------------------------*/
@@ -45,6 +46,8 @@ void App_Mouse_Init(void )
         App_Mouse_Dpi_Init();
 
         App_Mouse_Light_Init();
+
+        App_Mouse_Pic_Show_Init();
 
         App_Mouse_Para_Save();
     }
@@ -228,32 +231,68 @@ void App_Mouse_Light_Init(void )
 {
     uint8_t i,j;
     
-    mousePara.rgbMode = 1;
+    mousePara.lightMode = 1;
 
     for(i=0;i<10;i++)
     {
-        mousePara.rgbParaBuf[i].brightness = 2;
-        mousePara.rgbParaBuf[i].speed = 1;
-        mousePara.rgbParaBuf[i].direction = 1;
-        mousePara.rgbParaBuf[i].colorNum = 7;
+        mousePara.lightParaBuf[i].brightness = 2;
+        mousePara.lightParaBuf[i].speed = 1;
+        mousePara.lightParaBuf[i].direction = 1;
+        mousePara.lightParaBuf[i].colorNum = 7;
         
         for(j=0;j<7;j++)
         {
             switch(j)
             {
-                case 0: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0x00;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0x00;break;
-                case 1: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0x00;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0x00;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0xff;break;
-                case 2: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0x00;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0x00;break;
-                case 3: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0x80;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0x00;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0xff;break;
-                case 4: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0x00;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0xff;break;
-                case 5: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0x00;break;
-                case 6: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0xff;break;
-                case 7: mousePara.rgbParaBuf[i].colorBuf[j].rVal = 0xff;mousePara.rgbParaBuf[i].colorBuf[j].gVal = 0x80;mousePara.rgbParaBuf[i].colorBuf[j].bVal = 0x00;break;
+                case 0: mousePara.lightParaBuf[i].colorBuf[j].rVal = 0xff;mousePara.lightParaBuf[i].colorBuf[j].gVal = 0x00;mousePara.lightParaBuf[i].colorBuf[j].bVal = 0x00;break;
+                case 1: mousePara.lightParaBuf[i].colorBuf[j].rVal = 0x00;mousePara.lightParaBuf[i].colorBuf[j].gVal = 0x00;mousePara.lightParaBuf[i].colorBuf[j].bVal = 0xff;break;
+                case 2: mousePara.lightParaBuf[i].colorBuf[j].rVal = 0x00;mousePara.lightParaBuf[i].colorBuf[j].gVal = 0xff;mousePara.lightParaBuf[i].colorBuf[j].bVal = 0x00;break;
+                case 3: mousePara.lightParaBuf[i].colorBuf[j].rVal = 0x80;mousePara.lightParaBuf[i].colorBuf[j].gVal = 0x00;mousePara.lightParaBuf[i].colorBuf[j].bVal = 0xff;break;
+                case 4: mousePara.lightParaBuf[i].colorBuf[j].rVal = 0x00;mousePara.lightParaBuf[i].colorBuf[j].gVal = 0xff;mousePara.lightParaBuf[i].colorBuf[j].bVal = 0xff;break;
+                case 5: mousePara.lightParaBuf[i].colorBuf[j].rVal = 0xff;mousePara.lightParaBuf[i].colorBuf[j].gVal = 0xff;mousePara.lightParaBuf[i].colorBuf[j].bVal = 0x00;break;
+                case 6: mousePara.lightParaBuf[i].colorBuf[j].rVal = 0xff;mousePara.lightParaBuf[i].colorBuf[j].gVal = 0xff;mousePara.lightParaBuf[i].colorBuf[j].bVal = 0xff;break;
+                case 7: mousePara.lightParaBuf[i].colorBuf[j].rVal = 0xff;mousePara.lightParaBuf[i].colorBuf[j].gVal = 0x80;mousePara.lightParaBuf[i].colorBuf[j].bVal = 0x00;break;
                 default: break;
             }
         }
             
     }
+}
+
+void App_Mouse_Pic_Show_Init(void )
+{
+    mousePara.picShowMask_l = 0xff;
+    mousePara.picShowMask_h = 0xff;
+    mousePara.picIndex = 0;
+}
+
+void App_Mouse_Set_Light_Dpi_Rate(uint8_t *buf, uint8_t length )
+{
+    uint8_t i;
+    
+    light_dpi_rate_t lightDpiRate = *(light_dpi_rate_t *)buf;
+    
+    mousePara.reportRate = lightDpiRate.rate;
+    mousePara.sensorID = lightDpiRate.sensorId;
+    mousePara.lightMode = lightDpiRate.lightMode;
+    mousePara.dpiIndex = lightDpiRate.dpiIndex;
+    mousePara.dpiNum = lightDpiRate.dpiNum;
+    
+    for(i=0;i<16;i++)
+    {
+        mousePara.dpiXbuf[i] = lightDpiRate.dpiXBuf[i];
+    }
+
+    for(i=0;i<24;i++)
+    {
+        *((uint8_t *)&mousePara.dpiColorBuf[0] + i) = lightDpiRate.dpiColorBuf[i];
+    }
+
+    mousePara.picShowMask_l = lightDpiRate.picShowMask_l;
+    mousePara.picShowMask_h = lightDpiRate.picShowMask_h;
+    mousePara.picIndex = lightDpiRate.picIndex;
+
+    App_Mouse_Para_Save();
 }
 
 void App_Mouse_Set_Key_Mode(uint8_t *buf, uint8_t length )
@@ -304,9 +343,9 @@ void App_Mouse_Set_Light_Effect(uint8_t *buf, uint8_t length )
 {
     light_effect_t lightEffect = *(light_effect_t *)buf;
     
-    mousePara.rgbMode = lightEffect.rgbMode;
+    mousePara.lightMode = lightEffect.lightMode;
 
-    mousePara.rgbParaBuf[mousePara.rgbMode] = lightEffect.rgbPara;    
+    mousePara.lightParaBuf[mousePara.lightMode] = lightEffect.lightPara;    
 }
 
 void App_Mouse_Get_Light_Dpi_Rate(uint8_t *buf, uint8_t length )
@@ -320,7 +359,7 @@ void App_Mouse_Get_Light_Dpi_Rate(uint8_t *buf, uint8_t length )
     usbCtrlSendBuf[0] = usbCtrlSetup.wValue_l; //report ID
     usbCtrlSendBuf[1] = mousePara.reportRate;
     usbCtrlSendBuf[2] = mousePara.sensorID;
-    usbCtrlSendBuf[3] = mousePara.rgbMode;
+    usbCtrlSendBuf[3] = mousePara.lightMode;
     usbCtrlSendBuf[4] = 0;
     usbCtrlSendBuf[5] = mousePara.dpiIndex;
     usbCtrlSendBuf[6] = mousePara.dpiNum;
@@ -360,4 +399,17 @@ void App_Mouse_Para_Save(void )
 
     Drv_Inter_Flash_Write(FLASH_MOUSE_START_ADDR, sizeof(mouse_para_t), (uint8_t *)&mousePara);
 }
+
+uint8_t App_Mouse_Get_Solid_On_Brightness(void )
+{
+    return mousePara.lightParaBuf[2].brightness;
+}
+
+light_color_t App_Mouse_Get_Solid_On_Color(void )
+{
+    return mousePara.lightParaBuf[2].colorBuf[0];
+}
+
+
+
 
