@@ -116,7 +116,7 @@ typedef struct _mouse_para_t
     uint8_t       sensorID;
     
     uint8_t       lightMode;
-    light_para_t    lightParaBuf[10];
+    light_para_t  lightParaBuf[10];
     
     uint8_t       dpiIndex;
     uint8_t       dpiNum;
@@ -149,6 +149,8 @@ void App_Mouse_Set_Light_Effect(uint8_t *buf, uint8_t length );
 void App_Mouse_Get_Light_Dpi_Rate(uint8_t *buf, uint8_t length );
 void App_Mouse_Get_Key_Mode(uint8_t *buf, uint8_t length );
 
+uint8_t App_Mouse_Get_Rainbow_Speed(void );
+uint8_t App_Mouse_Get_Rainbow_Direction(void );
 uint8_t App_Mouse_Get_Solid_On_Brightness(void );
 light_color_t App_Mouse_Get_Solid_On_Color(void );
 

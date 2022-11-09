@@ -400,6 +400,16 @@ void App_Mouse_Para_Save(void )
     Drv_Inter_Flash_Write(FLASH_MOUSE_START_ADDR, sizeof(mouse_para_t), (uint8_t *)&mousePara);
 }
 
+uint8_t App_Mouse_Get_Rainbow_Speed(void )
+{
+   return mousePara.lightParaBuf[1].speed;
+}
+
+uint8_t App_Mouse_Get_Rainbow_Direction(void )
+{
+   return mousePara.lightParaBuf[1].direction;
+}
+
 uint8_t App_Mouse_Get_Solid_On_Brightness(void )
 {
     return mousePara.lightParaBuf[2].brightness;

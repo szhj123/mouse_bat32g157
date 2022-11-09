@@ -8,7 +8,7 @@
 typedef enum _light_mode_t
 {
     LIGHT_OFF = 0,
-    LIGHT_COLOR_STREAM,
+    LIGHT_RAINBOW,
     LIGHT_SOLID_ON,
     LIGHT_BREATH,
     LIGHT_NEON,
@@ -26,17 +26,36 @@ typedef enum
     BRIGHTNESS_100
 }brightness_t;
 
+typedef struct _rainbow_para_t
+{
+    uint8_t speed;
+    uint8_t direction;
+    uint8_t  lightIndex;
+    uint16_t delayTime;
+}rainbow_para_t;
+
 typedef struct _solid_on_para_t
 {
     brightness_t brightness;
     light_color_t lightColor;
 }solid_on_para_t;
 
+typedef struct _breath_para_t
+{
+    uint8_t speed;
+    uint16_t delayTime;
+    light_color_t lightColorBuf[7];
+}breath_para_t;
+
 void App_Light_Init(void );
+void App_Ligth_Delay_Count(void );
+void App_Light_Clr_Delay_Count(void );
+uint16_t App_Light_Get_Delay_Count(void );
+
 void App_Light_Switch(uint8_t lightMode );
 
-void App_Light_Solid_On_Para_Init(void );
-void App_Light_Solid_On_Show(void );
+void App_Light_Rainbow(void );
+void App_Light_Solid_On(void );
 
 #endif 
 
