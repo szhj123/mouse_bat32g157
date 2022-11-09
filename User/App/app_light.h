@@ -43,7 +43,11 @@ typedef struct _solid_on_para_t
 typedef struct _breath_para_t
 {
     uint8_t speed;
+    uint8_t lightColorIndex;    
+    uint8_t breathDirecton;
+    uint8_t brightnessStep; 
     uint16_t delayTime;
+    light_color_t lightColor;
     light_color_t lightColorBuf[7];
 }breath_para_t;
 

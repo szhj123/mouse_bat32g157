@@ -153,6 +153,8 @@ uint8_t App_Mouse_Get_Rainbow_Speed(void );
 uint8_t App_Mouse_Get_Rainbow_Direction(void );
 uint8_t App_Mouse_Get_Solid_On_Brightness(void );
 light_color_t App_Mouse_Get_Solid_On_Color(void );
+uint8_t App_Mouse_Get_Breah_Speed(void );
+void App_Mouse_Get_Breath_Color(light_color_t *lightColor, uint8_t length );
 
 #endif 
 

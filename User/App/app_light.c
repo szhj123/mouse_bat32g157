@@ -78,7 +78,7 @@ uint16_t App_Light_Get_Delay_Count(void )
     return lightDelayCnt;
 }
 
-void App_Light_Rainbow_Callback(light_show_callback_t callback )
+void App_Light_Set_Show_Callback(light_show_callback_t callback )
 {
     light_show_callback = callback;
 }
@@ -281,12 +281,79 @@ void App_Light_Solid_On(void )
     Drv_Light_Set_All_On(solidOnPara.lightColor.rVal, solidOnPara.lightColor.gVal, solidOnPara.lightColor.bVal);
 }
 
+static void App_Light_Breath_Callback(void )
+{
+    static const uint8_t MAX_BRIGHTNESS = 100;
+
+    breathPara.lightColor.rVal = breathPara.brightnessStep * (breathPara.lightColorBuf[breathPara.lightColorIndex].rVal / MAX_BRIGHTNESS);
+    breathPara.lightColor.gVal = breathPara.brightnessStep * (breathPara.lightColorBuf[breathPara.lightColorIndex].gVal / MAX_BRIGHTNESS);
+    breathPara.lightColor.bVal = breathPara.brightnessStep * (breathPara.lightColorBuf[breathPara.lightColorIndex].bVal / MAX_BRIGHTNESS);
+
+    Drv_Light_Set_All_On(breathPara.lightColor.rVal, breathPara.lightColor.gVal, breathPara.lightColor.bVal);
+    
+    if(!breathPara.breathDirecton)
+    {
+        if(App_Light_Get_Delay_Count() >= breathPara.delayTime)
+        {
+            if(breathPara.brightnessStep < MAX_BRIGHTNESS)
+            {
+                breathPara.brightnessStep++;
+            }
+            else
+            {
+                breathPara.breathDirecton = 1;                
+            }
+
+            App_Light_Clr_Delay_Count();
+        }
+    }
+    else
+    {
+        if(App_Light_Get_Delay_Count() >= breathPara.delayTime)
+        {
+            if(breathPara.brightnessStep > 0)
+            {
+                breathPara.brightnessStep--;
+            }
+            else
+            {
+                breathPara.breathDirecton = 0;
+                
+                breathPara.lightColorIndex++;
+
+                if(breathPara.lightColorIndex >= (sizeof(breathPara.lightColorBuf) / sizeof(light_color_t)))
+                {
+                    breathPara.lightColorIndex = 0;
+                }
+            }
+            
+            App_Light_Clr_Delay_Count();
+        }
+    }
+}
+
 void App_Light_Breath(void )
 {
     breathPara.speed = App_Mouse_Get_Breah_Speed();
 
     App_Mouse_Get_Breath_Color(breathPara.lightColorBuf, sizeof(breathPara.lightColorBuf)/sizeof(light_color_t));
+
+    switch(breathPara.speed)
+    {
+        case 1: breathPara.delayTime = 10; break;
+        case 2: breathPara.delayTime = 6; break;
+        case 3: breathPara.delayTime = 3;  break;
+        case 4: breathPara.delayTime = 1;  break;
+        default: breathPara.delayTime = 3; break;
+    }
+
+    breathPara.lightColorIndex = 0;
+    breathPara.brightnessStep = 0;
+    breathPara.breathDirecton = 0;
     
+    App_Light_Set_Show_Callback(App_Light_Breath_Callback);
+
+    App_Light_Clr_Delay_Count();
 }
 
 void App_Light_Switch(uint8_t lightMode )

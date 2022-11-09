@@ -420,6 +420,21 @@ light_color_t App_Mouse_Get_Solid_On_Color(void )
     return mousePara.lightParaBuf[2].colorBuf[0];
 }
 
+uint8_t App_Mouse_Get_Breah_Speed(void )
+{
+    return mousePara.lightParaBuf[3].speed;
+}
+
+void App_Mouse_Get_Breath_Color(light_color_t *lightColor, uint8_t length )
+{
+    uint8_t i;
+
+    for(i=0;i<length;i++)
+    {
+        *lightColor++ = mousePara.lightParaBuf[3].colorBuf[i];
+    }
+}
+
 
 
 
