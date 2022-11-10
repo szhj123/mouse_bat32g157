@@ -51,6 +51,21 @@ typedef struct _breath_para_t
     light_color_t lightColorBuf[7];
 }breath_para_t;
 
+typedef struct _neon_para_t
+{
+    uint8_t speed;
+    uint16_t delayTime;
+    light_t light;
+}neon_para_t;
+
+typedef struct _flash_para_t
+{
+    uint8_t  lightColorFlag;
+    uint8_t  lightIndex;
+    uint16_t delayTime;
+    light_color_t lightColorBuf[2];
+}flash_para_t;
+
 void App_Light_Init(void );
 void App_Ligth_Delay_Count(void );
 void App_Light_Clr_Delay_Count(void );
@@ -60,6 +75,9 @@ void App_Light_Switch(uint8_t lightMode );
 
 void App_Light_Rainbow(void );
 void App_Light_Solid_On(void );
+void App_Light_Breath(void );
+void App_Light_Neon(void );
+void App_Light_Flash(void );
 
 #endif 
 

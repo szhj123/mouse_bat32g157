@@ -23,6 +23,8 @@ static uint16_t        lightDelayCnt;
 static rainbow_para_t  rainbowPara;
 static solid_on_para_t solidOnPara;
 static breath_para_t   breathPara;
+static neon_para_t     neonPara;
+static flash_para_t    flashPara;
 
 light_t lightBuf[] = 
 {
@@ -188,11 +190,9 @@ static void App_Light_Rainbow_Callback(void )
 
     Drv_Light_Set_On(lightBuf[rainbowPara.lightIndex]);
 
-    if(rainbowPara.lightIndex < (sizeof(lightBuf)/sizeof(light_t)))
-    {
-        rainbowPara.lightIndex++;
-    }
-    else
+    rainbowPara.lightIndex++;
+
+    if(rainbowPara.lightIndex >= (sizeof(lightBuf)/sizeof(light_t)))
     {
         rainbowPara.lightIndex = 0;
     }
@@ -340,11 +340,11 @@ void App_Light_Breath(void )
 
     switch(breathPara.speed)
     {
-        case 1: breathPara.delayTime = 10; break;
-        case 2: breathPara.delayTime = 6; break;
-        case 3: breathPara.delayTime = 3;  break;
-        case 4: breathPara.delayTime = 1;  break;
-        default: breathPara.delayTime = 3; break;
+        case 1: breathPara.delayTime = 15; break;
+        case 2: breathPara.delayTime = 10; break;
+        case 3: breathPara.delayTime = 5;  break;
+        case 4: breathPara.delayTime = 3;  break;
+        default: breathPara.delayTime = 5; break;
     }
 
     breathPara.lightColorIndex = 0;
@@ -353,6 +353,87 @@ void App_Light_Breath(void )
     
     App_Light_Set_Show_Callback(App_Light_Breath_Callback);
 
+    App_Light_Clr_Delay_Count();
+}
+
+static void App_Light_Neon_Callback(void )
+{
+    if(App_Light_Get_Delay_Count() >= neonPara.delayTime)
+    {
+        App_Light_Clr_Delay_Count();
+        
+        App_Light_Set_Rainbow_Color(&neonPara.light);
+    }
+
+    Drv_Light_Set_All_On(neonPara.light.rVal, neonPara.light.gVal, neonPara.light.bVal);
+}
+
+void App_Light_Neon(void )
+{
+    neonPara.speed = App_Mouse_Get_Neon_Speed();
+    neonPara.light.rVal = neonPara.light.gVal = neonPara.light.bVal = 0;
+    neonPara.light.lightState = LIGHT_STATE_RED;
+
+    switch(neonPara.speed)
+    {
+        case 1: neonPara.delayTime = 8; break;
+        case 2: neonPara.delayTime = 6; break;
+        case 3: neonPara.delayTime = 4; break;
+        case 4: neonPara.delayTime = 2; break;
+        default: break;
+    }
+
+    App_Light_Set_Show_Callback(App_Light_Neon_Callback);
+    
+    App_Light_Clr_Delay_Count();
+}
+
+static void App_Light_Flash_Callback(void )
+{
+    uint8_t i;
+    
+    if(!flashPara.lightColorFlag)
+    {
+        Drv_Light_Set_Off(lightBuf[1]);
+        Drv_Light_Set_Off(lightBuf[3]);
+        Drv_Light_Set_Off(lightBuf[5]);
+    }
+    else
+    {
+        Drv_Light_Set_Off(lightBuf[0]);
+        Drv_Light_Set_Off(lightBuf[2]);
+        Drv_Light_Set_Off(lightBuf[4]);
+    }
+    
+    if(App_Light_Get_Delay_Count() >= flashPara.delayTime)
+    {
+        App_Light_Clr_Delay_Count();
+        
+        if(!flashPara.lightColorFlag)
+        {
+            flashPara.lightColorFlag = 1;
+
+            Drv_Light_Set_All_On(flashPara.lightColorBuf[1].rVal, flashPara.lightColorBuf[1].gVal, flashPara.lightColorBuf[1].bVal);
+        }
+        else
+        {
+            flashPara.lightColorFlag = 0;
+            
+            Drv_Light_Set_All_On(flashPara.lightColorBuf[0].rVal, flashPara.lightColorBuf[0].gVal, flashPara.lightColorBuf[0].bVal);
+        }
+    }
+}
+
+void App_Light_Flash(void )
+{
+    App_Mouse_Get_Flash_Color(flashPara.lightColorBuf, sizeof(flashPara.lightColorBuf)/sizeof(light_color_t));
+
+    flashPara.delayTime = 125;
+
+    flashPara.lightColorFlag = 0;
+
+    App_Light_Set_Show_Callback(App_Light_Flash_Callback);
+    
     App_Light_Clr_Delay_Count();
 }
 
@@ -381,10 +462,13 @@ void App_Light_Switch(uint8_t lightMode )
         }
         case LIGHT_NEON:
         {
+            App_Light_Neon();
             break;
         }
         case LIGHT_FLASH:
-        {            break;
+        {            
+            App_Light_Flash();
+            break;
         }
         case LIGHT_MONOCHROMATIC_DRAG:
         {            break;

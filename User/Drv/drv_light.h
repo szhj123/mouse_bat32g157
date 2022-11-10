@@ -24,6 +24,7 @@ typedef struct _light_t
 
 void Drv_Light_Init(void );
 void Drv_Light_Set_On(light_t light );
+void Drv_Light_Set_Off(light_t light );
 void Drv_Light_Set_All_Off(void );
 void Drv_Light_Set_All_On(uint8_t rVal, uint8_t gVal, uint8_t bVal );
 

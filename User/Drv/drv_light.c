@@ -41,6 +41,11 @@ void Drv_Light_Set_On(light_t light )
     Hal_Light_Gpio_Clr(light.port, light.pin);
 }
 
+void Drv_Light_Set_Off(light_t light )
+{
+    Hal_Light_Gpio_Set(light.port, light.pin);
+}
+
 void Drv_Light_Set_All_On(uint8_t rVal, uint8_t gVal, uint8_t bVal )
 {    
     Hal_Light_Pwm_Set_Duty(rVal, gVal, bVal);

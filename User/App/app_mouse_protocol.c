@@ -435,6 +435,19 @@ void App_Mouse_Get_Breath_Color(light_color_t *lightColor, uint8_t length )
     }
 }
 
+uint8_t App_Mouse_Get_Neon_Speed(void )
+{
+    return mousePara.lightParaBuf[4].speed;
+}
 
+void App_Mouse_Get_Flash_Color(light_color_t *lightColor, uint8_t length )
+{
+    uint8_t i;
+
+    for(i=0;i<length;i++)
+    {
+        *lightColor++ = mousePara.lightParaBuf[5].colorBuf[i];
+    }
+}
 
 
