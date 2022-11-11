@@ -2,6 +2,7 @@
 #define _APP_MOUSE_H
 
 #include "drv_inter_flash.h"
+#include "hal_bat32g157.h"
 
 typedef struct _usb_ctrl_setup_t
 {
@@ -15,6 +16,27 @@ typedef struct _usb_ctrl_setup_t
     uint8_t wLength_h;
 }usb_ctrl_setup_t;
 
+typedef enum _key_type_t
+{
+    KEY_TYPE_NULL = 0,
+    KEY_TYPE_MOUSE,
+    KEY_TYPE_KEYBOARD,
+    KEY_TYPE_RESERVE1,
+    KEY_TYPE_MULTIMEDIA,
+    KEY_TYPE_DPI,
+    KEY_TYPE_MACRO,
+    KEY_TYPE_OTHER
+}key_type_t;
+
+typedef enum _key_mouse_func_t
+{
+    KEY_MOUSE_FUNC_LEFT   = 0xf0,
+    KEY_MOUSE_FUNC_RIGHT  = 0xf1,
+    KEY_MOUSE_FUNC_MIDDLE = 0xf2,
+    KEY_MOUSE_FUNC_FRONT  = 0xf3,
+    KEY_MOUSE_FUNC_BACK   = 0xf4
+}key_mouse_func_t;
+
 typedef struct _key_val_t
 {
     uint8_t keyType;
@@ -27,7 +49,7 @@ typedef struct _key_data_t
 {
     uint8_t   reportId;
     uint8_t   keyMode;
-    key_val_t key[15];
+    key_val_t keyBuf[15];
     uint8_t   reserve[2];
 }key_data_t;
 
@@ -149,14 +171,35 @@ void App_Mouse_Set_Light_Effect(uint8_t *buf, uint8_t length );
 void App_Mouse_Get_Light_Dpi_Rate(uint8_t *buf, uint8_t length );
 void App_Mouse_Get_Key_Mode(uint8_t *buf, uint8_t length );
 
+void App_Mouse_Set_Key_Value(uint8_t *buf, uint8_t length );
+
 uint8_t App_Mouse_Get_Rainbow_Speed(void );
 uint8_t App_Mouse_Get_Rainbow_Direction(void );
+
 uint8_t App_Mouse_Get_Solid_On_Brightness(void );
 light_color_t App_Mouse_Get_Solid_On_Color(void );
+
 uint8_t App_Mouse_Get_Breah_Speed(void );
 void App_Mouse_Get_Breath_Color(light_color_t *lightColor, uint8_t length );
+
 uint8_t App_Mouse_Get_Neon_Speed(void );
+
 void App_Mouse_Get_Flash_Color(light_color_t *lightColor, uint8_t length );
+
+uint8_t App_Mouse_Get_Monochroma_Drag_Speed(void );
+uint8_t App_Mouse_Get_Monochroma_Drag_Direction(void );
+void App_Mouse_Get_Monochroma_Drag_Color(light_color_t *lightColor );
+
+void App_Mouse_Get_Key_1(key_val_t *keyVal );
+void App_Mouse_Get_Key_2(key_val_t *keyVal );
+void App_Mouse_Get_Key_3(key_val_t *keyVal );
+void App_Mouse_Get_Key_4(key_val_t *keyVal );
+void App_Mouse_Get_Key_5(key_val_t *keyVal );
+void App_Mouse_Get_Key_6(key_val_t *keyVal );
+void App_Mouse_Get_Key_7(key_val_t *keyVal );
+void App_Mouse_Get_Key_8(key_val_t *keyVal );
+void App_Mouse_Get_Key_9(key_val_t *keyVal );
+
 
 #endif 
 

@@ -66,6 +66,16 @@ typedef struct _flash_para_t
     light_color_t lightColorBuf[2];
 }flash_para_t;
 
+typedef struct _monochroma_para_t
+{
+    uint8_t speed;
+    uint8_t direction;
+    uint8_t lightIndex;
+    uint8_t lightFlag;
+    uint16_t delayTime;
+    light_color_t lightColor;
+}monochroma_para_t;
+
 void App_Light_Init(void );
 void App_Ligth_Delay_Count(void );
 void App_Light_Clr_Delay_Count(void );
@@ -78,6 +88,7 @@ void App_Light_Solid_On(void );
 void App_Light_Breath(void );
 void App_Light_Neon(void );
 void App_Light_Flash(void );
+void App_Light_Monochroma_Drag(void );
 
 #endif 
 

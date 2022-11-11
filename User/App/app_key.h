@@ -4,6 +4,10 @@
 #include "drv_timer.h"
 #include "drv_key.h"
 
+#include "app_mouse_protocol.h"
+#include "usb_phid_apl.h"
+
+
 typedef enum _key_event_t
 {
     KEY_EVENT_NULL= 0,
@@ -24,6 +28,8 @@ typedef enum _key_event_t
 void App_Key_Init(void );
 void App_Key_Mouse_Detect(void );
 void App_Key_Media_Detect(void );
+void App_Key_Function(key_val_t keyVal );
+void App_Key_Mouse_Down(key_val_t keyVal );
 
 #endif 
 

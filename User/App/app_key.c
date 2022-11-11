@@ -20,8 +20,8 @@ static void App_Key_Handler(void *arg );
 /* Private variables ------------------------------------*/
 key_mouse_ctrl_block_t keyMouseLeft = 
 {
-    .port = PORTC,//PORTD,
-    .pin  = PIN6,//PIN14,
+    .port = PORTD,
+    .pin  = PIN14,
     .name = KEY_MOUSE_LEFT,
     .state = KEY_MOUSE_INIT,
     .shortPressTime = KEY_SHORT_PRESS_TIME,
@@ -132,6 +132,7 @@ key_media_ctrl_block_t keyMediaReportRate =
     .shortPressTime = KEY_SHORT_PRESS_TIME,
 };
 
+val_t mouseReportBuf[8] = {0};
 
 void App_Key_Init(void )
 {
@@ -246,4 +247,33 @@ void App_Key_Media_Detect(void )
     Drv_Key_Media_Detect(&keyMediaReportRate);
 }
 
+void App_Key_Function(key_val_t keyVal )
+{
+    switch((key_type_t )keyVal.keyType)
+    {
+        case KEY_TYPE_MOUSE:
+        {
+            App_Key_Mouse_Down(keyVal);
+            break;
+        }
+        default: break;
+    }
+}
+
+void App_Key_Mouse_Down(key_val_t keyVal )
+{
+    mouseReportBuf[0].val = REPORT_ID_MOUSE;
+    
+    switch((key_mouse_func_t )keyVal.keyFunc)
+    {
+        case KEY_MOUSE_FUNC_LEFT: mouseReportBuf[1].val_b.val_0 = 1; break;
+        case KEY_MOUSE_FUNC_RIGHT: mouseReportBuf[1].val_b.val_1 = 1; break;
+        case KEY_MOUSE_FUNC_MIDDLE: mouseReportBuf[1].val_b.val_2 = 1; break;
+        case KEY_MOUSE_FUNC_FRONT: mouseReportBuf[1].val_b.val_3 = 1; break;
+        case KEY_MOUSE_FUNC_BACK: mouseReportBuf[1].val_b.val_4 = 1; break;
+        default :break;
+    }
+
+    Usb_Intp1_Send(mouseReportBuf, 7);
+}
 

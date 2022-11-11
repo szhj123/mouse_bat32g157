@@ -37,7 +37,9 @@ static usb_cfg_t   cfg;
 
 static uint8_t gs_data[DATA_LEN];
 
-static uint8_t usbEp0Buf[64];
+static uint8_t usbEp0InBuf[64];
+static uint8_t usbEp1InBuf[8];
+static uint8_t usbEp2Inbuf[8];
 
 const static usb_descriptor_t gs_usb_descriptor =
 {
@@ -122,7 +124,7 @@ static void Usb_Event_Handler(void *arg )
                 if((uint8_t )(ctrl.setup.type >> 8) == 0x09)
                 {
                     ctrl.type = USB_REQUEST;
-                    USB_Read(&ctrl, usbEp0Buf, 64);
+                    USB_Read(&ctrl, usbEp0InBuf, 64);
                 }
                 else if((uint8_t )(ctrl.setup.type >> 8) == 0x01)
                 {
@@ -141,7 +143,7 @@ static void Usb_Event_Handler(void *arg )
         case USB_STS_REQUEST_COMPLETE : /* Complete Class Request */
             if((uint8_t )(ctrl.setup.type >> 8) == 0x09)
             {
-                Drv_Event_Put(APP_EVENT_USB_SET_REPORT, usbEp0Buf, 64);
+                Drv_Event_Put(APP_EVENT_USB_SET_REPORT, usbEp0InBuf, 64);
             }
             break;
 
@@ -163,25 +165,26 @@ void Usb_Ctrl_Send(uint8_t *buf, uint8_t length )
 
     for(i=0;i<length;i++)
     {
-        usbEp0Buf[i] = buf[i];
+        usbEp0InBuf[i] = buf[i];
     }
 
     ctrl.type = USB_REQUEST;
     
-    USB_Write(&ctrl, usbEp0Buf, length);	
+    USB_Write(&ctrl, usbEp0InBuf, length);	
 }
 
-void Usb_Interupt_Send(void )
-{
-    static uint8_t sendBuf[64] = {0};
+void Usb_Intp1_Send(uint8_t *buf, uint8_t length )
+{    
+    uint8_t i;
     
-    for(int i=0;i<8;i++)
+    for(i=0;i<length;i++)
     {
-        sendBuf[i] = 0;
+        usbEp1InBuf[i] = buf[i];
     }
-    sendBuf[0] = REPORT_ID_MOUSE;
+    
     ctrl.type = USB_PHID;
-    USB_Write(&ctrl, sendBuf, 7);
+    
+    USB_Write(&ctrl, usbEp1InBuf, length);
 }
 
 /******************************************************************************

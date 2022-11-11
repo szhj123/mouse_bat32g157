@@ -266,6 +266,29 @@ void App_Mouse_Pic_Show_Init(void )
     mousePara.picIndex = 0;
 }
 
+void App_Mouse_Set_Key_Value(uint8_t *buf, uint8_t length )
+{
+    uint8_t i;
+    
+    key_data_t keyData = *(key_data_t *)buf;
+
+    for(i=0;i<15;i++)
+    {
+        if(keyData.keyMode == 0)
+        {
+            mousePara.keyMode_1_Buf[i] = keyData.keyBuf[i];
+        }
+        else if(keyData.keyMode == 1)
+        {
+            mousePara.keyMode_2_Buf[i] = keyData.keyBuf[i];
+        }
+        else if(keyData.keyMode == 3)
+        {
+            mousePara.keyMode_3_Buf[i] = keyData.keyBuf[i];
+        }
+    }
+}
+
 void App_Mouse_Set_Light_Dpi_Rate(uint8_t *buf, uint8_t length )
 {
     uint8_t i;
@@ -449,5 +472,168 @@ void App_Mouse_Get_Flash_Color(light_color_t *lightColor, uint8_t length )
         *lightColor++ = mousePara.lightParaBuf[5].colorBuf[i];
     }
 }
+
+uint8_t App_Mouse_Get_Monochroma_Drag_Speed(void )
+{
+    return mousePara.lightParaBuf[6].speed;
+}
+
+uint8_t App_Mouse_Get_Monochroma_Drag_Direction(void )
+{
+    return mousePara.lightParaBuf[6].direction;
+}
+
+void App_Mouse_Get_Monochroma_Drag_Color(light_color_t *lightColor )
+{
+    *lightColor++ = mousePara.lightParaBuf[6].colorBuf[0];
+}
+
+void App_Mouse_Get_Key_1(key_val_t *keyVal )
+{
+    if(mousePara.keyMode == 0)
+    {
+        *keyVal = mousePara.keyMode_1_Buf[0];
+    }
+    else if(mousePara.keyMode == 1)
+    {
+        *keyVal = mousePara.keyMode_2_Buf[0];
+    }
+    else if(mousePara.keyMode == 2)
+    {
+        *keyVal = mousePara.keyMode_3_Buf[0];
+    }
+}
+
+void App_Mouse_Get_Key_2(key_val_t *keyVal )
+{
+    if(mousePara.keyMode == 0)
+    {
+        *keyVal = mousePara.keyMode_1_Buf[1];
+    }
+    else if(mousePara.keyMode == 1)
+    {
+        *keyVal = mousePara.keyMode_2_Buf[1];
+    }
+    else if(mousePara.keyMode == 2)
+    {
+        *keyVal = mousePara.keyMode_3_Buf[1];
+    }
+}
+
+void App_Mouse_Get_Key_3(key_val_t *keyVal )
+{
+    if(mousePara.keyMode == 0)
+    {
+        *keyVal = mousePara.keyMode_1_Buf[2];
+    }
+    else if(mousePara.keyMode == 1)
+    {
+        *keyVal = mousePara.keyMode_2_Buf[2];
+    }
+    else if(mousePara.keyMode == 2)
+    {
+        *keyVal = mousePara.keyMode_3_Buf[2];
+    }
+}
+
+void App_Mouse_Get_Key_4(key_val_t *keyVal )
+{
+    if(mousePara.keyMode == 0)
+    {
+        *keyVal = mousePara.keyMode_1_Buf[3];
+    }
+    else if(mousePara.keyMode == 1)
+    {
+        *keyVal = mousePara.keyMode_2_Buf[3];
+    }
+    else if(mousePara.keyMode == 2)
+    {
+        *keyVal = mousePara.keyMode_3_Buf[3];
+    }
+}
+
+void App_Mouse_Get_Key_5(key_val_t *keyVal )
+{
+    if(mousePara.keyMode == 0)
+    {
+        *keyVal = mousePara.keyMode_1_Buf[4];
+    }
+    else if(mousePara.keyMode == 1)
+    {
+        *keyVal = mousePara.keyMode_2_Buf[4];
+    }
+    else if(mousePara.keyMode == 2)
+    {
+        *keyVal = mousePara.keyMode_3_Buf[4];
+    }
+}
+
+void App_Mouse_Get_Key_6(key_val_t *keyVal )
+{
+    if(mousePara.keyMode == 0)
+    {
+        *keyVal = mousePara.keyMode_1_Buf[5];
+    }
+    else if(mousePara.keyMode == 1)
+    {
+        *keyVal = mousePara.keyMode_2_Buf[5];
+    }
+    else if(mousePara.keyMode == 2)
+    {
+        *keyVal = mousePara.keyMode_3_Buf[5];
+    }
+}
+
+void App_Mouse_Get_Key_7(key_val_t *keyVal )
+{
+    if(mousePara.keyMode == 0)
+    {
+        *keyVal = mousePara.keyMode_1_Buf[6];
+    }
+    else if(mousePara.keyMode == 1)
+    {
+        *keyVal = mousePara.keyMode_2_Buf[6];
+    }
+    else if(mousePara.keyMode == 2)
+    {
+        *keyVal = mousePara.keyMode_3_Buf[6];
+    }
+}
+
+void App_Mouse_Get_Key_8(key_val_t *keyVal )
+{
+    if(mousePara.keyMode == 0)
+    {
+        *keyVal = mousePara.keyMode_1_Buf[7];
+    }
+    else if(mousePara.keyMode == 1)
+    {
+        *keyVal = mousePara.keyMode_2_Buf[7];
+    }
+    else if(mousePara.keyMode == 2)
+    {
+        *keyVal = mousePara.keyMode_3_Buf[7];
+    }
+}
+
+void App_Mouse_Get_Key_9(key_val_t *keyVal )
+{
+    if(mousePara.keyMode == 0)
+    {
+        *keyVal = mousePara.keyMode_1_Buf[8];
+    }
+    else if(mousePara.keyMode == 1)
+    {
+        *keyVal = mousePara.keyMode_2_Buf[8];
+    }
+    else if(mousePara.keyMode == 2)
+    {
+        *keyVal = mousePara.keyMode_3_Buf[8];
+    }
+}
+
+
+
+
 
 

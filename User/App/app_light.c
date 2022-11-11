@@ -25,6 +25,7 @@ static solid_on_para_t solidOnPara;
 static breath_para_t   breathPara;
 static neon_para_t     neonPara;
 static flash_para_t    flashPara;
+static monochroma_para_t monochromaPara;
 
 light_t lightBuf[] = 
 {
@@ -437,6 +438,99 @@ void App_Light_Flash(void )
     App_Light_Clr_Delay_Count();
 }
 
+static void App_Light_Monochroma_Drag_Callback(void )
+{
+    
+    if(App_Light_Get_Delay_Count() >= monochromaPara.delayTime)
+    {
+        App_Light_Clr_Delay_Count();
+
+        if(!monochromaPara.direction)
+        {
+            if(!monochromaPara.lightFlag)
+            {
+                Drv_Light_Set_On(lightBuf[monochromaPara.lightIndex++]);
+
+                if(monochromaPara.lightIndex >= (sizeof(lightBuf)/sizeof(light_t)))
+                {
+                    monochromaPara.lightFlag = 1;
+
+                    monochromaPara.lightIndex = 0;
+                }
+            }
+            else
+            {
+                Drv_Light_Set_Off(lightBuf[monochromaPara.lightIndex++]);
+
+                if(monochromaPara.lightIndex >= (sizeof(lightBuf)/sizeof(light_t)))
+                {
+                    monochromaPara.lightFlag = 0;
+
+                    monochromaPara.lightIndex = 0;
+                }
+            }
+        }
+        else
+        {
+            if(!monochromaPara.lightFlag)
+            {
+                Drv_Light_Set_On(lightBuf[sizeof(lightBuf)/sizeof(light_t)-1-monochromaPara.lightIndex++]);
+
+                if(monochromaPara.lightIndex >= (sizeof(lightBuf)/sizeof(light_t)))
+                {
+                    monochromaPara.lightFlag = 1;
+
+                    monochromaPara.lightIndex = 0;
+                }
+            }
+            else
+            {
+                Drv_Light_Set_Off(lightBuf[sizeof(lightBuf)/sizeof(light_t)-1-monochromaPara.lightIndex++]);
+
+                if(monochromaPara.lightIndex >= (sizeof(lightBuf)/sizeof(light_t)))
+                {
+                    monochromaPara.lightFlag = 0;
+
+                    monochromaPara.lightIndex = 0;
+                }
+            }
+        }
+    }
+}
+
+void App_Light_Monochroma_Drag(void )
+{
+    monochromaPara.speed = App_Mouse_Get_Monochroma_Drag_Speed();
+
+    monochromaPara.direction = App_Mouse_Get_Monochroma_Drag_Direction();
+
+    monochromaPara.lightFlag = 0;
+
+    Drv_Light_Set_All_Off();
+
+    App_Mouse_Get_Monochroma_Drag_Color(&monochromaPara.lightColor);
+
+    for(uint8_t i=0;i<sizeof(lightBuf)/sizeof(light_t);i++)
+    {
+        lightBuf[i].rVal = monochromaPara.lightColor.rVal;
+        lightBuf[i].gVal = monochromaPara.lightColor.gVal;
+        lightBuf[i].bVal = monochromaPara.lightColor.bVal;
+    }
+
+    switch(monochromaPara.speed)
+    {
+        case 1: monochromaPara.delayTime = 100; break;
+        case 2: monochromaPara.delayTime = 75; break;
+        case 3: monochromaPara.delayTime = 50; break;
+        case 4: monochromaPara.delayTime = 25;  break;
+        default: monochromaPara.delayTime = 50;
+    }
+    
+    App_Light_Set_Show_Callback(App_Light_Monochroma_Drag_Callback);
+    
+    App_Light_Clr_Delay_Count();
+}
+
 void App_Light_Switch(uint8_t lightMode )
 {
     switch((light_mode_t )lightMode)
@@ -471,7 +565,9 @@ void App_Light_Switch(uint8_t lightMode )
             break;
         }
         case LIGHT_MONOCHROMATIC_DRAG:
-        {            break;
+        {    
+            App_Light_Monochroma_Drag();
+            break;
         }
         case LIGHT_REACTION:
         {

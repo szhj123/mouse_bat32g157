@@ -70,7 +70,7 @@ extern uint8_t g_remote_wakeup_enable;
 
 void Usb_Init (void);
 void Usb_Ctrl_Send(uint8_t *buf, uint8_t length );
-void Usb_Interupt_Send(void );
+void Usb_Intp1_Send(uint8_t *buf, uint8_t length );
 
 #endif /* USB_PHID_APL_H */
 /******************************************************************************

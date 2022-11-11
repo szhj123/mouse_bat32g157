@@ -68,7 +68,12 @@ static void App_Event_Key_Handler(key_event_t keyEvent )
     {
         case KEY_EVENT_MOUSE_LEFT_DOWN:
         {
-            Usb_Interupt_Send();
+            key_val_t key1;
+
+            App_Mouse_Get_Key_1(&key1);
+            
+            App_Key_Function(key1);
+            
             break;
         }
         case KEY_EVENT_MOUSE_RIGHT_DOWN:
@@ -87,6 +92,12 @@ static void App_Event_Usb_Set_Report(uint8_t *buf, uint8_t length )
 {
     switch(buf[0])
     {
+        case REPORT_ID_KEY_VALUE:
+        {
+            App_Mouse_Set_Key_Value(buf, length);
+            
+            break;
+        }
         case REPORT_ID_LIGHT_DPI_RATE:
         {
             light_dpi_rate_t lightDpiRate = *(light_dpi_rate_t *)buf;
