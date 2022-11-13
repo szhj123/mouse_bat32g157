@@ -113,29 +113,22 @@ void Drv_Key_Media_Detect(key_media_ctrl_block_t *key )
             {
                 if(key->delayCnt > KEY_SHORT_PRESS_TIME)
                 {
-                    if(key->isDoubleKey)
-                    {
-                        key->shortPressCnt++;
+                    key->shortPressCnt++;
 
-                        if(key->shortPressCnt == 1)
-                        {
-                            keySave = keyVal;
-                        }
-                        else
-                        {
-                            if(keySave != keyVal)
-                            {
-                                keySave = keyVal;
-                                
-                                key->shortPressCnt = 1;
-                            }
-                        }
+                    if(key->shortPressCnt == 1)
+                    {
+                        keySave = keyVal;
+                        
+                        Drv_Key_Queue_Put(keyVal | KEY_DOWN);
                     }
                     else
                     {
-                        keySave = keyVal | KEY_DOWN;
-
-                        Drv_Key_Queue_Put(keySave);
+                        if(keySave != keyVal)
+                        {
+                            keySave = keyVal;
+                            
+                            key->shortPressCnt = 1;
+                        }
                     }
 
                     key->delayCnt = 0;
@@ -144,33 +137,26 @@ void Drv_Key_Media_Detect(key_media_ctrl_block_t *key )
                 }
             }
             else
-            {
-                if(key->isDoubleKey)
+            {       
+                if(key->delayCnt > KEY_DOUBLE_PRESS_TIME)
                 {
-                    if(key->delayCnt > KEY_DOUBLE_PRESS_TIME)
+                    if(key->shortPressCnt == 1)
                     {
-                        if(key->shortPressCnt == 1)
-                        {
-                            key->shortPressCnt = 0;
+                        key->shortPressCnt = 0;
 
-                            keySave |= KEY_DOWN | KEY_UP;
+                        keySave |= KEY_DOWN | KEY_UP;
 
-                            Drv_Key_Queue_Put(keySave);
-                        }
-                        else if(key->shortPressCnt == key->shortPressNum)
-                        {
-                            key->shortPressCnt = 0;
-                            
-                            keySave |= KEY_DOUBLE | KEY_UP;
-                            
-                            Drv_Key_Queue_Put(keySave);
-                        }
-
-                        key->state = KEY_MEDIA_INIT;
+                        Drv_Key_Queue_Put(keySave);
                     }
-                }
-                else
-                {
+                    else if(key->shortPressCnt == key->shortPressNum)
+                    {
+                        key->shortPressCnt = 0;
+                        
+                        keySave |= KEY_DOUBLE | KEY_UP;
+                        
+                        Drv_Key_Queue_Put(keySave);
+                    }
+
                     key->state = KEY_MEDIA_INIT;
                 }
             }
@@ -195,14 +181,7 @@ void Drv_Key_Media_Detect(key_media_ctrl_block_t *key )
             {
                 key->delayCnt = 0;
 
-                if(key->isDoubleKey)
-                {
-                    key->state = KEY_MEDIA_SHORT_PRESS;
-                }
-                else
-                {
-                    key->state = KEY_MEDIA_RELEASE;
-                }
+                key->state = KEY_MEDIA_SHORT_PRESS;
             }
             
             break;

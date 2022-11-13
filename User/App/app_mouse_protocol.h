@@ -157,6 +157,7 @@ void App_Mouse_Init(void );
 void App_Mouse_Key_Mode_1_Init(void );
 void App_Mouse_Key_Mode_2_Init(void );
 void App_Mouse_Key_Mode_3_Init(void );
+void App_Mouse_Key_Default_Mode_Init(void );
 void App_Mouse_Dpi_Init(void );
 void App_Mouse_Light_Init(void );
 void App_Mouse_Pic_Show_Init(void );

@@ -184,14 +184,24 @@ static void App_Key_Handler(void *arg )
             keyEvent = KEY_EVENT_MOUSE_MIDDLW_UP;
             break;
         }
-        case KEY_MEDIA_FORWARD | KEY_DOWN | KEY_UP:
+        case KEY_MEDIA_FORWARD | KEY_DOWN:
         {
             keyEvent = KEY_EVENT_MEDIA_FORWARD_DOWN;
             break;
         }
-        case KEY_MEDIA_BACKWARD | KEY_DOWN | KEY_UP:
+        case KEY_MEDIA_FORWARD | KEY_DOWN | KEY_UP:
+        {
+            keyEvent = KEY_EVENT_MEDIA_FORWARD_UP;
+            break;
+        }
+        case KEY_MEDIA_BACKWARD | KEY_DOWN:
         {
             keyEvent = KEY_EVENT_MEDIA_BACKWARD_DOWN;
+            break;
+        }
+        case KEY_MEDIA_BACKWARD | KEY_DOWN | KEY_UP:
+        {
+            keyEvent = KEY_EVENT_MEDIA_BACKWARD_UP;
             break;
         }
         case KEY_MEDIA_DPI_INC | KEY_DOWN | KEY_UP:
@@ -247,13 +257,26 @@ void App_Key_Media_Detect(void )
     Drv_Key_Media_Detect(&keyMediaReportRate);
 }
 
-void App_Key_Function(key_val_t keyVal )
+void App_Key_Down_Handler(key_val_t keyVal )
 {
     switch((key_type_t )keyVal.keyType)
     {
         case KEY_TYPE_MOUSE:
         {
             App_Key_Mouse_Down(keyVal);
+            break;
+        }
+        default: break;
+    }
+}
+
+void App_Key_Up_Handler(key_val_t keyVal )
+{
+    switch((key_type_t )keyVal.keyType)
+    {
+        case KEY_TYPE_MOUSE:
+        {
+            App_Key_Mouse_Up(keyVal);
             break;
         }
         default: break;
@@ -274,6 +297,23 @@ void App_Key_Mouse_Down(key_val_t keyVal )
         default :break;
     }
 
-    Usb_Intp1_Send(mouseReportBuf, 7);
+    Usb_Intp1_Send((uint8_t *)mouseReportBuf, 7);
+}
+
+void App_Key_Mouse_Up(key_val_t keyVal )
+{
+    mouseReportBuf[0].val = REPORT_ID_MOUSE;
+    
+    switch((key_mouse_func_t )keyVal.keyFunc)
+    {
+        case KEY_MOUSE_FUNC_LEFT: mouseReportBuf[1].val_b.val_0 = 0; break;
+        case KEY_MOUSE_FUNC_RIGHT: mouseReportBuf[1].val_b.val_1 = 0; break;
+        case KEY_MOUSE_FUNC_MIDDLE: mouseReportBuf[1].val_b.val_2 = 0; break;
+        case KEY_MOUSE_FUNC_FRONT: mouseReportBuf[1].val_b.val_3 = 0; break;
+        case KEY_MOUSE_FUNC_BACK: mouseReportBuf[1].val_b.val_4 = 0; break;
+        default :break;
+    }
+
+    Usb_Intp1_Send((uint8_t *)mouseReportBuf, 7);
 }
 

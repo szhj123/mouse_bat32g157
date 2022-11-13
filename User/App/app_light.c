@@ -391,8 +391,6 @@ void App_Light_Neon(void )
 
 static void App_Light_Flash_Callback(void )
 {
-    uint8_t i;
-    
     if(!flashPara.lightColorFlag)
     {
         Drv_Light_Set_Off(lightBuf[1]);

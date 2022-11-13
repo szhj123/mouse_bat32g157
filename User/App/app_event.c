@@ -64,24 +64,68 @@ static void Drv_Event_Handler(void *arg )
 
 static void App_Event_Key_Handler(key_event_t keyEvent )
 {
+    key_val_t keyVal;
+    
     switch(keyEvent)
     {
         case KEY_EVENT_MOUSE_LEFT_DOWN:
         {
-            key_val_t key1;
-
-            App_Mouse_Get_Key_1(&key1);
-            
-            App_Key_Function(key1);
-            
+            App_Mouse_Get_Key_1(&keyVal);
+            App_Key_Down_Handler(keyVal);
+            break;
+        }
+        case KEY_EVENT_MOUSE_LEFT_UP:
+        {
+            App_Mouse_Get_Key_1(&keyVal);
+            App_Key_Up_Handler(keyVal);
             break;
         }
         case KEY_EVENT_MOUSE_RIGHT_DOWN:
         {
+            App_Mouse_Get_Key_2(&keyVal);
+            App_Key_Down_Handler(keyVal);
+            break;
+        }
+        case KEY_EVENT_MOUSE_RIGHT_UP:
+        {
+            App_Mouse_Get_Key_2(&keyVal);
+            App_Key_Up_Handler(keyVal);
             break;
         }
         case KEY_EVENT_MOUSE_MIDDLE_DOWN:
         {
+            App_Mouse_Get_Key_3(&keyVal);
+            App_Key_Down_Handler(keyVal);
+            break;
+        }
+        case KEY_EVENT_MOUSE_MIDDLW_UP:
+        {
+            App_Mouse_Get_Key_3(&keyVal);
+            App_Key_Up_Handler(keyVal);
+            break;
+        }
+        case KEY_EVENT_MEDIA_FORWARD_DOWN:
+        {
+            App_Mouse_Get_Key_4(&keyVal);
+            App_Key_Down_Handler(keyVal);
+            break;
+        }
+        case KEY_EVENT_MEDIA_FORWARD_UP:
+        {
+            App_Mouse_Get_Key_4(&keyVal);
+            App_Key_Up_Handler(keyVal);
+            break;
+        }
+        case KEY_EVENT_MEDIA_BACKWARD_DOWN:
+        {
+            App_Mouse_Get_Key_5(&keyVal);
+            App_Key_Down_Handler(keyVal);
+            break;
+        }
+        case KEY_EVENT_MEDIA_BACKWARD_UP:
+        {
+            App_Mouse_Get_Key_5(&keyVal);
+            App_Key_Up_Handler(keyVal);
             break;
         }
         default: break;
