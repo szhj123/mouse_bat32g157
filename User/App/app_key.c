@@ -133,6 +133,7 @@ key_media_ctrl_block_t keyMediaReportRate =
 };
 
 val_t mouseReportBuf[8] = {0};
+val_t keyBoardReportBuf[8] = {0};
 
 void App_Key_Init(void )
 {
@@ -266,6 +267,11 @@ void App_Key_Down_Handler(key_val_t keyVal )
             App_Key_Mouse_Down(keyVal);
             break;
         }
+        case KEY_TYPE_DPI:
+        {
+            App_Key_Dpi_Down();
+            break;
+        }
         default: break;
     }
 }
@@ -315,5 +321,27 @@ void App_Key_Mouse_Up(key_val_t keyVal )
     }
 
     Usb_Intp1_Send((uint8_t *)mouseReportBuf, 7);
+}
+
+void App_Key_Dpi_Down(void )
+{
+    uint8_t dpiIndex = App_Mouse_Get_Dpi_Index();
+    light_color_t dpiColor;
+
+    if(dpiIndex < App_Mouse_Get_Dpi_Num())
+    {
+        dpiIndex++;
+    }
+    else
+    {
+        dpiIndex = 0;
+    }
+
+    App_Mouse_Set_Dpi_Index(dpiIndex);
+
+    App_Mouse_Get_Dpi_Color(dpiIndex, &dpiColor);
+
+    App_Light_Dpi(dpiColor);
+
 }
 

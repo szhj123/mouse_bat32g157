@@ -4,6 +4,7 @@
 #include "app_mouse_protocol.h"
 #include "drv_light.h"
 #include "drv_task.h"
+#include "drv_timer.h"
 
 typedef enum _light_mode_t
 {
@@ -81,7 +82,7 @@ void App_Ligth_Delay_Count(void );
 void App_Light_Clr_Delay_Count(void );
 uint16_t App_Light_Get_Delay_Count(void );
 
-void App_Light_Switch(uint8_t lightMode );
+void App_Light_Switch(void *arg );
 
 void App_Light_Rainbow(void );
 void App_Light_Solid_On(void );
@@ -89,6 +90,8 @@ void App_Light_Breath(void );
 void App_Light_Neon(void );
 void App_Light_Flash(void );
 void App_Light_Monochroma_Drag(void );
+
+void App_Light_Dpi(light_color_t dpiColor );
 
 #endif 
 

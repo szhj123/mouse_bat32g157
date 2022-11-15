@@ -529,8 +529,28 @@ void App_Light_Monochroma_Drag(void )
     App_Light_Clr_Delay_Count();
 }
 
-void App_Light_Switch(uint8_t lightMode )
+static void App_Light_Dpi_Callback(void *arg )
 {
+    App_Light_Switch(NULL);
+}
+
+void App_Light_Dpi(light_color_t dpiColor )
+{
+    static uint8_t timerId = TIMER_NULL;
+    
+    light_show_callback = NULL;
+
+    Drv_Light_Set_All_On(dpiColor.rVal, dpiColor.gVal, dpiColor.bVal);
+
+    Drv_Timer_Delete(timerId);
+    
+    timerId = Drv_Timer_Regist_Oneshot(1000, App_Light_Dpi_Callback, NULL);
+}
+
+void App_Light_Switch(void *arg )
+{
+    uint8_t lightMode = App_Mouse_Get_Light_Mode();
+    
     switch((light_mode_t )lightMode)
     {
         case LIGHT_OFF:

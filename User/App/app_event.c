@@ -128,6 +128,12 @@ static void App_Event_Key_Handler(key_event_t keyEvent )
             App_Key_Up_Handler(keyVal);
             break;
         }
+        case KEY_EVENT_MEDIA_DPI_INC_DOWN:
+        {
+            App_Mouse_Get_Key_6(&keyVal);
+            App_Key_Down_Handler(keyVal);
+            break;
+        }
         default: break;
     }
 }
@@ -143,12 +149,8 @@ static void App_Event_Usb_Set_Report(uint8_t *buf, uint8_t length )
             break;
         }
         case REPORT_ID_LIGHT_DPI_RATE:
-        {
-            light_dpi_rate_t lightDpiRate = *(light_dpi_rate_t *)buf;
-            
+        {            
             App_Mouse_Set_Light_Dpi_Rate(buf, length);
-
-            App_Light_Switch(lightDpiRate.lightMode);;
             
             break;
         }
@@ -159,7 +161,14 @@ static void App_Event_Usb_Set_Report(uint8_t *buf, uint8_t length )
         }
         case REPORT_ID_LIGHT_EFFECT:
         {
+            static uint8_t timerLightSwitchId = TIMER_NULL;
+            
             App_Mouse_Set_Light_Effect(buf, length);
+
+            Drv_Timer_Delete(timerLightSwitchId);
+
+            timerLightSwitchId = Drv_Timer_Regist_Oneshot(250, App_Light_Switch, NULL);
+
             break;
         }
         default: break;

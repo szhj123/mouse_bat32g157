@@ -346,6 +346,11 @@ void App_Mouse_Set_Light_Dpi_Rate(uint8_t *buf, uint8_t length )
     App_Mouse_Para_Save();
 }
 
+uint8_t App_Mouse_Get_Light_Mode(void )
+{
+    return mousePara.lightMode;
+}
+
 void App_Mouse_Set_Key_Mode(uint8_t *buf, uint8_t length )
 {
     uint8_t i;
@@ -563,6 +568,29 @@ void App_Mouse_Get_Key_9(key_val_t *keyVal )
 {
      *keyVal = mouseKeyModeBuf[8];
 }
+
+uint8_t App_Mouse_Get_Dpi_Index(void )
+{
+    return mousePara.dpiIndex;
+}
+
+void App_Mouse_Set_Dpi_Index(uint8_t dpiIndex )
+{
+    mousePara.dpiIndex = dpiIndex;
+
+    App_Mouse_Para_Save();
+}
+
+uint8_t App_Mouse_Get_Dpi_Num(void )
+{
+    return mousePara.dpiNum;
+}
+
+void App_Mouse_Get_Dpi_Color(uint8_t dpiIndex, light_color_t *dpiColor )
+{
+    *dpiColor = mousePara.dpiColorBuf[dpiIndex];
+}
+
 
 
 

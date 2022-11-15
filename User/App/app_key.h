@@ -34,6 +34,7 @@ void App_Key_Down_Handler(key_val_t keyVal );
 void App_Key_Up_Handler(key_val_t keyVal );
 void App_Key_Mouse_Down(key_val_t keyVal );
 void App_Key_Mouse_Up(key_val_t keyVal );
+void App_Key_Dpi_Down(void );
 
 #endif 
 

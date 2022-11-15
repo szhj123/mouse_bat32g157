@@ -168,7 +168,7 @@ void App_Mouse_Para_Save(void );
 void App_Mouse_Set_Light_Dpi_Rate(uint8_t *buf, uint8_t length );
 void App_Mouse_Set_Key_Mode(uint8_t *buf, uint8_t length );
 void App_Mouse_Set_Light_Effect(uint8_t *buf, uint8_t length );
-
+uint8_t App_Mouse_Get_Light_Mode(void );
 void App_Mouse_Get_Light_Dpi_Rate(uint8_t *buf, uint8_t length );
 void App_Mouse_Get_Key_Mode(uint8_t *buf, uint8_t length );
 
@@ -201,6 +201,10 @@ void App_Mouse_Get_Key_7(key_val_t *keyVal );
 void App_Mouse_Get_Key_8(key_val_t *keyVal );
 void App_Mouse_Get_Key_9(key_val_t *keyVal );
 
+uint8_t App_Mouse_Get_Dpi_Num(void );
+uint8_t App_Mouse_Get_Dpi_Index(void );
+void App_Mouse_Set_Dpi_Index(uint8_t dpiIndex );
+void App_Mouse_Get_Dpi_Color(uint8_t dpiIndex, light_color_t *dpiColor );
 
 #endif 
 
