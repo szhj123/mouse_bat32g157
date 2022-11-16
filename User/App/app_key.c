@@ -13,6 +13,25 @@
 #include "app_key.h"
 #include "app_event.h"
 /* Private typedef --------------------------------------*/
+typedef enum _macro_key_state_t
+{
+    MACRO_KEY_STATE_GET = 0,
+    MACRO_KEY_STATE_SEND,
+    MACRO_KEY_STATE_EXIT
+}macro_key_state_t;
+    
+typedef struct _macro_key_ctrl_block_t
+{
+    macro_key_state_t state;
+    loop_type_t loopType;
+    uint8_t  loopCount;
+    uint16_t delayTime;
+    uint16_t delayCnt;
+    uint8_t  index;
+    uint8_t  isPress;
+    uint8_t  keyVal;
+    uint8_t  timerId;
+}macro_key_ctrl_block_t;
 /* Private define ---------------------------------------*/
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
@@ -134,6 +153,12 @@ key_media_ctrl_block_t keyMediaReportRate =
 
 val_t mouseReportBuf[8] = {0};
 val_t keyBoardReportBuf[8] = {0};
+
+macro_key_ctrl_block_t macroKeyCtrl = 
+{
+    .timerId = TIMER_NULL,
+};
+
 
 void App_Key_Init(void )
 {
@@ -272,6 +297,11 @@ void App_Key_Down_Handler(key_val_t keyVal )
             App_Key_Dpi_Down();
             break;
         }
+        case KEY_TYPE_MACRO:
+        {
+            App_Key_Macro_Down(keyVal);
+            break;
+        }
         default: break;
     }
 }
@@ -304,6 +334,26 @@ void App_Key_Mouse_Down(key_val_t keyVal )
     }
 
     Usb_Intp1_Send((uint8_t *)mouseReportBuf, 7);
+}
+
+void App_Key_Board_Down(key_val_t keyVal )
+{
+    uint8_t i;
+    
+    keyBoardReportBuf[0].val = REPORT_ID_KEYBOARD;
+
+    keyBoardReportBuf[1].val = 0;
+
+    for(i=0;i<8;i++)
+    {
+        if(keyVal.keyFunc & (1 << i))
+            keyBoardReportBuf[1].val |= (1 << i);
+    }
+
+    keyBoardReportBuf[2].val = keyVal.keyVal_l;
+    keyBoardReportBuf[3].val = keyVal.keyVal_h;
+
+    Usb_Intp2_Send((uint8_t *)keyBoardReportBuf, 8);
 }
 
 void App_Key_Mouse_Up(key_val_t keyVal )
@@ -347,5 +397,114 @@ void App_Key_Dpi_Down(void )
     }
 
     App_Mouse_Set_Dpi_Index(dpiIndex);
+}
+
+static void App_Key_Macro_Down_Callback(void *arg )
+{
+    static macro_key_val_t macroKeyVal;
+    static key_val_t keyVal;
+    
+    if(macroKeyCtrl.delayCnt < 0xffff)
+    {
+        macroKeyCtrl.delayCnt++;
+    }
+
+    switch(macroKeyCtrl.state)
+    {
+        case MACRO_KEY_STATE_GET:
+        {
+            App_Mouse_Get_Macro_Key_Val(macroKeyCtrl.index++, &macroKeyVal);
+
+            if(macroKeyCtrl.index >= App_Mouse_Get_Macro_Key_Num())
+
+            macroKeyCtrl.isPress = (macroKeyVal.delayTime_h & 0x80) ? 1 : 0;
+
+            macroKeyCtrl.delayTime = (uint16_t )(macroKeyVal.delayTime_h & 0x7f) << 8 | macroKeyVal.delayTime_l;
+
+            macroKeyCtrl.keyVal = macroKeyVal.keyVal;
+            
+            macroKeyCtrl.delayCnt = 0;
+
+            macroKeyCtrl.state = MACRO_KEY_STATE_SEND;
+            
+            break;
+        }
+        case MACRO_KEY_STATE_SEND:
+        {
+            if(macroKeyCtrl.delayCnt >= macroKeyCtrl.delayTime)
+            {
+                macroKeyCtrl.delayCnt = 0;
+
+                if(macroKeyCtrl.isPress)
+                {
+                    switch(macroKeyCtrl.keyVal)
+                    {
+                        case 0xf0: case 0xf1: case 0xf2: case 0xf3: case 0xf4: 
+                        {
+                            keyVal.keyType = (uint8_t )KEY_TYPE_MOUSE;
+                            keyVal.keyFunc = macroKeyCtrl.keyVal;
+                               
+                            App_Key_Mouse_Down(keyVal);
+                            
+                            break;
+                        }
+                        case 0xe0: case 0xe1: case 0xe2: case 0xe3: case 0xe4: case 0xe5: case 0xe6: case 0xe7:
+                        {
+                            keyVal.keyType = (uint8_t )KEY_TYPE_KEYBOARD;
+                            keyVal.keyFunc = 1 << (macroKeyCtrl.keyVal & 0x07);
+
+                            App_Key_Board_Down(keyVal);
+                            
+                            break;
+                        }
+                        default: 
+                        {
+                            keyVal.keyType = (uint8_t )KEY_TYPE_KEYBOARD;
+                            keyVal.keyVal_l = macroKeyCtrl.keyVal;
+                            
+                            App_Key_Board_Down(keyVal);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    switch(macroKeyCtrl.keyVal)
+                    {
+                        case 0xf0: case 0xf1: case 0xf2: case 0xf3: case 0xf4:
+                        {
+                            break;
+                        }
+                        default:
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        case MACRO_KEY_STATE_EXIT:
+        {
+            break;
+        }
+        default: break;
+    }
+    
+}
+
+void App_Key_Macro_Down(key_val_t keyVal )
+{
+    App_Mouse_Get_Macro_Key(keyVal.keyFunc);
+
+    macroKeyCtrl.loopType = (loop_type_t )keyVal.keyVal_l;
+    macroKeyCtrl.loopCount = keyVal.keyVal_h;   
+    macroKeyCtrl.delayCnt = 0;
+    macroKeyCtrl.index = 0;
+    macroKeyCtrl.state = MACRO_KEY_STATE_GET;
+
+    Drv_Timer_Delete(macroKeyCtrl.timerId);
+
+    macroKeyCtrl.timerId = Drv_Timer_Regist_Period(0, 1, App_Key_Macro_Down_Callback, NULL);
 }
 

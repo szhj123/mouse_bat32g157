@@ -21,9 +21,13 @@
 static mouse_para_t mousePara;
 static key_val_t    mouseKeyModeBuf[15] = {0};
 
+static macro_key_val_t macroKeyBuf[128] = {0};
+static uint8_t     macroKeyLength;
+
 static usb_ctrl_setup_t usbCtrlSetup;
 static uint8_t      usbCtrlSendBuf[64] = {0};
 static uint8_t      usbCtrlSendLen; 
+
 
 void App_Mouse_Init(void )
 {            
@@ -407,14 +411,51 @@ void App_Mouse_Set_Light_Effect(uint8_t *buf, uint8_t length )
     mousePara.lightParaBuf[mousePara.lightMode] = lightEffect.lightPara;    
 }
 
+static void App_Mouse_Macro_Data_Save(void *arg )
+{
+    uint32_t macroId = (uint32_t )arg;
+    uint32_t flashAddr;
+
+    switch(macroId)
+    {
+        case 1: flashAddr = FLASH_MACRO1_START_ADDR; break;
+        case 2: flashAddr = FLASH_MACRO2_START_ADDR; break;
+        case 3: flashAddr = FLASH_MACRO3_START_ADDR; break;
+        case 4: flashAddr = FLASH_MACRO4_START_ADDR; break;
+        default: flashAddr = FLASH_MACRO1_START_ADDR; break;
+    }
+    
+    Drv_Inter_Flash_Erase_Sector(flashAddr);
+
+    Drv_Inter_Flash_Write(flashAddr, 1, &macroKeyLength);
+
+    Drv_Inter_Flash_Write(flashAddr+1, macroKeyLength * sizeof(macro_key_val_t), (uint8_t *)macroKeyBuf);
+}
+
 void App_Mouse_Set_Macro(uint8_t *buf, uint8_t length )
 {
-    uint8_t tmpBuf[512] = {0};
+    static uint8_t timerId = TIMER_NULL;
+    uint16_t i;
+    uint32_t flashAddr = 0;
+    
     
     macro_data_t macroData = *(macro_data_t *)buf;
 
+    if(macroData.macroId > 4)
+    {
+        macroData.macroId = 4;
+    }
+    
+    for(i=0;i<macroData.length;i++)
+    {
+        *((uint8_t * )macroKeyBuf + macroData.offsetAddr + i) = macroData.buf[i];
+    }
 
-    Drv_Inter_Flash_Read(FLASH_MACRO_START_ADDR, , uint8_t * buf)
+    macroKeyLength = (macroData.offsetAddr + macroData.length) / 3;
+
+    Drv_Timer_Delete(timerId);
+
+    timerId = Drv_Timer_Regist_Oneshot(50, App_Mouse_Macro_Data_Save, (void *)macroData.macroId);
 }
 
 void App_Mouse_Get_Light_Dpi_Rate(uint8_t *buf, uint8_t length )
@@ -601,9 +642,32 @@ void App_Mouse_Get_Dpi_Color(uint8_t dpiIndex, light_color_t *dpiColor )
     *dpiColor = mousePara.dpiColorBuf[dpiIndex];
 }
 
+void App_Mouse_Get_Macro_Key(uint8_t macroId )
+{
+    uint32_t flashAddr; 
 
+    switch(macroId)
+    {
+        case 1: flashAddr = FLASH_MACRO1_START_ADDR; break;
+        case 2: flashAddr = FLASH_MACRO2_START_ADDR; break;
+        case 3: flashAddr = FLASH_MACRO3_START_ADDR; break;
+        case 4: flashAddr = FLASH_MACRO4_START_ADDR; break;
+        default: break;
+    }
 
+    Drv_Inter_Flash_Read(flashAddr, 1, &macroKeyLength);
 
+    Drv_Inter_Flash_Read(flashAddr+1, macroKeyLength*sizeof(macro_key_val_t), (uint8_t *)macroKeyBuf);
+}
 
+void App_Mouse_Get_Macro_Key_Val(uint8_t macroKeyIndex, macro_key_val_t *macroKeyVal )
+{
+    *macroKeyVal = macroKeyBuf[macroKeyIndex];    
+}
+
+uint8_t App_Mouse_Get_Macro_Key_Num(void )
+{
+    return macroKeyLength;
+}
 
 

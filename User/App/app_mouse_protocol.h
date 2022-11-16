@@ -2,6 +2,7 @@
 #define _APP_MOUSE_H
 
 #include "drv_inter_flash.h"
+#include "drv_timer.h"
 #include "hal_bat32g157.h"
 
 typedef struct _usb_ctrl_setup_t
@@ -116,6 +117,21 @@ typedef struct _light_effect_t
     uint8_t reserve[36];
 }light_effect_t;
 
+typedef enum
+{
+    LOOP_NULL = 0,
+    LOOP_FIX_COUNT,
+    LOOP_KEY_UP_TERMINATION,
+    LOOP_ANY_KEY_PRESS_TERMINATION
+}loop_type_t;
+    
+typedef struct _macro_key_val_t
+{
+    uint8_t delayTime_h;
+    uint8_t delayTime_l;
+    uint8_t keyVal;
+}macro_key_val_t;
+
 typedef struct _macro_data_t
 {
     uint8_t reportId;
@@ -175,9 +191,6 @@ uint8_t App_Mouse_Get_Light_Mode(void );
 void App_Mouse_Get_Light_Dpi_Rate(uint8_t *buf, uint8_t length );
 void App_Mouse_Get_Key_Mode(uint8_t *buf, uint8_t length );
 
-
-
-
 uint8_t App_Mouse_Get_Rainbow_Speed(void );
 uint8_t App_Mouse_Get_Rainbow_Direction(void );
 
@@ -209,6 +222,9 @@ uint8_t App_Mouse_Get_Dpi_Num(void );
 uint8_t App_Mouse_Get_Dpi_Index(void );
 void App_Mouse_Set_Dpi_Index(uint8_t dpiIndex );
 void App_Mouse_Get_Dpi_Color(uint8_t dpiIndex, light_color_t *dpiColor );
+void App_Mouse_Get_Macro_Key(uint8_t macroId );
+void App_Mouse_Get_Macro_Key_Val(uint8_t macroKeyIndex, macro_key_val_t *macroKeyVal );
+uint8_t App_Mouse_Get_Macro_Key_Num(void );
 
 #endif 
 
