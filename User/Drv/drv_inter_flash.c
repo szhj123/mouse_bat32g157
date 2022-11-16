@@ -31,7 +31,45 @@ void Drv_Inter_Flash_Read (uint32_t adr, uint32_t sz, uint8_t *buf)
 
 void Drv_Inter_Flash_Write(uint32_t adr, uint32_t sz, uint8_t *buf )
 {
-    Hal_Inter_Flash_Program_Page(adr, sz, buf);
+    uint16_t firstPageRemianByte;
+    uint16_t lastPageRemainByte;
+    uint16_t totalPageNum;
+
+    firstPageRemianByte = INTER_PAGE_SIZE - adr % INTER_PAGE_SIZE;    
+
+    if(sz <= firstPageRemianByte)
+    {
+        totalPageNum = 0;
+
+        lastPageRemainByte = 0;
+    }
+    else
+    {
+        totalPageNum = (sz- firstPageRemianByte) / INTER_PAGE_SIZE;
+
+        lastPageRemainByte = (sz- firstPageRemianByte) % INTER_PAGE_SIZE;        
+    }
+
+    if(firstPageRemianByte != 0)
+    {
+        Hal_Inter_Flash_Program_Page(adr, sz, buf);
+    }
+
+    adr += sz;
+
+    for(uint16_t i=0;i<totalPageNum;i++)
+    {
+        Hal_Inter_Flash_Program_Page(adr, INTER_PAGE_SIZE, buf);
+
+        adr += INTER_PAGE_SIZE;
+    }
+
+    if(lastPageRemainByte != 0)
+    {
+        Hal_Inter_Flash_Program_Page(adr, lastPageRemainByte, buf);
+    }
+    
+    adr += lastPageRemainByte;
 }
 
 

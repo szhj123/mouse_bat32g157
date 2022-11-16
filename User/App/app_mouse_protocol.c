@@ -26,7 +26,7 @@ static uint8_t      usbCtrlSendBuf[64] = {0};
 static uint8_t      usbCtrlSendLen; 
 
 void App_Mouse_Init(void )
-{        
+{            
     App_Mouse_Para_Read();
     
     if(mousePara.keyMode > 3)
@@ -405,6 +405,16 @@ void App_Mouse_Set_Light_Effect(uint8_t *buf, uint8_t length )
     mousePara.lightMode = lightEffect.lightMode;
 
     mousePara.lightParaBuf[mousePara.lightMode] = lightEffect.lightPara;    
+}
+
+void App_Mouse_Set_Macro(uint8_t *buf, uint8_t length )
+{
+    uint8_t tmpBuf[512] = {0};
+    
+    macro_data_t macroData = *(macro_data_t *)buf;
+
+
+    Drv_Inter_Flash_Read(FLASH_MACRO_START_ADDR, , uint8_t * buf)
 }
 
 void App_Mouse_Get_Light_Dpi_Rate(uint8_t *buf, uint8_t length )

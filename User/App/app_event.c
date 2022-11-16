@@ -171,6 +171,11 @@ static void App_Event_Usb_Set_Report(uint8_t *buf, uint8_t length )
 
             break;
         }
+        case REPORT_ID_MACRO:
+        {
+            App_Mouse_Set_Macro(buf, length );
+            break;
+        }
         default: break;
     }
 }

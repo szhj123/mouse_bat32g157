@@ -119,11 +119,11 @@ typedef struct _light_effect_t
 typedef struct _macro_data_t
 {
     uint8_t reportId;
-    uint8_t memoryId;
+    uint8_t macroId;
     uint8_t offsetAddr;
     uint8_t length;
     uint8_t buf[60];
-}macroPara_Typedef;
+}macro_data_t;
 
 
 typedef struct _mouse_para_t
@@ -168,11 +168,15 @@ void App_Mouse_Para_Save(void );
 void App_Mouse_Set_Light_Dpi_Rate(uint8_t *buf, uint8_t length );
 void App_Mouse_Set_Key_Mode(uint8_t *buf, uint8_t length );
 void App_Mouse_Set_Light_Effect(uint8_t *buf, uint8_t length );
+void App_Mouse_Set_Key_Value(uint8_t *buf, uint8_t length );
+void App_Mouse_Set_Macro(uint8_t *buf, uint8_t length );
+
 uint8_t App_Mouse_Get_Light_Mode(void );
 void App_Mouse_Get_Light_Dpi_Rate(uint8_t *buf, uint8_t length );
 void App_Mouse_Get_Key_Mode(uint8_t *buf, uint8_t length );
 
-void App_Mouse_Set_Key_Value(uint8_t *buf, uint8_t length );
+
+
 
 uint8_t App_Mouse_Get_Rainbow_Speed(void );
 uint8_t App_Mouse_Get_Rainbow_Direction(void );
