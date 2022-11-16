@@ -205,7 +205,7 @@ static void App_Key_Handler(void *arg )
             keyEvent = KEY_EVENT_MEDIA_BACKWARD_UP;
             break;
         }
-        case KEY_MEDIA_DPI_INC | KEY_DOWN | KEY_UP:
+        case KEY_MEDIA_DPI_INC | KEY_DOWN:
         {
             keyEvent = KEY_EVENT_MEDIA_DPI_INC_DOWN;
             break;
@@ -325,23 +325,27 @@ void App_Key_Mouse_Up(key_val_t keyVal )
 
 void App_Key_Dpi_Down(void )
 {
-    uint8_t dpiIndex = App_Mouse_Get_Dpi_Index();
     light_color_t dpiColor;
-
-    if(dpiIndex < App_Mouse_Get_Dpi_Num())
-    {
-        dpiIndex++;
-    }
-    else
-    {
-        dpiIndex = 0;
-    }
-
-    App_Mouse_Set_Dpi_Index(dpiIndex);
+    
+    uint8_t dpiIndex = App_Mouse_Get_Dpi_Index();
 
     App_Mouse_Get_Dpi_Color(dpiIndex, &dpiColor);
 
     App_Light_Dpi(dpiColor);
 
+    keyBoardReportBuf[0].val = REPORT_ID_DPI;
+    keyBoardReportBuf[1].val = 1;
+    keyBoardReportBuf[2].val = dpiIndex+1;
+    
+    Usb_Intp2_Send((uint8_t *)keyBoardReportBuf, 3);
+
+    dpiIndex++;
+
+    if(dpiIndex >= App_Mouse_Get_Dpi_Num())
+    {
+        dpiIndex = 0;
+    }
+
+    App_Mouse_Set_Dpi_Index(dpiIndex);
 }
 

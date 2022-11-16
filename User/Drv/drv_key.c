@@ -118,8 +118,6 @@ void Drv_Key_Media_Detect(key_media_ctrl_block_t *key )
                     if(key->shortPressCnt == 1)
                     {
                         keySave = keyVal;
-                        
-                        Drv_Key_Queue_Put(keyVal | KEY_DOWN);
                     }
                     else
                     {
@@ -130,6 +128,8 @@ void Drv_Key_Media_Detect(key_media_ctrl_block_t *key )
                             key->shortPressCnt = 1;
                         }
                     }
+                    
+                    Drv_Key_Queue_Put(keyVal | KEY_DOWN);
 
                     key->delayCnt = 0;
 

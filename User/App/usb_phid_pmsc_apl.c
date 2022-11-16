@@ -39,7 +39,7 @@ static uint8_t gs_data[DATA_LEN];
 
 static uint8_t usbEp0InBuf[64];
 static uint8_t usbEp1InBuf[8];
-static uint8_t usbEp2Inbuf[8];
+static uint8_t usbEp2InBuf[8];
 
 const static usb_descriptor_t gs_usb_descriptor =
 {
@@ -185,6 +185,20 @@ void Usb_Intp1_Send(uint8_t *buf, uint8_t length )
     ctrl.type = USB_PHID;
     
     USB_Write(&ctrl, usbEp1InBuf, length);
+}
+
+void Usb_Intp2_Send(uint8_t *buf, uint8_t length )
+{
+    uint8_t i;
+    
+    for(i=0;i<length;i++)
+    {
+        usbEp2InBuf[i] = buf[i];
+    }
+    
+    ctrl.type = USB_PHID;
+    
+    USB_Write(&ctrl, usbEp2InBuf, length);
 }
 
 /******************************************************************************

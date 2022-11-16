@@ -405,7 +405,7 @@ usb_er_t usb_cstd_data_write (usb_ctrl_t *p_ctrl, uint8_t *p_buf, uint32_t size)
     {
         pipe = USB_PIPE6;
     }
-    else if(p_buf[0] == REPORT_ID_KEYBOARD)
+    else if(p_buf[0] == REPORT_ID_KEYBOARD || p_buf[0] == REPORT_ID_DPI)
     {
         pipe = USB_PIPE7;
     }
