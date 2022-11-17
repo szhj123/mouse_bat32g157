@@ -22,6 +22,7 @@ typedef enum _key_event_t
     KEY_EVENT_MEDIA_BACKWARD_DOWN,
     KEY_EVENT_MEDIA_BACKWARD_UP,
     KEY_EVENT_MEDIA_DPI_INC_DOWN,
+    KEY_EVENT_MEDIA_DPI_INC_UP,
     KEY_EVENT_MEDIA_DPI_DEC_DOWN,
     KEY_EVENT_MEDIA_FIRE_DWON,
     KEY_EVENT_MEDIA_REPORT_RATE_DOWN
@@ -36,7 +37,7 @@ void App_Key_Mouse_Down(key_val_t keyVal );
 void App_Key_Mouse_Up(key_val_t keyVal );
 void App_Key_Board_Down(key_val_t keyVal );
 void App_Key_Dpi_Down(void );
-void App_Key_Macro_Down(void );
+void App_Key_Macro_Down(key_val_t keyVal );
 
 #endif 
 

@@ -134,6 +134,12 @@ static void App_Event_Key_Handler(key_event_t keyEvent )
             App_Key_Down_Handler(keyVal);
             break;
         }
+        case KEY_EVENT_MEDIA_DPI_INC_UP:
+        {
+            App_Mouse_Get_Key_6(&keyVal);
+            App_Key_Up_Handler(keyVal);
+            break;
+        }
         default: break;
     }
 }

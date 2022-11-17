@@ -125,7 +125,7 @@ typedef enum
     LOOP_ANY_KEY_PRESS_TERMINATION
 }loop_type_t;
     
-typedef struct _macro_key_val_t
+typedef struct macro_key_val_t
 {
     uint8_t delayTime_h;
     uint8_t delayTime_l;
