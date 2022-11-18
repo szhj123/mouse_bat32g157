@@ -31,6 +31,7 @@ typedef struct _macro_key_ctrl_block_t
     uint8_t  index;
     uint8_t  macroDataIsPress;
     uint8_t  macroKeyIsPress;
+    uint8_t  otherKeyIsPress;
     uint8_t  keyVal;
     uint8_t  timerId;
 }macro_key_ctrl_block_t;
@@ -299,11 +300,15 @@ void App_Key_Down_Handler(key_val_t keyVal )
         case KEY_TYPE_MOUSE:
         {
             App_Key_Mouse_Down(keyVal);
+            
+            App_Other_Key_Press();
             break;
         }
         case KEY_TYPE_DPI:
         {
             App_Key_Dpi_Down();
+            
+            App_Other_Key_Press();
             break;
         }
         case KEY_TYPE_MACRO:
@@ -322,11 +327,21 @@ void App_Key_Up_Handler(key_val_t keyVal )
         case KEY_TYPE_MOUSE:
         {
             App_Key_Mouse_Up(keyVal);
+            
+            App_Other_Key_Up();
+            
+            break;
+        }
+        case KEY_TYPE_DPI:
+        {
+            App_Other_Key_Up();
+            
             break;
         }
         case KEY_TYPE_MACRO:
         {
-            App_Key_Macro_Up(keyVal);
+            App_Key_Macro_Up();
+            
             break;
         }
         default: break;
@@ -544,6 +559,8 @@ static void App_Key_Macro_Down_Callback(void *arg )
         {
             if(macroKeyCtrl.loopCount == 0)
             {
+                App_Key_Macro_Up();
+                
                 Drv_Timer_Delete(macroKeyCtrl.timerId);
             }
             break;
@@ -552,17 +569,30 @@ static void App_Key_Macro_Down_Callback(void *arg )
         {
             if(macroKeyCtrl.macroKeyIsPress == 0)
             {
+                App_Key_Macro_Up();
+                
                 Drv_Timer_Delete(macroKeyCtrl.timerId);
             }
             break;
         }
         case LOOP_ANY_KEY_PRESS_TERMINATION:
         {
+            if(macroKeyCtrl.otherKeyIsPress)
+            {
+                App_Key_Macro_Up();
+                
+                Drv_Timer_Delete(macroKeyCtrl.timerId);
+
+                macroKeyCtrl.otherKeyIsPress = 0;
+
+                macroKeyCtrl.timerId = TIMER_NULL;
+
+            }
+            
             break;
         }
         default: break;
     }
-    
 }
 
 void App_Key_Macro_Down(key_val_t keyVal )
@@ -576,13 +606,29 @@ void App_Key_Macro_Down(key_val_t keyVal )
     macroKeyCtrl.state = MACRO_KEY_STATE_GET;
     macroKeyCtrl.macroKeyIsPress = 1;
 
-    Drv_Timer_Delete(macroKeyCtrl.timerId);
+    if(macroKeyCtrl.loopType == LOOP_ANY_KEY_PRESS_TERMINATION)
+    {
+        if(macroKeyCtrl.timerId == TIMER_NULL)
+        {
+            Drv_Timer_Delete(macroKeyCtrl.timerId);
 
-    macroKeyCtrl.timerId = Drv_Timer_Regist_Period(0, 1, App_Key_Macro_Down_Callback, NULL);
+            macroKeyCtrl.timerId = Drv_Timer_Regist_Period(0, 1, App_Key_Macro_Down_Callback, NULL);
+        }
+        else
+        {
+            App_Key_Macro_Up();
+                
+            Drv_Timer_Delete(macroKeyCtrl.timerId);
+
+            macroKeyCtrl.timerId = TIMER_NULL;
+        }
+    }
 }
 
-void App_Key_Macro_Up(key_val_t keyVal  )
+void App_Key_Macro_Up(void )
 {
+    key_val_t keyVal;
+    
     keyVal.keyType = (uint8_t )KEY_TYPE_KEYBOARD;
     keyVal.keyFunc = 0x00;
     keyVal.keyVal_h = 0x00;
@@ -591,5 +637,22 @@ void App_Key_Macro_Up(key_val_t keyVal  )
     App_Key_Board_Down(keyVal);
 
     macroKeyCtrl.macroKeyIsPress = 0;
+}
+
+void App_Other_Key_Press(void )
+{
+    macroKeyCtrl.otherKeyIsPress = 1;
+}
+
+void App_Other_Key_Up(void )
+{
+    macroKeyCtrl.otherKeyIsPress = 0;
+
+    if(macroKeyCtrl.timerId != TIMER_NULL)
+    {
+        Drv_Timer_Delete(macroKeyCtrl.timerId);
+
+        macroKeyCtrl.timerId = TIMER_NULL;
+    }
 }
 

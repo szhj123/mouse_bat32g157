@@ -92,9 +92,12 @@ typedef struct _key_queue_t
 void Drv_Key_Init(void );
 void Drv_Key_Mouse_Detect(key_mouse_ctrl_block_t *key );
 void Drv_Key_Media_Detect(key_media_ctrl_block_t *key );
+uint8_t Drv_Key_Get_Mouse(key_mouse_ctrl_block_t *key );
+uint16_t Drv_Key_Get_Media(key_media_ctrl_block_t *key );
 
 void Drv_Key_Queue_Put(uint16_t keyVal );
 uint16_t Drv_Key_Queue_Get(void );
+
 
 #endif
 

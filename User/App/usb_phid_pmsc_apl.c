@@ -40,6 +40,7 @@ static uint8_t gs_data[DATA_LEN];
 static uint8_t usbEp0InBuf[64];
 static uint8_t usbEp1InBuf[8];
 static uint8_t usbEp2InBuf[8];
+static uint8_t usbEp3OutBuf[64];
 
 const static usb_descriptor_t gs_usb_descriptor =
 {
@@ -67,6 +68,7 @@ void Usb_Init (void)
     USB_Open(&ctrl, &cfg);    /* Initializes the USB module */
 
     Drv_Task_Regist_Period(0, 1, Usb_Event_Handler, NULL);
+
 }
 
 static void Usb_Event_Handler(void *arg )
@@ -81,12 +83,12 @@ static void Usb_Event_Handler(void *arg )
         }
         case USB_STS_WRITE_COMPLETE :
             ctrl.type = USB_PHID;
-            USB_Read(&ctrl, gs_data, 64);
+            USB_Read(&ctrl, usbEp3OutBuf, 64);
             break;
 
         case USB_STS_READ_COMPLETE :
             ctrl.type = USB_PHID;
-            USB_Write(&ctrl, gs_data, ctrl.size);
+            USB_Read(&ctrl, usbEp3OutBuf, 64);
             break;
 
         case USB_STS_REQUEST : /* Receive Class Request */

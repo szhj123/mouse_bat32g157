@@ -38,6 +38,9 @@ void App_Key_Mouse_Up(key_val_t keyVal );
 void App_Key_Board_Down(key_val_t keyVal );
 void App_Key_Dpi_Down(void );
 void App_Key_Macro_Down(key_val_t keyVal );
+void App_Key_Macro_Up(void );
+void App_Other_Key_Press(void );
+void App_Other_Key_Up(void );
 
 #endif 
 

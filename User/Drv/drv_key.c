@@ -15,7 +15,6 @@
 /* Private define ---------------------------------------*/
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
-static uint16_t Drv_Key_Get_Media(key_media_ctrl_block_t *key );
 /* Private variables ------------------------------------*/
 key_queue_t keyQueue;
 
@@ -113,6 +112,16 @@ void Drv_Key_Media_Detect(key_media_ctrl_block_t *key )
             {
                 if(key->delayCnt > KEY_SHORT_PRESS_TIME)
                 {
+                    #if 1
+                    keySave = keyVal | KEY_DOWN;
+                
+                    Drv_Key_Queue_Put(keySave);
+
+                    key->delayCnt = 0;
+
+                    key->state = KEY_MEDIA_LONG_PRESS;
+                    
+                    #else
                     key->shortPressCnt++;
 
                     if(key->shortPressCnt == 1)
@@ -134,10 +143,12 @@ void Drv_Key_Media_Detect(key_media_ctrl_block_t *key )
                     key->delayCnt = 0;
 
                     key->state = KEY_MEDIA_LONG_PRESS;
+                    #endif 
                 }
             }
             else
             {       
+                #if 0
                 if(key->delayCnt > KEY_DOUBLE_PRESS_TIME)
                 {
                     if(key->shortPressCnt == 1)
@@ -159,6 +170,9 @@ void Drv_Key_Media_Detect(key_media_ctrl_block_t *key )
 
                     key->state = KEY_MEDIA_INIT;
                 }
+                #else
+                key->state = KEY_MEDIA_INIT;
+                #endif 
             }
             break;
         }
@@ -181,7 +195,11 @@ void Drv_Key_Media_Detect(key_media_ctrl_block_t *key )
             {
                 key->delayCnt = 0;
 
+                #if 0
                 key->state = KEY_MEDIA_SHORT_PRESS;
+                #else
+                key->state = KEY_MEDIA_RELEASE;
+                #endif 
             }
             
             break;
@@ -219,7 +237,12 @@ void Drv_Key_Media_Detect(key_media_ctrl_block_t *key )
     }
 }
 
-static uint16_t Drv_Key_Get_Media(key_media_ctrl_block_t *key )
+uint8_t Drv_Key_Get_Mouse(key_mouse_ctrl_block_t *key )
+{
+    return Hal_Key_Get_Value(key->port, key->pin);
+}
+
+uint16_t Drv_Key_Get_Media(key_media_ctrl_block_t *key )
 {
     if(key->isCompositeKey)
     {
