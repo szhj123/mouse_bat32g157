@@ -3,15 +3,24 @@
 
 #include "hal_bat32g157.h"
 
-void Hal_Spi_Flash_Init(void );
-void Hal_Spi_Flash_Write_Single_Data(uint8_t dat );
-void Hal_Spi_Flash_Loop_Read(uint8_t *buf, uint32_t length );
-void Hal_Spi_Flash_DMA_Read(uint8_t *buf, uint32_t length, hal_isr_callback_t callback );
-void Hal_Spi_Flash_DMA_Write(uint8_t *buf, uint32_t length, hal_isr_callback_t callback );
-void Hal_Spi_Flash_Start(void );
-void Hal_Spi_Flash_Stop(void);
-void Hal_Spi_Flash_Tx_Isr_Handler(void );
-void Hal_Spi_Flash_Rx_Isr_Handler(void );
+typedef void (*spi1_tx_end_callback_t)(void );
+typedef void (*spi1_rx_end_callback_t)(void );
+
+
+void Hal_Spi_Init(void );
+void Hal_Spi_Cs_Clr(void );
+void Hal_Spi_Cs_Set(void );
+void Hal_Spi_Start(void );
+void Hal_Spi_Stop(void );
+void Hal_Spi_Tx_Single_With_Blocking(uint8_t val );
+void Hal_Spi_Tx_Multiple_With_Blocking(uint8_t *buf, uint16_t length );
+void Hal_Spi_Tx_Multiple_With_Interrupt(uint8_t *buf, uint16_t length, spi1_tx_end_callback_t callback );
+void Hal_Spi_Tx_Multiple_With_DMA(uint8_t *buf, uint16_t length, spi1_tx_end_callback_t callback );
+void Hal_Spi_Tx_Isr_Handler(void );
+
+void Hal_Spi_Rx_Multiple_With_Block(uint8_t *buf, uint16_t length );
+void Hal_Spi_Rx_Multiple_With_DMA(uint8_t *buf, uint16_t length, spi1_rx_end_callback_t callback );
+void Hal_Spi_Rx_Isr_Handler(void );
 
 #endif 
 

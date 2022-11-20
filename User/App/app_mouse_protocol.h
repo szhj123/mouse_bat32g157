@@ -2,7 +2,9 @@
 #define _APP_MOUSE_H
 
 #include "drv_inter_flash.h"
+#include "drv_spi_flash.h"
 #include "drv_timer.h"
+#include "drv_lcd.h"
 #include "hal_bat32g157.h"
 
 typedef struct _usb_ctrl_setup_t
@@ -132,15 +134,14 @@ typedef struct macro_key_val_t
     uint8_t keyVal;
 }macro_key_val_t;
 
-typedef struct _macro_data_t
+typedef struct _macro_para_t
 {
     uint8_t reportId;
     uint8_t macroId;
     uint8_t offsetAddr;
     uint8_t length;
     uint8_t buf[60];
-}macro_data_t;
-
+}macro_para_t;
 
 typedef struct _mouse_para_t
 {
@@ -168,6 +169,15 @@ typedef struct _mouse_para_t
 
     date_t        date;
 }mouse_para_t;
+
+typedef struct _pic_para_t
+{
+    uint8_t reportId;
+    uint8_t picId;
+    uint8_t picOffsetAddr;
+    uint8_t picLength;
+    uint8_t picBuf[60];
+}pic_para_t;
 
 void App_Mouse_Init(void );
 void App_Mouse_Key_Mode_1_Init(void );
@@ -225,6 +235,7 @@ void App_Mouse_Get_Dpi_Color(uint8_t dpiIndex, light_color_t *dpiColor );
 void App_Mouse_Get_Macro_Key(uint8_t macroId );
 void App_Mouse_Get_Macro_Key_Val(uint8_t macroKeyIndex, macro_key_val_t *macroKeyVal );
 uint8_t App_Mouse_Get_Macro_Key_Num(void );
+void App_Mouse_Set_Pic(uint8_t *buf, uint8_t length );
 
 #endif 
 

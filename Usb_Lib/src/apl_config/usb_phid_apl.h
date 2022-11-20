@@ -69,10 +69,10 @@ extern uint8_t g_remote_wakeup_enable;
  ******************************************************************************/
 
 void Usb_Init (void);
-void Usb_Ctrl_Send(uint8_t *buf, uint8_t length );
-void Usb_Intp1_Send(uint8_t *buf, uint8_t length );
-void Usb_Intp2_Send(uint8_t *buf, uint8_t length );
-void Usb_Intp2_Send_Done(void );
+void Usb_Ep0_In(uint8_t *buf, uint8_t length );
+void Usb_Ep1_In(uint8_t *buf, uint8_t length );
+void Usb_Ep2_In(uint8_t *buf, uint8_t length );
+void Usb_Ep3_Out(void );
 
 #endif /* USB_PHID_APL_H */
 /******************************************************************************

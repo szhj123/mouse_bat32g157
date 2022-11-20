@@ -53,11 +53,11 @@ void tm81_channel10_14_interrupt(void )
 
 void spi1_interrupt(void )
 {
-    Hal_Spi_Flash_Tx_Isr_Handler();
-
-    Hal_Spi_Flash_Rx_Isr_Handler();
-    
     INTC_ClearPendingIRQ(SPI1_IRQn);
+
+    Hal_Spi_Tx_Isr_Handler();
+
+    Hal_Spi_Rx_Isr_Handler();
 }
 
 void lcdb_interrupt(void )

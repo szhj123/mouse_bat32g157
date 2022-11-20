@@ -29,9 +29,6 @@
 void Clk_Init(void );
 /* Private variables ------------------------------------*/
 
-uint32_t buf[128];
-
-
 int main (void)
 {
     //Clk_Init();

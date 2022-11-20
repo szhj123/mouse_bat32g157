@@ -10,7 +10,8 @@ typedef enum _app_event_t
     APP_EVENT_KEY,
     App_EVENT_LIGHT,
     APP_EVENT_USB_SET_REPORT,
-    APP_EVENT_USB_GET_REPORT
+    APP_EVENT_USB_GET_REPORT,
+    APP_EVENT_USB_INTERUPT_OUT
 }app_event_t;
 
 

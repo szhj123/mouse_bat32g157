@@ -23,6 +23,7 @@ static void Drv_Event_Handler(void *arg );
 static void App_Event_Key_Handler(key_event_t keyEvent );
 static void App_Event_Usb_Set_Report(uint8_t *buf, uint8_t length );
 static void App_Event_Usb_Get_Report(uint8_t *buf, uint8_t length );
+static void App_Event_Usb_Interrupt_Out(uint8_t *buf, uint8_t length );
 /* Private variables ------------------------------------*/
 
 void App_Event_Init(void )
@@ -55,6 +56,11 @@ static void Drv_Event_Handler(void *arg )
             case APP_EVENT_USB_GET_REPORT:
             {
                 App_Event_Usb_Get_Report(msg.buf, msg.length);
+                break;
+            }
+            case APP_EVENT_USB_INTERUPT_OUT:
+            {
+                App_Event_Usb_Interrupt_Out(msg.buf, msg.length);
                 break;
             }
             default: break;
@@ -201,6 +207,14 @@ static void App_Event_Usb_Get_Report(uint8_t *buf, uint8_t length )
             break;
         }
         default: break;
+    }
+}
+
+static void App_Event_Usb_Interrupt_Out(uint8_t *buf, uint8_t length )
+{
+    if(buf[0] == REPORT_ID_PIC)
+    {
+        App_Mouse_Set_Pic(buf, length );
     }
 }
 

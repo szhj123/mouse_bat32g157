@@ -365,7 +365,7 @@ void SPI1_Start(void)
     INTC_ClearPendingIRQ(SPI1_IRQn);
     NVIC_ClearPendingIRQ(SPI1_IRQn);
     /* enable INTSPI interrupt */
-    //INTC_EnableIRQ(SPI1_IRQn);
+    INTC_EnableIRQ(SPI1_IRQn);
     NVIC_EnableIRQ(SPI1_IRQn);
     SPIHS1->SPIM1 |= _0080_SPI_START_TRG_ON; 
     /* SSn Active */

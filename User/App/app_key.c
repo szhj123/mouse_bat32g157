@@ -362,7 +362,7 @@ void App_Key_Mouse_Down(key_val_t keyVal )
         default :break;
     }
 
-    Usb_Intp1_Send((uint8_t *)mouseReportBuf, 7);
+    Usb_Ep1_In((uint8_t *)mouseReportBuf, 7);
 }
 
 void App_Key_Board_Down(key_val_t keyVal )
@@ -382,7 +382,7 @@ void App_Key_Board_Down(key_val_t keyVal )
     keyBoardReportBuf[2].val = keyVal.keyVal_l;
     keyBoardReportBuf[3].val = keyVal.keyVal_h;
 
-    Usb_Intp2_Send((uint8_t *)keyBoardReportBuf, 8);
+    Usb_Ep2_In((uint8_t *)keyBoardReportBuf, 8);
 }
 
 void App_Key_Mouse_Up(key_val_t keyVal )
@@ -399,7 +399,7 @@ void App_Key_Mouse_Up(key_val_t keyVal )
         default :break;
     }
 
-    Usb_Intp1_Send((uint8_t *)mouseReportBuf, 7);
+    Usb_Ep1_In((uint8_t *)mouseReportBuf, 7);
 }
 
 void App_Key_Dpi_Down(void )
@@ -416,7 +416,7 @@ void App_Key_Dpi_Down(void )
     keyBoardReportBuf[1].val = 1;
     keyBoardReportBuf[2].val = dpiIndex+1;
     
-    Usb_Intp2_Send((uint8_t *)keyBoardReportBuf, 3);
+    Usb_Ep2_In((uint8_t *)keyBoardReportBuf, 3);
 
     dpiIndex++;
 

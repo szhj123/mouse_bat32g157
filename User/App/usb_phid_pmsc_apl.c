@@ -79,16 +79,16 @@ static void Usb_Event_Handler(void *arg )
     {
         case USB_STS_CONFIGURED :
         {
+            ctrl.type = USB_PHID;
+            USB_Read(&ctrl, usbEp3OutBuf, 64);
             break;
         }
         case USB_STS_WRITE_COMPLETE :
-            ctrl.type = USB_PHID;
-            USB_Read(&ctrl, usbEp3OutBuf, 64);
+            //USB IN 中断输入完成后，会进入这里
             break;
 
         case USB_STS_READ_COMPLETE :
-            ctrl.type = USB_PHID;
-            USB_Read(&ctrl, usbEp3OutBuf, 64);
+            Drv_Event_Put(APP_EVENT_USB_INTERUPT_OUT, usbEp3OutBuf, sizeof(usbEp3OutBuf));
             break;
 
         case USB_STS_REQUEST : /* Receive Class Request */
@@ -161,7 +161,7 @@ static void Usb_Event_Handler(void *arg )
     }
 } /* End of function Usb_Init */
 
-void Usb_Ctrl_Send(uint8_t *buf, uint8_t length )
+void Usb_Ep0_In(uint8_t *buf, uint8_t length )
 {
     uint8_t i;
 
@@ -175,7 +175,7 @@ void Usb_Ctrl_Send(uint8_t *buf, uint8_t length )
     USB_Write(&ctrl, usbEp0InBuf, length);	
 }
 
-void Usb_Intp1_Send(uint8_t *buf, uint8_t length )
+void Usb_Ep1_In(uint8_t *buf, uint8_t length )
 {    
     uint8_t i;
     
@@ -189,7 +189,7 @@ void Usb_Intp1_Send(uint8_t *buf, uint8_t length )
     USB_Write(&ctrl, usbEp1InBuf, length);
 }
 
-void Usb_Intp2_Send(uint8_t *buf, uint8_t length )
+void Usb_Ep2_In(uint8_t *buf, uint8_t length )
 {
     uint8_t i;
     
@@ -201,6 +201,13 @@ void Usb_Intp2_Send(uint8_t *buf, uint8_t length )
     ctrl.type = USB_PHID;
     
     USB_Write(&ctrl, usbEp2InBuf, length);
+}
+
+void Usb_Ep3_Out(void )
+{
+    ctrl.type = USB_PHID;
+    
+    USB_Read(&ctrl, usbEp3OutBuf, 64);
 }
 
 /******************************************************************************

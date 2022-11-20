@@ -439,23 +439,23 @@ void App_Mouse_Set_Macro(uint8_t *buf, uint8_t length )
     uint32_t flashAddr = 0;
     
     
-    macro_data_t macroData = *(macro_data_t *)buf;
+    macro_para_t macroPara = *(macro_para_t *)buf;
 
-    if(macroData.macroId > 4)
+    if(macroPara.macroId > 4)
     {
-        macroData.macroId = 4;
+        macroPara.macroId = 4;
     }
     
-    for(i=0;i<macroData.length;i++)
+    for(i=0;i<macroPara.length;i++)
     {
-        *((uint8_t * )macroKeyBuf + macroData.offsetAddr + i) = macroData.buf[i];
+        *((uint8_t * )macroKeyBuf + macroPara.offsetAddr + i) = macroPara.buf[i];
     }
 
-    macroKeyLength = (macroData.offsetAddr + macroData.length) / 3;
+    macroKeyLength = (macroPara.offsetAddr + macroPara.length) / 3;
 
     Drv_Timer_Delete(timerId);
 
-    timerId = Drv_Timer_Regist_Oneshot(50, App_Mouse_Macro_Data_Save, (void *)macroData.macroId);
+    timerId = Drv_Timer_Regist_Oneshot(50, App_Mouse_Macro_Data_Save, (void *)macroPara.macroId);
 }
 
 void App_Mouse_Get_Light_Dpi_Rate(uint8_t *buf, uint8_t length )
@@ -484,7 +484,7 @@ void App_Mouse_Get_Light_Dpi_Rate(uint8_t *buf, uint8_t length )
         usbCtrlSendBuf[23+i] = *((uint8_t *)&mousePara.dpiColorBuf[0] + i);
     }
 
-    Usb_Ctrl_Send(usbCtrlSendBuf, usbCtrlSendLen);
+    Usb_Ep0_In(usbCtrlSendBuf, usbCtrlSendLen);
 }
 
 void App_Mouse_Get_Key_Mode(uint8_t *buf, uint8_t length )
@@ -495,7 +495,7 @@ void App_Mouse_Get_Key_Mode(uint8_t *buf, uint8_t length )
     usbCtrlSendBuf[0] = usbCtrlSetup.wValue_l; //report ID
     usbCtrlSendBuf[1] = mousePara.keyMode;
     
-    Usb_Ctrl_Send(usbCtrlSendBuf, usbCtrlSendLen);
+    Usb_Ep0_In(usbCtrlSendBuf, usbCtrlSendLen);
 }
 
 void App_Mouse_Para_Read(void )
@@ -669,5 +669,83 @@ uint8_t App_Mouse_Get_Macro_Key_Num(void )
 {
     return macroKeyLength;
 }
+
+typedef enum
+{
+    PIC_FLASH_STATE_ERASE = 0,
+    PIC_FLASH_STATE_WRITE
+}pic_flash_state_t;
+
+typedef struct _pic_ctrl_block_t
+{
+    uint16_t picTotalNum;
+    uint32_t picMask;
+    uint32_t picFlashAddr;
+    uint32_t picRecvLength;
+
+    pic_flash_state_t picFlashState;
+}pic_ctrl_block_t;
+
+pic_ctrl_block_t picCtrl;
+
+void App_Mouse_Set_Pic(uint8_t *buf, uint8_t length )
+{
+    pic_para_t *picPara = (pic_para_t *)buf;
+
+    switch(picCtrl.picFlashState)
+    {
+        case PIC_FLASH_STATE_ERASE:
+        {
+            if(picPara->picId != 0xff)
+            {
+                picCtrl.picFlashAddr = picPara->picId * ERASE_64K_BLOCK_SIZE * 2;
+
+                picCtrl.picRecvLength = 0;
+
+                Drv_Spi_64K_Block_Erase(picCtrl.picFlashAddr);
+
+                Drv_Spi_64K_Block_Erase(picCtrl.picFlashAddr + ERASE_64K_BLOCK_SIZE);
+
+                Drv_Spi_Write(picCtrl.picFlashAddr, picPara->picBuf, picPara->picLength);
+
+                picCtrl.picFlashAddr += picPara->picLength;
+                
+                picCtrl.picRecvLength += picPara->picLength;
+
+                picCtrl.picFlashState = PIC_FLASH_STATE_WRITE;
+            }
+            break;
+        }
+        case PIC_FLASH_STATE_WRITE:
+        {
+            if(picPara->picId != 0xff)
+            {
+                Drv_Spi_Write(picCtrl.picFlashAddr, picPara->picBuf, picPara->picLength);
+
+                picCtrl.picFlashAddr += picPara->picLength;
+                
+                picCtrl.picRecvLength += picPara->picLength;
+
+                if(picCtrl.picRecvLength >= LCD_W * LCD_H * 2)
+                {
+                    picCtrl.picMask |= (1 << picPara->picId);
+                    
+                    picCtrl.picTotalNum++;
+
+                    picCtrl.picFlashState = PIC_FLASH_STATE_ERASE;
+                }
+            }
+            else
+            {
+                picCtrl.picFlashState = PIC_FLASH_STATE_ERASE;
+            }
+            break;
+        }
+        default: break;
+    }
+
+    Usb_Ep3_Out();
+}
+
 
 
