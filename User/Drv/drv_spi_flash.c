@@ -27,7 +27,7 @@ static flash_id_t flash_id;
 static uint8_t spi_tx_end_flag;
 static uint8_t spi_rx_end_flag;
 
-uint8_t rxBuf[60] = {0};
+//uint8_t rxBuf[60] = {0};
 
 void Drv_Spi_Flash_Init(void )
 {

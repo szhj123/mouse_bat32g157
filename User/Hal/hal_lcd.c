@@ -154,6 +154,65 @@ void Hal_Lcd_Set_BgColor(uint16_t color, lcd_isr_callback_t callback )
     LCDB->LBDATA = color;
 }
 
+void Hal_Lcd_Show_Pic(uint32_t flashAddr, lcd_isr_callback_t callback )
+{
+    uint16_t  dummy;
+
+    SPIHS1->SPIM1 &= ~_0004_SPI_LENGTH_16;
+	SPIHS1->SPIM1 &= ~_0002_SPI_CONTINOUS_RECEPTION;
+	SPIHS1->SPIM1 |= _0040_SPI_RECEPTION_TRANSMISSION;
+
+    /* /CS: active */
+    Hal_Spi_Start();    
+    /* Send command 0x0B: Read data */
+    //SPIHS1_Send(0x0B);
+    Hal_Spi_Tx_Single_With_Blocking(0x0B);
+    /* Send 24-bit start address */
+    Hal_Spi_Tx_Single_With_Blocking((uint8_t )(flashAddr >> 16));
+    Hal_Spi_Tx_Single_With_Blocking((uint8_t )(flashAddr >> 8));
+    Hal_Spi_Tx_Single_With_Blocking((uint8_t ) flashAddr);
+    Hal_Spi_Tx_Single_With_Blocking(0xff);//dummy
+
+    LCD_CS_LOW();
+
+	LCD_DC_LOW();
+
+	Write_LBDATAL(0x2C);
+	
+	LCD_DC_HIGH();
+
+    SPIHS1->SPIM1 |= _0004_SPI_LENGTH_16;
+
+	SPIHS1->SPIM1 &= ~_0040_SPI_RECEPTION_TRANSMISSION;
+	
+    DMAVEC->VEC[DMA_VECTOR_SPIHS1] = SPI_DMA_CHANNEL;
+    
+    DMAVEC->CTRL[SPI_DMA_CHANNEL].DMACR = (DMA_SIZE_HALF << CTRL_DMACR_SZ_Pos)  | (0<<CTRL_DMACR_CHNE_Pos) | (0 << CTRL_DMACR_RPTINT_Pos) |
+                                        (0 << CTRL_DMACR_DAMOD_Pos)  | (0 << CTRL_DMACR_SAMOD_Pos) |
+                                        (0 << CTRL_DMACR_RPTSEL_Pos)| (DMA_MODE_NORMAL << CTRL_DMACR_MODE_Pos);
+    DMAVEC->CTRL[SPI_DMA_CHANNEL].DMBLS = 1;
+    DMAVEC->CTRL[SPI_DMA_CHANNEL].DMACT = (LCD_W*LCD_H)/2;
+    DMAVEC->CTRL[SPI_DMA_CHANNEL].DMRLD = (LCD_W*LCD_H)/2;
+    DMAVEC->CTRL[SPI_DMA_CHANNEL].DMSAR = (uint32_t)(&SPIHS1->SDRI1);
+    DMAVEC->CTRL[SPI_DMA_CHANNEL].DMDAR = (uint32_t)((uint16_t*)&LCDB->LBDATA);
+
+    /* init DMA registers */
+    CGC->PER1   |= CGC_PER1_DMAEN_Msk;
+    DMA->DMABAR  = DMAVEC_BASE;
+	DMA_Enable(DMA_VECTOR_SPIHS1);
+
+    lcd_isr_callback = callback;
+    
+    lcd_interrupt_cnt = 0;
+    
+    lcdRxReqFlag = 1;
+
+    dummy = SPIHS1->SDRI1;
+	
+	INTC_ClearPendingIRQ(SPI1_IRQn);
+	INTC_EnableIRQ(SPI1_IRQn);
+}
+
 void Hal_Lcd_Clr_Isr_Handler(void )
 {
     if(lcdRxReqFlag)
@@ -178,6 +237,39 @@ void Hal_Lcd_Clr_Isr_Handler(void )
             }
     		
     		LCDB_Stop();
+    	}
+    }
+}
+
+void Hal_Lcd_Pic_Isr_Handler(void)
+{
+    volatile uint8_t sio_dummy;
+
+    if(lcdRxReqFlag)
+    {
+    	if(++lcd_interrupt_cnt == 1)
+    	{
+    		DMAVEC->CTRL[SPI_DMA_CHANNEL].DMACT = (LCD_W*LCD_H)/2-1;
+    		
+    		DMA_Enable(DMA_VECTOR_SPIHS1);
+    		LCDB->LBDATA = SPIHS1->SDRI1;
+    	}
+    	else
+    	{
+            lcdRxReqFlag = 0;
+            
+    		LCD_CS_HIGH();
+
+            SPIHS1->SPIM1 |= _0040_SPI_RECEPTION_TRANSMISSION;
+            
+            Hal_Spi_Cs_Set();
+
+            if(lcd_isr_callback != NULL)
+            {
+                lcd_isr_callback();
+            }
+            
+    		INTC_DisableIRQ(SPI1_IRQn);
     	}
     }
 }

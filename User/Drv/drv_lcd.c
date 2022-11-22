@@ -124,6 +124,16 @@ void Drv_Lcd_Clr(uint16_t color, lcd_isr_callback_t callback )
 }
 
 
+void Drv_Lcd_Show_Pic(uint8_t picId, lcd_isr_callback_t callback )
+{
+    uint32_t flashAddr = picId * ERASE_64K_BLOCK_SIZE * 2;
+    
+    Drv_Lcd_Set_Position(0, 0, LCD_W-1,LCD_H-1);
+
+    Hal_Lcd_Show_Pic(flashAddr, callback);
+}
+
+
 void Drv_Lcd_Set_Position(uint16_t startX, uint16_t startY, uint16_t endX, uint16_t endY )
 {
 	Drv_Lcd_Wr_Cmd(0x2A);
@@ -159,6 +169,22 @@ void Drv_Lcd_Wr_Data(uint8_t dat )
 
 	LCD_CS_HIGH();
 }
+
+void Drv_Lcd_Write_Multi_Data(uint16_t *buf, uint16_t size )
+{
+	uint16_t i;
+    
+    LCD_CS_LOW();
+	LCD_DC_HIGH();
+
+    for(i = 0; i < size; i++)
+	{        
+		Write_LBDATA(buf[i]);
+	}
+
+    LCD_CS_HIGH();
+}
+
 
 void Drv_Lcd_Rd_Data(uint8_t *buf, uint8_t length )
 {

@@ -45,7 +45,7 @@ int main (void)
 
     Drv_Spi_Flash_Init();
 
-    ///App_Lcd_Init();
+    App_Lcd_Init();
 
     App_Light_Init();
 

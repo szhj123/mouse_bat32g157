@@ -14,6 +14,23 @@
 #include "usb_phid_apl.h"
 
 /* Private typedef --------------------------------------*/
+typedef enum
+{
+    PIC_FLASH_STATE_ERASE = 0,
+    PIC_FLASH_STATE_WRITE
+}pic_flash_state_t;
+
+typedef struct _pic_ctrl_block_t
+{
+    uint16_t picTotalNum;
+    uint32_t picMask;
+    uint32_t picFlashAddr;
+    uint32_t picRecvLength;
+
+    pic_flash_state_t picFlashState;
+}pic_ctrl_block_t;
+
+
 /* Private define ---------------------------------------*/
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
@@ -27,6 +44,10 @@ static uint8_t     macroKeyLength;
 static usb_ctrl_setup_t usbCtrlSetup;
 static uint8_t      usbCtrlSendBuf[64] = {0};
 static uint8_t      usbCtrlSendLen; 
+
+static pic_ctrl_block_t picCtrl;
+
+static uint8_t picIdBuf[16];
 
 
 void App_Mouse_Init(void )
@@ -670,24 +691,6 @@ uint8_t App_Mouse_Get_Macro_Key_Num(void )
     return macroKeyLength;
 }
 
-typedef enum
-{
-    PIC_FLASH_STATE_ERASE = 0,
-    PIC_FLASH_STATE_WRITE
-}pic_flash_state_t;
-
-typedef struct _pic_ctrl_block_t
-{
-    uint16_t picTotalNum;
-    uint32_t picMask;
-    uint32_t picFlashAddr;
-    uint32_t picRecvLength;
-
-    pic_flash_state_t picFlashState;
-}pic_ctrl_block_t;
-
-pic_ctrl_block_t picCtrl;
-
 void App_Mouse_Set_Pic(uint8_t *buf, uint8_t length )
 {
     pic_para_t *picPara = (pic_para_t *)buf;
@@ -728,7 +731,7 @@ void App_Mouse_Set_Pic(uint8_t *buf, uint8_t length )
 
                 if(picCtrl.picRecvLength >= LCD_W * LCD_H * 2)
                 {
-                    picCtrl.picMask |= (1 << picPara->picId);
+                    App_Mouse_Set_Pic_Mask(picPara->picId);
                     
                     picCtrl.picTotalNum++;
 
@@ -745,6 +748,47 @@ void App_Mouse_Set_Pic(uint8_t *buf, uint8_t length )
     }
 
     Usb_Ep3_Out();
+}
+
+void App_Mouse_Set_Pic_Mask(uint8_t picId )
+{
+    uint8_t i,j;
+    uint16_t picMask;
+    
+    if(picId > 16)
+    {
+        picId = 16;
+    }
+    else if(picId < 1)
+    {
+        picId = 1;
+    }
+    
+    if(picId > 8)
+    {
+        mousePara.picShowMask_h |= (1 << (picId-8));
+    }
+    else
+    {
+        mousePara.picShowMask_l |= (1 << (picId-1));
+    }
+
+    picMask = (uint16_t )mousePara.picShowMask_h << 8 | mousePara.picShowMask_l;
+
+    j = 0;
+
+    for(i=0;i<16;i++)
+    {
+        if(picMask & (1<<i))
+        {
+            picIdBuf[j++] = i+1;
+        }   
+    }
+}
+
+uint8_t App_Mouse_Get_Pic_Id(uint8_t picIndex )
+{
+    return  picIdBuf[picIndex];
 }
 
 

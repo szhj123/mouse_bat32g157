@@ -143,6 +143,15 @@ typedef struct _macro_para_t
     uint8_t buf[60];
 }macro_para_t;
 
+typedef struct _pic_para_t
+{
+    uint8_t reportId;
+    uint8_t picId;
+    uint8_t picOffsetAddr;
+    uint8_t picLength;
+    uint8_t picBuf[60];
+}pic_para_t;
+
 typedef struct _mouse_para_t
 {
     uint8_t       keyMode;
@@ -169,15 +178,6 @@ typedef struct _mouse_para_t
 
     date_t        date;
 }mouse_para_t;
-
-typedef struct _pic_para_t
-{
-    uint8_t reportId;
-    uint8_t picId;
-    uint8_t picOffsetAddr;
-    uint8_t picLength;
-    uint8_t picBuf[60];
-}pic_para_t;
 
 void App_Mouse_Init(void );
 void App_Mouse_Key_Mode_1_Init(void );
@@ -236,6 +236,8 @@ void App_Mouse_Get_Macro_Key(uint8_t macroId );
 void App_Mouse_Get_Macro_Key_Val(uint8_t macroKeyIndex, macro_key_val_t *macroKeyVal );
 uint8_t App_Mouse_Get_Macro_Key_Num(void );
 void App_Mouse_Set_Pic(uint8_t *buf, uint8_t length );
+void App_Mouse_Set_Pic_Mask(uint8_t picId );
+uint8_t App_Mouse_Get_Pic_Id(uint8_t picIndex );
 
 #endif 
 

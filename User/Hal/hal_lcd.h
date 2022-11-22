@@ -2,6 +2,7 @@
 #define _HAL_LCD_H
 
 #include "hal_bat32g157.h"
+#include "hal_spi_flash.h"
 
 #define LCD_W                   240u
 #define LCD_H                   240u
@@ -160,7 +161,9 @@ void LCDB_Start(void);
 void LCDB_Stop(void);
 
 void Hal_Lcd_Set_BgColor(uint16_t color, lcd_isr_callback_t callback );
+void Hal_Lcd_Show_Pic(uint32_t flashAddr, lcd_isr_callback_t callback );
 void Hal_Lcd_Clr_Isr_Handler(void );
+void Hal_Lcd_Pic_Isr_Handler(void);
 
 #endif 
 

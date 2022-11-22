@@ -58,6 +58,8 @@ void spi1_interrupt(void )
     Hal_Spi_Tx_Isr_Handler();
 
     Hal_Spi_Rx_Isr_Handler();
+
+    Hal_Lcd_Pic_Isr_Handler();
 }
 
 void lcdb_interrupt(void )
