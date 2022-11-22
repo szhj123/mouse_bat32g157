@@ -18,7 +18,6 @@
 /* Private function -------------------------------------*/
 static void App_Lcd_Clr_Callback(void );
 /* Private variables ------------------------------------*/
-uint8_t rxBuf[60] = {0};
 static uint8_t lcdTestFlag;
 
 void App_Lcd_Init(void )
@@ -28,33 +27,13 @@ void App_Lcd_Init(void )
     Drv_Lcd_Clr(YELLOW, App_Lcd_Clr_Callback);
     while(!lcdTestFlag);
         lcdTestFlag = 0;
-
+    
+    #if 1
     Drv_Lcd_Show_Pic(5, App_Lcd_Clr_Callback);
     while(!lcdTestFlag);
-        lcdTestFlag = 0;
-
-    
-
-    
-    #if 0
-    uint32_t addr = 0xa0000;
-    
-    Drv_Lcd_Set_Position(0, 0, LCD_W-1,LCD_H-1);
-
-    Drv_Lcd_Wr_Cmd(0x2c);
-
-    do{
-        Drv_Spi_Read(addr, rxBuf, sizeof(rxBuf));
-
-        Drv_Lcd_Write_Multi_Data(rxBuf, 30);
-        addr += 60;
-
-        if(addr > 0xa0000+115000)
-            addr = addr;
-        
-    }while(addr < (0xa0000+115200));
-
+    lcdTestFlag = 0;
     #endif 
+    
 }
 
 static void App_Lcd_Clr_Callback(void )

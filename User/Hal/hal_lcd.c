@@ -15,6 +15,7 @@
 /* Private typedef --------------------------------------*/
 /* Private define ---------------------------------------*/
 #define DMA_CTRL_DATA_LCDB 0
+#define SPI_DMA_CHANNEL 1
 
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/

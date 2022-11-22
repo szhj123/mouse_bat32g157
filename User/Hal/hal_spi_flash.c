@@ -44,6 +44,7 @@ void Hal_Spi_Cs_Set(void )
 
 void Hal_Spi_Start(void )
 {
+    SPIHS1->SPIM1 |= _0040_SPI_RECEPTION_TRANSMISSION;
     SPI1_Start();
 }
 

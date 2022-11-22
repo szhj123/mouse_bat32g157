@@ -3,6 +3,7 @@
 
 #include "drv_timer.h"
 #include "drv_key.h"
+#include "drv_spi_flash.h"
 
 #include "app_mouse_protocol.h"
 #include "usb_phid_apl.h"

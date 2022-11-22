@@ -210,8 +210,6 @@ DMA Control Data Set definitions
 #define ADC_WITH_DMA
 #define CTRL_DATA_ADC   16
 
-#define SPI_DMA_CHANNEL 0
-
 #define IISTX_DMA_CHANNEL 2
 #define IISRX_DMA_CHANNEL 3
 

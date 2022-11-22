@@ -342,7 +342,7 @@ void SPI1_MasterInit(spi_mode_t mode)
 {
     CGC->PER1 |= 0x80;
 #ifdef SPIHS1_WITH_DMA
-    SPIHS1->SPIC1 = _0003_SPI_SCK_fCLK_3 | (mode & 0x03) << 3;    
+    SPIHS1->SPIC1 = _0001_SPI_SCK_fCLK_1 | (mode & 0x03) << 3;    
 #else
     SPIHS1->SPIC1 = _0006_SPI_SCK_fCLK_6 | (mode & 0x03) << 3;    
 #endif
