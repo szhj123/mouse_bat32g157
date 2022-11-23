@@ -45,6 +45,7 @@ void Hal_Spi_Cs_Set(void )
 void Hal_Spi_Start(void )
 {
     SPIHS1->SPIM1 |= _0040_SPI_RECEPTION_TRANSMISSION;
+    
     SPI1_Start();
 }
 
@@ -52,7 +53,7 @@ void Hal_Spi_Stop(void )
 {
     SPI1_Stop();
 
-    SPIHS1->SPIM1 |= _0040_SPI_RECEPTION_TRANSMISSION; //将状态从接收，改成发送，因为下一次接收之前，需要传输命令和地址；
+    SPIHS1->SPIM1 |= _0040_SPI_RECEPTION_TRANSMISSION; //将spi模式从接收，改成发送，因为下一次接收之前，需要传输命令和地址；
 }
 
 void Hal_Spi_Tx_Single_With_Blocking(uint8_t val )
@@ -220,7 +221,7 @@ void Hal_Spi_Tx_Isr_Handler(void )
 void Hal_Spi_Rx_Isr_Handler(void )
 {
     if(spiRxReqFlag)
-    {
+    {    
         spiRxReqFlag = 0;
         
         if(spi1_rx_end_callback != NULL)

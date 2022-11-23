@@ -211,7 +211,7 @@ static void App_Event_Usb_Get_Report(uint8_t *buf, uint8_t length )
 }
 
 static void App_Event_Usb_Interrupt_Out(uint8_t *buf, uint8_t length )
-{
+{    
     if(buf[0] == REPORT_ID_PIC)
     {
         App_Mouse_Set_Pic(buf, length );        

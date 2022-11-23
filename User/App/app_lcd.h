@@ -20,6 +20,7 @@
 
 
 void App_Lcd_Init(void );
+void App_Lcd_Show_Pic(uint8_t picId );
 
 #endif 
 

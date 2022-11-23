@@ -14,7 +14,7 @@
 #include "stdio.h"
 #include "string.h"
 #include "drv_spi_flash.h"
-
+#include "drv_task.h"
 /* Private typedef --------------------------------------*/
 /* Private define ---------------------------------------*/
 /* Private macro ----------------------------------------*/
@@ -26,7 +26,6 @@ static void Drv_Spi_Rx_End_Callback(void );
 static flash_id_t flash_id;
 static uint8_t spi_tx_end_flag;
 static uint8_t spi_rx_end_flag;
-
 
 void Drv_Spi_Flash_Init(void )
 {
@@ -43,6 +42,7 @@ void Drv_Spi_Flash_Init(void )
     Drv_Spi_64K_Block_Erase(addr+ERASE_64K_BLOCK_SIZE);
 
     do{
+        Drv_Spi_Read(addr, (uint8_t *)rxBuf, sizeof(rxBuf));
         for(i=0;i<32;i++)
             rxBuf[i] = 0xf800;
         Drv_Spi_Write(addr, (uint8_t *)rxBuf, sizeof(rxBuf));

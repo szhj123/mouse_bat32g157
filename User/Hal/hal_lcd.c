@@ -230,6 +230,12 @@ void Hal_Lcd_Clr_Isr_Handler(void )
             
     		LCD_CS_HIGH();
 
+            //因为图片数据从外部flash写入LCDB的时候，SPI配置的是16bit, 接收模式，
+            //所以，接收完成后，需要将SPI配置成8bit, 发送模式，以便可以通过SPI读写外部flash
+            SPIHS1->SPIM1 |= _0040_SPI_RECEPTION_TRANSMISSION;
+            
+            SPIHS1->SPIM1 &= ~_0004_SPI_LENGTH_16;
+
             lcd_interrupt_cnt = 0;
 
             if(lcd_isr_callback != NULL)
@@ -260,8 +266,11 @@ void Hal_Lcd_Pic_Isr_Handler(void)
             lcdRxReqFlag = 0;
             
     		LCD_CS_HIGH();
-
+            //因为图片数据从外部flash写入LCDB的时候，SPI配置的是16bit, 接收模式，
+            //所以，接收完成后，需要将SPI配置成8bit, 发送模式，以便可以通过SPI读写外部flash
             SPIHS1->SPIM1 |= _0040_SPI_RECEPTION_TRANSMISSION;
+            
+            SPIHS1->SPIM1 &= ~_0004_SPI_LENGTH_16;
             
             Hal_Spi_Cs_Set();
 

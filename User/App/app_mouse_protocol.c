@@ -26,6 +26,7 @@ typedef struct _pic_ctrl_block_t
     uint32_t picMask;
     uint32_t picFlashAddr;
     uint32_t picRecvLength;
+    uint8_t  timerId;
 
     pic_flash_state_t picFlashState;
 }pic_ctrl_block_t;
@@ -693,7 +694,19 @@ uint8_t App_Mouse_Get_Macro_Key_Num(void )
 
 void App_Mouse_Set_Pic(uint8_t *buf, uint8_t length )
 {
+    uint8_t i;
+    uint8_t tmp;
+
     pic_para_t *picPara = (pic_para_t *)buf;
+
+    for(i=0;i<sizeof(picPara->picBuf)/2;i++)
+    {
+        tmp = picPara->picBuf[i*2];
+
+        picPara->picBuf[i*2] = picPara->picBuf[i*2+1];
+
+        picPara->picBuf[i*2+1] = tmp;
+    }
 
     switch(picCtrl.picFlashState)
     {
@@ -734,6 +747,8 @@ void App_Mouse_Set_Pic(uint8_t *buf, uint8_t length )
                     App_Mouse_Set_Pic_Mask(picPara->picId);
                     
                     picCtrl.picTotalNum++;
+
+                    App_Lcd_Show_Pic(picPara->picId);
 
                     picCtrl.picFlashState = PIC_FLASH_STATE_ERASE;
                 }
