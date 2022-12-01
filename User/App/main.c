@@ -41,7 +41,7 @@ int main (void)
 
     App_Mouse_Init();
 
-    //Drv_Mouse_Sensor_Init();
+    Drv_Mouse_Sensor_Init();
 
     Drv_Spi_Flash_Init();
 

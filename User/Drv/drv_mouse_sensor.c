@@ -157,7 +157,7 @@ void Drv_Mouse_Sensor_Init(void )
     
     for(ctr = 0; ctr< 55; ctr++)	
     {
-        if(Drv_Mouse_Sensor_Read(0x20) == 0x0F) 
+        if(Drv_Mouse_Sensor_Read(0x00) == 0x0F) 
         {
             break;
         }
