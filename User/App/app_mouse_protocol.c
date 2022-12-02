@@ -12,6 +12,7 @@
 /* Includes ---------------------------------------------*/
 #include "app_mouse_protocol.h"
 #include "usb_phid_apl.h"
+#include "app_lcd.h"
 
 /* Private typedef --------------------------------------*/
 typedef enum
@@ -51,7 +52,7 @@ static pic_ctrl_block_t picCtrl;
 static uint8_t picIdBuf[16];
 
 
-void App_Mouse_Init(void )
+void App_Mouse_Protocol_Init(void )
 {            
     App_Mouse_Para_Read();
     
@@ -640,6 +641,26 @@ void App_Mouse_Get_Key_8(key_val_t *keyVal )
 void App_Mouse_Get_Key_9(key_val_t *keyVal )
 {
      *keyVal = mouseKeyModeBuf[8];
+}
+
+uint16_t App_Mouse_Get_Report_Rate(void )
+{
+    if(mousePara.reportRate == 1)
+    {
+        return 125;
+    }
+    else if(mousePara.reportRate == 2)
+    {
+        return 250;
+    }
+    else if(mousePara.reportRate == 3)
+    {
+        return 500;
+    }
+    else
+    {
+        return 1000;
+    }
 }
 
 uint8_t App_Mouse_Get_Dpi_Index(void )

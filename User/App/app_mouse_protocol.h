@@ -179,7 +179,7 @@ typedef struct _mouse_para_t
     date_t        date;
 }mouse_para_t;
 
-void App_Mouse_Init(void );
+void App_Mouse_Protocol_Init(void );
 void App_Mouse_Key_Mode_1_Init(void );
 void App_Mouse_Key_Mode_2_Init(void );
 void App_Mouse_Key_Mode_3_Init(void );
@@ -228,6 +228,7 @@ void App_Mouse_Get_Key_7(key_val_t *keyVal );
 void App_Mouse_Get_Key_8(key_val_t *keyVal );
 void App_Mouse_Get_Key_9(key_val_t *keyVal );
 
+uint16_t App_Mouse_Get_Report_Rate(void );
 uint8_t App_Mouse_Get_Dpi_Num(void );
 uint8_t App_Mouse_Get_Dpi_Index(void );
 void App_Mouse_Set_Dpi_Index(uint8_t dpiIndex );

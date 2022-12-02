@@ -668,6 +668,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\App\app_light.c</FilePath>
             </File>
+            <File>
+              <FileName>app_mouse_sensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\App\app_mouse_sensor.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

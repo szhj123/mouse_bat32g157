@@ -18,6 +18,7 @@
 #include "drv_mouse_sensor.h"
 
 #include "app_mouse_protocol.h"
+#include "app_mouse_sensor.h"
 #include "app_key.h"
 #include "app_light.h"
 #include "app_lcd.h"
@@ -39,11 +40,11 @@ int main (void)
 
     Drv_Timer_Init();
 
-    App_Mouse_Init();
-
-    Drv_Mouse_Sensor_Init();
-
     Drv_Spi_Flash_Init();
+    
+    App_Mouse_Protocol_Init();
+
+    App_Mouse_Sensor_Init();
 
     App_Lcd_Init();
 
