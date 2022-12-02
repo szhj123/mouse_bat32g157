@@ -301,14 +301,15 @@ void App_Key_Down_Handler(key_val_t keyVal )
         {
             App_Key_Mouse_Down(keyVal);
             
-            App_Other_Key_Press();
+            App_Key_Set_Press_State();
+
             break;
         }
         case KEY_TYPE_DPI:
         {
             App_Key_Dpi_Down();
             
-            App_Other_Key_Press();
+            App_Key_Set_Press_State();
             break;
         }
         case KEY_TYPE_MACRO:
@@ -361,6 +362,18 @@ void App_Key_Mouse_Down(key_val_t keyVal )
         case KEY_MOUSE_FUNC_BACK: mouseReportBuf[1].val_b.val_4 = 1; break;
         default :break;
     }
+
+    Usb_Ep1_In((uint8_t *)mouseReportBuf, 7);
+}
+
+void App_Key_Mouse_Motion(int16_t deltaX, int16_t deltaY )
+{
+    mouseReportBuf[0].val = REPORT_ID_MOUSE;
+
+    mouseReportBuf[2].val = (uint8_t )deltaX;
+    mouseReportBuf[3].val = (uint8_t )(deltaX >> 8);
+    mouseReportBuf[4].val = (uint8_t )deltaY;
+    mouseReportBuf[5].val = (uint8_t )(deltaY >> 8);
 
     Usb_Ep1_In((uint8_t *)mouseReportBuf, 7);
 }
@@ -639,7 +652,7 @@ void App_Key_Macro_Up(void )
     macroKeyCtrl.macroKeyIsPress = 0;
 }
 
-void App_Other_Key_Press(void )
+void App_Key_Set_Press_State(void )
 {
     macroKeyCtrl.otherKeyIsPress = 1;
 }

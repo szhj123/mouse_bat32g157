@@ -12,6 +12,7 @@
 /* Includes ---------------------------------------------*/
 #include "app_mouse_sensor.h"
 #include "app_mouse_protocol.h"
+#include "app_key.h"
 /* Private typedef --------------------------------------*/
 /* Private define ---------------------------------------*/
 /* Private macro ----------------------------------------*/
@@ -46,7 +47,10 @@ void App_Mouse_Sensor_Monitor(void *arg )
         mouseSensorCtrl.deltaY = 0;
     }
 
-    
+    if(mouseSensorCtrl.deltaX != 0 || mouseSensorCtrl.deltaY != 0)
+    {
+        App_Key_Mouse_Motion(mouseSensorCtrl.deltaX, mouseSensorCtrl.deltaY);
+    }
 }
 
 void App_Mouse_Sensor_Set_Report_Interval_Time(void )

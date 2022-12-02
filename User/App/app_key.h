@@ -36,11 +36,12 @@ void App_Key_Down_Handler(key_val_t keyVal );
 void App_Key_Up_Handler(key_val_t keyVal );
 void App_Key_Mouse_Down(key_val_t keyVal );
 void App_Key_Mouse_Up(key_val_t keyVal );
+void App_Key_Mouse_Motion(int16_t deltaX, int16_t deltaY );
 void App_Key_Board_Down(key_val_t keyVal );
 void App_Key_Dpi_Down(void );
 void App_Key_Macro_Down(key_val_t keyVal );
 void App_Key_Macro_Up(void );
-void App_Other_Key_Press(void );
+void App_Key_Set_Press_State(void );
 void App_Other_Key_Up(void );
 
 #endif 
