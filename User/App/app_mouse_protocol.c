@@ -680,6 +680,11 @@ uint8_t App_Mouse_Get_Dpi_Num(void )
     return mousePara.dpiNum;
 }
 
+uint8_t App_Mouse_Get_Dpi_RegVal(uint8_t dpiIndex )
+{
+    return mousePara.dpiXbuf[dpiIndex];
+}
+
 void App_Mouse_Get_Dpi_Color(uint8_t dpiIndex, light_color_t *dpiColor )
 {
     *dpiColor = mousePara.dpiColorBuf[dpiIndex];

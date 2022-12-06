@@ -61,6 +61,8 @@ void App_Light_Init(void )
     Drv_Light_Init();
 
     Drv_Task_Regist_Period(0, 1, App_Light_Handler, NULL);
+
+    App_Light_Switch(NULL);
 }
 
 void App_Ligth_Delay_Count(void )

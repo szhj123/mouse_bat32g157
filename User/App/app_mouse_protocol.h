@@ -231,6 +231,7 @@ void App_Mouse_Get_Key_9(key_val_t *keyVal );
 uint16_t App_Mouse_Get_Report_Rate(void );
 uint8_t App_Mouse_Get_Dpi_Num(void );
 uint8_t App_Mouse_Get_Dpi_Index(void );
+uint8_t App_Mouse_Get_Dpi_RegVal(uint8_t dpiIndex );
 void App_Mouse_Set_Dpi_Index(uint8_t dpiIndex );
 void App_Mouse_Get_Dpi_Color(uint8_t dpiIndex, light_color_t *dpiColor );
 void App_Mouse_Get_Macro_Key(uint8_t macroId );

@@ -13,6 +13,7 @@
 #include "app_key.h"
 #include "app_event.h"
 #include "app_light.h"
+#include "app_mouse_sensor.h"
 /* Private typedef --------------------------------------*/
 typedef enum _macro_key_state_t
 {
@@ -329,13 +330,13 @@ void App_Key_Up_Handler(key_val_t keyVal )
         {
             App_Key_Mouse_Up(keyVal);
             
-            App_Other_Key_Up();
+            App_Key_Clr_Press_State();
             
             break;
         }
         case KEY_TYPE_DPI:
         {
-            App_Other_Key_Up();
+            App_Key_Clr_Press_State();
             
             break;
         }
@@ -362,6 +363,11 @@ void App_Key_Mouse_Down(key_val_t keyVal )
         case KEY_MOUSE_FUNC_BACK: mouseReportBuf[1].val_b.val_4 = 1; break;
         default :break;
     }
+
+    mouseReportBuf[2].val = 0;
+    mouseReportBuf[3].val = 0;
+    mouseReportBuf[4].val = 0;
+    mouseReportBuf[5].val = 0;
 
     Usb_Ep1_In((uint8_t *)mouseReportBuf, 7);
 }
@@ -418,8 +424,22 @@ void App_Key_Mouse_Up(key_val_t keyVal )
 void App_Key_Dpi_Down(void )
 {
     light_color_t dpiColor;
-    
+    uint32_t cpiVal;
+    uint8_t dpiRegVal;
     uint8_t dpiIndex = App_Mouse_Get_Dpi_Index();
+
+    dpiIndex++;
+
+    if(dpiIndex >= App_Mouse_Get_Dpi_Num())
+    {
+        dpiIndex = 0;
+    }
+
+    dpiRegVal = App_Mouse_Get_Dpi_RegVal(dpiIndex);
+
+    cpiVal = App_Mouse_Sensor_Get_Cpi_Value(dpiRegVal);
+
+    App_Mouse_Sensor_Set_Cpi_Value(cpiVal);
 
     App_Mouse_Get_Dpi_Color(dpiIndex, &dpiColor);
 
@@ -430,13 +450,6 @@ void App_Key_Dpi_Down(void )
     keyBoardReportBuf[2].val = dpiIndex+1;
     
     Usb_Ep2_In((uint8_t *)keyBoardReportBuf, 3);
-
-    dpiIndex++;
-
-    if(dpiIndex >= App_Mouse_Get_Dpi_Num())
-    {
-        dpiIndex = 0;
-    }
 
     App_Mouse_Set_Dpi_Index(dpiIndex);
 }
@@ -619,22 +632,24 @@ void App_Key_Macro_Down(key_val_t keyVal )
     macroKeyCtrl.state = MACRO_KEY_STATE_GET;
     macroKeyCtrl.macroKeyIsPress = 1;
 
+    Drv_Timer_Delete(macroKeyCtrl.timerId);
+
     if(macroKeyCtrl.loopType == LOOP_ANY_KEY_PRESS_TERMINATION)
-    {
+    {        
         if(macroKeyCtrl.timerId == TIMER_NULL)
         {
-            Drv_Timer_Delete(macroKeyCtrl.timerId);
-
             macroKeyCtrl.timerId = Drv_Timer_Regist_Period(0, 1, App_Key_Macro_Down_Callback, NULL);
         }
         else
         {
             App_Key_Macro_Up();
                 
-            Drv_Timer_Delete(macroKeyCtrl.timerId);
-
             macroKeyCtrl.timerId = TIMER_NULL;
         }
+    }
+    else
+    {
+        macroKeyCtrl.timerId = Drv_Timer_Regist_Period(0, 1, App_Key_Macro_Down_Callback, NULL);
     }
 }
 
@@ -657,7 +672,7 @@ void App_Key_Set_Press_State(void )
     macroKeyCtrl.otherKeyIsPress = 1;
 }
 
-void App_Other_Key_Up(void )
+void App_Key_Clr_Press_State(void )
 {
     macroKeyCtrl.otherKeyIsPress = 0;
 

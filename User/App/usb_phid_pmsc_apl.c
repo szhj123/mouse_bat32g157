@@ -35,8 +35,6 @@ static void Usb_Event_Handler(void *arg );
 static usb_ctrl_t  ctrl;
 static usb_cfg_t   cfg;
 
-static uint8_t gs_data[DATA_LEN];
-
 static uint8_t usbEp0InBuf[64];
 static uint8_t usbEp1InBuf[8];
 static uint8_t usbEp2InBuf[8];

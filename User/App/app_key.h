@@ -42,7 +42,7 @@ void App_Key_Dpi_Down(void );
 void App_Key_Macro_Down(key_val_t keyVal );
 void App_Key_Macro_Up(void );
 void App_Key_Set_Press_State(void );
-void App_Other_Key_Up(void );
+void App_Key_Clr_Press_State(void );
 
 #endif 
 

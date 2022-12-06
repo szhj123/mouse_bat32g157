@@ -160,13 +160,13 @@ void Drv_Mouse_Sensor_3370_Init(void )
 	Drv_Mouse_Sensor_Write(0x7F,0x00);
 	Drv_Mouse_Sensor_Write(0x4D,0xD0);
 
-    uint8_t u8InitTemp = 0;
 
-	u8InitTemp = (Drv_Mouse_Sensor_Read(0x02));		
-	u8InitTemp = (Drv_Mouse_Sensor_Read(0x03));
-	u8InitTemp = (Drv_Mouse_Sensor_Read(0x04));
-	u8InitTemp = (Drv_Mouse_Sensor_Read(0x05));
-	u8InitTemp = (Drv_Mouse_Sensor_Read(0x06));
+
+	Drv_Mouse_Sensor_Read(0x02);		
+	Drv_Mouse_Sensor_Read(0x03);
+	Drv_Mouse_Sensor_Read(0x04);
+	Drv_Mouse_Sensor_Read(0x05);
+	Drv_Mouse_Sensor_Read(0x06);
 			
     Drv_Mouse_Sensor_Delay_Ms(10);	
 }
@@ -210,7 +210,6 @@ uint8_t Drv_Mouse_Sensor_Read(uint8_t addr )
 void Drv_Mouse_Sensor_Get_Motion(uint8_t *buf, uint8_t length )
 {
     uint8_t i;
-    uint8_t regVal = 0x00;
     
     Hal_Mouse_Sensor_Spi_Start();
     
@@ -229,6 +228,8 @@ void Drv_Mouse_Sensor_Get_Motion(uint8_t *buf, uint8_t length )
 
     Hal_Mouse_Sensor_Spi_Stop();
 }
+
+
 
 void Drv_Mouse_Sensor_Delay_Ms(uint32_t ms )
 {    

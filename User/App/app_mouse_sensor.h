@@ -19,6 +19,8 @@ void App_Mouse_Sensor_Set_Report_Interval_Time(void );
 uint16_t App_Mouse_Sensor_Get_Report_Interva_Time(void );
 void App_Mouse_Sensor_Monitor(void *arg );
 
+uint32_t App_Mouse_Sensor_Get_Cpi_Value(uint8_t regVal );
+void App_Mouse_Sensor_Set_Cpi_Value(uint32_t cpiVal );
 
 #endif 
 
