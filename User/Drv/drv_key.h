@@ -8,6 +8,7 @@
 #define KEY_LONG                 0x0400
 #define KEY_CONT                 0x0800
 #define KEY_UP                   0x1000
+#define KEY_ROTATE               0x2000
 
 
 #define KEY_MOUSE_LEFT           0x0001
@@ -19,6 +20,7 @@
 #define KEY_MEDIA_DPI_DEC        0x0007
 #define KEY_MEDIA_FIRE           0x0008
 #define KEY_MEDIA_REPORT_RATE    0x0009
+#define KEY_MOUSE_KNOB           0x000a
 
 #define KEY_NULL                 0x0000
 
@@ -81,6 +83,19 @@ typedef struct _key_mouse_ctrl_block_t
     
 }key_mouse_ctrl_block_t;
 
+typedef struct _key_knob_ctrl_block_t
+{
+    PORT_TypeDef port1;
+    PIN_TypeDef  pin1;
+    PORT_TypeDef port2;
+    PIN_TypeDef  pin2;
+
+    uint8_t      preKnob1;
+    uint8_t      preKnob2;
+
+    int8_t       count;
+}key_knob_ctrl_block_t;
+
 typedef struct _key_queue_t
 {
     uint16_t vBuf[KEY_QUEUE_MAX_NUM];
@@ -92,6 +107,7 @@ typedef struct _key_queue_t
 void Drv_Key_Init(void );
 void Drv_Key_Mouse_Detect(key_mouse_ctrl_block_t *key );
 void Drv_Key_Media_Detect(key_media_ctrl_block_t *key );
+void Drv_Key_Knob_Detect(key_knob_ctrl_block_t *key );
 uint8_t Drv_Key_Get_Mouse(key_mouse_ctrl_block_t *key );
 uint16_t Drv_Key_Get_Media(key_media_ctrl_block_t *key );
 

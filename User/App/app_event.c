@@ -146,6 +146,11 @@ static void App_Event_Key_Handler(key_event_t keyEvent )
             App_Key_Up_Handler(keyVal);
             break;
         }
+        case KEY_EVENT_KNOB_ROTATE:
+        {
+            App_Key_Knob_Handle();
+            break;
+        }
         default: break;
     }
 }

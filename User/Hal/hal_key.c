@@ -37,6 +37,10 @@ void Hal_Key_Init(void )
     PORT_Init(PORTD, PIN7, PULLUP_INPUT);
     //pd08, input, key9
     PORT_Init(PORTD, PIN8, PULLUP_INPUT);
+    //pd12, input, rotary a
+    PORT_Init(PORTD, PIN12, PULLUP_INPUT);
+    //pd13, input, rotary b
+    PORT_Init(PORTD, PIN13, PULLUP_INPUT);
 }
 
 uint8_t Hal_Key_Get_Value(PORT_TypeDef port, PIN_TypeDef pin )

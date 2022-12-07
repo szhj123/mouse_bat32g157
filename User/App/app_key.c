@@ -155,6 +155,15 @@ key_media_ctrl_block_t keyMediaReportRate =
     .shortPressTime = KEY_SHORT_PRESS_TIME,
 };
 
+key_knob_ctrl_block_t keyKnob = 
+{
+    .port1 = PORTD,
+    .pin1  = PIN12,
+    .port2 = PORTD,
+    .pin2  = PIN13,
+};
+
+
 val_t mouseReportBuf[8] = {0};
 val_t keyBoardReportBuf[8] = {0};
 
@@ -179,6 +188,8 @@ static void App_Key_Handler(void *arg )
     App_Key_Mouse_Detect();
 
     App_Key_Media_Detect();
+
+    App_Key_Knob_Detect();
 
     keyVal = Drv_Key_Queue_Get();
 
@@ -261,6 +272,10 @@ static void App_Key_Handler(void *arg )
             keyEvent = KEY_EVENT_MEDIA_REPORT_RATE_DOWN;
             break;
         }
+        case KEY_MOUSE_KNOB | KEY_ROTATE:
+        {
+            keyEvent = KEY_EVENT_KNOB_ROTATE;
+        }
         default: break;
     }
 
@@ -292,6 +307,11 @@ void App_Key_Media_Detect(void )
     Drv_Key_Media_Detect(&keyMediaFire);
     
     Drv_Key_Media_Detect(&keyMediaReportRate);
+}
+
+void App_Key_Knob_Detect(void )
+{
+    Drv_Key_Knob_Detect(&keyKnob);
 }
 
 void App_Key_Down_Handler(key_val_t keyVal )
@@ -368,8 +388,20 @@ void App_Key_Mouse_Down(key_val_t keyVal )
     mouseReportBuf[3].val = 0;
     mouseReportBuf[4].val = 0;
     mouseReportBuf[5].val = 0;
+    mouseReportBuf[6].val = keyKnob.count;
 
     Usb_Ep1_In((uint8_t *)mouseReportBuf, 7);
+}
+
+void App_Key_Knob_Handle(void )
+{
+    mouseReportBuf[0].val = REPORT_ID_MOUSE;
+
+    mouseReportBuf[6].val = keyKnob.count;
+    
+    Usb_Ep1_In((uint8_t *)mouseReportBuf, 7);
+
+    keyKnob.count = 0;
 }
 
 void App_Key_Mouse_Motion(int16_t deltaX, int16_t deltaY )
@@ -380,6 +412,7 @@ void App_Key_Mouse_Motion(int16_t deltaX, int16_t deltaY )
     mouseReportBuf[3].val = (uint8_t )(deltaX >> 8);
     mouseReportBuf[4].val = (uint8_t )deltaY;
     mouseReportBuf[5].val = (uint8_t )(deltaY >> 8);
+    mouseReportBuf[6].val = keyKnob.count;
 
     Usb_Ep1_In((uint8_t *)mouseReportBuf, 7);
 }
@@ -417,6 +450,8 @@ void App_Key_Mouse_Up(key_val_t keyVal )
         case KEY_MOUSE_FUNC_BACK: mouseReportBuf[1].val_b.val_4 = 0; break;
         default :break;
     }
+
+    mouseReportBuf[6].val = keyKnob.count;
 
     Usb_Ep1_In((uint8_t *)mouseReportBuf, 7);
 }

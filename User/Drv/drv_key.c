@@ -237,6 +237,49 @@ void Drv_Key_Media_Detect(key_media_ctrl_block_t *key )
     }
 }
 
+void Drv_Key_Knob_Detect(key_knob_ctrl_block_t *key )
+{
+    if(Hal_Key_Get_Value(key->port1, key->pin1) ^ Hal_Key_Get_Value(key->port2, key->pin2))
+    {
+        if(key->preKnob1 && key->preKnob2)
+        {
+            if(!Hal_Key_Get_Value(key->port1, key->pin1) && Hal_Key_Get_Value(key->port2, key->pin2))
+            {
+                key->count--;
+            }
+            else if(Hal_Key_Get_Value(key->port1, key->pin1) && !Hal_Key_Get_Value(key->port2, key->pin2))
+            {
+                key->count++;
+            }
+        }
+        else if(!key->preKnob1 && !key->preKnob2)
+        {
+            if(!Hal_Key_Get_Value(key->port1, key->pin1) && Hal_Key_Get_Value(key->port2, key->pin2))
+            {
+                key->count++;
+            }
+            else if(Hal_Key_Get_Value(key->port1, key->pin1) && !Hal_Key_Get_Value(key->port2, key->pin2))
+            {
+                key->count--;
+            }
+        }
+
+        key->preKnob1 = Hal_Key_Get_Value(key->port1, key->pin1);
+        key->preKnob2 = Hal_Key_Get_Value(key->port2, key->pin2);
+    }
+    else
+    {
+        key->preKnob1 = Hal_Key_Get_Value(key->port1, key->pin1);
+        key->preKnob2 = Hal_Key_Get_Value(key->port2, key->pin2);
+    }
+
+    if(key->count != 0)
+    {
+        Drv_Key_Queue_Put(KEY_MOUSE_KNOB | KEY_ROTATE);
+    }
+}
+
+
 uint8_t Drv_Key_Get_Mouse(key_mouse_ctrl_block_t *key )
 {
     return Hal_Key_Get_Value(key->port, key->pin);

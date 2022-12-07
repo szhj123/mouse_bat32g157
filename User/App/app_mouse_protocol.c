@@ -459,9 +459,7 @@ void App_Mouse_Set_Macro(uint8_t *buf, uint8_t length )
 {
     static uint8_t timerId = TIMER_NULL;
     uint16_t i;
-    uint32_t flashAddr = 0;
-    
-    
+        
     macro_para_t macroPara = *(macro_para_t *)buf;
 
     if(macroPara.macroId > 4)
@@ -733,6 +731,7 @@ void App_Mouse_Set_Pic(uint8_t *buf, uint8_t length )
 
         picPara->picBuf[i*2+1] = tmp;
     }
+    
 
     switch(picCtrl.picFlashState)
     {
@@ -769,7 +768,7 @@ void App_Mouse_Set_Pic(uint8_t *buf, uint8_t length )
                 picCtrl.picRecvLength += picPara->picLength;
 
                 if(picCtrl.picRecvLength >= LCD_W * LCD_H * 2)
-                {
+                {                    
                     App_Mouse_Set_Pic_Mask(picPara->picId);
                     
                     picCtrl.picTotalNum++;
@@ -789,6 +788,11 @@ void App_Mouse_Set_Pic(uint8_t *buf, uint8_t length )
     }
 
     Usb_Ep3_Out();
+
+    if(picCtrl.picRecvLength >= LCD_W * LCD_H * 2)
+    {
+        Usb_Ep3_Clr_Out_Flag();
+    }
 }
 
 void App_Mouse_Set_Pic_Mask(uint8_t picId )

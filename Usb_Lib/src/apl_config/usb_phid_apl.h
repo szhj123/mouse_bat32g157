@@ -73,6 +73,9 @@ void Usb_Ep0_In(uint8_t *buf, uint8_t length );
 void Usb_Ep1_In(uint8_t *buf, uint8_t length );
 void Usb_Ep2_In(uint8_t *buf, uint8_t length );
 void Usb_Ep3_Out(void );
+void Usb_Ep3_Set_Out_Flag(void );
+uint8_t Usb_Ep3_Get_Out_Flag(void );
+void Usb_Ep3_Clr_Out_Flag(void );
 
 #endif /* USB_PHID_APL_H */
 /******************************************************************************

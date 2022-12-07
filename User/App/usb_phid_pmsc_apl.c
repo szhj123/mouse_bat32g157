@@ -40,6 +40,8 @@ static uint8_t usbEp1InBuf[8];
 static uint8_t usbEp2InBuf[8];
 static uint8_t usbEp3OutBuf[64];
 
+static uint8_t usbEp3OutFlag;
+
 const static usb_descriptor_t gs_usb_descriptor =
 {
     /* Device descriptor */
@@ -77,6 +79,7 @@ static void Usb_Event_Handler(void *arg )
     {
         case USB_STS_CONFIGURED :
         {
+            Usb_Ep3_Clr_Out_Flag();
             ctrl.type = USB_PHID;
             USB_Read(&ctrl, usbEp3OutBuf, 64);
             break;
@@ -86,6 +89,8 @@ static void Usb_Event_Handler(void *arg )
             break;
 
         case USB_STS_READ_COMPLETE :
+            Usb_Ep3_Clr_Out_Flag();
+            
             Drv_Event_Put(APP_EVENT_USB_INTERUPT_OUT, usbEp3OutBuf, sizeof(usbEp3OutBuf));
             break;
 
@@ -163,6 +168,9 @@ void Usb_Ep0_In(uint8_t *buf, uint8_t length )
 {
     uint8_t i;
 
+    if(Usb_Ep3_Get_Out_Flag())
+        return ;
+
     for(i=0;i<length;i++)
     {
         usbEp0InBuf[i] = buf[i];
@@ -176,6 +184,9 @@ void Usb_Ep0_In(uint8_t *buf, uint8_t length )
 void Usb_Ep1_In(uint8_t *buf, uint8_t length )
 {    
     uint8_t i;
+
+    if(Usb_Ep3_Get_Out_Flag())
+        return ;
     
     for(i=0;i<length;i++)
     {
@@ -190,6 +201,9 @@ void Usb_Ep1_In(uint8_t *buf, uint8_t length )
 void Usb_Ep2_In(uint8_t *buf, uint8_t length )
 {
     uint8_t i;
+
+    if(Usb_Ep3_Get_Out_Flag())
+        return ;
     
     for(i=0;i<length;i++)
     {
@@ -202,10 +216,27 @@ void Usb_Ep2_In(uint8_t *buf, uint8_t length )
 }
 
 void Usb_Ep3_Out(void )
-{
+{    
+    Usb_Ep3_Set_Out_Flag();
+
     ctrl.type = USB_PHID;
     
     USB_Read(&ctrl, usbEp3OutBuf, 64);
+}
+
+void Usb_Ep3_Set_Out_Flag(void )
+{
+    usbEp3OutFlag = 1;
+}
+
+uint8_t Usb_Ep3_Get_Out_Flag(void )
+{
+    return usbEp3OutFlag;
+}
+
+void Usb_Ep3_Clr_Out_Flag(void )
+{
+    usbEp3OutFlag = 0;
 }
 
 /******************************************************************************
