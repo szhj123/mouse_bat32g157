@@ -160,6 +160,8 @@ void Drv_Mouse_Sensor_3370_Init(void )
 	Drv_Mouse_Sensor_Write(0x7F,0x00);
 	Drv_Mouse_Sensor_Write(0x4D,0xD0);
 
+    Drv_Mouse_Sensor_Read(0);
+
 	Drv_Mouse_Sensor_Read(0x02);		
 	Drv_Mouse_Sensor_Read(0x03);
 	Drv_Mouse_Sensor_Read(0x04);

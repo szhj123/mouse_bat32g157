@@ -393,10 +393,38 @@ void App_Key_Mouse_Down(key_val_t keyVal )
     Usb_Ep1_In((uint8_t *)mouseReportBuf, 7);
 }
 
+void App_Key_Mouse_Up(key_val_t keyVal )
+{
+    mouseReportBuf[0].val = REPORT_ID_MOUSE;
+    
+    switch((key_mouse_func_t )keyVal.keyFunc)
+    {
+        case KEY_MOUSE_FUNC_LEFT: mouseReportBuf[1].val_b.val_0 = 0; break;
+        case KEY_MOUSE_FUNC_RIGHT: mouseReportBuf[1].val_b.val_1 = 0; break;
+        case KEY_MOUSE_FUNC_MIDDLE: mouseReportBuf[1].val_b.val_2 = 0; break;
+        case KEY_MOUSE_FUNC_FRONT: mouseReportBuf[1].val_b.val_3 = 0; break;
+        case KEY_MOUSE_FUNC_BACK: mouseReportBuf[1].val_b.val_4 = 0; break;
+        default :break;
+    }
+    
+    mouseReportBuf[2].val = 0;
+    mouseReportBuf[3].val = 0;
+    mouseReportBuf[4].val = 0;
+    mouseReportBuf[5].val = 0;
+    mouseReportBuf[6].val = 0;
+
+    Usb_Ep1_In((uint8_t *)mouseReportBuf, 7);
+}
+
+
 void App_Key_Knob_Handle(void )
 {
     mouseReportBuf[0].val = REPORT_ID_MOUSE;
 
+    mouseReportBuf[2].val = 0;
+    mouseReportBuf[3].val = 0;
+    mouseReportBuf[4].val = 0;
+    mouseReportBuf[5].val = 0;
     mouseReportBuf[6].val = keyKnob.count;
     
     Usb_Ep1_In((uint8_t *)mouseReportBuf, 7);
@@ -437,24 +465,7 @@ void App_Key_Board_Down(key_val_t keyVal )
     Usb_Ep2_In((uint8_t *)keyBoardReportBuf, 8);
 }
 
-void App_Key_Mouse_Up(key_val_t keyVal )
-{
-    mouseReportBuf[0].val = REPORT_ID_MOUSE;
-    
-    switch((key_mouse_func_t )keyVal.keyFunc)
-    {
-        case KEY_MOUSE_FUNC_LEFT: mouseReportBuf[1].val_b.val_0 = 0; break;
-        case KEY_MOUSE_FUNC_RIGHT: mouseReportBuf[1].val_b.val_1 = 0; break;
-        case KEY_MOUSE_FUNC_MIDDLE: mouseReportBuf[1].val_b.val_2 = 0; break;
-        case KEY_MOUSE_FUNC_FRONT: mouseReportBuf[1].val_b.val_3 = 0; break;
-        case KEY_MOUSE_FUNC_BACK: mouseReportBuf[1].val_b.val_4 = 0; break;
-        default :break;
-    }
 
-    mouseReportBuf[6].val = keyKnob.count;
-
-    Usb_Ep1_In((uint8_t *)mouseReportBuf, 7);
-}
 
 void App_Key_Dpi_Down(void )
 {

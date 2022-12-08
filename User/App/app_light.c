@@ -104,13 +104,13 @@ static void App_Light_Set_Rainbow_Color(light_t *light )
     {
         case LIGHT_STATE_RED:
         {
-            if(light->rVal == 255 && light->gVal == 0 && light->bVal == 0)
+            if(light->rVal == 150 && light->gVal == 0 && light->bVal == 0)
             {
                 light->lightState = LIGHT_STATE_BLUE;
             }
             else
             {
-                if(light->rVal < 255)
+                if(light->rVal < 150)
                 {
                     light->rVal++;
                 }
@@ -127,7 +127,7 @@ static void App_Light_Set_Rainbow_Color(light_t *light )
         }
         case LIGHT_STATE_BLUE:
         {
-            if(light->rVal == 0 && light->gVal == 0 && light->bVal == 255)
+            if(light->rVal == 0 && light->gVal == 0 && light->bVal == 150)
             {
                 light->lightState = LIGHT_STATE_GREEN;
             }
@@ -141,7 +141,7 @@ static void App_Light_Set_Rainbow_Color(light_t *light )
                 {
                     light->gVal--;
                 }
-                if(light->bVal < 255)
+                if(light->bVal < 150)
                 {
                     light->bVal++;
                 }
@@ -150,7 +150,7 @@ static void App_Light_Set_Rainbow_Color(light_t *light )
         }
         case LIGHT_STATE_GREEN:
         {
-            if(light->rVal == 0 && light->gVal == 255 && light->bVal == 0)
+            if(light->rVal == 0 && light->gVal == 150 && light->bVal == 0)
             {
                 light->lightState = LIGHT_STATE_RED;
             }
@@ -160,7 +160,7 @@ static void App_Light_Set_Rainbow_Color(light_t *light )
                 {
                     light->rVal--;
                 }
-                if(light->gVal < 255)
+                if(light->gVal < 150)
                 {
                     light->gVal++;
                 }
