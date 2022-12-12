@@ -737,6 +737,7 @@ usb_er_t usb_pstd_transfer_start(usb_putr_t * p_utr)
 
     pipenum = p_utr->keyword;
 
+    #if 0
     if (USB_NULL != gp_usb_pstd_pipe[pipenum])
     {
         /* Get PIPE TYPE */
@@ -746,6 +747,7 @@ usb_er_t usb_pstd_transfer_start(usb_putr_t * p_utr)
             return USB_QOVR;
         }
     }
+    #endif 
 
     /* Check state (Configured) */
     if (USB_TRUE != usb_pstd_chk_configured())

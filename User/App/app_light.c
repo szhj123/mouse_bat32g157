@@ -98,6 +98,13 @@ static void App_Light_Handler(void *arg )
     }
 }
 
+void App_Light_Off(void )
+{
+    light_show_callback = NULL;
+    
+    Drv_Light_Set_All_Off();
+}
+
 static void App_Light_Set_Rainbow_Color(light_t *light )
 {
     switch(light->lightState)
@@ -228,19 +235,19 @@ void App_Light_Rainbow(void )
     if(rainbowPara.direction)
     {
         lightBuf[0].lightState = LIGHT_STATE_RED;
-        lightBuf[1].lightState = LIGHT_STATE_BLUE;
-        lightBuf[2].lightState = LIGHT_STATE_GREEN;
+        lightBuf[1].lightState = LIGHT_STATE_GREEN;
+        lightBuf[2].lightState = LIGHT_STATE_BLUE;
         lightBuf[3].lightState = LIGHT_STATE_RED;
-        lightBuf[4].lightState = LIGHT_STATE_BLUE;
-        lightBuf[5].lightState = LIGHT_STATE_GREEN;
+        lightBuf[4].lightState = LIGHT_STATE_GREEN;
+        lightBuf[5].lightState = LIGHT_STATE_BLUE;
     }
     else
     {
-        lightBuf[0].lightState = LIGHT_STATE_GREEN;
-        lightBuf[1].lightState = LIGHT_STATE_BLUE;
+        lightBuf[0].lightState = LIGHT_STATE_BLUE;
+        lightBuf[1].lightState = LIGHT_STATE_GREEN;
         lightBuf[2].lightState = LIGHT_STATE_RED;
-        lightBuf[3].lightState = LIGHT_STATE_GREEN;
-        lightBuf[4].lightState = LIGHT_STATE_BLUE;
+        lightBuf[3].lightState = LIGHT_STATE_BLUE;
+        lightBuf[4].lightState = LIGHT_STATE_GREEN;
         lightBuf[5].lightState = LIGHT_STATE_RED;
     }
 
@@ -557,6 +564,7 @@ void App_Light_Switch(void *arg )
     {
         case LIGHT_OFF:
         {
+            App_Light_Off();
             break;
         }
         case LIGHT_RAINBOW:

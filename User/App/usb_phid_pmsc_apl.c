@@ -41,6 +41,7 @@ static uint8_t usbEp2InBuf[8];
 static uint8_t usbEp3OutBuf[64];
 
 static uint8_t usbEp3OutFlag;
+static uint8_t usbSuspendFlag;
 
 const static usb_descriptor_t gs_usb_descriptor =
 {
@@ -153,6 +154,8 @@ static void Usb_Event_Handler(void *arg )
             break;
 
         case USB_STS_SUSPEND :
+            Usb_Suspend();
+            break;
         case USB_STS_DETACH :
             #if defined(USE_LPW)
                 /* Do Nothing */
@@ -238,6 +241,28 @@ void Usb_Ep3_Clr_Out_Flag(void )
 {
     usbEp3OutFlag = 0;
 }
+
+void Usb_Suspend(void )
+{
+    usbSuspendFlag = 1;
+    
+    Drv_Event_Put(APP_EVENT_USB_SUSPEND, NULL, 0);
+}
+
+void Usb_Wakeup(void )
+{
+    usbSuspendFlag = 0;
+    
+    USB0.DVSTCTR0.WORD |= (1 << 7) | (1 << 8);
+    
+    Drv_Event_Put(APP_EVENT_USB_WAKEUP, NULL, 0);
+}
+
+uint8_t Usb_Get_Suspend_Flag(void )
+{
+    return usbSuspendFlag;
+}
+
 
 /******************************************************************************
  End  Of File

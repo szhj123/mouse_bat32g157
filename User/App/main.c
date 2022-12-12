@@ -48,7 +48,7 @@ int main (void)
 
     App_Lcd_Init();
 
-    App_Light_Init();
+    App_Light_Init();  
 
     App_Key_Init();
 

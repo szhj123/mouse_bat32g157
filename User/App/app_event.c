@@ -43,6 +43,11 @@ static void Drv_Event_Handler(void *arg )
         {
             case APP_EVENT_KEY:
             {
+                if(Usb_Get_Suspend_Flag())
+                {
+                    Usb_Wakeup();
+                }
+                
                 App_Event_Key_Handler((key_event_t )msg.buf[0]);
                 
                 break;
@@ -61,6 +66,16 @@ static void Drv_Event_Handler(void *arg )
             case APP_EVENT_USB_INTERUPT_OUT:
             {
                 App_Event_Usb_Interrupt_Out(msg.buf, msg.length);
+                break;
+            }
+            case APP_EVENT_USB_SUSPEND:
+            {
+                App_Light_Off();
+                break;
+            }
+            case APP_EVENT_USB_WAKEUP:
+            {
+                App_Light_Switch(NULL);
                 break;
             }
             default: break;

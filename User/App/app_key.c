@@ -14,6 +14,7 @@
 #include "app_event.h"
 #include "app_light.h"
 #include "app_mouse_sensor.h"
+#include "usb_phid_apl.h"
 /* Private typedef --------------------------------------*/
 typedef enum _macro_key_state_t
 {
@@ -280,7 +281,7 @@ static void App_Key_Handler(void *arg )
     }
 
     if(keyVal != KEY_NULL)
-    {
+    {        
         Drv_Event_Put((uint8_t )APP_EVENT_KEY, (uint8_t *)&keyEvent, 1);
     }
 }

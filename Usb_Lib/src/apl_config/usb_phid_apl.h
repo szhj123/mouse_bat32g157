@@ -76,6 +76,9 @@ void Usb_Ep3_Out(void );
 void Usb_Ep3_Set_Out_Flag(void );
 uint8_t Usb_Ep3_Get_Out_Flag(void );
 void Usb_Ep3_Clr_Out_Flag(void );
+void Usb_Suspend(void );
+void Usb_Wakeup(void );
+uint8_t Usb_Get_Suspend_Flag(void );
 
 #endif /* USB_PHID_APL_H */
 /******************************************************************************

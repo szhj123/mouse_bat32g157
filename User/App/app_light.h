@@ -83,7 +83,7 @@ void App_Light_Clr_Delay_Count(void );
 uint16_t App_Light_Get_Delay_Count(void );
 
 void App_Light_Switch(void *arg );
-
+void App_Light_Off(void );
 void App_Light_Rainbow(void );
 void App_Light_Solid_On(void );
 void App_Light_Breath(void );
