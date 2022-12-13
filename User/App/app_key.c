@@ -723,11 +723,13 @@ void App_Key_Clr_Press_State(void )
 {
     macroKeyCtrl.otherKeyIsPress = 0;
 
+    #if 0
     if(macroKeyCtrl.timerId != TIMER_NULL)
     {
         Drv_Timer_Delete(macroKeyCtrl.timerId);
 
         macroKeyCtrl.timerId = TIMER_NULL;
     }
+    #endif 
 }
 
