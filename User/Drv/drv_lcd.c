@@ -33,7 +33,7 @@ void Drv_Lcd_Init(void )
     Drv_Lcd_Wr_Data(0x00);
 
     Drv_Lcd_Wr_Cmd(0x3A); 
-    Drv_Lcd_Wr_Data(0x05);
+    Drv_Lcd_Wr_Data(0x55);
 
     Drv_Lcd_Wr_Cmd(0xB2);
     Drv_Lcd_Wr_Data(0x0C);
@@ -43,10 +43,10 @@ void Drv_Lcd_Init(void )
     Drv_Lcd_Wr_Data(0x33);
 
     Drv_Lcd_Wr_Cmd(0xB7); 
-    Drv_Lcd_Wr_Data(0x35);  
+    Drv_Lcd_Wr_Data(0x02);  
 
     Drv_Lcd_Wr_Cmd(0xBB);
-    Drv_Lcd_Wr_Data(0x19);
+    Drv_Lcd_Wr_Data(0x35);
 
     Drv_Lcd_Wr_Cmd(0xC0);
     Drv_Lcd_Wr_Data(0x2C);
@@ -65,39 +65,39 @@ void Drv_Lcd_Init(void )
 
     Drv_Lcd_Wr_Cmd(0xD0); 
     Drv_Lcd_Wr_Data(0xA4);
-    Drv_Lcd_Wr_Data(0xA1);
+    Drv_Lcd_Wr_Data(0xA2);
 
     Drv_Lcd_Wr_Cmd(0xE0);
-    Drv_Lcd_Wr_Data(0xD0);
-    Drv_Lcd_Wr_Data(0x04);
-    Drv_Lcd_Wr_Data(0x0D);
-    Drv_Lcd_Wr_Data(0x11);
-    Drv_Lcd_Wr_Data(0x13);
-    Drv_Lcd_Wr_Data(0x2B);
-    Drv_Lcd_Wr_Data(0x3F);
-    Drv_Lcd_Wr_Data(0x54);
-    Drv_Lcd_Wr_Data(0x4C);
-    Drv_Lcd_Wr_Data(0x18);
-    Drv_Lcd_Wr_Data(0x0D);
-    Drv_Lcd_Wr_Data(0x0B);
-    Drv_Lcd_Wr_Data(0x1F);
-    Drv_Lcd_Wr_Data(0x23);
+    Drv_Lcd_Wr_Data(0xD0);   //V0[7-4] & V63[3-0]
+    Drv_Lcd_Wr_Data(0x06);   //V62[5-0]
+    Drv_Lcd_Wr_Data(0x0C);   //V61[5-0]
+    Drv_Lcd_Wr_Data(0x09);   //V59[4-0]
+    Drv_Lcd_Wr_Data(0x09);   //V57[4-0]
+    Drv_Lcd_Wr_Data(0x25);   //J1[5-4] & V50[3-0]
+    Drv_Lcd_Wr_Data(0x2E);   //V43[6-0]
+    Drv_Lcd_Wr_Data(0x33);   //V27[6-4] & V36[2-0]
+    Drv_Lcd_Wr_Data(0x45);   //V20[6-0]
+    Drv_Lcd_Wr_Data(0x36);   //J0[5-4] & V13[3-0]
+    Drv_Lcd_Wr_Data(0x12);   //V6[4-0]
+    Drv_Lcd_Wr_Data(0x12);   //V4[4-0]
+    Drv_Lcd_Wr_Data(0x2E);   //V2[5-0]
+    Drv_Lcd_Wr_Data(0x34);   //V1[5-0]
 
     Drv_Lcd_Wr_Cmd(0xE1);
-    Drv_Lcd_Wr_Data(0xD0);
-    Drv_Lcd_Wr_Data(0x04);
-    Drv_Lcd_Wr_Data(0x0C);
-    Drv_Lcd_Wr_Data(0x11);
-    Drv_Lcd_Wr_Data(0x13);
-    Drv_Lcd_Wr_Data(0x2C);
-    Drv_Lcd_Wr_Data(0x3F);
-    Drv_Lcd_Wr_Data(0x44);
-    Drv_Lcd_Wr_Data(0x51);
-    Drv_Lcd_Wr_Data(0x2F);
-    Drv_Lcd_Wr_Data(0x1F);
-    Drv_Lcd_Wr_Data(0x1F);
-    Drv_Lcd_Wr_Data(0x20);
-    Drv_Lcd_Wr_Data(0x23);
+    Drv_Lcd_Wr_Data(0xD0);   //V0[7-4] & V63[3-0]
+    Drv_Lcd_Wr_Data(0x06);   //V62[5-0]
+    Drv_Lcd_Wr_Data(0x0C);   //V61[5-0]
+    Drv_Lcd_Wr_Data(0x09);   //V59[4-0]
+    Drv_Lcd_Wr_Data(0x09);   //V57[4-0]
+    Drv_Lcd_Wr_Data(0x25);   //J1[5-4] & V50[3-0]
+    Drv_Lcd_Wr_Data(0x2E);   //V43[6-0]
+    Drv_Lcd_Wr_Data(0x33);   //V27[6-4] & V36[2-0]
+    Drv_Lcd_Wr_Data(0x45);   //V20[6-0]
+    Drv_Lcd_Wr_Data(0x36);   //J0[5-4] & V13[3-0]
+    Drv_Lcd_Wr_Data(0x12);   //V6[4-0]
+    Drv_Lcd_Wr_Data(0x12);   //V4[4-0]
+    Drv_Lcd_Wr_Data(0x2E);   //V2[5-0]
+    Drv_Lcd_Wr_Data(0x34);   //V1[5-0]
 
     Drv_Lcd_Wr_Cmd(0x21); 
 
