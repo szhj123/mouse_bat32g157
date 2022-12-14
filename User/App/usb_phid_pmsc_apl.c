@@ -41,6 +41,7 @@ static uint8_t usbEp2InBuf[8];
 static uint8_t usbEp3OutBuf[64];
 
 static uint8_t usbEp3OutFlag;
+static uint8_t usbConfigedFlag;
 static uint8_t usbSuspendFlag;
 
 const static usb_descriptor_t gs_usb_descriptor =
@@ -81,6 +82,7 @@ static void Usb_Event_Handler(void *arg )
         case USB_STS_CONFIGURED :
         {
             Usb_Ep3_Clr_Out_Flag();
+            usbConfigedFlag = 1;
             ctrl.type = USB_PHID;
             USB_Read(&ctrl, usbEp3OutBuf, 64);
             break;
@@ -154,7 +156,10 @@ static void Usb_Event_Handler(void *arg )
             break;
 
         case USB_STS_SUSPEND :
-            Usb_Suspend();
+            if(usbConfigedFlag)
+            {
+                Usb_Suspend();
+            }
             break;
         case USB_STS_DETACH :
             #if defined(USE_LPW)

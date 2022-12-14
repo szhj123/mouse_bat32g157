@@ -55,6 +55,11 @@ void App_Mouse_Sensor_Monitor(void *arg )
 
     if(mouseSensorCtrl.deltaX != 0 || mouseSensorCtrl.deltaY != 0)
     {
+        if(Usb_Get_Suspend_Flag())
+        {
+            Usb_Wakeup();
+        }
+        
         App_Key_Mouse_Motion(mouseSensorCtrl.deltaX, mouseSensorCtrl.deltaY);
     }
 }
