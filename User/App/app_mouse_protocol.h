@@ -239,6 +239,7 @@ void App_Mouse_Get_Macro_Key_Val(uint8_t macroKeyIndex, macro_key_val_t *macroKe
 uint8_t App_Mouse_Get_Macro_Key_Num(void );
 void App_Mouse_Set_Pic(uint8_t *buf, uint8_t length );
 void App_Mouse_Set_Pic_Mask(uint8_t picId );
+void App_Mouse_Set_Pic_Id_Buf(void );
 uint8_t App_Mouse_Get_Pic_Id(uint8_t picIndex );
 
 #endif 

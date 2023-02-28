@@ -31,31 +31,7 @@ void Drv_Spi_Flash_Init(void )
 {
     Hal_Spi_Init();
 
-    Drv_Spi_Read_Jedec_Id();
-
-    #if 0
-    static uint16_t rxBuf[32] = {0};
-    uint32_t addr = 0xa0000;
-    uint8_t i;
-    
-    Drv_Spi_64K_Block_Erase(addr);
-    Drv_Spi_64K_Block_Erase(addr+ERASE_64K_BLOCK_SIZE);
-
-    do{
-        Drv_Spi_Read(addr, (uint8_t *)rxBuf, sizeof(rxBuf));
-        for(i=0;i<32;i++)
-            rxBuf[i] = 0xf800;
-        Drv_Spi_Write(addr, (uint8_t *)rxBuf, sizeof(rxBuf));
-        for(i=0;i<32;i++)
-            rxBuf[i] = 0;
-        Drv_Spi_Read(addr, (uint8_t *)rxBuf, sizeof(rxBuf));
-        addr += 64;
-
-        if(addr > 0xa0000+115000)
-            addr = addr;
-        
-    }while(addr < (0xa0000+115200));
-    #endif 
+    //Drv_Spi_Read_Jedec_Id();
 }
 
 void Drv_Spi_Read_Jedec_Id(void )

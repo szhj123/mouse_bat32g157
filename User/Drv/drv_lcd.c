@@ -23,11 +23,11 @@ void Drv_Lcd_Init(void )
     Hal_Lcd_Init();
 
     LCD_RST_HIGH();
-    Drv_Lcd_Delay_US(1000*35);
+    Drv_Lcd_Delay_US(1000*10);
 	LCD_RST_LOW();
-	Drv_Lcd_Delay_US(10000*35);
+	Drv_Lcd_Delay_US(10000*10);
 	LCD_RST_HIGH();
-	Drv_Lcd_Delay_US(120000*35);
+	Drv_Lcd_Delay_US(100000*10);
 
     Drv_Lcd_Wr_Cmd(0x36); 
     Drv_Lcd_Wr_Data(0x00);
@@ -102,7 +102,7 @@ void Drv_Lcd_Init(void )
     Drv_Lcd_Wr_Cmd(0x21); 
 
     Drv_Lcd_Wr_Cmd(0x11); 
-    Drv_Lcd_Delay_US(120000*35);
+    Drv_Lcd_Delay_US(100000*10);
 
     Drv_Lcd_Wr_Cmd(0x29);     
 }

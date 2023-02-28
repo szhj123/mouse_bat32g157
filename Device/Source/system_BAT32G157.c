@@ -129,7 +129,7 @@ const uint8_t user_opt_data[8] __attribute__((used)) __attribute__((section(".AR
 //              <i> Please setting the item for interrupt & reset mode
 //   </e>
 // </h>
-    0xFF,
+    0x36,
 
 /**
  * @brief HOCO Control BYTE (FRQSEL)
@@ -164,7 +164,7 @@ const uint8_t user_opt_data[8] __attribute__((used)) __attribute__((section(".AR
 //            <i> OCDM(500004H) == 0x3C && OCDEN == 0xC3: Debugger can not erease/write/read Flash.
 //            <i> OCDM(500004H) != 0x3C && OCDEN == 0xC3: Debugger can only chip erease Flash but cannot write/read Flash.
 // </h>
-    0xEA,
+    0xFF,
 
 /**
  * @brief Boot Area Control BYTE

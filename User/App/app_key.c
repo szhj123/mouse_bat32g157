@@ -466,8 +466,6 @@ void App_Key_Board_Down(key_val_t keyVal )
     Usb_Ep2_In((uint8_t *)keyBoardReportBuf, 8);
 }
 
-
-
 void App_Key_Dpi_Down(void )
 {
     light_color_t dpiColor;

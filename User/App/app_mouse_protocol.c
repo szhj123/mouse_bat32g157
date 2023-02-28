@@ -79,6 +79,8 @@ void App_Mouse_Protocol_Init(void )
         App_Mouse_Para_Save();
     }
 
+    App_Mouse_Set_Pic_Id_Buf();
+    
     App_Mouse_Key_Default_Mode_Init();
 
     mousePara.date.year = 20;
@@ -369,6 +371,8 @@ void App_Mouse_Set_Light_Dpi_Rate(uint8_t *buf, uint8_t length )
     mousePara.picShowMask_l = lightDpiRate.picShowMask_l;
     mousePara.picShowMask_h = lightDpiRate.picShowMask_h;
     mousePara.picIndex = lightDpiRate.picIndex;
+
+    App_Mouse_Set_Pic_Id_Buf();
 
     App_Mouse_Para_Save();
 }
@@ -770,6 +774,8 @@ void App_Mouse_Set_Pic(uint8_t *buf, uint8_t length )
                 if(picCtrl.picRecvLength >= LCD_W * LCD_H * 2)
                 {                    
                     App_Mouse_Set_Pic_Mask(picPara->picId);
+
+                    App_Mouse_Set_Pic_Id_Buf();
                     
                     picCtrl.picTotalNum++;
 
@@ -796,10 +802,7 @@ void App_Mouse_Set_Pic(uint8_t *buf, uint8_t length )
 }
 
 void App_Mouse_Set_Pic_Mask(uint8_t picId )
-{
-    uint8_t i,j;
-    uint16_t picMask;
-    
+{    
     if(picId > 16)
     {
         picId = 16;
@@ -818,15 +821,25 @@ void App_Mouse_Set_Pic_Mask(uint8_t picId )
         mousePara.picShowMask_l |= (1 << (picId-1));
     }
 
+    App_Mouse_Para_Save();
+
+    
+}
+
+void App_Mouse_Set_Pic_Id_Buf(void )
+{
+    uint16_t picMask;
+    uint8_t i,j;
+    
     picMask = (uint16_t )mousePara.picShowMask_h << 8 | mousePara.picShowMask_l;
 
     j = 0;
 
     for(i=0;i<16;i++)
     {
-        if(picMask & (1<<i))
+        if(!(picMask & (1<<i)))
         {
-            picIdBuf[j++] = i+1;
+            picIdBuf[j++] = i+5;
         }   
     }
 }

@@ -3,6 +3,8 @@
 
 #include "drv_lcd.h"
 
+#include "app_mouse_protocol.h"
+
 #define WHITE         	 0xFFFF
 #define BLACK         	 0x0000	  
 #define BLUE         	 0x1F00  
