@@ -44,9 +44,9 @@ int main (void)
     
     App_Mouse_Protocol_Init();
 
-    App_Lcd_Init();
-
     App_Light_Init();  
+
+    App_Lcd_Init();
 
     App_Key_Init();
     

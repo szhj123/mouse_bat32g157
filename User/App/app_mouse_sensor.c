@@ -26,7 +26,7 @@ void App_Mouse_Sensor_Init(void )
     
     Drv_Mouse_Sensor_Init();
 
-    Drv_Timer_Regist_Period(0, 1, App_Mouse_Sensor_Monitor, NULL);
+    Drv_Timer_Regist_Period(500, 1, App_Mouse_Sensor_Monitor, NULL);
 
     regVal = App_Mouse_Get_Dpi_RegVal(App_Mouse_Get_Dpi_Index());
 
